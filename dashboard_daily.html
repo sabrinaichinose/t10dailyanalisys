@@ -1,0 +1,1136 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard Diário — TripleTen Brazil</title>
+<style>
+  :root {
+    --navy: #1B3A5C; --blue: #2E5F8A; --teal: #1D7A7A;
+    --green: #1E7A1E; --green-bg: #E8F5E9; --green-light: #4CAF50;
+    --orange: #CC5500; --orange-bg: #FFF8E1;
+    --red: #B22222; --red-bg: #FDECEC; --red-light: #E53935;
+    --gold: #C8860A; --gold-bg: #FFFDE7;
+    --gray: #666; --light: #F5F7FA; --mid: #EAF0F6;
+    --white: #fff; --border: #dde3ea;
+    --shadow: 0 2px 8px rgba(27,58,92,0.08);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--light); color: #222; font-size: 14px; }
+
+  /* HEADER */
+  .header { background: var(--navy); color: #fff; padding: 16px 24px; display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
+  .header h1 { font-size: 20px; font-weight: 700; }
+  .header .subtitle { font-size: 12px; opacity: .7; }
+  .date-controls { margin-left: auto; display: flex; align-items: center; gap: 10px; }
+  .date-controls label { font-size: 12px; opacity: .8; }
+  .date-controls input[type=date] { padding: 6px 10px; border-radius: 6px; border: 1px solid rgba(255,255,255,.3); background: rgba(255,255,255,.1); color: #fff; font-size: 13px; cursor: pointer; }
+  .date-controls input[type=date]::-webkit-calendar-picker-indicator { filter: invert(1); }
+  .btn-filter { padding: 6px 16px; background: var(--teal); color: #fff; border: none; border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: 600; }
+  .btn-filter:hover { background: #186666; }
+  .data-tag { font-size: 11px; background: rgba(255,255,255,.15); padding: 3px 8px; border-radius: 4px; }
+
+  /* TABS */
+  .tabs { display: flex; background: #fff; border-bottom: 2px solid var(--border); padding: 0 24px; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 6px rgba(0,0,0,.06); }
+  .tab { padding: 14px 24px; cursor: pointer; font-weight: 600; font-size: 14px; color: var(--gray); border-bottom: 3px solid transparent; margin-bottom: -2px; transition: all .2s; white-space: nowrap; }
+  .tab:hover { color: var(--blue); }
+  .tab.active { color: var(--navy); border-bottom-color: var(--blue); }
+  .tab-icon { margin-right: 6px; }
+
+  /* CONTENT */
+  .tab-content { display: none; padding: 24px; max-width: 1400px; margin: 0 auto; }
+  .tab-content.active { display: block; }
+
+  /* SECTIONS */
+  .section { background: #fff; border-radius: 10px; box-shadow: var(--shadow); margin-bottom: 20px; overflow: hidden; }
+  .section-header { padding: 14px 20px; background: var(--mid); border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 10px; }
+  .section-header h2 { font-size: 15px; font-weight: 700; color: var(--navy); }
+  .section-header .badge { font-size: 11px; padding: 2px 8px; border-radius: 12px; font-weight: 600; }
+  .section-body { padding: 16px 20px; }
+
+  /* KPI GRID */
+  .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 14px; margin-bottom: 20px; }
+  .kpi-card { background: #fff; border-radius: 10px; box-shadow: var(--shadow); padding: 16px; text-align: center; border-top: 4px solid var(--blue); }
+  .kpi-card.green { border-top-color: var(--green-light); }
+  .kpi-card.red { border-top-color: var(--red-light); }
+  .kpi-card.gold { border-top-color: var(--gold); }
+  .kpi-card.teal { border-top-color: var(--teal); }
+  .kpi-card.orange { border-top-color: var(--orange); }
+  .kpi-val { font-size: 32px; font-weight: 800; color: var(--navy); line-height: 1; }
+  .kpi-val.green { color: var(--green); }
+  .kpi-val.red { color: var(--red); }
+  .kpi-val.gold { color: var(--gold); }
+  .kpi-val.teal { color: var(--teal); }
+  .kpi-val.orange { color: var(--orange); }
+  .kpi-label { font-size: 11px; color: var(--gray); margin-top: 6px; line-height: 1.3; }
+  .kpi-sub { font-size: 11px; color: var(--blue); margin-top: 4px; font-weight: 600; }
+
+  /* FUNNEL */
+  .funnel { display: flex; gap: 4px; align-items: flex-end; padding: 16px 0; justify-content: center; flex-wrap: wrap; }
+  .funnel-step { text-align: center; flex: 1; min-width: 80px; }
+  .funnel-bar { margin: 0 auto; border-radius: 6px 6px 0 0; transition: all .3s; cursor: default; }
+  .funnel-step:hover .funnel-bar { opacity: .8; }
+  .funnel-label { font-size: 10px; color: var(--gray); margin-top: 6px; line-height: 1.2; }
+  .funnel-count { font-size: 16px; font-weight: 800; color: var(--navy); }
+  .funnel-pct { font-size: 11px; color: var(--gray); }
+  .funnel-arrow { align-self: center; color: var(--border); font-size: 18px; flex: 0; }
+
+  /* TABLES */
+  .data-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .data-table th { background: var(--navy); color: #fff; padding: 8px 10px; text-align: left; font-weight: 600; font-size: 12px; white-space: nowrap; }
+  .data-table td { padding: 7px 10px; border-bottom: 1px solid var(--border); vertical-align: middle; }
+  .data-table tr:last-child td { border-bottom: none; }
+  .data-table tr:nth-child(even) td { background: var(--light); }
+  .data-table tr:hover td { background: var(--mid); }
+  .table-wrap { overflow-x: auto; }
+
+  /* BADGES */
+  .badge { display: inline-block; padding: 2px 8px; border-radius: 12px; font-size: 11px; font-weight: 600; }
+  .badge-green { background: var(--green-bg); color: var(--green); }
+  .badge-red { background: var(--red-bg); color: var(--red); }
+  .badge-gold { background: var(--gold-bg); color: var(--gold); }
+  .badge-blue { background: var(--mid); color: var(--blue); }
+  .badge-gray { background: #eee; color: var(--gray); }
+  .badge-orange { background: var(--orange-bg); color: var(--orange); }
+
+  /* PRIORITY */
+  .p-high { color: var(--red); font-weight: 700; }
+  .p-medium { color: var(--gold); font-weight: 600; }
+  .p-low { color: var(--gray); }
+
+  /* TEMP */
+  .t-quente { background: var(--red-bg); color: var(--red); padding: 2px 8px; border-radius: 10px; font-size: 11px; font-weight: 600; }
+  .t-morno { background: var(--orange-bg); color: var(--orange); padding: 2px 8px; border-radius: 10px; font-size: 11px; font-weight: 600; }
+  .t-frio { background: #E3F2FD; color: #1565C0; padding: 2px 8px; border-radius: 10px; font-size: 11px; font-weight: 600; }
+  .t-nd { background: #eee; color: var(--gray); padding: 2px 8px; border-radius: 10px; font-size: 11px; }
+
+  /* SCORE */
+  .score { display: inline-block; width: 28px; height: 28px; border-radius: 50%; text-align: center; line-height: 28px; font-weight: 800; font-size: 12px; }
+  .score-hi { background: var(--green-bg); color: var(--green); }
+  .score-mid { background: var(--gold-bg); color: var(--gold); }
+  .score-lo { background: var(--red-bg); color: var(--red); }
+  .score-nd { background: #eee; color: var(--gray); }
+
+  /* SENTIMENT BAR */
+  .sent-bar { display: flex; height: 8px; border-radius: 4px; overflow: hidden; min-width: 80px; }
+  .sent-pos { background: var(--green-light); }
+  .sent-neg { background: var(--red-light); }
+  .sent-neut { background: #ccc; }
+  .sent-text { font-size: 11px; margin-top: 2px; }
+  .sent-pos-t { color: var(--green); }
+  .sent-neg-t { color: var(--red); }
+
+  /* UTM PILL */
+  .utm { font-size: 11px; background: var(--mid); padding: 2px 7px; border-radius: 10px; color: var(--blue); white-space: nowrap; }
+
+  /* POTENTIAL */
+  .pot-bar { display: flex; height: 6px; border-radius: 3px; background: #eee; width: 80px; overflow: hidden; }
+  .pot-fill { background: linear-gradient(90deg, var(--orange), var(--green)); border-radius: 3px; }
+
+  /* INSIGHTS BOX */
+  .insight-box { background: var(--mid); border-left: 4px solid var(--blue); padding: 12px 14px; border-radius: 0 8px 8px 0; margin: 8px 0; font-size: 13px; line-height: 1.5; }
+  .insight-box.warn { border-left-color: var(--orange); background: var(--orange-bg); }
+  .insight-box.alert { border-left-color: var(--red); background: var(--red-bg); }
+  .insight-box.good { border-left-color: var(--green); background: var(--green-bg); }
+
+  /* GRID 2COL */
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media(max-width: 900px) { .grid-2 { grid-template-columns: 1fr; } }
+
+  /* UTM BREAKDOWN */
+  .utm-row { display: flex; align-items: center; gap: 8px; padding: 6px 0; border-bottom: 1px solid var(--border); }
+  .utm-row:last-child { border-bottom: none; }
+  .utm-name { width: 140px; font-weight: 600; font-size: 13px; }
+  .utm-bar-wrap { flex: 1; background: #eee; height: 8px; border-radius: 4px; overflow: hidden; }
+  .utm-bar-fill { height: 100%; border-radius: 4px; background: var(--blue); }
+  .utm-stats { display: flex; gap: 12px; font-size: 12px; color: var(--gray); min-width: 120px; justify-content: flex-end; }
+
+  /* CYCLE DOTS */
+  .cycle-good { color: var(--green); font-weight: 700; }
+  .cycle-mid { color: var(--gold); font-weight: 600; }
+  .cycle-slow { color: var(--red); font-weight: 600; }
+
+  /* CLOSING POTENTIAL */
+  .pot-ring { display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 50%; font-weight: 800; font-size: 13px; }
+  .pot-a { background: #C8E6C9; color: #2E7D32; }
+  .pot-b { background: #FFF9C4; color: #F57F17; }
+  .pot-c { background: #FFCCBC; color: #BF360C; }
+
+  /* FILTER BAR */
+  .filter-bar { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 12px; }
+  .filter-select { padding: 6px 10px; border: 1px solid var(--border); border-radius: 6px; font-size: 12px; background: #fff; cursor: pointer; }
+  .filter-label { font-size: 12px; color: var(--gray); align-self: center; }
+
+  /* TOOLTIP */
+  [title] { cursor: help; }
+
+  /* SUMMARY ROW */
+  .summary-row { display: flex; gap: 20px; flex-wrap: wrap; padding: 12px 0; border-bottom: 1px solid var(--border); margin-bottom: 12px; }
+  .summary-item { text-align: center; }
+  .summary-val { font-size: 22px; font-weight: 800; color: var(--navy); }
+  .summary-lbl { font-size: 10px; color: var(--gray); }
+
+  /* NO DATA */
+  .no-data { text-align: center; padding: 30px; color: var(--gray); font-style: italic; }
+
+  /* HIDDEN */
+  .hidden { display: none !important; }
+
+  /* STAR */
+  .star { color: #F9A825; }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div>
+    <div class="h1-wrap" style="display:flex;align-items:center;gap:10px;">
+      <h1>📊 Dashboard Diário — TripleTen Brazil</h1>
+      <span class="data-tag" id="data-tag">10/08/2026</span>
+    </div>
+    <div class="subtitle">Fonte: HubSpot CRM + Elephan | Pipeline: Brazil / Sales</div>
+  </div>
+  <div class="date-controls">
+    <label>Data:</label>
+    <input type="date" id="date-picker" value="2026-08-10">
+    <button class="btn-filter" onclick="applyDateFilter()">Aplicar</button>
+  </div>
+</div>
+
+<!-- TABS -->
+<div class="tabs">
+  <div class="tab active" onclick="switchTab('marketing')"><span class="tab-icon">📈</span>Marketing</div>
+  <div class="tab" onclick="switchTab('vendas')"><span class="tab-icon">🎯</span>Vendas</div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════ -->
+<!-- TAB 1: MARKETING -->
+<!-- ══════════════════════════════════════════════════════════ -->
+<div id="tab-marketing" class="tab-content active">
+
+  <!-- KPI CARDS -->
+  <div class="kpi-grid" id="mkt-kpis"></div>
+
+  <!-- FUNIL DE LEADS CRIADOS -->
+  <div class="section">
+    <div class="section-header">
+      <h2>📥 1.1 — Leads Criados em <span id="date-label-funnel">10/08/2026</span></h2>
+      <span class="badge badge-blue" id="total-criados-badge">184 leads</span>
+    </div>
+    <div class="section-body">
+      <div id="funnel-container"></div>
+      <div class="insight-box warn" id="insight-criados"></div>
+    </div>
+  </div>
+
+  <!-- ATENDIDOS NO MESMO DIA -->
+  <div class="section">
+    <div class="section-header">
+      <h2>⚡ Atendidos no Mesmo Dia da Criação</h2>
+      <span class="badge badge-teal" id="same-day-badge"></span>
+    </div>
+    <div class="section-body">
+      <div class="filter-bar">
+        <select class="filter-select" onchange="filterTable('same-day-table', this.value, 3)">
+          <option value="">UTM Medium (todos)</option>
+          <option value="cpc">CPC</option>
+          <option value="bloggers">Bloggers</option>
+          <option value="crm">CRM</option>
+          <option value="smm">SMM</option>
+        </select>
+        <select class="filter-select" onchange="filterTable('same-day-table', this.value, 6)">
+          <option value="">Priority (todos)</option>
+          <option value="high">High</option>
+          <option value="medium">Medium</option>
+          <option value="low">Low</option>
+        </select>
+      </div>
+      <div class="table-wrap">
+        <table class="data-table" id="same-day-table">
+          <thead><tr>
+            <th>Lead</th><th>Curso</th><th>Score</th>
+            <th>UTM Medium</th><th>UTM Content</th><th>Temperatura</th><th>Priority</th><th>Status Final</th>
+          </tr></thead>
+          <tbody id="same-day-body"></tbody>
+        </table>
+      </div>
+      <div class="insight-box" id="insight-same-day" style="margin-top:12px;"></div>
+    </div>
+  </div>
+
+  <!-- MEETING SCHEDULED -->
+  <div class="section">
+    <div class="section-header">
+      <h2>📅 Agendamentos Gerados (Meeting Scheduled)</h2>
+      <span class="badge badge-blue" id="scheduled-badge"></span>
+    </div>
+    <div class="section-body">
+      <div class="filter-bar">
+        <select class="filter-select" onchange="filterTable('scheduled-table', this.value, 2)">
+          <option value="">UTM Medium (todos)</option>
+          <option value="cpc">CPC</option>
+          <option value="bloggers">Bloggers</option>
+          <option value="crm">CRM</option>
+          <option value="partnerships">Partnerships</option>
+          <option value="smm">SMM</option>
+        </select>
+        <select class="filter-select" onchange="filterTable('scheduled-table', this.value, 4)">
+          <option value="">Priority (todos)</option>
+          <option value="high">High</option>
+          <option value="medium">Medium</option>
+          <option value="low">Low</option>
+        </select>
+      </div>
+      <div class="table-wrap">
+        <table class="data-table" id="scheduled-table">
+          <thead><tr>
+            <th>Lead</th><th>Curso</th><th>UTM Medium</th><th>UTM Source</th><th>Priority</th><th>Score</th><th>Payable</th>
+          </tr></thead>
+          <tbody id="scheduled-body"></tbody>
+        </table>
+      </div>
+      <div class="insight-box" id="insight-scheduled" style="margin-top:12px;"></div>
+    </div>
+  </div>
+
+  <!-- NO-SHOWS -->
+  <div class="section">
+    <div class="section-header">
+      <h2>❌ No-Shows do Dia</h2>
+      <span class="badge badge-red" id="noshow-badge"></span>
+    </div>
+    <div class="section-body">
+      <div class="filter-bar">
+        <select class="filter-select" onchange="filterTable('noshow-table', this.value, 2)">
+          <option value="">UTM Medium (todos)</option>
+          <option value="cpc">CPC</option>
+          <option value="bloggers">Bloggers</option>
+          <option value="crm">CRM</option>
+          <option value="smm">SMM</option>
+          <option value="partnerships">Partnerships</option>
+        </select>
+        <select class="filter-select" onchange="filterTable('noshow-table', this.value, 4)">
+          <option value="">Priority (todos)</option>
+          <option value="high">High</option>
+          <option value="medium">Medium</option>
+        </select>
+      </div>
+      <div class="table-wrap">
+        <table class="data-table" id="noshow-table">
+          <thead><tr>
+            <th>Lead</th><th>Curso</th><th>UTM Medium</th><th>UTM Content</th><th>Priority</th><th>Score</th><th>Criado em</th><th>Status Atual</th>
+          </tr></thead>
+          <tbody id="noshow-body"></tbody>
+        </table>
+      </div>
+      <div class="insight-box warn" id="insight-noshow" style="margin-top:12px;"></div>
+    </div>
+  </div>
+
+  <!-- 1.2 TODAS AS REUNIÕES ATENDIDAS NO DIA -->
+  <div class="section">
+    <div class="section-header">
+      <h2>🤝 1.2 — Todas as Reuniões Atendidas em <span id="date-label-attended">10/08/2026</span></h2>
+      <span class="badge badge-blue" id="attended-badge">25 reuniões</span>
+    </div>
+    <div class="section-body">
+
+      <!-- Cycle time summary -->
+      <div class="grid-2" style="margin-bottom:16px;">
+        <div class="section" style="box-shadow:none;border:1px solid var(--border);">
+          <div class="section-header" style="background:var(--light);"><h2 style="font-size:13px;">⏱ Ciclo: Criação → Atendimento</h2></div>
+          <div class="section-body" id="cycle-summary"></div>
+        </div>
+        <div class="section" style="box-shadow:none;border:1px solid var(--border);">
+          <div class="section-header" style="background:var(--light);"><h2 style="font-size:13px;">🌡️ Temperatura nas Reuniões Atendidas</h2></div>
+          <div class="section-body" id="temp-attended-summary"></div>
+        </div>
+      </div>
+
+      <!-- UTM breakdown -->
+      <div class="grid-2" style="margin-bottom:16px;">
+        <div class="section" style="box-shadow:none;border:1px solid var(--border);">
+          <div class="section-header" style="background:var(--light);"><h2 style="font-size:13px;">📊 UTM Medium — Reuniões Atendidas</h2></div>
+          <div class="section-body" id="utm-attended"></div>
+        </div>
+        <div class="section" style="box-shadow:none;border:1px solid var(--border);">
+          <div class="section-header" style="background:var(--light);"><h2 style="font-size:13px;">🎨 UTM Content — Top Criativos/Influencers</h2></div>
+          <div class="section-body" id="content-attended"></div>
+        </div>
+      </div>
+
+      <!-- Full table with filter -->
+      <div class="filter-bar">
+        <select class="filter-select" onchange="filterTable('attended-table', this.value, 3)">
+          <option value="">UTM Medium (todos)</option>
+          <option value="cpc">CPC</option>
+          <option value="bloggers">Bloggers</option>
+          <option value="crm">CRM</option>
+          <option value="smm">SMM</option>
+          <option value="social">Social</option>
+          <option value="partnerships">Partnerships</option>
+        </select>
+        <select class="filter-select" onchange="filterTable('attended-table', this.value, 5)">
+          <option value="">Priority (todos)</option>
+          <option value="high">High</option>
+          <option value="medium">Medium</option>
+          <option value="low">Low</option>
+        </select>
+        <select class="filter-select" onchange="filterTable('attended-table', this.value, 7)">
+          <option value="">Temperatura (todas)</option>
+          <option value="Morno">Morno</option>
+          <option value="Frio">Frio</option>
+          <option value="Quente">Quente</option>
+        </select>
+      </div>
+      <div class="table-wrap">
+        <table class="data-table" id="attended-table">
+          <thead><tr>
+            <th>Lead</th><th>Closer</th><th>Curso</th><th>UTM Medium</th><th>UTM Content</th><th>Priority</th><th>Score</th><th>Temperatura</th><th>Payable</th><th>Ciclo (dias)</th><th>Resultado</th>
+          </tr></thead>
+          <tbody id="attended-body"></tbody>
+        </table>
+      </div>
+
+      <div class="insight-box good" id="insight-attended" style="margin-top:14px;"></div>
+    </div>
+  </div>
+
+</div><!-- end tab-marketing -->
+
+<!-- ══════════════════════════════════════════════════════════ -->
+<!-- TAB 2: VENDAS -->
+<!-- ══════════════════════════════════════════════════════════ -->
+<div id="tab-vendas" class="tab-content">
+
+  <!-- KPI CARDS -->
+  <div class="kpi-grid" id="sales-kpis"></div>
+
+  <!-- CLOSER PERFORMANCE -->
+  <div class="section">
+    <div class="section-header">
+      <h2>📊 Performance por Closer — Reuniões de <span id="date-label-sales">10/08/2026</span></h2>
+    </div>
+    <div class="section-body">
+      <div class="table-wrap">
+        <table class="data-table" id="closer-table">
+          <thead><tr>
+            <th>Closer</th><th>Reuniões</th><th>Vendas</th><th>Lost</th><th>Em Aberto</th><th>Tempo Total</th>
+            <th>Energia Closer</th><th>Resist. Lead</th><th>Padrão</th>
+          </tr></thead>
+          <tbody id="closer-body"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- POTENCIAL DE FECHAMENTO -->
+  <div class="section">
+    <div class="section-header">
+      <h2>🏆 Ranking de Potencial de Fechamento</h2>
+      <span class="badge badge-gold">Baseado em Elephan + CRM</span>
+    </div>
+    <div class="section-body">
+      <div class="filter-bar">
+        <select class="filter-select" onchange="filterTable('potential-table', this.value, 7)">
+          <option value="">Prioridade (todos)</option>
+          <option value="A">A — Alta</option>
+          <option value="B">B — Média</option>
+          <option value="C">C — Baixa</option>
+        </select>
+        <select class="filter-select" onchange="filterTable('potential-table', this.value, 2)">
+          <option value="">Closer (todos)</option>
+          <option value="Gabriel">Gabriel Morial</option>
+          <option value="Erick">Erick Paiva</option>
+          <option value="Bruno">Bruno Marques</option>
+          <option value="Lucas">Lucas Bonow</option>
+          <option value="Bernardo">Bernardo Magalhães</option>
+          <option value="Jessica">Jessica Silva</option>
+          <option value="Vinícius">Vinícius Leão</option>
+          <option value="Yanara">Yanara Silva</option>
+        </select>
+      </div>
+      <div class="table-wrap">
+        <table class="data-table" id="potential-table">
+          <thead><tr>
+            <th>#</th><th>Lead</th><th>Closer</th><th>Score</th><th>Payable</th><th>Temperatura</th>
+            <th>Sent. Lead</th><th>Prioridade</th><th>Razão Principal</th><th>Ação Recomendada</th>
+          </tr></thead>
+          <tbody id="potential-body"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ANÁLISE DE TRANSCRIÇÕES -->
+  <div class="section">
+    <div class="section-header">
+      <h2>🎙️ Análise de Transcrições — Elephan</h2>
+      <span class="badge badge-blue">Sentiment Analysis + Resumos</span>
+    </div>
+    <div class="section-body">
+      <div class="filter-bar">
+        <select class="filter-select" onchange="filterTable('elephan-table', this.value, 1)">
+          <option value="">Closer (todos)</option>
+          <option value="Gabriel">Gabriel</option>
+          <option value="Erick">Erick</option>
+          <option value="Bruno M">Bruno M</option>
+          <option value="Lucas">Lucas</option>
+          <option value="Bernardo">Bernardo</option>
+          <option value="Jessica">Jessica</option>
+          <option value="Vinícius">Vinícius</option>
+          <option value="Yanara">Yanara</option>
+        </select>
+        <select class="filter-select" onchange="filterTableByNivel('elephan-table', this.value)">
+          <option value="">Nível (todos)</option>
+          <option value="critico">🔴 Crítico</option>
+          <option value="alerta">🟡 Alerta</option>
+          <option value="bom">🟢 Bom</option>
+          <option value="excelente">⭐ Excelente</option>
+        </select>
+      </div>
+      <div class="table-wrap">
+        <table class="data-table" id="elephan-table">
+          <thead><tr>
+            <th>Closer</th><th>Lead</th><th>Duração</th><th>Resultado</th>
+            <th>Closer +/-</th><th>Lead +/-</th><th>Análise da Transcrição</th>
+          </tr></thead>
+          <tbody id="elephan-body"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ALERTS E RECOMENDAÇÕES -->
+  <div class="section">
+    <div class="section-header">
+      <h2>⚠️ Alertas e Recomendações de Treinamento</h2>
+    </div>
+    <div class="section-body" id="alerts-container"></div>
+  </div>
+
+</div><!-- end tab-vendas -->
+
+<script>
+// ══════════════════════════════════════════════
+// DATA — 10/08/2026
+// ══════════════════════════════════════════════
+
+const REPORT_DATE = '2026-08-10';
+
+// Leads criados em 10/08 — distribuição por stage
+const FUNNEL_DATA = [
+  { stage: 'TAKEN TO WORK', count: 72, color: '#90A4AE', desc: 'Em tratamento' },
+  { stage: 'CLOSED-LOST', count: 49, color: '#EF9A9A', desc: 'Perdidos' },
+  { stage: 'CONTACT ESTABLISHED', count: 24, color: '#80CBC4', desc: 'Contato feito' },
+  { stage: 'HIGH SCORE', count: 16, color: '#FFE082', desc: 'Alto score' },
+  { stage: 'MEETING SCHEDULED', count: 14, color: '#90CAF9', desc: 'Agendados' },
+  { stage: 'MEETING ATTENDED', count: 6, color: '#A5D6A7', desc: 'Atendidos' },
+  { stage: 'OUTROS', count: 3, color: '#CE93D8', desc: 'Reativação + outros' },
+];
+const TOTAL_CRIADOS = 184;
+
+// Leads criados em 10/08 que foram atendidos no mesmo dia
+const SAME_DAY = [
+  { name: 'Miguel rene Sutil', course: 'QA', score: 1, medium: 'cpc', source: 'facebook', content: 'FB Mobile Feed | online-courses-23-40', temp: 'Morno', priority: 'medium', status: 'Em aberto', payable: 'Não' },
+  { name: 'Marcos Silva', course: 'DA', score: 4, medium: '—', source: '—', content: '—', temp: 'Morno', priority: 'high', status: 'Em aberto', payable: 'Não' },
+  { name: 'vitor monteiro', course: 'DS', score: -1, medium: 'cpc', source: 'google', content: 'Google Search | kwd-DS', temp: 'Morno', priority: 'high', status: 'Lost', payable: 'Não' },
+  { name: 'Bruno Gehem', course: 'DA', score: null, medium: 'cpc', source: 'google', content: 'Google Search | kwd-DS', temp: 'Morno', priority: 'medium', status: 'Em aberto', payable: 'Sim' },
+  { name: 'Patrick Makanga', course: 'DA', score: 5, medium: 'crm', source: 'email', content: 'da_leads-10082026', temp: 'Frio', priority: 'low', status: 'Lost', payable: 'Não' },
+];
+
+// Leads com Meeting Scheduled (criados em 10/08)
+const SCHEDULED = [
+  { name: 'Jamile Fabre', course: 'DS', medium: 'crm', source: 'email', score: 8, priority: 'high', payable: null },
+  { name: 'Henrique Sobral', course: 'DS', medium: 'crm', source: 'email', score: 5, priority: 'high', payable: null },
+  { name: 'Igor abduch (outro)', course: 'DS', medium: '—', source: '—', score: 7, priority: 'high', payable: null },
+  { name: 'Vitor Ribeiro', course: 'DS', medium: 'cpc', source: 'google', score: 3, priority: 'high', payable: null },
+  { name: 'Anecy Guimarães', course: 'DA', medium: 'crm', source: 'whatsapp', score: 3, priority: 'high', payable: null },
+  { name: 'Lucas Jose dos Santos', course: 'DS', medium: 'partnerships', source: 'b2b2c', score: 2, priority: 'medium', payable: null },
+  { name: 'Cristiane Talita Grande', course: 'DA', medium: 'bloggers', source: 'youtube', score: 1, priority: 'medium', payable: null },
+  { name: 'Alvaro Henrique Santos', course: 'DS', medium: '—', source: '—', score: 1, priority: 'medium', payable: null },
+  { name: 'Rosane Kupka', course: 'DS', medium: 'cpc', source: 'facebook', score: 2, priority: 'medium', payable: null },
+  { name: 'VITOR SPESSE RODRIGUES', course: 'DA', medium: 'bloggers', source: 'youtube', score: null, priority: 'medium', payable: null },
+  { name: 'Phillip Veríssimo Silvério', course: 'WD', medium: 'bloggers', source: 'instagram', score: null, priority: 'medium', payable: null },
+  { name: 'Lucas Leite Da Floresta', course: 'DS', medium: '—', source: '—', score: -1, priority: 'medium', payable: null },
+  { name: 'Evandro Gomes', course: 'DS', medium: '—', source: '—', score: -1, priority: 'medium', payable: null },
+  { name: 'Evandro Nilo Costa', course: 'DS', medium: 'crm', source: 'email', score: -1, priority: 'medium', payable: null },
+  { name: 'Tatiana Garcia', course: 'QA', medium: 'bloggers', source: 'instagram', score: 0, priority: 'low', payable: null },
+];
+
+// No-shows de 10/08
+const NOSHOWS = [
+  { name: 'Vitória White da Rocha', course: 'DS', medium: 'cpc', source: 'facebook', content: 'Instagram Stories', priority: 'high', score: 4, created: '2026-08-07', status: 'Lost' },
+  { name: 'Paulo Santana', course: 'MBA DS', medium: '—', source: '—', content: '—', priority: 'high', score: 3, created: '2026-08-07', status: 'Lost' },
+  { name: 'Frederico Santos', course: 'DS', medium: 'cpc', source: 'google', content: 'Google Search | kwd-DS', priority: 'high', score: 3, created: '2026-08-06', status: 'Lost' },
+  { name: 'Barbara miranda', course: 'DS', medium: 'bloggers', source: 'instagram', content: 'turistalife', priority: 'high', score: 2, created: '2026-08-07', status: 'Lost' },
+  { name: 'Marcelo Souza', course: 'DS', medium: 'cpc', source: 'facebook', content: 'Instagram Reels', priority: 'high', score: 2, created: '2026-08-06', status: 'Em aberto' },
+  { name: 'Cynthia Nakashima', course: 'DS', medium: 'crm', source: 'whatsapp', content: 'closed-lost reativação', priority: 'high', score: 2, created: '2026-08-06', status: 'Agendado' },
+  { name: 'Tatiane', course: 'DS', medium: 'crm', source: 'whatsapp', content: 'closed-lost reativação', priority: 'high', score: 0, created: '2026-08-07', status: 'Lost' },
+  { name: 'Karla Patricia Silveira', course: 'DS', medium: 'crm', source: 'whatsapp', content: 'high-priority was-not-at-career-quiz', priority: 'high', score: 1, created: '2026-08-06', status: 'Agendado' },
+  { name: 'YURI FELIX PEREIRA', course: 'DS', medium: 'cpc', source: 'facebook', content: 'Instagram Reels', priority: 'medium', score: 1, created: '2026-08-05', status: 'Lost' },
+  { name: 'Jonas Pacheco Dos Santos', course: 'MBA DS', medium: '—', source: '—', content: '—', priority: 'medium', score: 0, created: '2026-08-04', status: 'Lost' },
+  { name: 'Bruno Moya', course: 'MBA DS', medium: 'smm', source: 'instagram', content: '—', priority: 'medium', score: 0, created: '2026-08-07', status: 'Em aberto' },
+  { name: 'LEANDRO GARCIA', course: 'DS', medium: '—', source: 'jobicy.com', content: '—', priority: 'medium', score: 0, created: '2026-08-09', status: 'Lost' },
+  { name: 'Mairon Abner', course: 'MBA DS', medium: 'cpc', source: 'facebook', content: 'Instagram Stories', priority: 'medium', score: 0, created: '2026-07-18', status: 'Lost' },
+  { name: 'Barbara Vitoria', course: 'DS', medium: 'partnerships', source: 'email', content: 'hirebrazil', priority: 'medium', score: null, created: '2026-07-06', status: 'Em aberto' },
+];
+
+// 25 Reuniões atendidas em 10/08 (cruzamento CRM + Elephan)
+const ATTENDED = [
+  { name: 'Fernando Chodorowski', closer: 'Gabriel Morial', course: 'WD', medium: '—', source: '—', content: '—', priority: 'high', score: 5, temp: 'Morno', payable: 'Sim', created: '2026-08-09', attended: '2026-08-10', cycle: 1, result: 'VENDA', closerPos: 59, closerNeg: 2, leadPos: 34, leadNeg: 17 },
+  { name: 'cesar leandro', closer: 'Gabriel Morial', course: 'MBA DS', medium: 'bloggers', source: 'youtube', content: 'attekitadev', priority: 'medium', score: 0, temp: '—', payable: '—', created: '2026-07-31', attended: '2026-08-10', cycle: 10, result: 'Lost', closerPos: 52, closerNeg: 5, leadPos: 24, leadNeg: 18 },
+  { name: 'Lucas Rame', closer: 'Gabriel Morial', course: 'QA', medium: 'bloggers', source: 'youtube', content: 'malafeitatv', priority: 'medium', score: null, temp: '—', payable: '—', created: '2026-08-08', attended: '2026-08-10', cycle: 2, result: 'Lost', closerPos: 62, closerNeg: 6, leadPos: 28, leadNeg: 37 },
+  { name: 'Priscila Favoreto', closer: 'Erick Paiva', course: 'DA', medium: '—', source: '—', content: '—', priority: 'high', score: 6, temp: 'Morno', payable: 'Sim', created: '2026-08-06', attended: '2026-08-10', cycle: 4, result: 'Em aberto', closerPos: 31, closerNeg: 19, leadPos: 8, leadNeg: 36 },
+  { name: 'Bernardo Soares', closer: 'Erick Paiva', course: 'WD', medium: 'partnerships', source: 'youtube', content: 'codecon', priority: 'medium', score: 2, temp: 'Morno', payable: 'Não', created: '2026-08-09', attended: '2026-08-10', cycle: 1, result: 'Em aberto', closerPos: 39, closerNeg: 3, leadPos: 26, leadNeg: 17 },
+  { name: 'Lis Viana de Abreu', closer: 'Bruno Marques', course: 'DA', medium: 'cpc', source: 'facebook', content: 'Instagram Feed | online-courses-23-40', priority: 'medium', score: null, temp: 'Morno', payable: 'Não', created: '2026-08-05', attended: '2026-08-10', cycle: 5, result: 'Em aberto', closerPos: 44, closerNeg: 3, leadPos: 18, leadNeg: 33 },
+  { name: 'Marcos Silva', closer: 'Bruno Marques', course: 'DA', medium: '—', source: '—', content: '—', priority: 'high', score: 4, temp: 'Morno', payable: 'Não', created: '2026-08-10', attended: '2026-08-10', cycle: 0, result: 'Em aberto', closerPos: 41, closerNeg: 10, leadPos: 7, leadNeg: 42 },
+  { name: 'Thomas Moreira', closer: 'Bruno Marques', course: 'MBA DS', medium: 'cpc', source: 'facebook', content: 'Instagram Reels | online-courses-23-40', priority: 'high', score: 6, temp: 'Morno', payable: 'Não', created: '2026-08-04', attended: '2026-08-10', cycle: 6, result: 'Em aberto', closerPos: 68, closerNeg: 7, leadPos: 22, leadNeg: 14 },
+  { name: 'vitor monteiro', closer: 'Lucas Bonow', course: 'DS', medium: 'cpc', source: 'google', content: 'Google Search | kwd-DS', priority: 'high', score: -1, temp: 'Morno', payable: 'Não', created: '2026-08-10', attended: '2026-08-10', cycle: 0, result: 'Lost', closerPos: 13, closerNeg: 1, leadPos: 14, leadNeg: 22 },
+  { name: 'Richard Maia', closer: 'Lucas Bonow', course: 'MBA AI', medium: 'cpc', source: 'facebook', content: 'Instagram Stories | postgrad-25-45', priority: 'medium', score: 2, temp: 'Morno', payable: 'Não', created: '2026-08-07', attended: '2026-08-10', cycle: 3, result: 'Em aberto', closerPos: 34, closerNeg: 0, leadPos: 2, leadNeg: 55 },
+  { name: 'Rony', closer: 'Lucas Bonow', course: 'MBA DS', medium: 'cpc', source: 'facebook', content: 'Instagram Reels | online-courses-23-40', priority: 'medium', score: 1, temp: 'Morno', payable: 'Não', created: '2026-08-08', attended: '2026-08-10', cycle: 2, result: 'Em aberto', closerPos: 62, closerNeg: 3, leadPos: 26, leadNeg: 32 },
+  { name: 'Helena Pereira', closer: 'Bernardo Magalhães', course: 'DS', medium: '—', source: '—', content: '—', priority: 'high', score: 3, temp: 'Morno', payable: 'Sim', created: '2026-08-05', attended: '2026-08-10', cycle: 5, result: 'Em aberto', closerPos: 28, closerNeg: 5, leadPos: 4, leadNeg: 30 },
+  { name: 'Lorrany Cunha', closer: 'Bernardo Magalhães', course: 'DA', medium: 'social', source: 'ig', content: 'link_in_bio', priority: 'medium', score: null, temp: 'Morno', payable: 'Não', created: '2026-08-04', attended: '2026-08-10', cycle: 6, result: 'Em aberto', closerPos: 31, closerNeg: 7, leadPos: 14, leadNeg: 22 },
+  { name: 'Patrick Makanga', closer: 'Jessica Silva', course: 'DA', medium: 'crm', source: 'email', content: 'da_leads-10082026', priority: 'low', score: 5, temp: 'Frio', payable: 'Não', created: '2026-08-10', attended: '2026-08-10', cycle: 0, result: 'Lost', closerPos: 44, closerNeg: 12, leadPos: 7, leadNeg: 7 },
+  { name: 'Miguel rene Sutil', closer: 'Jessica Silva', course: 'QA', medium: 'cpc', source: 'facebook', content: 'FB Mobile Feed | online-courses-23-40', priority: 'medium', score: 1, temp: 'Morno', payable: 'Não', created: '2026-08-10', attended: '2026-08-10', cycle: 0, result: 'Em aberto', closerPos: 52, closerNeg: 3, leadPos: 3, leadNeg: 10 },
+  { name: 'Caroline rocha', closer: 'Jessica Silva', course: 'DS', medium: 'bloggers', source: 'instagram', content: 'pativlogs', priority: 'high', score: 4, temp: 'Morno', payable: 'Sim', created: '2026-08-04', attended: '2026-08-10', cycle: 6, result: 'Em aberto', closerPos: 44, closerNeg: 4, leadPos: 33, leadNeg: 7 },
+  { name: 'Carlos may', closer: 'Vinícius Leão', course: 'DA', medium: 'bloggers', source: 'instagram', content: 'pablofakirr', priority: 'high', score: 4, temp: 'Morno', payable: 'Sim', created: '2026-08-07', attended: '2026-08-10', cycle: 3, result: 'Em aberto', closerPos: 34, closerNeg: 7, leadPos: 24, leadNeg: 35 },
+  { name: 'Bruno Brauer', closer: 'Yanara Silva', course: 'WD', medium: 'bloggers', source: 'youtube', content: 'nerdsdenegocios', priority: 'medium', score: 0, temp: 'Morno', payable: 'Sim', created: '2026-08-07', attended: '2026-08-10', cycle: 3, result: 'Em aberto', closerPos: 37, closerNeg: 6, leadPos: 23, leadNeg: 10 },
+  { name: 'Paulo Roberto Silva', closer: 'Raphael Soares', course: 'DS', medium: 'cpc', source: 'google', content: 'Google Search | kwd-DS', priority: 'high', score: 2, temp: 'Frio', payable: 'Não', created: '2026-07-29', attended: '2026-08-10', cycle: 12, result: 'Em aberto', closerPos: 0, closerNeg: 0, leadPos: 0, leadNeg: 0 },
+  { name: 'Thainara Suellen', closer: 'Daniel A. Ribeiro', course: 'QA', medium: 'smm', source: 'instagram', content: 'link_in_bio', priority: 'medium', score: 2, temp: 'Morno', payable: 'Sim', created: '2026-07-29', attended: '2026-08-10', cycle: 12, result: 'Em aberto', closerPos: 0, closerNeg: 0, leadPos: 0, leadNeg: 0 },
+  { name: 'Igor abduch', closer: 'Larissa Ciuldim', course: 'DS', medium: '—', source: '—', content: '—', priority: 'high', score: 7, temp: 'Morno', payable: 'Sim', created: '2026-08-06', attended: '2026-08-10', cycle: 4, result: 'Em aberto', closerPos: 0, closerNeg: 0, leadPos: 0, leadNeg: 0 },
+  { name: 'Lukas Souza', closer: 'Larissa Ciuldim', course: 'MBA DS', medium: '—', source: '—', content: '—', priority: 'medium', score: null, temp: 'Frio', payable: 'Não', created: '2026-07-31', attended: '2026-08-10', cycle: 10, result: 'Em aberto', closerPos: 0, closerNeg: 0, leadPos: 0, leadNeg: 0 },
+  { name: 'Beatriz Tayrine', closer: 'Natália Martins', course: 'QA', medium: '—', source: '—', content: '—', priority: 'medium', score: null, temp: 'Frio', payable: 'Não', created: '2026-08-05', attended: '2026-08-10', cycle: 5, result: 'Em aberto', closerPos: 0, closerNeg: 0, leadPos: 0, leadNeg: 0 },
+  { name: 'Caio Cárdenas', closer: 'Erick Paiva', course: 'WD', medium: 'bloggers', source: 'youtube', content: 'nerdsdenegocios', priority: 'medium', score: null, temp: 'Morno', payable: 'Sim', created: '2026-08-05', attended: '2026-08-10', cycle: 5, result: 'Lost', closerPos: 0, closerNeg: 0, leadPos: 0, leadNeg: 0 },
+  { name: 'Bruno Gehem', closer: 'Raphael Soares', course: 'DA', medium: 'cpc', source: 'google', content: 'Google Search | kwd-DS', priority: 'medium', score: null, temp: 'Morno', payable: 'Sim', created: '2026-08-10', attended: '2026-08-10', cycle: 0, result: 'Em aberto', closerPos: 0, closerNeg: 0, leadPos: 0, leadNeg: 0 },
+];
+
+// Elephan sentiment data
+const ELEPHAN = [
+  { closer: 'Gabriel Morial', lead: 'Fernando Chodorowski', dur: 88, result: 'VENDA', closerPos: 59, closerNeg: 2, leadPos: 34, leadNeg: 17, nivel: 'excelente', analysis: 'BENCHMARK do dia. Conexão humana imediata (apagão em POA). Estrutura clara, escuta ativa. Única venda.' },
+  { closer: 'Gabriel Morial', lead: 'cesar leandro', dur: 121, result: 'Lost', closerPos: 52, closerNeg: 5, leadPos: 24, leadNeg: 18, nivel: 'alerta', analysis: '2h de call e Lost. Lead técnico (SAP 15 anos) não reconheceu gap. Gabriel não criou urgência.' },
+  { closer: 'Gabriel Morial', lead: 'Lucas Rame', dur: 75, result: 'Lost', closerPos: 62, closerNeg: 6, leadPos: 28, leadNeg: 37, nivel: 'alerta', analysis: 'Lead 37% negativo — medo de transição. Gabriel positivo mas sem ancoragem emocional efetiva.' },
+  { closer: 'Erick Paiva', lead: 'Priscila Favoreto', dur: 137, result: 'Em aberto', closerPos: 31, closerNeg: 19, leadPos: 8, leadNeg: 36, nivel: 'critico', analysis: '137min sem fechar. Lead 36% negativo. Erick com 19% negativo (desgaste). Score 6, Payable Sim — oportunidade desperdiçada.' },
+  { closer: 'Erick Paiva', lead: 'Bernardo Soares', dur: 20, result: 'Em aberto', closerPos: 39, closerNeg: 3, leadPos: 26, leadNeg: 17, nivel: 'neutro', analysis: 'Call curta para lead técnico (dev JS/React). Questionou diferencial do bootcamp vs. autoestudo.' },
+  { closer: 'Bruno Marques', lead: 'Lis Viana de Abreu', dur: 43, result: 'Em aberto', closerPos: 44, closerNeg: 3, leadPos: 18, leadNeg: 33, nivel: 'alerta', analysis: 'Antropóloga — background humanas. Lead 33% negativo. Bruno não conectou gestão com tech.' },
+  { closer: 'Bruno Marques', lead: 'Marcos Silva', dur: 56, result: 'Em aberto', closerPos: 41, closerNeg: 10, leadPos: 7, leadNeg: 42, nivel: 'alerta', analysis: 'Engenheiro em Portugal — 42% NEGATIVO. Segundo mais resistente do dia. Bruno não converteu.' },
+  { closer: 'Bruno Marques', lead: 'Thomas Moreira', dur: 48, result: 'Em aberto', closerPos: 68, closerNeg: 7, leadPos: 22, leadNeg: 14, nivel: 'neutro', analysis: 'Bruno com 68% positivo — melhor energia do dia! Thomas engajado mas Payable Não. Barreira MBA.' },
+  { closer: 'Lucas Bonow', lead: 'vitor monteiro', dur: 31, result: 'Lost', closerPos: 13, closerNeg: 1, leadPos: 14, leadNeg: 22, nivel: 'alerta', analysis: 'Lucas com apenas 13% positivo. Lead de vendas sem intenção real de migrar para tech.' },
+  { closer: 'Lucas Bonow', lead: 'Richard Maia', dur: 43, result: 'Em aberto', closerPos: 34, closerNeg: 0, leadPos: 2, leadNeg: 55, nivel: 'critico', analysis: 'Lead mais resistente do dia: 55% NEGATIVO. Lucas manteve calma mas não quebrou as barreiras.' },
+  { closer: 'Lucas Bonow', lead: 'Rony', dur: 42, result: 'Em aberto', closerPos: 62, closerNeg: 3, leadPos: 26, leadNeg: 32, nivel: 'neutro', analysis: 'Lucas com 62% positivo. Rony 32% negativo mas comparativamente receptivo. Sem decisão.' },
+  { closer: 'Bernardo Magalhães', lead: 'Helena Pereira (2 calls)', dur: 41, result: 'Em aberto', closerPos: 28, closerNeg: 5, leadPos: 4, leadNeg: 30, nivel: 'alerta', analysis: '2 calls no mesmo dia (9min + 32min). Payable Sim, score 3. Bernardo não aproveitou 2ª call para closing.' },
+  { closer: 'Bernardo Magalhães', lead: 'Lorrany Cunha', dur: 83, result: 'Em aberto', closerPos: 31, closerNeg: 7, leadPos: 14, leadNeg: 22, nivel: 'neutro', analysis: 'Desempregada + ansiedade social. 83min de call. Perfil vulnerável — protocolo específico necessário.' },
+  { closer: 'Jessica Silva', lead: 'Patrick Makanga', dur: 14, result: 'Lost', closerPos: 44, closerNeg: 12, leadPos: 7, leadNeg: 7, nivel: 'critico', analysis: '14min e Lost. Lead 86% neutro — completamente desengajado. Reativação CRM sem triagem prévia.' },
+  { closer: 'Jessica Silva', lead: 'Miguel rene Sutil', dur: 36, result: 'Em aberto', closerPos: 52, closerNeg: 3, leadPos: 3, leadNeg: 10, nivel: 'neutro', analysis: 'Aposentado — 88% neutro. Jessica positiva mas não gerou excitação. Abordagem propósito vs. carreira.' },
+  { closer: 'Jessica Silva', lead: 'Caroline rocha', dur: 40, result: 'Em aberto', closerPos: 44, closerNeg: 4, leadPos: 33, leadNeg: 7, nivel: 'bom', analysis: 'Melhor lead de Jessica: 33% positivo. Payable Sim, score 4. Oportunidade — argumentar licença maternidade.' },
+  { closer: 'Vinícius Leão', lead: 'Carlos may', dur: 61, result: 'Em aberto', closerPos: 34, closerNeg: 7, leadPos: 24, leadNeg: 35, nivel: 'alerta', analysis: 'Payable Sim mas 35% negativo. Amazon Europa — medo de abrir mão de emprego estável.' },
+  { closer: 'Yanara Silva', lead: 'Bruno Brauer', dur: 46, result: 'Em aberto', closerPos: 37, closerNeg: 6, leadPos: 23, leadNeg: 10, nivel: 'neutro', analysis: 'EUA — acidente criou janela emocional. Payable Sim. Barreira: autoconfiança. WD não exige inglês avançado.' },
+];
+
+// Potencial de fechamento
+const POTENTIAL = [
+  { name: 'Igor abduch', closer: 'Larissa Ciuldim', score: 7, payable: 'Sim', temp: 'Morno', sentPos: 0, sentNeg: 0, pot: 'A', reason: 'Score 7 (maior do dia) + Payable Sim + Morno. Sem gravação Elephan — lead chegou engajado.', action: 'Follow-up hoje com proposta clara e condição especial.' },
+  { name: 'Caroline rocha', closer: 'Jessica Silva', score: 4, payable: 'Sim', temp: 'Morno', sentPos: 33, sentNeg: 7, pot: 'A', reason: 'Lead mais positiva de Jessica (33%). Payable Sim, score 4. Em licença maternidade.', action: 'Argumento: aproveitar a licença para estudar. Follow-up em até 24h.' },
+  { name: 'Priscila Favoreto', closer: 'Erick Paiva', score: 6, payable: 'Sim', temp: 'Morno', sentPos: 8, sentNeg: 36, pot: 'A', reason: 'Score 6 + Payable Sim — mas 36% negativa. Call de 137min sem fechar. Maior urgência do pipeline.', action: 'Escutar gravação. Oferecer parcelamento especial ou início diferido.' },
+  { name: 'Carlos may', closer: 'Vinícius Leão', score: 4, payable: 'Sim', temp: 'Morno', sentPos: 24, sentNeg: 35, pot: 'A', reason: 'Payable Sim + score 4. Mecatrônico na Amazon Europa — capacidade financeira existe.', action: 'Argumento: crescimento paralelo ao emprego. Calculadora de ROI personalizada.' },
+  { name: 'Helena Pereira', closer: 'Bernardo Magalhães', score: 3, payable: 'Sim', temp: 'Morno', sentPos: 4, sentNeg: 30, pot: 'B', reason: 'Payable Sim + 2 calls no mesmo dia. Resistente (30% neg) mas disponível para conversar.', action: '3ª call com foco exclusivo em closing. Não revisitar o produto.' },
+  { name: 'Thomas Moreira', closer: 'Bruno Marques', score: 6, payable: 'Não', temp: 'Morno', sentPos: 22, sentNeg: 14, pot: 'B', reason: 'Score 6, melhor clima da Bruno (22% positivo). Barreira é o preço do MBA.', action: 'Calculadora ROI em dólar para perfil executivo de marketing.' },
+  { name: 'Bruno Brauer', closer: 'Yanara Silva', score: 0, payable: 'Sim', temp: 'Morno', sentPos: 23, sentNeg: 10, pot: 'B', reason: 'Payable Sim. Acidente criou janela de decisão emocional. 23% positivo.', action: 'Reforçar: WD não exige inglês avançado no bootcamp. Suporte da comunidade.' },
+  { name: 'Thainara Suellen', closer: 'Daniel A. Ribeiro', score: 2, payable: 'Sim', temp: 'Morno', sentPos: 0, sentNeg: 0, pot: 'B', reason: 'Payable Sim + SMM/Instagram. Em aberto.', action: 'Verificar próximos passos com Daniel.' },
+  { name: 'Richard Maia', closer: 'Lucas Bonow', score: 2, payable: 'Não', temp: 'Morno', sentPos: 2, sentNeg: 55, pot: 'C', reason: '55% NEGATIVO — lead mais resistente do dia. Sem decisão financeira.', action: 'Script específico para perfis altamente resistentes antes do próximo contato.' },
+  { name: 'Marcos Silva', closer: 'Bruno Marques', score: 4, payable: 'Não', temp: 'Morno', sentPos: 7, sentNeg: 42, pot: 'C', reason: 'Score 4 mas 42% negativo. Engenheiro em Portugal sem decisão financeira.', action: 'Abordagem ROI para engenheiros. Diferencial vs. pós-grad tradicionais.' },
+];
+
+// ══════════════════════════════════════════════
+// RENDER FUNCTIONS
+// ══════════════════════════════════════════════
+
+function scoreEl(s) {
+  if (s === null || s === undefined) return '<span class="score score-nd">?</span>';
+  if (s >= 5) return `<span class="score score-hi">${s}</span>`;
+  if (s >= 3) return `<span class="score score-mid">${s}</span>`;
+  return `<span class="score score-lo">${s}</span>`;
+}
+
+function tempEl(t) {
+  if (!t || t === '—') return '<span class="t-nd">—</span>';
+  const cl = t === 'Quente' ? 't-quente' : t === 'Morno' ? 't-morno' : 't-frio';
+  return `<span class="${cl}">${t}</span>`;
+}
+
+function priorityEl(p) {
+  if (!p || p === '—') return '<span class="p-low">—</span>';
+  const cl = p === 'high' ? 'p-high' : p === 'medium' ? 'p-medium' : 'p-low';
+  const label = p === 'high' ? '▲ High' : p === 'medium' ? '◆ Medium' : '▽ Low';
+  return `<span class="${cl}">${label}</span>`;
+}
+
+function resultEl(r) {
+  if (r === 'VENDA') return '<span class="badge badge-green">✅ VENDA</span>';
+  if (r === 'Lost') return '<span class="badge badge-red">❌ Lost</span>';
+  return '<span class="badge badge-blue">⏳ Em aberto</span>';
+}
+
+function utmEl(m) {
+  if (!m || m === '—') return '<span class="badge badge-gray">—</span>';
+  return `<span class="utm">${m}</span>`;
+}
+
+function cycleEl(c) {
+  const cl = c === 0 ? 'cycle-good' : c <= 3 ? 'cycle-good' : c <= 7 ? 'cycle-mid' : 'cycle-slow';
+  const label = c === 0 ? '⚡ mesmo dia' : `${c}d`;
+  return `<span class="${cl}">${label}</span>`;
+}
+
+function sentBar(pos, neg) {
+  if (pos === 0 && neg === 0) return '<span style="color:#ccc;font-size:11px;">sem dados</span>';
+  const neut = Math.max(0, 100 - pos - neg);
+  return `
+    <div class="sent-bar" title="+${pos}% / -${neg}%">
+      <div class="sent-pos" style="width:${pos}%"></div>
+      <div class="sent-neg" style="width:${neg}%"></div>
+      <div class="sent-neut" style="width:${neut}%"></div>
+    </div>
+    <div class="sent-text"><span class="sent-pos-t">+${pos}%</span> <span class="sent-neg-t">-${neg}%</span></div>`;
+}
+
+function nivelEl(n) {
+  const map = { excelente: ['⭐ Excelente', 'badge-green'], bom: ['🟢 Bom', 'badge-green'], neutro: ['⚪ Neutro', 'badge-gray'], alerta: ['🟡 Alerta', 'badge-gold'], critico: ['🔴 Crítico', 'badge-red'] };
+  const [label, cl] = map[n] || ['?', 'badge-gray'];
+  return `<span class="badge ${cl}">${label}</span>`;
+}
+
+// ── MKT KPIs ──
+function renderMktKPIs() {
+  const sold = ATTENDED.filter(a => a.result === 'VENDA').length;
+  const lost = ATTENDED.filter(a => a.result === 'Lost').length;
+  const noshow = NOSHOWS.length;
+  const sched = SCHEDULED.length;
+  const sameDayPct = Math.round(SAME_DAY.length / TOTAL_CRIADOS * 100);
+  const avgCycle = (ATTENDED.reduce((s,a) => s+a.cycle, 0) / ATTENDED.length).toFixed(1);
+  document.getElementById('mkt-kpis').innerHTML = `
+    <div class="kpi-card"><div class="kpi-val">${TOTAL_CRIADOS}</div><div class="kpi-label">Leads Criados em 10/08</div></div>
+    <div class="kpi-card teal"><div class="kpi-val teal">${SAME_DAY.length}</div><div class="kpi-label">Atendidos no Mesmo Dia</div><div class="kpi-sub">${sameDayPct}% dos criados</div></div>
+    <div class="kpi-card"><div class="kpi-val">${sched}</div><div class="kpi-label">Meeting Scheduled (criados 10/08)</div></div>
+    <div class="kpi-card red"><div class="kpi-val red">${noshow}</div><div class="kpi-label">No-Shows do Dia</div></div>
+    <div class="kpi-card"><div class="kpi-val">${ATTENDED.length}</div><div class="kpi-label">Reuniões Atendidas (total dia)</div></div>
+    <div class="kpi-card green"><div class="kpi-val green">${sold}</div><div class="kpi-label">Vendas</div><div class="kpi-sub">CR ${Math.round(sold/ATTENDED.length*100)}% das atendidas</div></div>
+    <div class="kpi-card gold"><div class="kpi-val gold">${avgCycle}d</div><div class="kpi-label">Ciclo Médio Criação→Atendimento</div></div>
+  `;
+}
+
+// ── FUNNEL ──
+function renderFunnel() {
+  const maxCount = Math.max(...FUNNEL_DATA.map(f => f.count));
+  const total = TOTAL_CRIADOS;
+  let html = '<div class="funnel">';
+  FUNNEL_DATA.forEach((f, i) => {
+    const h = Math.max(20, Math.round(f.count / maxCount * 120));
+    const pct = Math.round(f.count / total * 100);
+    html += `
+      <div class="funnel-step" title="${f.desc}">
+        <div class="funnel-count">${f.count}</div>
+        <div class="funnel-pct">${pct}%</div>
+        <div class="funnel-bar" style="width:60px;height:${h}px;background:${f.color};"></div>
+        <div class="funnel-label">${f.stage}</div>
+      </div>`;
+    if (i < FUNNEL_DATA.length - 1) html += '<div class="funnel-arrow">›</div>';
+  });
+  html += '</div>';
+  document.getElementById('funnel-container').innerHTML = html;
+  document.getElementById('total-criados-badge').textContent = `${total} leads`;
+  document.getElementById('insight-criados').innerHTML =
+    `<strong>💡 Insight:</strong> De ${total} leads criados, apenas <strong>${SAME_DAY.length} (${Math.round(SAME_DAY.length/total*100)}%) foram atendidos no mesmo dia</strong> — ciclo médio de entrada é de ${(ATTENDED.reduce((s,a)=>s+a.cycle,0)/ATTENDED.length).toFixed(1)} dias. ${NOSHOWS.length} leads tiveram no-show (${Math.round(NOSHOWS.length/total*100)}% dos criados). <strong>${SCHEDULED.length} agendamentos ativos</strong> de leads criados em 10/08 representam oportunidades para os próximos dias.`;
+  document.getElementById('same-day-badge').textContent = `${SAME_DAY.length} leads`;
+  document.getElementById('scheduled-badge').textContent = `${SCHEDULED.length} leads`;
+  document.getElementById('noshow-badge').textContent = `${NOSHOWS.length} no-shows`;
+  document.getElementById('attended-badge').textContent = `${ATTENDED.length} reuniões`;
+}
+
+// ── SAME DAY TABLE ──
+function renderSameDay() {
+  const tbody = document.getElementById('same-day-body');
+  tbody.innerHTML = SAME_DAY.map(d => `
+    <tr>
+      <td><strong>${d.name}</strong></td>
+      <td><span class="badge badge-blue">${d.course}</span></td>
+      <td>${scoreEl(d.score)}</td>
+      <td>${utmEl(d.medium)}</td>
+      <td style="font-size:11px;color:var(--gray);max-width:200px;">${d.content}</td>
+      <td>${tempEl(d.temp)}</td>
+      <td>${priorityEl(d.priority)}</td>
+      <td>${resultEl(d.status === 'Lost' ? 'Lost' : 'Em aberto')}</td>
+    </tr>`).join('');
+  document.getElementById('insight-same-day').innerHTML =
+    `<strong>💡 Insights:</strong> 5 leads do dia foram atendidos imediatamente — ciclo <em>zero</em>.
+    CPC Google e CRM email dominam esse grupo. Patrick Makanga (score 5, Frio) foi Lost em 14min — protocolo de reativação CRM precisa de triagem de engajamento antes do agendamento.
+    Marcos Silva (score 4, High priority, sem UTM) e Bruno Gehem (Payable Sim) são os maiores potenciais em aberto desse grupo.`;
+}
+
+// ── SCHEDULED TABLE ──
+function renderScheduled() {
+  const tbody = document.getElementById('scheduled-body');
+  tbody.innerHTML = SCHEDULED.map(d => `
+    <tr>
+      <td><strong>${d.name}</strong></td>
+      <td><span class="badge badge-blue">${d.course}</span></td>
+      <td>${utmEl(d.medium)}</td>
+      <td style="color:var(--gray);font-size:12px;">${d.source || '—'}</td>
+      <td>${priorityEl(d.priority)}</td>
+      <td>${scoreEl(d.score)}</td>
+      <td>${d.payable !== null ? (d.payable ? '<span class="badge badge-green">Sim</span>' : '<span class="badge badge-red">Não</span>') : '<span class="badge badge-gray">—</span>'}</td>
+    </tr>`).join('');
+  const highScore = SCHEDULED.filter(d => d.score >= 5);
+  document.getElementById('insight-scheduled').innerHTML =
+    `<strong>💡 Insights:</strong> ${SCHEDULED.length} agendamentos criados em 10/08 para os próximos dias.
+    <strong>${highScore.length} leads com score ≥ 5</strong>: ${highScore.map(d => d.name).join(', ')} — devem ter preparação especial do closer.
+    CRM email apresenta leads de alto score (Jamile 8, Henrique 5, Evandro -1) — canal com alta variação de qualidade.
+    4 leads High Priority para priorizar no agendamento: Jamile, Henrique, Vitor Ribeiro e Anecy.`;
+}
+
+// ── NO-SHOW TABLE ──
+function renderNoShows() {
+  const tbody = document.getElementById('noshow-body');
+  tbody.innerHTML = NOSHOWS.map(d => `
+    <tr>
+      <td><strong>${d.name}</strong></td>
+      <td><span class="badge badge-blue">${d.course}</span></td>
+      <td>${utmEl(d.medium)}</td>
+      <td style="font-size:11px;color:var(--gray);max-width:160px;">${d.content}</td>
+      <td>${priorityEl(d.priority)}</td>
+      <td>${scoreEl(d.score)}</td>
+      <td style="font-size:12px;color:var(--gray);">${d.created}</td>
+      <td>${resultEl(d.status === 'Lost' ? 'Lost' : d.status === 'Agendado' ? 'Em aberto' : 'Em aberto')}</td>
+    </tr>`).join('');
+  const highPriNoshow = NOSHOWS.filter(d => d.priority === 'high');
+  const crmReact = NOSHOWS.filter(d => d.content && d.content.includes('reati'));
+  document.getElementById('insight-noshow').innerHTML =
+    `<strong>⚠ Alertas:</strong> ${highPriNoshow.length} no-shows foram de leads <strong>High Priority</strong> — incluindo Vitória (score 4), Frederico (score 3) e Barbara Miranda (score 2 com influencer turistalife).
+    ${crmReact.length > 0 ? `<br>Cynthia e Tatiane vieram de campanha de <strong>reativação CRM</strong> (closed-lost) e viraram no-show — taxa de conversão de reativação baixíssima, vale revisar a régua.` : ''}
+    <br>DSX concentra ${NOSHOWS.filter(d=>d.course==='DS').length} dos ${NOSHOWS.length} no-shows. MBA DS aparece com ${NOSHOWS.filter(d=>d.course==='MBA DS').length} casos.`;
+}
+
+// ── ATTENDED FULL TABLE ──
+function renderAttended() {
+  const tbody = document.getElementById('attended-body');
+  tbody.innerHTML = ATTENDED.map(d => `
+    <tr>
+      <td><strong>${d.name}</strong></td>
+      <td style="font-size:12px;color:var(--blue);">${d.closer.split(' ')[0]}</td>
+      <td><span class="badge badge-blue">${d.course}</span></td>
+      <td>${utmEl(d.medium)}</td>
+      <td style="font-size:11px;color:var(--gray);max-width:160px;">${d.content}</td>
+      <td>${priorityEl(d.priority)}</td>
+      <td>${scoreEl(d.score)}</td>
+      <td>${tempEl(d.temp)}</td>
+      <td>${d.payable === 'Sim' ? '<span class="badge badge-green">✓</span>' : d.payable === 'Não' ? '<span class="badge badge-red">✗</span>' : '<span class="badge badge-gray">—</span>'}</td>
+      <td>${cycleEl(d.cycle)}</td>
+      <td>${resultEl(d.result)}</td>
+    </tr>`).join('');
+}
+
+// ── CYCLE SUMMARY ──
+function renderCycleSummary() {
+  const sameDay = ATTENDED.filter(d => d.cycle === 0).length;
+  const fast = ATTENDED.filter(d => d.cycle >= 1 && d.cycle <= 3).length;
+  const mid = ATTENDED.filter(d => d.cycle >= 4 && d.cycle <= 7).length;
+  const slow = ATTENDED.filter(d => d.cycle > 7).length;
+  const avg = (ATTENDED.reduce((s,a) => s+a.cycle, 0) / ATTENDED.length).toFixed(1);
+  document.getElementById('cycle-summary').innerHTML = `
+    <div class="summary-row">
+      <div class="summary-item"><div class="summary-val cycle-good">${sameDay}</div><div class="summary-lbl">Mesmo dia</div></div>
+      <div class="summary-item"><div class="summary-val cycle-good">${fast}</div><div class="summary-lbl">1–3 dias</div></div>
+      <div class="summary-item"><div class="summary-val cycle-mid">${mid}</div><div class="summary-lbl">4–7 dias</div></div>
+      <div class="summary-item"><div class="summary-val cycle-slow">${slow}</div><div class="summary-lbl">8+ dias</div></div>
+      <div class="summary-item"><div class="summary-val" style="color:var(--navy);">${avg}d</div><div class="summary-lbl">Média geral</div></div>
+    </div>
+    <div style="font-size:12px;color:var(--gray);line-height:1.5;">
+      ${sameDay} leads atendidos no mesmo dia da criação (hot inbound).
+      Leads com ciclo longo (8+d): Paulo Roberto (12d), Thainara (12d), Lukas Souza (10d), cesar leandro (10d).
+      Ciclo curto de 1–3 dias concentra blogueiros e leads sem UTM.
+    </div>`;
+}
+
+// ── TEMP SUMMARY ──
+function renderTempSummary() {
+  const counts = {};
+  ATTENDED.forEach(d => { const t = d.temp || '—'; counts[t] = (counts[t]||0)+1; });
+  const total = ATTENDED.length;
+  let html = '';
+  [['Morno', 't-morno'], ['Frio', 't-frio'], ['Quente', 't-quente'], ['—', 't-nd']].forEach(([t, cl]) => {
+    if (!counts[t]) return;
+    const pct = Math.round(counts[t]/total*100);
+    html += `
+      <div class="utm-row">
+        <div class="utm-name"><span class="${cl}">${t}</span></div>
+        <div class="utm-bar-wrap"><div class="utm-bar-fill" style="width:${pct}%;background:${t==='Morno'?'#CC5500':t==='Frio'?'#1565C0':t==='Quente'?'#B22222':'#ccc'}"></div></div>
+        <div class="utm-stats"><span>${counts[t]}</span><span>${pct}%</span></div>
+      </div>`;
+  });
+  html += `<div style="font-size:12px;color:var(--gray);margin-top:8px;">Leads Frios → conversa de curta duração com baixo engajamento. Verificar se vale insistir ou reciclar para nutrição.</div>`;
+  document.getElementById('temp-attended-summary').innerHTML = html;
+}
+
+// ── UTM ATTENDED ──
+function renderUtmAttended() {
+  const byMed = {};
+  ATTENDED.forEach(d => {
+    const m = d.medium || '—';
+    if (!byMed[m]) byMed[m] = { count: 0, payS: 0, scores: [] };
+    byMed[m].count++;
+    if (d.payable === 'Sim') byMed[m].payS++;
+    if (d.score !== null && d.score >= 0) byMed[m].scores.push(d.score);
+  });
+  const sorted = Object.entries(byMed).sort((a,b) => b[1].count - a[1].count);
+  const max = sorted[0][1].count;
+  let html = '';
+  sorted.forEach(([m, d]) => {
+    const avg = d.scores.length ? (d.scores.reduce((a,b)=>a+b,0)/d.scores.length).toFixed(1) : '—';
+    const pct = Math.round(d.count/max*100);
+    html += `
+      <div class="utm-row">
+        <div class="utm-name"><span class="utm">${m}</span></div>
+        <div class="utm-bar-wrap"><div class="utm-bar-fill" style="width:${pct}%"></div></div>
+        <div class="utm-stats"><span>${d.count} leads</span><span>💳${d.payS}</span><span>⭐${avg}</span></div>
+      </div>`;
+  });
+  document.getElementById('utm-attended').innerHTML = html || '<div class="no-data">Sem dados</div>';
+}
+
+// ── CONTENT ATTENDED ──
+function renderContentAttended() {
+  const byCont = {};
+  ATTENDED.forEach(d => {
+    const c = d.content || '—';
+    if (!byCont[c]) byCont[c] = { count: 0, payS: 0 };
+    byCont[c].count++;
+    if (d.payable === 'Sim') byCont[c].payS++;
+  });
+  const sorted = Object.entries(byCont).filter(([k]) => k !== '—').sort((a,b) => b[1].count - a[1].count).slice(0, 8);
+  let html = '';
+  sorted.forEach(([c, d]) => {
+    const label = c.length > 30 ? c.slice(0, 30) + '…' : c;
+    html += `
+      <div class="utm-row" title="${c}">
+        <div style="flex:1;font-size:12px;">${label}</div>
+        <div class="utm-stats"><span>${d.count}x</span>${d.payS > 0 ? `<span class="badge badge-green" style="font-size:10px;">💳${d.payS}</span>` : ''}</div>
+      </div>`;
+  });
+  document.getElementById('content-attended').innerHTML = html || '<div class="no-data">Sem dados</div>';
+  document.getElementById('insight-attended').innerHTML =
+    `<strong>✅ Insights Marketing — Reuniões de 10/08:</strong>
+    CPC Facebook e Bloggers concentram a maioria das reuniões atendidas. <strong>Bloggers com melhor qualidade média</strong>: pativlogs e pablofakirr têm Payable Sim.
+    Leads sem UTM (7 reuniões) possuem o score médio mais alto — rastrear urgente.
+    Ciclo médio de ${(ATTENDED.reduce((s,a)=>s+a.cycle,0)/ATTENDED.length).toFixed(1)} dias — leads vindos de CPC tendem a ter ciclo mais curto.`;
+}
+
+// ── SALES KPIs ──
+function renderSalesKPIs() {
+  const sold = ATTENDED.filter(a => a.result === 'VENDA').length;
+  const open = ATTENDED.filter(a => a.result === 'Em aberto').length;
+  const lost = ATTENDED.filter(a => a.result === 'Lost').length;
+  const avgLeadNeg = Math.round(ELEPHAN.reduce((s,e) => s+e.leadNeg, 0)/ELEPHAN.length);
+  const avgCloserPos = Math.round(ELEPHAN.filter(e=>e.closerPos>0).reduce((s,e) => s+e.closerPos, 0)/ELEPHAN.filter(e=>e.closerPos>0).length);
+  const potA = POTENTIAL.filter(p => p.pot === 'A').length;
+  document.getElementById('sales-kpis').innerHTML = `
+    <div class="kpi-card green"><div class="kpi-val green">${sold}</div><div class="kpi-label">Venda no Dia</div><div class="kpi-sub">Gabriel + Fernando (WD)</div></div>
+    <div class="kpi-card gold"><div class="kpi-val gold">${open}</div><div class="kpi-label">Em Aberto</div><div class="kpi-sub">Follow-up necessário</div></div>
+    <div class="kpi-card red"><div class="kpi-val red">${lost}</div><div class="kpi-label">Closed-Lost</div></div>
+    <div class="kpi-card teal"><div class="kpi-val teal">${potA}</div><div class="kpi-label">Potencial A (prioritários)</div></div>
+    <div class="kpi-card"><div class="kpi-val">${avgCloserPos}%</div><div class="kpi-label">Energia Média dos Closers</div></div>
+    <div class="kpi-card orange"><div class="kpi-val orange">${avgLeadNeg}%</div><div class="kpi-label">Resistência Média dos Leads</div></div>
+  `;
+}
+
+// ── CLOSER TABLE ──
+function renderCloserTable() {
+  const closers = {};
+  ELEPHAN.forEach(e => {
+    if (!closers[e.closer]) closers[e.closer] = { meets:0, sold:0, lost:0, open:0, totalMin:0, posSum:0, negLeadSum:0, cnt:0 };
+    const c = closers[e.closer];
+    c.meets++; c.totalMin += e.dur;
+    if (e.result === 'VENDA') c.sold++;
+    else if (e.result === 'Lost') c.lost++;
+    else c.open++;
+    if (e.closerPos > 0) { c.posSum += e.closerPos; c.negLeadSum += e.leadNeg; c.cnt++; }
+  });
+  const PATTERNS = {
+    'Gabriel Morial': '95min médio. Rapport excepcional. Precisa de checkpoint de fechamento aos 45-60min.',
+    'Erick Paiva': '137min sem fechar Priscila. Calls se estendem sem resolução de objeções.',
+    'Bruno Marques': 'Maior energia (+68% Thomas). Leads com alta resistência. Técnica de quebra de objeção.',
+    'Lucas Bonow': 'Alta variação: 62% positivo (Rony) vs 13% (vitor). Consistência necessária.',
+    'Bernardo Magalhães': '2 calls com Helena no mesmo dia — oportunidade de closing perdida na 2ª.',
+    'Jessica Silva': 'Caroline (33% pos) não fechada. Patrick (86% neutro) — triagem pré-call.',
+    'Vinícius Leão': 'Carlos May: 35% neg apesar de Payable Sim. Argumento de ROI insuficiente.',
+    'Yanara Silva': 'Bruno Brauer receptivo. Autoconfiança não endereçada diretamente.',
+  };
+  const tbody = document.getElementById('closer-body');
+  tbody.innerHTML = Object.entries(closers).map(([name, c]) => {
+    const avgPos = c.cnt ? Math.round(c.posSum/c.cnt) : 0;
+    const avgNeg = c.cnt ? Math.round(c.negLeadSum/c.cnt) : 0;
+    const posColor = avgPos >= 50 ? 'var(--green)' : avgPos >= 35 ? 'var(--gold)' : 'var(--orange)';
+    const negColor = avgNeg >= 35 ? 'var(--red)' : avgNeg >= 20 ? 'var(--orange)' : 'var(--gray)';
+    return `<tr>
+      <td><strong>${name}</strong></td>
+      <td style="text-align:center;">${c.meets}</td>
+      <td style="text-align:center;color:${c.sold>0?'var(--green)':'var(--gray)'};font-weight:${c.sold>0?'800':'400'};">${c.sold}</td>
+      <td style="text-align:center;color:${c.lost>0?'var(--red)':'var(--gray)'};">${c.lost}</td>
+      <td style="text-align:center;color:var(--gold);">${c.open}</td>
+      <td style="text-align:center;color:${c.totalMin>250?'var(--red)':'var(--gray)'};">${c.totalMin}min</td>
+      <td style="text-align:center;font-weight:700;color:${posColor};">${avgPos}%+</td>
+      <td style="text-align:center;font-weight:700;color:${negColor};">${avgNeg}%-</td>
+      <td style="font-size:12px;color:var(--gray);">${PATTERNS[name]||''}</td>
+    </tr>`;
+  }).join('');
+}
+
+// ── POTENTIAL TABLE ──
+function renderPotential() {
+  const tbody = document.getElementById('potential-body');
+  tbody.innerHTML = POTENTIAL.map((p, i) => {
+    const potEl = p.pot === 'A' ? `<span class="pot-ring pot-a">A</span>` : p.pot === 'B' ? `<span class="pot-ring pot-b">B</span>` : `<span class="pot-ring pot-c">C</span>`;
+    const sent = (p.sentPos > 0 || p.sentNeg > 0) ? `<div class="sent-bar" style="min-width:60px;" title="+${p.sentPos}% / -${p.sentNeg}%"><div class="sent-pos" style="width:${p.sentPos}%"></div><div class="sent-neg" style="width:${p.sentNeg}%"></div><div class="sent-neut" style="width:${Math.max(0,100-p.sentPos-p.sentNeg)}%"></div></div><div class="sent-text"><span class="sent-pos-t">+${p.sentPos}%</span> <span class="sent-neg-t">-${p.sentNeg}%</span></div>` : '<span style="color:#ccc;font-size:11px;">sem dados</span>';
+    return `<tr>
+      <td style="font-weight:800;color:var(--navy);text-align:center;">${i+1}</td>
+      <td><strong>${p.name}</strong></td>
+      <td style="font-size:12px;color:var(--blue);">${p.closer}</td>
+      <td>${scoreEl(p.score)}</td>
+      <td>${p.payable === 'Sim' ? '<span class="badge badge-green">✓</span>' : '<span class="badge badge-red">✗</span>'}</td>
+      <td>${tempEl(p.temp)}</td>
+      <td>${sent}</td>
+      <td>${potEl}</td>
+      <td style="font-size:12px;color:var(--gray);">${p.reason}</td>
+      <td style="font-size:12px;color:var(--navy);font-weight:600;">${p.action}</td>
+    </tr>`;
+  }).join('');
+}
+
+// ── ELEPHAN TABLE ──
+function renderElephantTable() {
+  const tbody = document.getElementById('elephan-body');
+  tbody.innerHTML = ELEPHAN.map(e => `
+    <tr data-nivel="${e.nivel}">
+      <td><strong>${e.closer}</strong></td>
+      <td>${e.lead}</td>
+      <td style="text-align:center;color:${e.dur>100?'var(--red)':e.dur<20?'var(--orange)':'var(--gray)'};">${e.dur}min</td>
+      <td>${resultEl(e.result)}</td>
+      <td>${sentBar(e.closerPos, e.closerNeg)}</td>
+      <td>${sentBar(e.leadPos, e.leadNeg)}</td>
+      <td style="font-size:12px;">${e.analysis}</td>
+    </tr>`).join('');
+}
+
+// ── ALERTS ──
+function renderAlerts() {
+  document.getElementById('alerts-container').innerHTML = `
+    <div class="insight-box alert">
+      🔴 <strong>ERICK PAIVA — Priscila Favoreto (137min, score 6, Payable Sim)</strong><br>
+      Priscila com 36% negativo. Erick com 19% negativo (desgaste). 2h17min sem fechar. Ação: escutar gravação e oferecer parcelamento especial.
+    </div>
+    <div class="insight-box alert" style="margin-top:8px;">
+      🔴 <strong>LUCAS BONOW — Richard Maia (43min, 55% negativo do lead)</strong><br>
+      Lead mais resistente do dia. Lucas manteve calma (0% neg) mas não quebrou as barreiras. Script específico para leads altamente resistentes necessário.
+    </div>
+    <div class="insight-box alert" style="margin-top:8px;">
+      🔴 <strong>JESSICA SILVA — Patrick Makanga (14min, Frio, Lost)</strong><br>
+      86% neutro — completamente desengajado. Reativação CRM sem triagem de engajamento. Protocolo de qualificação pré-call necessário para reativações.
+    </div>
+    <div class="insight-box warn" style="margin-top:8px;">
+      🟡 <strong>GABRIEL MORIAL — 2 Losts em calls longas (César 121min + Lucas Rame 75min)</strong><br>
+      Gabriel não identifica o ponto de no-return. Recomendar checkpoint de fechamento aos 45-60 minutos.
+    </div>
+    <div class="insight-box warn" style="margin-top:8px;">
+      🟡 <strong>BERNARDO MAGALHÃES — Helena Pereira (2 calls: 9min + 32min, Payable Sim)</strong><br>
+      Duas ligações no mesmo dia sem fechar. Na 2ª call tinha abertura clara e não aproveitou. Protocolo específico para 2ª ligação.
+    </div>
+    <div class="insight-box" style="margin-top:12px;border-left-color:var(--navy);">
+      <strong>📚 Treinamentos Prioritários desta semana:</strong><br>
+      1. <strong>[IMEDIATO]</strong> Checkpoint de fechamento: como identificar e agir no momento certo — Erick, Gabriel<br>
+      2. <strong>[IMEDIATO]</strong> Protocolo de reativação: triagem de engajamento antes de agendar — Jessica, SDRs<br>
+      3. <strong>[SEMANA]</strong> Ancoragem emocional para leads com medo de transição — Todos<br>
+      4. <strong>[SEMANA]</strong> ROI em dólar para perfis executivos (MBA) — Bruno, Lucas<br>
+      5. <strong>[SEMANA]</strong> Closing na 2ª ligação com o mesmo lead — Bernardo
+    </div>`;
+}
+
+// ══════════════════════════════════════════════
+// FILTER & TAB LOGIC
+// ══════════════════════════════════════════════
+
+function filterTable(tableId, val, colIdx) {
+  const rows = document.querySelectorAll(`#${tableId} tbody tr`);
+  rows.forEach(row => {
+    const cell = row.cells[colIdx];
+    if (!val) { row.classList.remove('hidden'); return; }
+    const text = cell ? cell.textContent.toLowerCase() : '';
+    row.classList.toggle('hidden', !text.includes(val.toLowerCase()));
+  });
+}
+
+function filterTableByNivel(tableId, val) {
+  const rows = document.querySelectorAll(`#${tableId} tbody tr`);
+  rows.forEach(row => {
+    if (!val) { row.classList.remove('hidden'); return; }
+    row.classList.toggle('hidden', (row.dataset.nivel || '') !== val);
+  });
+}
+
+function switchTab(tab) {
+  document.querySelectorAll('.tab').forEach((t, i) => {
+    t.classList.toggle('active', (i === 0 && tab === 'marketing') || (i === 1 && tab === 'vendas'));
+  });
+  document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+  document.getElementById(`tab-${tab}`).classList.add('active');
+}
+
+function applyDateFilter() {
+  const val = document.getElementById('date-picker').value;
+  // Format date for display
+  const d = new Date(val + 'T12:00:00');
+  const fmt = d.toLocaleDateString('pt-BR', { day:'2-digit', month:'2-digit', year:'numeric' });
+  document.getElementById('data-tag').textContent = fmt;
+  document.querySelectorAll('[id^="date-label-"]').forEach(el => el.textContent = fmt);
+
+  // Show notice if different date selected
+  if (val !== REPORT_DATE) {
+    const notice = document.getElementById('date-notice') || (() => {
+      const n = document.createElement('div');
+      n.id = 'date-notice';
+      n.style.cssText = 'background:#FFF8E1;border:1px solid #FFB300;padding:10px 20px;font-size:13px;color:#E65100;';
+      document.querySelector('.tabs').after(n);
+      return n;
+    })();
+    notice.innerHTML = `⚠️ Os dados exibidos são de ${new Date(REPORT_DATE+'T12:00:00').toLocaleDateString('pt-BR')}. Para ver dados de ${fmt}, regenere o dashboard executando a análise diária.`;
+  } else {
+    const notice = document.getElementById('date-notice');
+    if (notice) notice.remove();
+  }
+}
+
+// ══════════════════════════════════════════════
+// INIT
+// ══════════════════════════════════════════════
+
+function init() {
+  renderMktKPIs();
+  renderFunnel();
+  renderSameDay();
+  renderScheduled();
+  renderNoShows();
+  renderAttended();
+  renderCycleSummary();
+  renderTempSummary();
+  renderUtmAttended();
+  renderContentAttended();
+  renderSalesKPIs();
+  renderCloserTable();
+  renderPotential();
+  renderElephantTable();
+  renderAlerts();
+}
+
+document.addEventListener('DOMContentLoaded', init);
+</script>
+</body>
+</html>
