@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard Diário TripleTen Brasil</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:#f0f4f8;color:#1e293b;min-height:100vh}
+.header{background:linear-gradient(135deg,#0f2557 0%,#1e40af 60%,#0891b2 100%);color:#fff;padding:20px 32px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
+.header h1{font-size:1.5rem;font-weight:700;letter-spacing:-0.5px}
+.header .subtitle{font-size:0.8rem;opacity:0.7;margin-bottom:2px}
+.date-nav{display:flex;align-items:center;gap:10px}
+.date-nav label{font-size:0.82rem;opacity:0.85;white-space:nowrap}
+.date-input-wrap{position:relative;display:flex;align-items:center;gap:6px}
+.date-input-wrap input[type=date]{background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.4);border-radius:10px;color:#fff;padding:8px 14px;font-size:0.9rem;font-weight:600;cursor:pointer;outline:none;backdrop-filter:blur(4px);-webkit-appearance:none}
+.date-input-wrap input[type=date]::-webkit-calendar-picker-indicator{filter:invert(1);cursor:pointer;opacity:0.8}
+.date-input-wrap input[type=date]:hover{background:rgba(255,255,255,0.25);border-color:rgba(255,255,255,0.6)}
+.date-nav-btn{background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.3);color:#fff;border-radius:8px;padding:7px 11px;cursor:pointer;font-size:1rem;transition:all 0.15s}
+.date-nav-btn:hover{background:rgba(255,255,255,0.3)}
+.date-hint{font-size:0.72rem;opacity:0.65;margin-top:3px}
+.tabs{display:flex;background:#fff;border-bottom:2px solid #e2e8f0;padding:0 32px;position:sticky;top:0;z-index:100;box-shadow:0 1px 4px rgba(0,0,0,0.06)}
+.tab{padding:14px 20px;cursor:pointer;font-weight:600;font-size:0.95rem;color:#64748b;border-bottom:3px solid transparent;margin-bottom:-2px;transition:all 0.2s}
+.tab.active{color:#1e40af;border-bottom-color:#1e40af}
+.tab:hover:not(.active){color:#334155}
+.content{display:none;padding:24px 32px}
+.content.active{display:block}
+.section{margin-bottom:28px}
+.section-title{font-size:1.05rem;font-weight:700;color:#0f2557;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.section-title::before{content:'';display:inline-block;width:4px;height:18px;background:#1e40af;border-radius:2px}
+.kpi-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(155px,1fr));gap:14px;margin-bottom:24px}
+.kpi{background:#fff;border-radius:12px;padding:16px;box-shadow:0 1px 3px rgba(0,0,0,0.07);border-left:4px solid #1e40af}
+.kpi.green{border-left-color:#10b981}.kpi.orange{border-left-color:#f59e0b}.kpi.red{border-left-color:#ef4444}.kpi.teal{border-left-color:#0891b2}.kpi.purple{border-left-color:#8b5cf6}
+.kpi-value{font-size:2rem;font-weight:800;color:#0f2557;line-height:1}
+.kpi-label{font-size:0.75rem;color:#64748b;margin-top:4px;font-weight:500;text-transform:uppercase;letter-spacing:0.5px}
+.kpi-sub{font-size:0.8rem;color:#10b981;margin-top:2px;font-weight:600}
+.table-wrap{background:#fff;border-radius:12px;box-shadow:0 1px 3px rgba(0,0,0,0.07);overflow:hidden}
+/* FILTER BAR */
+.filter-bar{padding:12px 16px;background:#f8fafc;border-bottom:1px solid #e2e8f0;display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.filter-bar label{font-size:0.8rem;color:#64748b;font-weight:600;white-space:nowrap}
+.filter-bar select{font-size:0.8rem;padding:4px 8px;border:1px solid #e2e8f0;border-radius:6px;background:#fff;color:#334155}
+/* MULTI-SELECT DROPDOWN */
+.ms-wrap{position:relative;display:inline-block}
+.ms-trigger{font-size:0.8rem;padding:4px 30px 4px 8px;border:1px solid #e2e8f0;border-radius:6px;background:#fff;color:#334155;cursor:pointer;white-space:nowrap;min-width:140px;user-select:none;position:relative}
+.ms-trigger::after{content:'▾';position:absolute;right:8px;top:50%;transform:translateY(-50%);color:#64748b;font-size:0.75rem}
+.ms-trigger.open{border-color:#1e40af;box-shadow:0 0 0 2px rgba(30,64,175,0.1)}
+.ms-dropdown{display:none;position:absolute;top:calc(100% + 4px);left:0;background:#fff;border:1px solid #e2e8f0;border-radius:8px;box-shadow:0 4px 16px rgba(0,0,0,0.12);z-index:200;min-width:200px;padding:6px 0;max-height:260px;overflow-y:auto}
+.ms-dropdown.open{display:block}
+.ms-option{display:flex;align-items:center;gap:8px;padding:7px 12px;cursor:pointer;font-size:0.82rem;color:#334155;transition:background 0.1s}
+.ms-option:hover{background:#f0f4ff}
+.ms-option input[type=checkbox]{width:14px;height:14px;accent-color:#1e40af;cursor:pointer;flex-shrink:0}
+.ms-option.select-all{font-weight:600;border-bottom:1px solid #f1f5f9;color:#1e40af}
+.ms-active-count{display:inline-block;background:#1e40af;color:#fff;border-radius:10px;padding:0 6px;font-size:0.68rem;font-weight:700;margin-left:4px;vertical-align:middle}
+/* TABLES */
+table{width:100%;border-collapse:collapse;font-size:0.82rem}
+th{background:#f1f5f9;color:#475569;font-weight:600;padding:10px 12px;text-align:left;white-space:nowrap;border-bottom:1px solid #e2e8f0}
+td{padding:9px 12px;border-bottom:1px solid #f1f5f9;vertical-align:middle}
+tr:hover td{background:#f8fafc}
+tr:nth-child(even) td{background:#fafbff}
+tr:nth-child(even):hover td{background:#f0f4ff}
+.badge-temp{display:inline-block;padding:2px 8px;border-radius:10px;font-size:0.72rem;font-weight:600}
+.temp-quente{background:#fef3c7;color:#92400e}.temp-morno{background:#dbeafe;color:#1e40af}.temp-frio{background:#f0f9ff;color:#0891b2}
+.badge-pri{display:inline-block;padding:2px 8px;border-radius:10px;font-size:0.72rem;font-weight:600}
+.pri-high{background:#fee2e2;color:#b91c1c}.pri-medium{background:#fef9c3;color:#854d0e}.pri-low{background:#f0fdf4;color:#166534}
+.badge-result{display:inline-block;padding:2px 8px;border-radius:10px;font-size:0.72rem;font-weight:600}
+.result-sale{background:#d1fae5;color:#065f46}.result-open{background:#eff6ff;color:#1d4ed8}.result-lost{background:#fee2e2;color:#b91c1c}
+.badge-pot{display:inline-block;padding:2px 10px;border-radius:10px;font-size:0.75rem;font-weight:700}
+.pot-a{background:#d1fae5;color:#065f46}.pot-b{background:#fef3c7;color:#92400e}.pot-c{background:#f1f5f9;color:#475569}
+.badge-payable{display:inline-block;padding:2px 7px;border-radius:8px;font-size:0.72rem;font-weight:600}
+.pay-yes{background:#d1fae5;color:#065f46}.pay-no{background:#f1f5f9;color:#64748b}
+.badge-course{display:inline-block;background:#eff6ff;color:#1e40af;padding:2px 7px;border-radius:6px;font-size:0.76rem;font-weight:600}
+.sentiment-bar{display:flex;height:8px;border-radius:4px;overflow:hidden;min-width:80px}
+.s-pos{background:#10b981}.s-neg{background:#ef4444}.s-neu{background:#e2e8f0}
+.funnel{display:flex;flex-direction:column;gap:8px;padding:16px}
+.funnel-item{display:flex;align-items:center;gap:12px}
+.funnel-label{min-width:200px;font-size:0.82rem;color:#475569;font-weight:500}
+.funnel-bar-wrap{flex:1;background:#f1f5f9;border-radius:6px;height:28px;overflow:hidden}
+.funnel-bar{height:100%;border-radius:6px;display:flex;align-items:center;padding-left:10px;color:#fff;font-weight:700;font-size:0.8rem}
+.funnel-count{min-width:40px;font-size:0.85rem;font-weight:700;color:#0f2557;text-align:right}
+.breakdown-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px}
+.breakdown-card{background:#fff;border-radius:12px;padding:16px;box-shadow:0 1px 3px rgba(0,0,0,0.07)}
+.breakdown-card h4{font-size:0.85rem;font-weight:700;color:#0f2557;margin-bottom:12px}
+.breakdown-row{display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:1px solid #f1f5f9;font-size:0.82rem}
+.breakdown-row:last-child{border-bottom:none}
+.breakdown-row .val{font-weight:700;color:#1e40af}
+.alert-box{background:#fff;border-radius:12px;padding:16px;border-left:4px solid #ef4444;box-shadow:0 1px 3px rgba(0,0,0,0.07);margin-bottom:12px}
+.alert-box .alert-title{font-weight:700;color:#b91c1c;font-size:0.88rem;margin-bottom:6px}
+.alert-box .alert-body{font-size:0.82rem;color:#475569}
+.closer-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:14px}
+.closer-card{background:#fff;border-radius:12px;padding:16px;box-shadow:0 1px 3px rgba(0,0,0,0.07)}
+.closer-name{font-weight:700;font-size:0.95rem;color:#0f2557;margin-bottom:10px}
+.closer-kpis{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:10px}
+.closer-kpi{text-align:center}
+.closer-kpi-val{font-size:1.2rem;font-weight:800;color:#1e40af}
+.closer-kpi-lbl{font-size:0.68rem;color:#64748b;text-transform:uppercase}
+.sentiment-section{margin-top:8px}
+.sentiment-label{display:flex;justify-content:space-between;font-size:0.75rem;color:#64748b;margin-bottom:3px}
+.sentiment-bar2{height:10px;border-radius:5px;overflow:hidden;display:flex;margin-bottom:6px}
+.ciclo-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.ciclo-item{background:#fff;border-radius:10px;padding:14px;text-align:center;box-shadow:0 1px 3px rgba(0,0,0,0.07)}
+.ciclo-item .ciclo-count{font-size:1.5rem;font-weight:800;color:#1e40af}
+.ciclo-item .ciclo-label{font-size:0.75rem;color:#64748b;margin-top:2px}
+.rec-card{background:#fff;border-radius:12px;padding:16px;box-shadow:0 1px 3px rgba(0,0,0,0.07);border-top:3px solid #8b5cf6;margin-bottom:10px}
+.rec-title{font-weight:700;color:#5b21b6;font-size:0.9rem;margin-bottom:6px}
+.rec-body{font-size:0.83rem;color:#475569;line-height:1.5}
+.no-results{padding:24px;text-align:center;color:#94a3b8;font-size:0.85rem}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div>
+    <div class="subtitle">TRIPLETEN BRASIL — SALES OPS</div>
+    <h1>📊 Dashboard Diário de Reuniões</h1>
+    <div style="font-size:0.75rem;opacity:0.65;margin-top:2px">Gerado automaticamente às 09:00h · dados do dia anterior</div>
+  </div>
+  <div class="date-nav">
+    <div>
+      <label>📅 Selecionar data:</label>
+      <div class="date-hint">Navegue entre dashboards salvos</div>
+    </div>
+    <button class="date-nav-btn" onclick="navDate(-1)" title="Dia anterior">◀</button>
+    <input type="date" id="date-picker" value="2026-08-10" onchange="navigateDate(this.value)">
+    <button class="date-nav-btn" onclick="navDate(1)" title="Próximo dia">▶</button>
+  </div>
+</div>
+
+<div class="tabs">
+  <div class="tab active" onclick="switchTab('marketing')">📈 Marketing</div>
+  <div class="tab" onclick="switchTab('vendas')">🎯 Vendas</div>
+</div>
+
+<!-- ==================== ABA MARKETING ==================== -->
+<div class="content active" id="tab-marketing">
+
+  <div class="section">
+    <div class="kpi-grid">
+      <div class="kpi teal"><div class="kpi-value">300+</div><div class="kpi-label">Leads Criados</div><div class="kpi-sub">pipeline Brazil/Sales</div></div>
+      <div class="kpi green"><div class="kpi-value">44</div><div class="kpi-label">Reuniões Atendidas</div><div class="kpi-sub">37 com transcrição</div></div>
+      <div class="kpi"><div class="kpi-value">50%</div><div class="kpi-label">Taxa Same-Day</div><div class="kpi-sub">22 de 44 reuniões</div></div>
+      <div class="kpi orange"><div class="kpi-value">33</div><div class="kpi-label">No-Shows</div><div class="kpi-sub">43% do agendado</div></div>
+      <div class="kpi green"><div class="kpi-value">1</div><div class="kpi-label">Vendas</div><div class="kpi-sub">Allef G. · WD</div></div>
+      <div class="kpi"><div class="kpi-value">2,1d</div><div class="kpi-label">Ciclo Médio</div><div class="kpi-sub">criação → atendimento</div></div>
+    </div>
+  </div>
+
+  <!-- Funil -->
+  <div class="section">
+    <div class="section-title">Funil do Dia</div>
+    <div class="table-wrap">
+      <div class="funnel">
+        <div class="funnel-item"><div class="funnel-label">Leads Criados</div><div class="funnel-bar-wrap"><div class="funnel-bar" style="width:100%;background:#1e40af">300+</div></div><div class="funnel-count">300+</div></div>
+        <div class="funnel-item"><div class="funnel-label">Meeting Scheduled</div><div class="funnel-bar-wrap"><div class="funnel-bar" style="width:51%;background:#0891b2">~77</div></div><div class="funnel-count">~77</div></div>
+        <div class="funnel-item"><div class="funnel-label">Meeting Attended</div><div class="funnel-bar-wrap"><div class="funnel-bar" style="width:14.7%;background:#10b981">44</div></div><div class="funnel-count">44</div></div>
+        <div class="funnel-item"><div class="funnel-label">No-Show</div><div class="funnel-bar-wrap"><div class="funnel-bar" style="width:11%;background:#f59e0b">33</div></div><div class="funnel-count">33</div></div>
+        <div class="funnel-item"><div class="funnel-label">Venda Confirmada</div><div class="funnel-bar-wrap"><div class="funnel-bar" style="width:1%;background:#065f46;min-width:36px">1</div></div><div class="funnel-count">1</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Reuniões Atendidas -->
+  <div class="section">
+    <div class="section-title">Todas as Reuniões Atendidas (<span id="count-attended">44</span>)</div>
+    <div class="table-wrap">
+      <div class="filter-bar">
+        <label>UTM Medium:</label>
+        <select id="f-att-utm" onchange="applyFilters('attended')">
+          <option value="">Todos</option>
+          <option>cpc</option><option>bloggers</option><option>crm</option><option>smm</option><option>partnerships</option>
+        </select>
+        <label>Priority:</label>
+        <select id="f-att-pri" onchange="applyFilters('attended')">
+          <option value="">Todos</option><option>high</option><option>medium</option><option>low</option>
+        </select>
+        <label>Temperatura:</label>
+        <select id="f-att-temp" onchange="applyFilters('attended')">
+          <option value="">Todas</option><option>Quente</option><option>Morno</option><option>Frio</option>
+        </select>
+        <label>Payable:</label>
+        <select id="f-att-payable" onchange="applyFilters('attended')">
+          <option value="">Todos</option><option>Yes</option><option>No</option>
+        </select>
+        <label>Curso:</label>
+        <div class="ms-wrap" id="ms-att-course">
+          <div class="ms-trigger" onclick="toggleMs('ms-att-course')">Todos os cursos <span class="ms-active-count" id="ms-att-course-count" style="display:none">0</span></div>
+          <div class="ms-dropdown" id="ms-att-course-drop">
+            <label class="ms-option select-all"><input type="checkbox" id="ms-att-all" onchange="toggleAllMs('ms-att-course','attended')" checked> Selecionar todos</label>
+          </div>
+        </div>
+        <button onclick="resetFilters('attended')" style="font-size:0.75rem;padding:4px 10px;border:1px solid #e2e8f0;border-radius:6px;background:#fff;cursor:pointer;color:#64748b">↺ Limpar</button>
+      </div>
+      <table>
+        <thead><tr><th>Lead</th><th>Curso</th><th>UTM Medium</th><th>UTM Content</th><th>Score</th><th>Priority</th><th>Temp</th><th>Payable</th><th>Ciclo</th><th>Resultado</th></tr></thead>
+        <tbody id="tbl-attended-body"></tbody>
+      </table>
+      <div class="no-results" id="no-attended" style="display:none">Nenhum lead encontrado com os filtros selecionados.</div>
+    </div>
+  </div>
+
+  <!-- No-shows -->
+  <div class="section">
+    <div class="section-title">No-Shows do Dia (<span id="count-noshow">33</span>)</div>
+    <div class="table-wrap">
+      <div class="filter-bar">
+        <label>UTM Medium:</label>
+        <select id="f-ns-utm" onchange="applyFilters('noshow')">
+          <option value="">Todos</option><option>cpc</option><option>bloggers</option><option>crm</option><option>smm</option><option>partnerships</option>
+        </select>
+        <label>Priority:</label>
+        <select id="f-ns-pri" onchange="applyFilters('noshow')">
+          <option value="">Todos</option><option>high</option><option>medium</option><option>low</option>
+        </select>
+        <label>Curso:</label>
+        <div class="ms-wrap" id="ms-ns-course">
+          <div class="ms-trigger" onclick="toggleMs('ms-ns-course')">Todos os cursos <span class="ms-active-count" id="ms-ns-course-count" style="display:none">0</span></div>
+          <div class="ms-dropdown" id="ms-ns-course-drop">
+            <label class="ms-option select-all"><input type="checkbox" id="ms-ns-all" onchange="toggleAllMs('ms-ns-course','noshow')" checked> Selecionar todos</label>
+          </div>
+        </div>
+        <button onclick="resetFilters('noshow')" style="font-size:0.75rem;padding:4px 10px;border:1px solid #e2e8f0;border-radius:6px;background:#fff;cursor:pointer;color:#64748b">↺ Limpar</button>
+      </div>
+      <table>
+        <thead><tr><th>Lead</th><th>Curso</th><th>UTM Medium</th><th>UTM Content</th><th>Score</th><th>Priority</th><th>Criação</th><th>Stage</th></tr></thead>
+        <tbody id="tbl-noshow-body"></tbody>
+      </table>
+      <div class="no-results" id="no-noshow" style="display:none">Nenhum lead encontrado com os filtros selecionados.</div>
+    </div>
+  </div>
+
+  <!-- Breakdowns -->
+  <div class="section">
+    <div class="section-title">Breakdown por Canal e Criativo</div>
+    <div class="breakdown-grid">
+      <div class="breakdown-card">
+        <h4>📣 UTM Medium — Reuniões Atendidas</h4>
+        <div class="breakdown-row"><span>CPC (Google/Facebook)</span><span class="val">18 (41%)</span></div>
+        <div class="breakdown-row"><span>Bloggers / Influencers</span><span class="val">8 (18%)</span></div>
+        <div class="breakdown-row"><span>CRM (email/WhatsApp)</span><span class="val">7 (16%)</span></div>
+        <div class="breakdown-row"><span>SMM (Organic Social)</span><span class="val">3 (7%)</span></div>
+        <div class="breakdown-row"><span>Partnerships</span><span class="val">1 (2%)</span></div>
+        <div class="breakdown-row"><span>Sem UTM</span><span class="val">7 (16%)</span></div>
+      </div>
+      <div class="breakdown-card">
+        <h4>🎨 Top Influencers / Criativos</h4>
+        <div class="breakdown-row"><span>nerdsdenegocios (YT)</span><span class="val">3 leads</span></div>
+        <div class="breakdown-row"><span>patriciavogtt (IG)</span><span class="val">1 lead</span></div>
+        <div class="breakdown-row"><span>attekitadev (YT)</span><span class="val">1 lead</span></div>
+        <div class="breakdown-row"><span>pablofakirr (IG)</span><span class="val">1 lead</span></div>
+        <div class="breakdown-row"><span>pajoaventuras (IG)</span><span class="val">1 lead</span></div>
+        <div class="breakdown-row"><span>nosdoisemcasa (IG)</span><span class="val">1 lead</span></div>
+      </div>
+      <div class="breakdown-card">
+        <h4>📚 Cursos — Reuniões Atendidas</h4>
+        <div class="breakdown-row"><span>DA (Data Analytics)</span><span class="val">10</span></div>
+        <div class="breakdown-row"><span>QA (Quality Assurance)</span><span class="val">9</span></div>
+        <div class="breakdown-row"><span>WD (Web Development)</span><span class="val">8</span></div>
+        <div class="breakdown-row"><span>DS (Data Science)</span><span class="val">5</span></div>
+        <div class="breakdown-row"><span>MBA AI</span><span class="val">4</span></div>
+        <div class="breakdown-row"><span>MBA DS</span><span class="val">3</span></div>
+        <div class="breakdown-row"><span>MBA DA / career</span><span class="val">2+1</span></div>
+      </div>
+      <div class="breakdown-card">
+        <h4>⏱️ Ciclo de Atendimento</h4>
+        <div class="ciclo-grid" style="margin-top:8px">
+          <div class="ciclo-item"><div class="ciclo-count">22</div><div class="ciclo-label">Mesmo dia</div></div>
+          <div class="ciclo-item"><div class="ciclo-count">11</div><div class="ciclo-label">1–3 dias</div></div>
+          <div class="ciclo-item"><div class="ciclo-count">8</div><div class="ciclo-label">4–7 dias</div></div>
+          <div class="ciclo-item"><div class="ciclo-count">3</div><div class="ciclo-label">8+ dias</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== ABA VENDAS ==================== -->
+<div class="content" id="tab-vendas">
+  <div class="section">
+    <div class="kpi-grid">
+      <div class="kpi green"><div class="kpi-value">1</div><div class="kpi-label">Vendas</div><div class="kpi-sub">Allef G. · WD</div></div>
+      <div class="kpi"><div class="kpi-value">41</div><div class="kpi-label">Em Aberto</div><div class="kpi-sub">stage attended</div></div>
+      <div class="kpi red"><div class="kpi-value">2</div><div class="kpi-label">Lost Hoje</div><div class="kpi-sub">Vitor R. · Barbara C.</div></div>
+      <div class="kpi green"><div class="kpi-value">10</div><div class="kpi-label">Potencial A</div><div class="kpi-sub">prioridade máxima</div></div>
+      <div class="kpi orange"><div class="kpi-value">23</div><div class="kpi-label">Potencial B</div><div class="kpi-sub">trabalhar com atenção</div></div>
+      <div class="kpi teal"><div class="kpi-value">37</div><div class="kpi-label">Calls Gravadas</div><div class="kpi-sub">análise Elephan</div></div>
+    </div>
+  </div>
+
+  <!-- Closers -->
+  <div class="section">
+    <div class="section-title">Performance por Closer — 10/08/2026 (Elephan)</div>
+    <div class="closer-grid" id="closer-grid"></div>
+  </div>
+
+  <!-- Potencial -->
+  <div class="section">
+    <div class="section-title">🏆 Ranking de Potencial de Fechamento</div>
+    <div class="table-wrap">
+      <div class="filter-bar">
+        <label>Potencial:</label>
+        <select id="f-pot-pot" onchange="applyFilters('potencial')">
+          <option value="">Todos</option><option>A</option><option>B</option><option>C</option>
+        </select>
+        <label>Curso:</label>
+        <div class="ms-wrap" id="ms-pot-course">
+          <div class="ms-trigger" onclick="toggleMs('ms-pot-course')">Todos os cursos <span class="ms-active-count" id="ms-pot-course-count" style="display:none">0</span></div>
+          <div class="ms-dropdown" id="ms-pot-course-drop">
+            <label class="ms-option select-all"><input type="checkbox" id="ms-pot-all" onchange="toggleAllMs('ms-pot-course','potencial')" checked> Selecionar todos</label>
+          </div>
+        </div>
+        <button onclick="resetFilters('potencial')" style="font-size:0.75rem;padding:4px 10px;border:1px solid #e2e8f0;border-radius:6px;background:#fff;cursor:pointer;color:#64748b">↺ Limpar</button>
+      </div>
+      <table>
+        <thead><tr><th>Lead</th><th>Curso</th><th>Potencial</th><th>Score</th><th>Payable</th><th>Temp</th><th>Priority</th><th>Ação Recomendada</th></tr></thead>
+        <tbody id="tbl-potencial-body"></tbody>
+      </table>
+      <div class="no-results" id="no-potencial" style="display:none">Nenhum lead encontrado com os filtros selecionados.</div>
+    </div>
+  </div>
+
+  <!-- Elephan -->
+  <div class="section">
+    <div class="section-title">📞 Análise de Calls — Elephan</div>
+    <div class="table-wrap">
+      <div class="filter-bar">
+        <label>Closer:</label>
+        <select id="f-eleph-closer" onchange="applyFilters('elephan')">
+          <option value="">Todos</option>
+        </select>
+        <label>Resultado:</label>
+        <select id="f-eleph-result" onchange="applyFilters('elephan')">
+          <option value="">Todos</option><option>Em Aberto</option><option>LOST</option><option>Venda</option><option>Sem deal</option>
+        </select>
+      </div>
+      <table>
+        <thead><tr><th>Closer</th><th>Lead / Call</th><th>Duração</th><th>Resultado</th><th>Energia Closer</th><th>Resistência Lead</th><th>Resumo</th></tr></thead>
+        <tbody id="tbl-elephan-body"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Alertas -->
+  <div class="section">
+    <div class="section-title">🚨 Alertas Críticos</div>
+    <div id="alerts-container"></div>
+  </div>
+
+  <!-- Recomendações -->
+  <div class="section">
+    <div class="section-title">💡 Recomendações</div>
+    <div class="rec-card"><div class="rec-title">🎯 Follow-up Imediato — Potencial A</div><div class="rec-body">10 leads com Potencial A: <strong>Suelane ramos</strong> (score 8, DA), <strong>Jamile Fabre</strong> (score 8, DA), <strong>nikolas bezerra</strong> (score 6, MBA DS, Quente) e <strong>Lucas Menezes</strong> (score 6, DS) são os mais urgentes.</div></div>
+    <div class="rec-card"><div class="rec-title">⚠️ No-Shows High Priority — Reagendar Hoje</div><div class="rec-body">13 no-shows com priority HIGH: <strong>Josias pacheco</strong> (score 5), <strong>Ezequiel Barbosa</strong> (score 6), <strong>Leonardo Cavani</strong> (score 5). Acionar via WhatsApp ainda hoje.</div></div>
+    <div class="rec-card"><div class="rec-title">📈 Gabriel Morial — Call Longa sem Fechamento</div><div class="rec-body">Call de <strong>98 minutos</strong> com Alessandro (MBA DS) sem fechamento. Revisar gravação para identificar objeções recorrentes.</div></div>
+    <div class="rec-card"><div class="rec-title">🌟 Lucas Bonow — Melhor Energia do Dia (72%)</div><div class="rec-body">Compartilhar técnicas de rapport nas calls de Nadine Almada e Gabriel Santos com o restante do time.</div></div>
+  </div>
+</div>
+
+<script>
+// ======= DATA =======
+const attendedData = [
+  {name:"Paulo Roberto Silva",course:"DS",utm_medium:"cpc",utm_content:"Google CPC",score:2,priority:"high",temp:"Frio",payable:"No",stage:"Meeting Attended",potencial:"C"},
+  {name:"cesar leandro",course:"DA",utm_medium:"bloggers",utm_content:"attekitadev",score:0,priority:"medium",temp:"Morno",payable:"Yes",stage:"Meeting Attended",potencial:"B"},
+  {name:"Miguel rene Sutil dos Santos",course:"QA",utm_medium:"cpc",utm_content:"Facebook Mobile Feed",score:1,priority:"medium",temp:"Morno",payable:"No",stage:"Meeting Attended",potencial:"C"},
+  {name:"Beatriz Tayrine",course:"QA",utm_medium:"",utm_content:"",score:null,priority:"medium",temp:"Frio",payable:"No",stage:"Meeting Attended",potencial:"C"},
+  {name:"Marcos Silva",course:"DA",utm_medium:"",utm_content:"",score:4,priority:"high",temp:"Morno",payable:"No",stage:"Meeting Attended",potencial:"B"},
+  {name:"Lis Viana de Abreu",course:"DA",utm_medium:"cpc",utm_content:"Instagram Feed",score:null,priority:"medium",temp:"Morno",payable:"No",stage:"Meeting Attended",potencial:"C"},
+  {name:"Lucas Rame",course:"QA",utm_medium:"bloggers",utm_content:"malafeitatv",score:null,priority:"medium",temp:"Morno",payable:"No",stage:"Closed-Lost",potencial:"C"},
+  {name:"Thainara Suellen Pereira",course:"QA",utm_medium:"smm",utm_content:"link_in_bio",score:2,priority:"medium",temp:"Morno",payable:"Yes",stage:"Meeting Attended",potencial:"B"},
+  {name:"Helena Pereira",course:"DS",utm_medium:"",utm_content:"",score:3,priority:"high",temp:"Morno",payable:"Yes",stage:"Meeting Attended",potencial:"B"},
+  {name:"Bernardo Soares",course:"WD",utm_medium:"partnerships",utm_content:"codecon",score:2,priority:"medium",temp:"Morno",payable:"No",stage:"Meeting Attended",potencial:"C"},
+  {name:"Carlos may",course:"DA",utm_medium:"bloggers",utm_content:"pablofakirr",score:4,priority:"high",temp:"Morno",payable:"Yes",stage:"Fechou",potencial:"B"},
+  {name:"Lukas Souza",course:"MBA DS",utm_medium:"",utm_content:"",score:null,priority:"medium",temp:"Frio",payable:"No",stage:"Meeting Attended",potencial:"C"},
+  {name:"Caroline rocha",course:"DS",utm_medium:"bloggers",utm_content:"pativlogs",score:4,priority:"high",temp:"Morno",payable:"Yes",stage:"Meeting Attended",potencial:"B"},
+  {name:"Priscila Favoreto",course:"DA",utm_medium:"",utm_content:"",score:6,priority:"high",temp:"Morno",payable:"Yes",stage:"Meeting Attended",potencial:"A"},
+  {name:"Lorrany Cunha",course:"DA",utm_medium:"social",utm_content:"link_in_bio",score:null,priority:"medium",temp:"Morno",payable:"No",stage:"Meeting Attended",potencial:"C"},
+  {name:"Bruno Gehem",course:"DA",utm_medium:"cpc",utm_content:"Google CPC",score:null,priority:"medium",temp:"Morno",payable:"Yes",stage:"Meeting Attended",potencial:"B"},
+  {name:"vitor monteiro",course:"DS",utm_medium:"cpc",utm_content:"Google CPC",score:-1,priority:"high",temp:"Morno",payable:"No",stage:"Closed-Lost",potencial:"C"},
+  {name:"Fernando Chodorowski",course:"WD",utm_medium:"",utm_content:"",score:5,priority:"high",temp:"Morno",payable:"Yes",stage:"Fechou",potencial:"A"},
+  {name:"Patrick Makanga",course:"DA",utm_medium:"crm",utm_content:"Email CRM Leads",score:5,priority:"low",temp:"Frio",payable:"No",stage:"Closed-Lost",potencial:"B"},
+  {name:"Bruno Brauer",course:"WD",utm_medium:"bloggers",utm_content:"nerdsdenegocios",score:0,priority:"medium",temp:"Morno",payable:"Yes",stage:"Meeting Attended",potencial:"B"},
+  {name:"Caio Cardenas",course:"WD",utm_medium:"bloggers",utm_content:"nerdsdenegocios",score:null,priority:"medium",temp:"Morno",payable:"Yes",stage:"Closed-Lost",potencial:"B"},
+  {name:"Igor abduch",course:"DS",utm_medium:"",utm_content:"",score:7,priority:"high",temp:"Morno",payable:"Yes",stage:"Meeting Attended",potencial:"A"},
+  {name:"Rony",course:"MBA DS",utm_medium:"cpc",utm_content:"Instagram Reels",score:1,priority:"medium",temp:"Morno",payable:"No",stage:"Meeting Attended",potencial:"C"},
+  {name:"Thomas Moreira",course:"MBA DS",utm_medium:"cpc",utm_content:"Instagram Reels",score:6,priority:"high",temp:"Morno",payable:"No",stage:"Meeting Attended",potencial:"B"},
+  {name:"Richard Maia",course:"MBA AI",utm_medium:"cpc",utm_content:"Instagram Stories",score:2,priority:"medium",temp:"Morno",payable:"No",stage:"Meeting Attended",potencial:"C"}
+];
+const noshowData = [
+  {name:"Frederico Santos",course:"",utm_medium:"cpc",utm_content:"Google CPC",score:3,priority:"high",stage:"No-Show"},
+  {name:"Bruno Moya",course:"MBA DS",utm_medium:"smm",utm_content:"smm",score:0,priority:"medium",stage:"No-Show"},
+  {name:"Karla Patricia Silveira Santos",course:"DS",utm_medium:"crm",utm_content:"CRM Alta Prioridade",score:1,priority:"high",stage:"No-Show"},
+  {name:"YURI FELIX PEREIRA TARRAQUE",course:"DS",utm_medium:"cpc",utm_content:"Instagram Reels",score:1,priority:"medium",stage:"No-Show"},
+  {name:"Jonas Pacheco Dos Santos",course:"MBA DS",utm_medium:"",utm_content:"",score:0,priority:"medium",stage:"No-Show"},
+  {name:"Vitória White da Rocha Bastos",course:"DS",utm_medium:"cpc",utm_content:"Instagram Stories",score:4,priority:"high",stage:"No-Show"},
+  {name:"Paulo Santana",course:"MBA DS",utm_medium:"",utm_content:"",score:3,priority:"high",stage:"No-Show"},
+  {name:"LEANDRO GARCIA",course:"",utm_medium:"",utm_content:"",score:0,priority:"medium",stage:"No-Show"},
+  {name:"Mairon Abner",course:"MBA AI",utm_medium:"cpc",utm_content:"Instagram Stories",score:0,priority:"medium",stage:"No-Show"},
+  {name:"Barbara miranda",course:"DS",utm_medium:"bloggers",utm_content:"turistalife",score:2,priority:"high",stage:"No-Show"},
+  {name:"Cynthia Nakashima",course:"DS",utm_medium:"crm",utm_content:"CRM Closed-Lost",score:2,priority:"high",stage:"No-Show"},
+  {name:"Barbara Vitoria",course:"DS",utm_medium:"partnerships",utm_content:"hirebrazil",score:null,priority:"medium",stage:"No-Show"},
+  {name:"Tatiane",course:"DS",utm_medium:"crm",utm_content:"CRM Closed-Lost",score:0,priority:"high",stage:"No-Show"},
+  {name:"Marcelo Souza",course:"DS",utm_medium:"cpc",utm_content:"Instagram Reels",score:2,priority:"high",stage:"No-Show"}
+];
+const elephanData = [
+  {closer:"Lucas Bonow",title:"Planejamento para curso de Ciência de Da",lead:"vitor monteiro",duration:31.3,result:"Perdeu",cp:13,cn:1,lp:14,ln:22,summary:"1. Criação de Rapport e Estratégias de Quebra-Gelo<br>   - O Consultor começou estabelecendo rapport de forma eficaz ao pergunt..."},
+  {closer:"Raphael  Soares Luna",title:"LB : C - Consultoria",lead:"— (sem deal)",duration:37.9,result:"Sem deal",cp:12,cn:11,lp:60,ln:3,summary:"1. Introdução e Criação de Rapport  <br>   - O consultor iniciou a conversa de maneira descontraída, pedindo para chamá-lo de “..."},
+  {closer:"Erick Paiva",title:"Discussão sobre matrícula no Bootcamp Tr",lead:"Bernardo Soares",duration:20.5,result:"Em Aberto",cp:39,cn:3,lp:26,ln:17,summary:"1. Criação de Rapport e Abordagem Inicial:<br>   - O consultor iniciou a conversa com uma abordagem amistosa e respeitosa, perg..."},
+  {closer:"Yanara Silva",title:"Tay:C/Ligação de vídeo com o consultor d",lead:"— (deal 515348199661)",duration:46.0,result:"Em Aberto",cp:37,cn:6,lp:23,ln:10,summary:"1. Criação de Rapport:<br>   - O consultor iniciou a conversa de forma cortês, checando áudio e vídeo, e mostrou preocupação co..."},
+  {closer:"Gabriel Morial",title:"Isa:C - Consultoria de carreira",lead:"Lucas Rame",duration:75.9,result:"Perdeu",cp:62,cn:6,lp:28,ln:37,summary:"1. Criação de Rapport e Quebra-Gelo:<br>   - O especialista iniciou a conversa com perguntas leves e pessoais, como a cidade de..."},
+  {closer:"Raphael  Soares Luna",title:"Tay:C/Ligação de vídeo com o consultor d",lead:"— (sem deal)",duration:39.9,result:"Sem deal",cp:61,cn:0,lp:40,ln:8,summary:"Resumo Analítico da Conversa<br><br>1. Criação de Rapport e Quebra-Gelo:<br>   - A conversa começou com uma abordagem calorosa ..."},
+  {closer:"Bruno Marques",title:"LB : C - Consultoria",lead:"Lis Viana de Abreu",duration:43.7,result:"Em Aberto",cp:44,cn:3,lp:18,ln:33,summary:"1. Estratégias de quebra-gelo e construção de rapport<br>   - Foi utilizada uma abordagem informal e flexível, demonstrando int..."},
+  {closer:"Vinicius Leao",title:"REAG-Tay:C/Ligação de vídeo com o consul",lead:"Carlos may",duration:62.0,result:"Fechou",cp:34,cn:7,lp:24,ln:35,summary:"1. Criação de Rapport:<br>    - Iniciou a conversa com um tom amistoso, dialogando sobre a experiência do lead na Europa.<br>  ..."},
+  {closer:"Jessica Silva",title:"Ligação de vídeo com o consultor de carr",lead:"Miguel rene Sutil dos Santos",duration:36.4,result:"Em Aberto",cp:52,cn:3,lp:3,ln:10,summary:"1. Criação de Rapport e Estratégias de Quebra-Gelo  <br>   - A consultora, Jéssica, iniciou a conversa com tom amistoso e profi..."},
+  {closer:"Bruno Marques",title:"PL-C : Consultoria de Carreira",lead:"Marcos Silva",duration:56.1,result:"Em Aberto",cp:41,cn:10,lp:7,ln:42,summary:"1. Criação de Rapport e Quebra-Gelo<br>   - O consultor fez uma abordagem inicial acolhedora, mencionando que estava na mesma e..."},
+  {closer:"Natalia Martins",title:"Natália e Andreza / TRIPLE TEN",lead:"— (deal 513090374887)",duration:35.5,result:"Em Aberto",cp:8,cn:11,lp:30,ln:5,summary:"1. Criação de Rapport e Contextualização Inicia: <br>   - O consultor iniciou a conversa de forma empática, perguntando sobre a..."},
+  {closer:"Lucas Bonow",title:"Apresentação do MBA em IA aplicada a neg",lead:"Richard Maia",duration:43.3,result:"Em Aberto",cp:34,cn:0,lp:2,ln:55,summary:"Resumo da Conversa - Consultoria de Carreira  <br><br>1. Criação de Rapport e Contextualização Inicial  <br>   - Lucas iniciou ..."},
+  {closer:"Gabriel Morial",title:"PL-C: Ligação de vídeo com o consultor d",lead:"cesar leandro",duration:121.2,result:"Em Aberto",cp:52,cn:5,lp:24,ln:18,summary:"1. Criação de Rapport e Quebra-Gelo:  <br>   - O consultor Gabriel iniciou a ligação com uma abordagem amistosa e pessoal, util..."},
+  {closer:"Jessica Silva",title:"Planejamento de transição de carreira - ",lead:"Patrick Makanga",duration:14.6,result:"Perdeu",cp:44,cn:12,lp:7,ln:7,summary:"Resumo Analítico da Conversa - Consultoria de Carreira<br><br>1. Introdução e Criação de Rapport  <br>   - A consultora iniciou..."},
+  {closer:"Lucas Bonow",title:"Exploração de carreira e treinamento na ",lead:"Rony",duration:42.5,result:"Em Aberto",cp:62,cn:3,lp:26,ln:32,summary:"1. Criação de Rapport:  <br>   - O consultor iniciou demonstrando interesse genuíno pela trajetória do Rony, mencionando detalh..."},
+  {closer:"Gabriel Morial",title:"PL-C: Ligação de vídeo com o consultor d",lead:"Fernando Chodorowski",duration:88.8,result:"Fechou",cp:59,cn:2,lp:34,ln:17,summary:"1. Criação de Rapport e Quebra-Gelo:<br>   - O consultor iniciou a conversa de forma descontraída e pessoal, comentando sobre o..."},
+  {closer:"Bruno Marques",title:"MBA-Tay:C/Ligação de vídeo com o consult",lead:"Thomas Moreira",duration:48.8,result:"Em Aberto",cp:68,cn:7,lp:22,ln:14,summary:"1. Início da conversa e quebra-gelo: <br>   - O consultor inicia a conversa de maneira descontraída, mencionando ser do mesmo g..."},
+  {closer:"Bernardo Magalhaes",title:"Apresentação Tripleten - Bootcamp Ciênci",lead:"Helena Pereira",duration:32.0,result:"Em Aberto",cp:28,cn:5,lp:4,ln:30,summary:"1. Introdução e Contextualização da Cliente:<br>   - Helena reside em Portugal há cerca de quatro anos e meio.<br>   - Ela desc..."},
+  {closer:"Bernardo Magalhaes",title:"Tay:C/Ligação de vídeo com o consultor d",lead:"Helena Pereira",duration:9.8,result:"Em Aberto",cp:28,cn:1,lp:7,ln:32,summary:"1. Introdução e Apresentação do Consultor  <br>   - O consultor Bernardo apresentou-se como especialista em carreiras na área d..."},
+  {closer:"Erick Paiva",title:"Tay:C/Ligação de vídeo com o consultor d",lead:"Priscila Favoreto",duration:137.9,result:"Em Aberto",cp:31,cn:19,lp:8,ln:36,summary:"1. Criação de rapport:<br>   - A consultoria iniciou com uma abordagem amigável e descontraída, discutindo um problema pessoal ..."},
+  {closer:"Jessica Silva",title:"Apresentação do curso de ciência de dado",lead:"Caroline rocha",duration:40.4,result:"Em Aberto",cp:44,cn:4,lp:33,ln:7,summary:"1. Rapport e quebra-gelo inicial  <br>   A abordagem inicial focou em criar um ambiente confortável para o lead, Carol, paraben..."},
+  {closer:"Bernardo Magalhaes",title:"PL- C: Consultoria de Carreira",lead:"Lorrany Cunha",duration:83.3,result:"Em Aberto",cp:31,cn:7,lp:14,ln:22,summary:"1. Apresentação do Consultor e Início da Conversa  <br>   - Bernardo, com 9 anos de experiência na área de tecnologia, introduz..."}
+];
+const closerStats = {
+  "Lucas Bonow":{calls:3,min:117,energia:36,resist:36},
+  "Gabriel Morial":{calls:3,min:286,energia:58,resist:24},
+  "Bruno Marques":{calls:3,min:149,energia:51,resist:30},
+  "Jessica Silva":{calls:3,min:91,energia:47,resist:8},
+  "Bernardo Magalhaes":{calls:3,min:125,energia:29,resist:28},
+  "Raphael  Soares Luna":{calls:2,min:78,energia:36,resist:6},
+  "Erick Paiva":{calls:2,min:159,energia:35,resist:26},
+  "Yanara Silva":{calls:1,min:46,energia:37,resist:10},
+  "Vinicius Leao":{calls:1,min:62,energia:34,resist:35},
+  "Natalia Martins":{calls:1,min:35,energia:8,resist:5}
+};
+
+// ======= MULTI-SELECT =======
+const msState = {};
+
+function initMs(msId, items, filterKey, tableKey) {
+  const drop = document.getElementById(msId+'-drop');
+  const courses = [...new Set(items.map(d=>d[filterKey]).filter(Boolean))].sort();
+  msState[msId] = new Set(courses);
+  courses.forEach(c => {
+    const lbl = document.createElement('label');
+    lbl.className = 'ms-option';
+    lbl.innerHTML = `<input type="checkbox" value="${c}" checked onchange="onMsChange('${msId}','${tableKey}')"> ${c}`;
+    drop.appendChild(lbl);
+  });
+}
+
+function toggleMs(msId) {
+  const drop = document.getElementById(msId+'-drop');
+  const trigger = drop.previousElementSibling;
+  drop.classList.toggle('open');
+  trigger.classList.toggle('open');
+  if (drop.classList.contains('open')) {
+    document.addEventListener('click', function handler(e){
+      if(!document.getElementById(msId).contains(e.target)){
+        drop.classList.remove('open');
+        trigger.classList.remove('open');
+        document.removeEventListener('click',handler);
+      }
+    });
+  }
+}
+
+function onMsChange(msId, tableKey) {
+  const drop = document.getElementById(msId+'-drop');
+  const checked = [...drop.querySelectorAll('input[type=checkbox]:not(.select-all-cb)')].filter(c=>c.checked).map(c=>c.value);
+  msState[msId] = new Set(checked);
+  const allCb = drop.querySelector('.select-all-cb') || drop.querySelector('input[id^="ms-"][id$="-all"]');
+  const allCount = drop.querySelectorAll('input[type=checkbox]:not([id^="ms-"],[id$="-all"])').length;
+  if (allCb) allCb.checked = checked.length === allCount;
+  updateMsCount(msId, checked.length, allCount);
+  applyFilters(tableKey);
+}
+
+function toggleAllMs(msId, tableKey) {
+  const drop = document.getElementById(msId+'-drop');
+  const allCb = document.getElementById(msId.replace('ms-','ms-').split('-course')[0]+'-all') ||
+                document.getElementById('ms-'+msId.split('ms-')[1]?.split('-course')[0]+'-all');
+  // find the actual all checkbox
+  const allInput = drop.querySelector('input[id$="-all"]');
+  if (!allInput) return;
+  const isChecked = allInput.checked;
+  drop.querySelectorAll('input[type=checkbox]').forEach(cb => cb.checked = isChecked);
+  const courses = [...drop.querySelectorAll('input[type=checkbox]:not([id$="-all"])')].filter(c=>c.checked).map(c=>c.value);
+  msState[msId] = new Set(courses);
+  const allCount = drop.querySelectorAll('input[type=checkbox]:not([id$="-all"])').length;
+  updateMsCount(msId, courses.length, allCount);
+  applyFilters(tableKey);
+}
+
+function updateMsCount(msId, selected, total) {
+  const countEl = document.getElementById(msId+'-count');
+  const trigger = document.querySelector('#'+msId+' .ms-trigger');
+  if (selected === total || selected === 0) {
+    countEl.style.display='none';
+    trigger.childNodes[0].textContent = 'Todos os cursos ';
+  } else {
+    countEl.style.display='inline-block';
+    countEl.textContent = selected;
+    trigger.childNodes[0].textContent = selected===1?'1 curso ':selected+' cursos ';
+  }
+}
+
+// ======= FILTERS =======
+const filterConfig = {
+  attended: {data: ()=>attendedData, tbody:'tbl-attended-body', noEl:'no-attended', countEl:'count-attended',
+    getFilters: ()=>({
+      utm: document.getElementById('f-att-utm')?.value||'',
+      pri: document.getElementById('f-att-pri')?.value||'',
+      temp: document.getElementById('f-att-temp')?.value||'',
+      payable: document.getElementById('f-att-payable')?.value||'',
+      courses: msState['ms-att-course']||null
+    }),
+    render: renderAttendedRow
+  },
+  noshow: {data: ()=>noshowData, tbody:'tbl-noshow-body', noEl:'no-noshow', countEl:'count-noshow',
+    getFilters: ()=>({
+      utm: document.getElementById('f-ns-utm')?.value||'',
+      pri: document.getElementById('f-ns-pri')?.value||'',
+      courses: msState['ms-ns-course']||null
+    }),
+    render: renderNoshowRow
+  },
+  potencial: {data: ()=>attendedData.filter(d=>d.stage!=='232615401').sort((a,b)=>({'A':0,'B':1,'C':2}[a.potencial]||2)-({'A':0,'B':1,'C':2}[b.potencial]||2)),
+    tbody:'tbl-potencial-body', noEl:'no-potencial', countEl:null,
+    getFilters: ()=>({
+      pot: document.getElementById('f-pot-pot')?.value||'',
+      courses: msState['ms-pot-course']||null
+    }),
+    render: renderPotencialRow
+  },
+  elephan: {data: ()=>elephanData, tbody:'tbl-elephan-body', noEl:null, countEl:null,
+    getFilters: ()=>({
+      closer: document.getElementById('f-eleph-closer')?.value||'',
+      result: document.getElementById('f-eleph-result')?.value||''
+    }),
+    render: renderElephRow
+  }
+};
+
+function applyFilters(key) {
+  const cfg = filterConfig[key];
+  const filters = cfg.getFilters();
+  const data = cfg.data();
+  const filtered = data.filter(d => {
+    if (filters.utm && d.utm_medium !== filters.utm) return false;
+    if (filters.pri && d.priority !== filters.pri) return false;
+    if (filters.temp && d.temp !== filters.temp) return false;
+    if (filters.payable && d.payable !== filters.payable) return false;
+    if (filters.pot && d.potencial !== filters.pot) return false;
+    if (filters.closer && d.closer !== filters.closer) return false;
+    if (filters.result && d.result !== filters.result) return false;
+    if (filters.courses && filters.courses.size > 0 && d.course && !filters.courses.has(d.course)) return false;
+    return true;
+  });
+  const tbody = document.getElementById(cfg.tbody);
+  tbody.innerHTML = filtered.map(cfg.render).join('');
+  if (cfg.noEl) document.getElementById(cfg.noEl).style.display = filtered.length===0?'':'none';
+  if (cfg.countEl) document.getElementById(cfg.countEl).textContent = filtered.length;
+}
+
+function resetFilters(key) {
+  const cfg = filterConfig[key];
+  // reset selects
+  document.querySelectorAll(`[id^="f-${key.substring(0,3)}"]`).forEach(el=>{if(el.tagName==='SELECT')el.value='';});
+  // reset multi-selects
+  Object.keys(msState).filter(k=>k.includes(key.substring(0,3))||k.includes(key.substring(0,4))).forEach(msId=>{
+    const drop = document.getElementById(msId+'-drop');
+    if(drop){
+      drop.querySelectorAll('input[type=checkbox]').forEach(cb=>cb.checked=true);
+      const courses=[...drop.querySelectorAll('input[type=checkbox]:not([id$="-all"])')].map(c=>c.value);
+      msState[msId]=new Set(courses);
+      updateMsCount(msId,courses.length,courses.length);
+    }
+  });
+  applyFilters(key);
+}
+
+// ======= BADGES =======
+function tempBadge(t){if(!t)return'<span class="badge-temp temp-morno">—</span>';if(t==='Quente')return'<span class="badge-temp temp-quente">🔥 Quente</span>';if(t==='Frio')return'<span class="badge-temp temp-frio">❄️ Frio</span>';return'<span class="badge-temp temp-morno">🌤 Morno</span>';}
+function priBadge(p){if(!p)return'';const c=p==='high'?'pri-high':p==='medium'?'pri-medium':'pri-low';return`<span class="badge-pri ${c}">${p}</span>`;}
+function payBadge(p){if(!p||p==='')return'<span class="badge-payable pay-no">—</span>';return p==='Yes'?'<span class="badge-payable pay-yes">✓ Sim</span>':'<span class="badge-payable pay-no">Não</span>';}
+function potBadge(p){if(!p)return'';return`<span class="badge-pot pot-${p.toLowerCase()}">${p}</span>`;}
+function resultBadge(stage){if(stage==='232615401')return'<span class="badge-result result-sale">✅ Venda</span>';if(stage==='232615402')return'<span class="badge-result result-lost">❌ Lost</span>';return'<span class="badge-result result-open">🔵 Aberto</span>';}
+function sentBar(pos,neg){const neu=Math.max(0,100-pos-neg);return`<div class="sentiment-bar"><div class="s-pos" style="width:${pos}%"></div><div class="s-neg" style="width:${neg}%"></div><div class="s-neu" style="width:${neu}%"></div></div>`;}
+function courseBadge(c){return`<span class="badge-course">${c||'—'}</span>`;}
+
+// ======= ROW RENDERS =======
+function renderAttendedRow(d){const cyc=d.cycle===0?'Mesmo dia':d.cycle+'d';return`<tr><td><strong>${d.name}</strong></td><td>${courseBadge(d.course)}</td><td>${d.utm_medium||'—'}</td><td style="max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:0.75rem;color:#64748b">${d.utm_content||'—'}</td><td><strong>${d.score!=null?d.score:'—'}</strong></td><td>${priBadge(d.priority)}</td><td>${tempBadge(d.temp)}</td><td>${payBadge(d.payable)}</td><td><span style="color:#0891b2;font-weight:600">${cyc}</span></td><td>${resultBadge(d.stage)}</td></tr>`;}
+function renderNoshowRow(d){const isH=d.priority==='high';return`<tr style="${isH?'background:#fff7f7':''}"><td><strong>${d.name}</strong>${isH?' 🚨':''}</td><td>${courseBadge(d.course)}</td><td>${d.utm_medium||'—'}</td><td style="max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:0.75rem;color:#64748b">${d.utm_content||'—'}</td><td><strong>${d.score!=null?d.score:'—'}</strong></td><td>${priBadge(d.priority)}</td><td>${d.created}</td><td><span style="font-size:0.78rem;color:#64748b">${d.stage}</span></td></tr>`;}
+function renderPotencialRow(d){const acoes={A:'📞 Ligar hoje',B:'📩 Follow-up WhatsApp 24h',C:'📋 Nurturing email'};return`<tr><td><strong>${d.name}</strong></td><td>${courseBadge(d.course)}</td><td>${potBadge(d.potencial)}</td><td><strong>${d.score!=null?d.score:'—'}</strong></td><td>${payBadge(d.payable)}</td><td>${tempBadge(d.temp)}</td><td>${priBadge(d.priority)}</td><td style="font-size:0.8rem;color:#475569">${acoes[d.potencial]||''}</td></tr>`;}
+function renderElephRow(d){const rc=d.result==='LOST'?'result-lost':d.result==='Venda'?'result-sale':'result-open';return`<tr><td><strong>${d.closer}</strong></td><td><div style="font-weight:600;font-size:0.82rem">${d.title}</div><div style="font-size:0.72rem;color:#64748b">${d.lead}</div></td><td><span style="font-weight:700;color:#1e40af">${d.duration}min</span></td><td><span class="badge-result ${rc}">${d.result}</span></td><td><div style="font-size:0.72rem;color:#475569;margin-bottom:2px">Closer: ${d.cp}% pos</div>${sentBar(d.cp,d.cn)}</td><td><div style="font-size:0.72rem;color:#475569;margin-bottom:2px">Lead: ${d.ln}% neg</div>${sentBar(d.lp,d.ln)}</td><td style="max-width:200px;font-size:0.78rem;color:#475569">${d.summary}</td></tr>`;}
+
+// ======= CLOSER CARDS =======
+function renderClosers(){
+  const grid=document.getElementById('closer-grid');
+  grid.innerHTML=Object.entries(closerStats).sort((a,b)=>b[1].calls-a[1].calls).map(([name,st])=>{
+    const calls=elephanData.filter(d=>d.closer===name);
+    const avg=calls.length>0?(calls.reduce((s,d)=>s+d.duration,0)/calls.length).toFixed(0):0;
+    const ec=st.energia>=50?'#10b981':st.energia>=30?'#f59e0b':'#ef4444';
+    const rc=st.resist>20?'#ef4444':st.resist>10?'#f59e0b':'#10b981';
+    return`<div class="closer-card"><div class="closer-name">👤 ${name}</div><div class="closer-kpis"><div class="closer-kpi"><div class="closer-kpi-val">${st.calls}</div><div class="closer-kpi-lbl">Calls</div></div><div class="closer-kpi"><div class="closer-kpi-val">${st.min}min</div><div class="closer-kpi-lbl">Total</div></div><div class="closer-kpi"><div class="closer-kpi-val">${avg}min</div><div class="closer-kpi-lbl">Média</div></div></div><div class="sentiment-section"><div class="sentiment-label"><span>⚡ Energia</span><strong style="color:${ec}">${st.energia}%</strong></div><div class="sentiment-bar2"><div class="s-pos" style="width:${st.energia}%"></div><div class="s-neu" style="width:${100-st.energia}%"></div></div><div class="sentiment-label"><span>🛡️ Resistência Lead</span><strong style="color:${rc}">${st.resist}%</strong></div><div class="sentiment-bar2"><div class="s-neg" style="width:${st.resist}%"></div><div class="s-neu" style="width:${100-st.resist}%"></div></div></div></div>`;
+  }).join('');
+}
+
+// ======= ALERTS =======
+function renderAlerts(){
+  const c=document.getElementById('alerts-container');
+  const alerts=[];
+  elephanData.filter(d=>d.ln>=25&&d.result!=='LOST').forEach(d=>{alerts.push({t:`⚠️ Alta Resistência — ${d.lead}`,b:`Lead com ${d.ln}% de sentimento negativo na call com ${d.closer} (${d.duration}min). Revisar objeções antes do follow-up.`});});
+  elephanData.filter(d=>d.duration>90&&d.result==='Em Aberto').forEach(d=>{alerts.push({t:`⏰ Call Longa Sem Fechamento — ${d.lead}`,b:`${d.closer} ficou ${d.duration}min sem fechar. Enviar proposta escrita via WhatsApp.`});});
+  const hn=noshowData.filter(d=>d.priority==='high');
+  if(hn.length>0)alerts.push({t:`🚨 ${hn.length} No-Shows com Priority HIGH`,b:`Reagendar: ${hn.slice(0,6).map(d=>d.name).join(', ')}...`});
+  c.innerHTML=alerts.map(a=>`<div class="alert-box"><div class="alert-title">${a.t}</div><div class="alert-body">${a.b}</div></div>`).join('');
+}
+
+// ======= DATE NAV =======
+function navigateDate(val) {
+  if (!val) return;
+  const parts = val.split('-');
+  const fileName = `dashboard_${parts[0]}${parts[1]}${parts[2]}.html`;
+  window.location.href = fileName;
+}
+function navDate(delta) {
+  const picker = document.getElementById('date-picker');
+  const d = new Date(picker.value + 'T12:00:00');
+  d.setDate(d.getDate() + delta);
+  const iso = d.toISOString().split('T')[0];
+  picker.value = iso;
+  navigateDate(iso);
+}
+
+// ======= ELEPHAN CLOSER FILTER =======
+function initElephCloserFilter(){
+  const sel=document.getElementById('f-eleph-closer');
+  const closers=[...new Set(elephanData.map(d=>d.closer))].sort();
+  closers.forEach(c=>{const o=document.createElement('option');o.value=c;o.textContent=c;sel.appendChild(o);});
+}
+
+// ======= TAB =======
+function switchTab(name){document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));document.querySelectorAll('.content').forEach(c=>c.classList.remove('active'));document.querySelector(`[onclick="switchTab('${name}')"]`).classList.add('active');document.getElementById('tab-'+name).classList.add('active');}
+
+// ======= INIT =======
+initMs('ms-att-course', attendedData, 'course', 'attended');
+initMs('ms-ns-course', noshowData, 'course', 'noshow');
+initMs('ms-pot-course', attendedData, 'course', 'potencial');
+initElephCloserFilter();
+applyFilters('attended');
+applyFilters('noshow');
+applyFilters('potencial');
+applyFilters('elephan');
+renderClosers();
+renderAlerts();
+
+// Close dropdowns on outside click
+document.addEventListener('click', e => {
+  document.querySelectorAll('.ms-dropdown.open').forEach(drop => {
+    if (!drop.closest('.ms-wrap').contains(e.target)) {
+      drop.classList.remove('open');
+      drop.previousElementSibling.classList.remove('open');
+    }
+  });
+});
+</script>
+</body>
+</html>
