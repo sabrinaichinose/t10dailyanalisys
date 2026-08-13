@@ -3,125 +3,110 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dashboard Diário TripleTen — 11/08/2026</title>
+<title>Dashboard Diário TripleTen Brasil — 12/08/2026</title>
 <style>
-:root {
-  --navy:#0f2044;--blue:#1e5fc2;--teal:#0b9e8a;--light:#f4f7fb;
-  --white:#fff;--gray:#6b7280;--gray-light:#e5eaf2;
-  --red:#dc2626;--orange:#ea580c;--green:#16a34a;--yellow:#ca8a04;--purple:#7c3aed;
-}
-*{box-sizing:border-box;margin:0;padding:0;}
-body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--light);color:#1a202c;font-size:14px;}
-
-.header{background:linear-gradient(135deg,var(--navy) 0%,#1a3a6e 100%);color:white;padding:18px 32px;display:flex;align-items:center;justify-content:space-between;}
-.header h1{font-size:21px;font-weight:700;}
-.header .subtitle{font-size:12px;opacity:.7;margin-top:2px;}
-.date-badge{background:rgba(255,255,255,.15);border-radius:20px;padding:6px 16px;font-size:13px;font-weight:600;}
-
-.tabs{display:flex;padding:0 32px;background:white;border-bottom:2px solid var(--gray-light);gap:4px;}
-.tab{padding:13px 22px;cursor:pointer;font-weight:600;font-size:14px;color:var(--gray);border-bottom:3px solid transparent;margin-bottom:-2px;transition:all .2s;}
-.tab:hover{color:var(--blue);}
-.tab.active{color:var(--blue);border-bottom-color:var(--blue);}
-
-.tab-content{display:none;padding:22px 32px;}
-.tab-content.active{display:block;}
-
-.kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));gap:14px;margin-bottom:24px;}
-.kpi-card{background:white;border-radius:12px;padding:15px 18px;box-shadow:0 1px 4px rgba(0,0,0,.07);border-left:4px solid var(--blue);}
-.kpi-card.teal{border-left-color:var(--teal);}
-.kpi-card.green{border-left-color:var(--green);}
-.kpi-card.red{border-left-color:var(--red);}
-.kpi-card.orange{border-left-color:var(--orange);}
-.kpi-card.purple{border-left-color:var(--purple);}
-.kpi-value{font-size:28px;font-weight:800;color:var(--navy);line-height:1;}
-.kpi-label{font-size:11px;color:var(--gray);margin-top:4px;text-transform:uppercase;letter-spacing:.5px;}
-.kpi-sub{font-size:12px;color:var(--teal);font-weight:600;margin-top:2px;}
-
-.section{background:white;border-radius:12px;padding:18px 22px;margin-bottom:18px;box-shadow:0 1px 4px rgba(0,0,0,.06);}
-.section-title{font-size:15px;font-weight:700;color:var(--navy);margin-bottom:14px;display:flex;align-items:center;gap:8px;}
-
-.table-wrap{overflow-x:auto;}
-table{width:100%;border-collapse:collapse;font-size:13px;}
-thead th{background:var(--navy);color:white;padding:9px 11px;text-align:left;font-weight:600;font-size:12px;white-space:nowrap;}
-tbody tr:nth-child(even){background:#f8fafc;}
-tbody tr:hover{background:#eef3ff;}
-tbody td{padding:8px 11px;border-bottom:1px solid var(--gray-light);vertical-align:middle;}
-
-.badge{display:inline-block;padding:2px 7px;border-radius:12px;font-size:11px;font-weight:600;white-space:nowrap;}
-.badge-high{background:#fee2e2;color:#991b1b;}
-.badge-medium{background:#fef3c7;color:#92400e;}
-.badge-low{background:#f0fdf4;color:#166534;}
-.badge-quente{background:#fef2f2;color:#b91c1c;}
-.badge-morno{background:#fffbeb;color:#b45309;}
-.badge-frio{background:#eff6ff;color:#1d4ed8;}
-.badge-sale{background:#dcfce7;color:#15803d;}
-.badge-lost{background:#fee2e2;color:#b91c1c;}
-.badge-open{background:#e0f2fe;color:#0369a1;}
-.badge-a{background:#7c3aed;color:white;}
-.badge-b{background:#0891b2;color:white;}
-.badge-c{background:#94a3b8;color:white;}
-.badge-payable{background:#dcfce7;color:#15803d;}
-.badge-nopay{background:#f1f5f9;color:#64748b;}
-
-.funil{display:flex;flex-direction:column;gap:5px;margin-top:4px;}
-.funil-bar{display:flex;align-items:center;gap:10px;}
-.funil-label{width:200px;font-size:12px;color:var(--gray);flex-shrink:0;text-align:right;}
-.funil-track{flex:1;background:var(--gray-light);border-radius:4px;height:22px;overflow:hidden;}
-.funil-fill{height:100%;border-radius:4px;display:flex;align-items:center;justify-content:flex-end;padding-right:6px;}
-.funil-fill span{font-size:11px;font-weight:700;color:white;}
-.funil-count{width:36px;font-size:12px;font-weight:700;color:var(--navy);}
-
-.two-col{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
-@media(max-width:768px){.two-col{grid-template-columns:1fr;}}
-
-.bar-chart{display:flex;flex-direction:column;gap:7px;}
-.bar-row{display:flex;align-items:center;gap:8px;}
-.bar-key{width:115px;font-size:12px;color:#374151;flex-shrink:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
-.bar-track{flex:1;background:var(--gray-light);border-radius:3px;height:17px;}
-.bar-fill{height:100%;border-radius:3px;display:flex;align-items:center;padding-left:5px;}
-.bar-fill span{font-size:11px;font-weight:600;color:white;}
-.bar-val{width:28px;font-size:12px;font-weight:700;color:var(--navy);text-align:right;}
-
-.ciclo-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;}
-.ciclo-box{background:var(--light);border-radius:8px;padding:12px;text-align:center;border:2px solid var(--gray-light);}
-.ciclo-box.hl{border-color:var(--teal);background:#f0fdf9;}
-.ciclo-val{font-size:24px;font-weight:800;color:var(--navy);}
-.ciclo-lbl{font-size:11px;color:var(--gray);margin-top:2px;}
-
-.filter-row{display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;align-items:center;}
-.filter-row label{font-size:12px;color:var(--gray);font-weight:600;}
-.filter-row select{border:1px solid var(--gray-light);border-radius:6px;padding:4px 9px;font-size:12px;background:white;color:#374151;cursor:pointer;}
-
-.sent-bar{display:flex;height:10px;border-radius:5px;overflow:hidden;min-width:70px;}
-.sent-pos{background:#16a34a;}
-.sent-neu{background:#94a3b8;}
-.sent-neg{background:#dc2626;}
-
-.alert{display:flex;gap:10px;padding:11px 14px;border-radius:8px;margin-bottom:9px;align-items:flex-start;}
-.alert-danger{background:#fef2f2;border-left:4px solid var(--red);}
-.alert-warning{background:#fffbeb;border-left:4px solid #f59e0b;}
-.alert-info{background:#eff6ff;border-left:4px solid var(--blue);}
-.alert-icon{font-size:15px;}
-.alert-text{font-size:13px;color:#374151;}
-.alert-text strong{color:var(--navy);}
-
-.tooltip{position:relative;cursor:help;}
-.tooltip:hover::after{content:attr(data-tip);position:absolute;bottom:120%;left:50%;transform:translateX(-50%);background:#1a202c;color:white;font-size:11px;padding:5px 9px;border-radius:6px;white-space:pre-wrap;max-width:300px;z-index:999;line-height:1.4;}
-
-.rec-list{list-style:none;}
-.rec-list li{padding:9px 0;border-bottom:1px solid var(--gray-light);display:flex;gap:10px;align-items:flex-start;font-size:13px;}
-.rec-list li:last-child{border-bottom:none;}
-.rec-icon{font-size:15px;flex-shrink:0;}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:#f0f4f8;color:#1e293b;min-height:100vh}
+.header{background:linear-gradient(135deg,#0f2557 0%,#1e40af 60%,#0891b2 100%);color:#fff;padding:20px 32px;display:flex;justify-content:space-between;align-items:center}
+.header h1{font-size:1.5rem;font-weight:700;letter-spacing:-0.5px}
+.header .date{font-size:0.9rem;opacity:0.85;margin-top:4px}
+.header .badge{background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.3);border-radius:20px;padding:6px 16px;font-size:0.85rem;backdrop-filter:blur(4px)}
+.tabs{display:flex;background:#fff;border-bottom:2px solid #e2e8f0;padding:0 32px;position:sticky;top:0;z-index:100;box-shadow:0 1px 4px rgba(0,0,0,0.06)}
+.tab{padding:14px 20px;cursor:pointer;font-weight:600;font-size:0.95rem;color:#64748b;border-bottom:3px solid transparent;margin-bottom:-2px;transition:all 0.2s}
+.tab.active{color:#1e40af;border-bottom-color:#1e40af}
+.tab:hover:not(.active){color:#334155}
+.content{display:none;padding:24px 32px}
+.content.active{display:block}
+.section{margin-bottom:28px}
+.section-title{font-size:1.05rem;font-weight:700;color:#0f2557;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.section-title::before{content:'';display:inline-block;width:4px;height:18px;background:#1e40af;border-radius:2px}
+.kpi-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:14px;margin-bottom:24px}
+.kpi{background:#fff;border-radius:12px;padding:16px;box-shadow:0 1px 3px rgba(0,0,0,0.07);border-left:4px solid #1e40af}
+.kpi.green{border-left-color:#10b981}
+.kpi.orange{border-left-color:#f59e0b}
+.kpi.red{border-left-color:#ef4444}
+.kpi.teal{border-left-color:#0891b2}
+.kpi.purple{border-left-color:#8b5cf6}
+.kpi-value{font-size:2rem;font-weight:800;color:#0f2557;line-height:1}
+.kpi-label{font-size:0.75rem;color:#64748b;margin-top:4px;font-weight:500;text-transform:uppercase;letter-spacing:0.5px}
+.kpi-sub{font-size:0.8rem;color:#10b981;margin-top:2px;font-weight:600}
+.table-wrap{background:#fff;border-radius:12px;box-shadow:0 1px 3px rgba(0,0,0,0.07);overflow:hidden}
+.filter-bar{padding:12px 16px;background:#f8fafc;border-bottom:1px solid #e2e8f0;display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.filter-bar label{font-size:0.8rem;color:#64748b;font-weight:600}
+.filter-bar select{font-size:0.8rem;padding:4px 8px;border:1px solid #e2e8f0;border-radius:6px;background:#fff;color:#334155}
+table{width:100%;border-collapse:collapse;font-size:0.82rem}
+th{background:#f1f5f9;color:#475569;font-weight:600;padding:10px 12px;text-align:left;white-space:nowrap;border-bottom:1px solid #e2e8f0}
+td{padding:9px 12px;border-bottom:1px solid #f1f5f9;vertical-align:middle}
+tr:hover td{background:#f8fafc}
+tr:nth-child(even) td{background:#fafbff}
+tr:nth-child(even):hover td{background:#f0f4ff}
+.badge-temp{display:inline-block;padding:2px 8px;border-radius:10px;font-size:0.72rem;font-weight:600}
+.temp-quente{background:#fef3c7;color:#92400e}
+.temp-morno{background:#dbeafe;color:#1e40af}
+.temp-frio{background:#f0f9ff;color:#0891b2}
+.badge-pri{display:inline-block;padding:2px 8px;border-radius:10px;font-size:0.72rem;font-weight:600}
+.pri-high{background:#fee2e2;color:#b91c1c}
+.pri-medium{background:#fef9c3;color:#854d0e}
+.pri-low{background:#f0fdf4;color:#166534}
+.badge-result{display:inline-block;padding:2px 8px;border-radius:10px;font-size:0.72rem;font-weight:600}
+.result-sale{background:#d1fae5;color:#065f46}
+.result-open{background:#eff6ff;color:#1d4ed8}
+.result-lost{background:#fee2e2;color:#b91c1c}
+.badge-pot{display:inline-block;padding:2px 10px;border-radius:10px;font-size:0.75rem;font-weight:700}
+.pot-a{background:#d1fae5;color:#065f46}
+.pot-b{background:#fef3c7;color:#92400e}
+.pot-c{background:#f1f5f9;color:#475569}
+.badge-payable{display:inline-block;padding:2px 7px;border-radius:8px;font-size:0.72rem;font-weight:600}
+.pay-yes{background:#d1fae5;color:#065f46}
+.pay-no{background:#f1f5f9;color:#64748b}
+.sentiment-bar{display:flex;height:8px;border-radius:4px;overflow:hidden;min-width:80px}
+.s-pos{background:#10b981}
+.s-neg{background:#ef4444}
+.s-neu{background:#e2e8f0}
+.funnel{display:flex;flex-direction:column;gap:8px;padding:16px}
+.funnel-item{display:flex;align-items:center;gap:12px}
+.funnel-label{min-width:200px;font-size:0.82rem;color:#475569;font-weight:500}
+.funnel-bar-wrap{flex:1;background:#f1f5f9;border-radius:6px;height:28px;overflow:hidden;position:relative}
+.funnel-bar{height:100%;border-radius:6px;display:flex;align-items:center;padding-left:10px;color:#fff;font-weight:700;font-size:0.8rem;transition:width 0.5s}
+.funnel-count{min-width:40px;font-size:0.85rem;font-weight:700;color:#0f2557;text-align:right}
+.breakdown-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px}
+.breakdown-card{background:#fff;border-radius:12px;padding:16px;box-shadow:0 1px 3px rgba(0,0,0,0.07)}
+.breakdown-card h4{font-size:0.85rem;font-weight:700;color:#0f2557;margin-bottom:12px}
+.breakdown-row{display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:1px solid #f1f5f9;font-size:0.82rem}
+.breakdown-row:last-child{border-bottom:none}
+.breakdown-row .val{font-weight:700;color:#1e40af}
+.alert-box{background:#fff;border-radius:12px;padding:16px;border-left:4px solid #ef4444;box-shadow:0 1px 3px rgba(0,0,0,0.07);margin-bottom:12px}
+.alert-box .alert-title{font-weight:700;color:#b91c1c;font-size:0.88rem;margin-bottom:6px}
+.alert-box .alert-body{font-size:0.82rem;color:#475569}
+.closer-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px}
+.closer-card{background:#fff;border-radius:12px;padding:16px;box-shadow:0 1px 3px rgba(0,0,0,0.07)}
+.closer-name{font-weight:700;font-size:0.95rem;color:#0f2557;margin-bottom:10px}
+.closer-kpis{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:10px}
+.closer-kpi{text-align:center}
+.closer-kpi-val{font-size:1.2rem;font-weight:800;color:#1e40af}
+.closer-kpi-lbl{font-size:0.68rem;color:#64748b;text-transform:uppercase}
+.sentiment-section{margin-top:8px}
+.sentiment-label{display:flex;justify-content:space-between;font-size:0.75rem;color:#64748b;margin-bottom:3px}
+.sentiment-bar2{height:10px;border-radius:5px;overflow:hidden;display:flex;margin-bottom:6px}
+.ciclo-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.ciclo-item{background:#fff;border-radius:10px;padding:14px;text-align:center;box-shadow:0 1px 3px rgba(0,0,0,0.07)}
+.ciclo-item .ciclo-count{font-size:1.5rem;font-weight:800;color:#1e40af}
+.ciclo-item .ciclo-label{font-size:0.75rem;color:#64748b;margin-top:2px}
+.hidden-row{display:none}
+.rec-card{background:#fff;border-radius:12px;padding:16px;box-shadow:0 1px 3px rgba(0,0,0,0.07);border-top:3px solid #8b5cf6;margin-bottom:10px}
+.rec-title{font-weight:700;color:#5b21b6;font-size:0.9rem;margin-bottom:6px}
+.rec-body{font-size:0.83rem;color:#475569;line-height:1.5}
 </style>
 </head>
 <body>
 
 <div class="header">
   <div>
-    <h1>📊 Dashboard Diário de Reuniões — TripleTen Brasil</h1>
-    <div class="subtitle">Pipeline: Brazil / Sales · Dados: 11/08/2026 · Elephan: ✅ 15/22 transcrições</div>
+    <div class="header-logo" style="font-size:0.8rem;opacity:0.7;margin-bottom:2px">TRIPLETEN BRASIL — SALES OPS</div>
+    <h1>📊 Dashboard Diário de Reuniões</h1>
+    <div class="date">Quarta-feira, 12 de agosto de 2026 · Gerado automaticamente às 09:00h</div>
   </div>
-  <div class="date-badge">📅 11/08/2026</div>
+  <div class="badge">📅 Dados referentes a 12/08/2026</div>
 </div>
 
 <div class="tabs">
@@ -129,332 +114,498 @@ tbody td{padding:8px 11px;border-bottom:1px solid var(--gray-light);vertical-ali
   <div class="tab" onclick="switchTab('vendas')">🎯 Vendas</div>
 </div>
 
-<!-- ====== ABA MARKETING ====== -->
-<div id="tab-marketing" class="tab-content active">
-
-  <div class="kpi-grid">
-    <div class="kpi-card"><div class="kpi-value">300+</div><div class="kpi-label">Leads Criados</div><div class="kpi-sub">Limite 300 atingido</div></div>
-    <div class="kpi-card teal"><div class="kpi-value">22</div><div class="kpi-label">Reuniões Atendidas</div><div class="kpi-sub">7,3% dos criados</div></div>
-    <div class="kpi-card green"><div class="kpi-value">23</div><div class="kpi-label">Meeting Scheduled</div><div class="kpi-sub">novos do dia</div></div>
-    <div class="kpi-card red"><div class="kpi-value">10</div><div class="kpi-label">No-Shows</div><div class="kpi-sub">45% dos agendados</div></div>
-    <div class="kpi-card orange"><div class="kpi-value">1</div><div class="kpi-label">Vendas</div><div class="kpi-sub">Lucas Trajano · MBA DS</div></div>
-    <div class="kpi-card purple"><div class="kpi-value">2,3d</div><div class="kpi-label">Ciclo Médio</div><div class="kpi-sub">criação → reunião</div></div>
-  </div>
+<!-- ==================== ABA MARKETING ==================== -->
+<div class="content active" id="tab-marketing">
 
   <div class="section">
-    <div class="section-title">🔽 Funil — Leads Criados em 11/08</div>
-    <div class="funil" id="funil-container"></div>
-  </div>
-
-  <div class="ciclo-grid" style="margin-bottom:18px;">
-    <div style="background:white;border-radius:12px;padding:10px 14px;box-shadow:0 1px 4px rgba(0,0,0,.06);" class="ciclo-box hl"><div class="ciclo-val">15</div><div class="ciclo-lbl">Mesmo dia</div></div>
-    <div style="background:white;border-radius:12px;padding:10px 14px;box-shadow:0 1px 4px rgba(0,0,0,.06);" class="ciclo-box"><div class="ciclo-val">0</div><div class="ciclo-lbl">1–3 dias</div></div>
-    <div style="background:white;border-radius:12px;padding:10px 14px;box-shadow:0 1px 4px rgba(0,0,0,.06);" class="ciclo-box"><div class="ciclo-val">6</div><div class="ciclo-lbl">4–7 dias</div></div>
-    <div style="background:white;border-radius:12px;padding:10px 14px;box-shadow:0 1px 4px rgba(0,0,0,.06);" class="ciclo-box"><div class="ciclo-val">1</div><div class="ciclo-lbl">8+ dias</div></div>
-  </div>
-
-  <div class="two-col">
-    <div class="section">
-      <div class="section-title">📡 UTM Medium — Leads Criados</div>
-      <div class="bar-chart" id="utm-medium-chart"></div>
+    <div class="kpi-grid">
+      <div class="kpi teal">
+        <div class="kpi-value">300+</div>
+        <div class="kpi-label">Leads Criados</div>
+        <div class="kpi-sub">pipeline Brazil/Sales</div>
+      </div>
+      <div class="kpi green">
+        <div class="kpi-value">44</div>
+        <div class="kpi-label">Reuniões Atendidas</div>
+        <div class="kpi-sub">37 com transcrição</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-value">50%</div>
+        <div class="kpi-label">Taxa Same-Day</div>
+        <div class="kpi-sub">22 de 44 reuniões</div>
+      </div>
+      <div class="kpi orange">
+        <div class="kpi-value">33</div>
+        <div class="kpi-label">No-Shows</div>
+        <div class="kpi-sub">43% do total agendado</div>
+      </div>
+      <div class="kpi green">
+        <div class="kpi-value">1</div>
+        <div class="kpi-label">Vendas Confirmadas</div>
+        <div class="kpi-sub">Allef Guimarães · WD</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-value">2,1d</div>
+        <div class="kpi-label">Ciclo Médio</div>
+        <div class="kpi-sub">criação → atendimento</div>
+      </div>
     </div>
-    <div class="section">
-      <div class="section-title">🎬 Top Criativos / Influencers</div>
-      <div class="bar-chart" id="utm-content-chart"></div>
-    </div>
   </div>
 
+  <!-- Funil -->
   <div class="section">
-    <div class="section-title">✅ Reuniões Atendidas — 11/08/2026</div>
-    <div class="filter-row">
-      <label>Filtrar por:</label>
-      <select onchange="filterRows('att-tbody','utm_medium',this.value)"><option value="">Todos UTM</option><option>cpc</option><option>bloggers</option><option>smm</option><option>crm</option><option>partnerships</option></select>
-      <select onchange="filterRows('att-tbody','priority',this.value)"><option value="">Prioridade</option><option>high</option><option>medium</option></select>
-      <select onchange="filterRows('att-tbody','temperatura',this.value)"><option value="">Temperatura</option><option>Quente</option><option>Morno</option><option>Frio</option></select>
-      <select onchange="filterRows('att-tbody','resultado',this.value)"><option value="">Resultado</option><option>SUCCESSFUL PAYMENT</option><option>CLOSED-LOST</option><option>MEETING/WEBINAR ATTENDED</option></select>
-    </div>
+    <div class="section-title">Funil do Dia</div>
     <div class="table-wrap">
-      <table><thead><tr>
-        <th>Lead</th><th>Closer</th><th>Curso</th><th>UTM Medium</th><th>Criativo/Influencer</th>
-        <th>Priority</th><th>Score</th><th>Temp</th><th>Payable</th><th>Potencial</th><th>Ciclo</th><th>Duração</th><th>Resultado</th>
-      </tr></thead><tbody id="att-tbody"></tbody></table>
+      <div class="funnel">
+        <div class="funnel-item">
+          <div class="funnel-label">Leads Criados</div>
+          <div class="funnel-bar-wrap"><div class="funnel-bar" style="width:100%;background:#1e40af">300+</div></div>
+          <div class="funnel-count">300+</div>
+        </div>
+        <div class="funnel-item">
+          <div class="funnel-label">Meeting Scheduled (agendadas)</div>
+          <div class="funnel-bar-wrap"><div class="funnel-bar" style="width:51%;background:#0891b2">77</div></div>
+          <div class="funnel-count">~77</div>
+        </div>
+        <div class="funnel-item">
+          <div class="funnel-label">Meeting Attended (atendidas)</div>
+          <div class="funnel-bar-wrap"><div class="funnel-bar" style="width:14.7%;background:#10b981">44</div></div>
+          <div class="funnel-count">44</div>
+        </div>
+        <div class="funnel-item">
+          <div class="funnel-label">No-Show (não compareceu)</div>
+          <div class="funnel-bar-wrap"><div class="funnel-bar" style="width:11%;background:#f59e0b">33</div></div>
+          <div class="funnel-count">33</div>
+        </div>
+        <div class="funnel-item">
+          <div class="funnel-label">Venda Confirmada</div>
+          <div class="funnel-bar-wrap"><div class="funnel-bar" style="width:0.7%;background:#065f46;min-width:40px">1</div></div>
+          <div class="funnel-count">1</div>
+        </div>
+      </div>
     </div>
   </div>
 
+  <!-- Tabela Reuniões Atendidas -->
   <div class="section">
-    <div class="section-title">❌ No-Shows — 11/08/2026</div>
+    <div class="section-title">Todas as Reuniões Atendidas (44)</div>
     <div class="table-wrap">
-      <table><thead><tr><th>Lead</th><th>UTM Medium</th><th>Conteúdo</th><th>Priority</th><th>Score</th><th>Curso</th><th>Criação</th><th>Status</th></tr></thead>
-      <tbody id="ns-tbody"></tbody></table>
+      <div class="filter-bar">
+        <label>UTM Medium:</label>
+        <select onchange="filterTable('tbl-attended','utm',this.value)">
+          <option value="">Todos</option>
+          <option>cpc</option><option>bloggers</option><option>crm</option><option>smm</option><option>partnerships</option>
+        </select>
+        <label>Priority:</label>
+        <select onchange="filterTable('tbl-attended','pri',this.value)">
+          <option value="">Todos</option><option>high</option><option>medium</option><option>low</option>
+        </select>
+        <label>Temperatura:</label>
+        <select onchange="filterTable('tbl-attended','temp',this.value)">
+          <option value="">Todas</option><option>Quente</option><option>Morno</option><option>Frio</option>
+        </select>
+        <label>Payable:</label>
+        <select onchange="filterTable('tbl-attended','payable',this.value)">
+          <option value="">Todos</option><option>Yes</option><option>No</option>
+        </select>
+      </div>
+      <table id="tbl-attended">
+        <thead>
+          <tr>
+            <th>Lead</th><th>Curso</th><th>UTM Medium</th><th>UTM Content</th><th>Score</th><th>Priority</th><th>Temp</th><th>Payable</th><th>Ciclo</th><th>Resultado</th>
+          </tr>
+        </thead>
+        <tbody id="tbl-attended-body">
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- No-shows -->
+  <div class="section">
+    <div class="section-title">No-Shows do Dia (33) — Leads com Alta Prioridade em Destaque</div>
+    <div class="table-wrap">
+      <div class="filter-bar">
+        <label>UTM Medium:</label>
+        <select onchange="filterTable('tbl-noshow','utm',this.value)">
+          <option value="">Todos</option><option>cpc</option><option>bloggers</option><option>crm</option><option>smm</option><option>partnerships</option>
+        </select>
+        <label>Priority:</label>
+        <select onchange="filterTable('tbl-noshow','pri',this.value)">
+          <option value="">Todos</option><option>high</option><option>medium</option><option>low</option>
+        </select>
+      </div>
+      <table id="tbl-noshow">
+        <thead>
+          <tr>
+            <th>Lead</th><th>Curso</th><th>UTM Medium</th><th>UTM Content</th><th>Score</th><th>Priority</th><th>Data Criação</th><th>Stage Atual</th>
+          </tr>
+        </thead>
+        <tbody id="tbl-noshow-body"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- UTM Breakdown -->
+  <div class="section">
+    <div class="section-title">Breakdown por Canal e Criativo</div>
+    <div class="breakdown-grid">
+      <div class="breakdown-card">
+        <h4>📣 UTM Medium — Reuniões Atendidas</h4>
+        <div class="breakdown-row"><span>CPC (Google/Facebook)</span><span class="val">18 <small style="color:#64748b;font-weight:400">(41%)</small></span></div>
+        <div class="breakdown-row"><span>Bloggers / Influencers</span><span class="val">8 <small style="color:#64748b;font-weight:400">(18%)</small></span></div>
+        <div class="breakdown-row"><span>CRM (email/WhatsApp)</span><span class="val">7 <small style="color:#64748b;font-weight:400">(16%)</small></span></div>
+        <div class="breakdown-row"><span>SMM (Organic Social)</span><span class="val">3 <small style="color:#64748b;font-weight:400">(7%)</small></span></div>
+        <div class="breakdown-row"><span>Partnerships</span><span class="val">1 <small style="color:#64748b;font-weight:400">(2%)</small></span></div>
+        <div class="breakdown-row"><span>Sem UTM</span><span class="val">7 <small style="color:#64748b;font-weight:400">(16%)</small></span></div>
+      </div>
+      <div class="breakdown-card">
+        <h4>🎨 Top Criativos / Influencers (Bloggers)</h4>
+        <div class="breakdown-row"><span>nerdsdenegocios (YouTube)</span><span class="val">3 leads</span></div>
+        <div class="breakdown-row"><span>patriciavogtt (Instagram)</span><span class="val">1 lead</span></div>
+        <div class="breakdown-row"><span>attekitadev (YouTube)</span><span class="val">1 lead</span></div>
+        <div class="breakdown-row"><span>pablofakirr (Instagram)</span><span class="val">1 lead</span></div>
+        <div class="breakdown-row"><span>pajoaventuras (Instagram)</span><span class="val">1 lead</span></div>
+        <div class="breakdown-row"><span>nosdoisemcasa (Instagram)</span><span class="val">1 lead</span></div>
+      </div>
+      <div class="breakdown-card">
+        <h4>📚 Cursos — Reuniões Atendidas</h4>
+        <div class="breakdown-row"><span>DA (Data Analytics)</span><span class="val">10</span></div>
+        <div class="breakdown-row"><span>QA (Quality Assurance)</span><span class="val">9</span></div>
+        <div class="breakdown-row"><span>WD (Web Development)</span><span class="val">8</span></div>
+        <div class="breakdown-row"><span>DS (Data Science)</span><span class="val">5</span></div>
+        <div class="breakdown-row"><span>MBA AI</span><span class="val">4</span></div>
+        <div class="breakdown-row"><span>MBA DS</span><span class="val">3</span></div>
+        <div class="breakdown-row"><span>MBA DA / career-webinar</span><span class="val">2+1</span></div>
+      </div>
+      <div class="breakdown-card">
+        <h4>⏱️ Ciclo de Atendimento</h4>
+        <div class="ciclo-grid" style="margin-top:8px">
+          <div class="ciclo-item"><div class="ciclo-count">22</div><div class="ciclo-label">Mesmo dia</div></div>
+          <div class="ciclo-item"><div class="ciclo-count">11</div><div class="ciclo-label">1–3 dias</div></div>
+          <div class="ciclo-item"><div class="ciclo-count">8</div><div class="ciclo-label">4–7 dias</div></div>
+          <div class="ciclo-item"><div class="ciclo-count">3</div><div class="ciclo-label">8+ dias</div></div>
+        </div>
+      </div>
     </div>
   </div>
 
 </div>
 
-<!-- ====== ABA VENDAS ====== -->
-<div id="tab-vendas" class="tab-content">
-
-  <div class="kpi-grid">
-    <div class="kpi-card green"><div class="kpi-value">1</div><div class="kpi-label">Venda Fechada</div><div class="kpi-sub">MBA DS · SMM</div></div>
-    <div class="kpi-card"><div class="kpi-value">19</div><div class="kpi-label">Em Aberto</div><div class="kpi-sub">follow-up necessário</div></div>
-    <div class="kpi-card red"><div class="kpi-value">2</div><div class="kpi-label">Closed-Lost</div><div class="kpi-sub">Yasmin · Thiago</div></div>
-    <div class="kpi-card purple"><div class="kpi-value">6</div><div class="kpi-label">Potencial A</div><div class="kpi-sub">payable + score ≥5</div></div>
-    <div class="kpi-card teal"><div class="kpi-value">10</div><div class="kpi-label">Potencial B</div><div class="kpi-sub">payable ou score ≥3</div></div>
-    <div class="kpi-card orange"><div class="kpi-value">6</div><div class="kpi-label">Potencial C</div><div class="kpi-sub">demais</div></div>
-  </div>
+<!-- ==================== ABA VENDAS ==================== -->
+<div class="content" id="tab-vendas">
 
   <div class="section">
-    <div class="section-title">👥 Performance por Closer</div>
-    <div class="table-wrap">
-      <table><thead><tr><th>Closer</th><th>Reuniões</th><th>Vendas</th><th>Lost</th><th>Aberto</th><th>Conv.%</th><th>Energia IA ✅</th><th>Resist. Lead 🔴</th><th>Duração Média</th><th>Cursos</th></tr></thead>
-      <tbody id="closer-tbody"></tbody></table>
+    <div class="kpi-grid">
+      <div class="kpi green">
+        <div class="kpi-value">1</div>
+        <div class="kpi-label">Vendas</div>
+        <div class="kpi-sub">Allef G. · WD</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-value">41</div>
+        <div class="kpi-label">Em Aberto</div>
+        <div class="kpi-sub">stage attended</div>
+      </div>
+      <div class="kpi red">
+        <div class="kpi-value">2</div>
+        <div class="kpi-label">Lost Hoje</div>
+        <div class="kpi-sub">Vitor R. · Barbara C.</div>
+      </div>
+      <div class="kpi green">
+        <div class="kpi-value">10</div>
+        <div class="kpi-label">Potencial A</div>
+        <div class="kpi-sub">prioridade máxima</div>
+      </div>
+      <div class="kpi orange">
+        <div class="kpi-value">23</div>
+        <div class="kpi-label">Potencial B</div>
+        <div class="kpi-sub">trabalhar com atenção</div>
+      </div>
+      <div class="kpi teal">
+        <div class="kpi-value">37</div>
+        <div class="kpi-label">Calls Gravadas</div>
+        <div class="kpi-sub">análise Elephan</div>
+      </div>
     </div>
   </div>
 
+  <!-- Performance Closers -->
+  <div class="section">
+    <div class="section-title">Performance por Closer — Ontem (Elephan)</div>
+    <div class="closer-grid" id="closer-grid"></div>
+  </div>
+
+  <!-- Ranking Potencial -->
   <div class="section">
     <div class="section-title">🏆 Ranking de Potencial de Fechamento</div>
-    <p style="color:#6b7280;font-size:12px;margin-bottom:12px;">Priorize o follow-up A → B → C. Passe o mouse sobre o resumo para ver análise da call.</p>
     <div class="table-wrap">
-      <table><thead><tr><th>#</th><th>Lead</th><th>Closer</th><th>Curso</th><th>Pot.</th><th>Payable</th><th>Score</th><th>Temp</th><th>Duração</th><th>Sentimento Lead</th><th>Ação</th></tr></thead>
-      <tbody id="ranking-tbody"></tbody></table>
+      <table>
+        <thead>
+          <tr><th>Lead</th><th>Curso</th><th>Potencial</th><th>Score</th><th>Payable</th><th>Temp</th><th>Priority</th><th>Ação Recomendada</th></tr>
+        </thead>
+        <tbody id="tbl-potencial-body"></tbody>
+      </table>
     </div>
   </div>
 
+  <!-- Elephan Calls -->
   <div class="section">
-    <div class="section-title">🎙️ Análise Elephan — Calls do dia</div>
-    <p style="color:#6b7280;font-size:12px;margin-bottom:12px;">15/22 reuniões com transcrição. Passe o mouse sobre 💬 para ver resumo da call.</p>
+    <div class="section-title">📞 Análise de Calls — Elephan (12/08/2026)</div>
     <div class="table-wrap">
-      <table><thead><tr><th>Closer</th><th>Lead</th><th>Duração</th><th>Resultado</th><th>Energia Closer ✅</th><th>Resistência Lead 🔴</th><th>Resumo</th></tr></thead>
-      <tbody id="elephan-tbody"></tbody></table>
+      <table>
+        <thead>
+          <tr><th>Closer</th><th>Lead / Call</th><th>Duração</th><th>Resultado</th><th>Energia Closer</th><th>Resistência Lead</th><th>Resumo</th></tr>
+        </thead>
+        <tbody id="tbl-elephan-body"></tbody>
+      </table>
     </div>
   </div>
 
+  <!-- Alertas -->
   <div class="section">
     <div class="section-title">🚨 Alertas Críticos</div>
-    <div id="alertas-container"></div>
+    <div id="alerts-container"></div>
   </div>
 
+  <!-- Recomendações -->
   <div class="section">
-    <div class="section-title">💡 Recomendações</div>
-    <ul class="rec-list" id="rec-list"></ul>
+    <div class="section-title">💡 Recomendações de Treinamento e Ação</div>
+    <div class="rec-card">
+      <div class="rec-title">🎯 Follow-up Imediato — Potencial A</div>
+      <div class="rec-body">10 leads com Potencial A aguardam contato: <strong>Suelane ramos</strong> (score 8, DA), <strong>Jamile Fabre</strong> (score 8, DA, CRM), <strong>nikolas bezerra da silva</strong> (score 6, MBA DS, Quente) e <strong>Lucas Menezes</strong> (score 6, DS) são os mais urgentes. Acionar closers responsáveis para follow-up hoje.</div>
+    </div>
+    <div class="rec-card">
+      <div class="rec-title">⚠️ No-Shows High Priority — Reagendar Hoje</div>
+      <div class="rec-body">13 no-shows com priority HIGH: <strong>Josias pacheco</strong> (score 5), <strong>Ezequiel Barbosa</strong> (score 6), <strong>Leonardo Cavani</strong> (score 5) e <strong>Gabriel Hilario</strong> (score 4) são os mais quentes. Sugerir horários alternativos via WhatsApp ainda hoje.</div>
+    </div>
+    <div class="rec-card">
+      <div class="rec-title">📈 Gabriel Morial — Calls Longas, Atenção ao Ciclo</div>
+      <div class="rec-body">Gabriel Morial teve a maior call do dia: <strong>98 minutos</strong> com Alessandro (MBA DS). Calls muito longas podem indicar dificuldade de fechamento ou objeções não resolvidas. Revisar gravação e identificar padrão de objeções para treinamento.</div>
+    </div>
+    <div class="rec-card">
+      <div class="rec-title">🌟 Lucas Bonow — Maior Energia do Dia</div>
+      <div class="rec-body">Lucas Bonow apresentou a maior energia positiva entre os closers (72%). Recomendar que compartilhe técnicas de rapport e abertura com o time em reunião semanal. Calls de referência: Nadine Almada (33min) e Gabriel Santos (34min).</div>
+    </div>
+    <div class="rec-card">
+      <div class="rec-title">📣 CPC dominante, mas Bloggers converte well</div>
+      <div class="rec-body">CPC representa 41% das reuniões atendidas mas bloggers <strong>nerdsdenegocios</strong> gerou 3 leads atendidos com payable Yes em <strong>nerdsdenegocios</strong>. Aumentar verba em influencers com ROI comprovado. SMM orgânico (3 leads) também apresenta boa qualidade — explorar reels com depoimentos.</div>
+    </div>
   </div>
 
 </div>
 
 <script>
-const STAGE_MAP = {"245556940": "CALL BOOKED", "232615397": "RESPONSIBLE APPOINTED", "2960105688": "HIGH SCORE", "232615398": "TAKEN TO WORK", "232615399": "CONTACT ESTABLISHED", "232615400": "MEETING SCHEDULED", "245556944": "MEETING/WEBINAR ATTENDED", "232615401": "SUCCESSFUL PAYMENT", "232615402": "CLOSED-LOST", "4570449117": "REACTIVATION – 3RD LINE", "245556943": "MEETING NOT ATTENDED"};
-const attended = [{"dealname": "Yasmin Borba", "closer": "João  Oliveira", "course": "DS", "utm_medium": "crm", "utm_content": "general_database_engaged-11082026", "priority": "high", "score": "4", "temp": "Morno", "payable": "No", "stage": "232615402", "createdate": 1786456024872, "att": 1786479572595, "duration_min": 62.8, "sent_pos": 72, "sent_neu": 28, "sent_neg": 0, "summary": "1. Criação de Rapport e Abordagem Inicial:   - O consultor, João, iniciou a conversa com uma saudação profissional, mantendo um tom acolhedor e amigável ao longo da interação.   - Rapidamente identificou problemas técnicos (o microfone de Yasmin estava mudo) e os tratou com leveza para promover conforto.   - Yasmin demonstrou receptividade, inclusive agradecendo o atendimento ao final, evidenciand", "potential": "B"}, {"dealname": "Raphael Barroso", "closer": "Bruno Marques", "course": "DA", "utm_medium": "cpc", "utm_content": "cid--120244104557520637_adset--online-co", "priority": "high", "score": "4", "temp": "Morno", "payable": "No", "stage": "245556944", "createdate": 1786446301477, "att": 1786463260163, "duration_min": 47.4, "sent_pos": 29, "sent_neu": 56, "sent_neg": 16, "summary": "Resumo Analítico da Conversa1. Nome do Lead e Contexto Inicial   - Nome do Lead: Rafael.   - Momento de vida: Está na fase final da graduação em Gestão de Recursos Humanos (2 anos de curso). Desejo de mudar de área para tecnologia devido à percepção de demanda crescente e possibilidade de liberdade financeira.   - Primeira impressão: Muito interessado em transformar sua realidade e com mentalidade", "potential": "B"}, {"dealname": "Igor Rodrigues Silva", "closer": "Vinicius Leao", "course": "DA", "utm_medium": "bloggers", "utm_content": "nerdsdenegocios", "priority": "medium", "score": "", "temp": "Morno", "payable": "No", "stage": "245556944", "createdate": 1785941292139, "att": 1786484529410, "duration_min": 33.7, "sent_pos": 54, "sent_neu": 38, "sent_neg": 8, "summary": "1. Criação de Rapport:   - O consultor iniciou a conversa de forma descontraída, elogiando Brasília e a arquitetura local, criando um ambiente acolhedor para o lead, Igor.    - O tom demonstrou profissionalismo e simpatia, facilitando a aproximação e a criação de conexão.2. Estratégias Quebra-Gelo e Apresentação Inicial:   - O consultor se apresentou como Vinícius, consultor de carreiras da Triple", "potential": "C"}, {"dealname": "Marcela Vieira", "closer": "Jessica Silva", "course": "QA", "utm_medium": "", "utm_content": "", "priority": "medium", "score": "", "temp": "Morno", "payable": "No", "stage": "245556944", "createdate": 1786018384905, "att": 1786467155853, "duration_min": 45.1, "sent_pos": 38, "sent_neu": 44, "sent_neg": 18, "summary": "1. Criação de rapport e quebra-gelo inicial:   - O consultor Jéssica foi amigável e empático desde o início, o que ajudou a criar uma atmosfera confortável. O lead, Marcela, demonstrou receptividade à abordagem calorosa.   - O consultor buscou trazer histórias pessoais (exemplo: rotina como confeiteira em Alagoas) para se conectar com a dor da Marcela no trabalho físico intenso, criando um ambient", "potential": "C"}, {"dealname": "Caio Felicio", "closer": "Veronica Rocha", "course": "MBA DS", "utm_medium": "bloggers", "utm_content": "attekitadev", "priority": "medium", "score": "3", "temp": "Morno", "payable": "No", "stage": "245556944", "createdate": 1786421275023, "att": 1786466449714, "duration_min": 39.4, "sent_pos": 70, "sent_neu": 29, "sent_neg": 1, "summary": "1. Criação de Rapport e Quebra-Gelo   - A conversa iniciou de forma cordial e com um tom acolhedor. Verônica se apresentou como consultora de admissão da TripleTen e explicou brevemente seu papel e o motivo da ligação.   - De forma natural, pediu para o lead, Caio, falar sobre sua rotina e experiências profissionais, criando um ambiente agradável e propício para diálogo.   - A abordagem foi cuidad", "potential": "B"}, {"dealname": "marcia santos", "closer": "Bruno Marques", "course": "QA", "utm_medium": "cpc", "utm_content": "cid--120245660345700637_adset--online-co", "priority": "medium", "score": "-1", "temp": "Morno", "payable": "No", "stage": "245556944", "createdate": 1786454968750, "att": 1786463723734, "duration_min": 30.8, "sent_pos": 78, "sent_neu": 20, "sent_neg": 3, "summary": "Extensão não funcionou nem para tentar gravar e nem para convocar o notetaker. Acabei fazendo a gravação via google meet, mas até a lead aceitar, deixamos de gravar os minutos iniciais da consultoria1. Criação de rapport e utilização de quebra-gelos     - O consultor utilizou um tom acolhedor e descontraído desde o início da conversa, inserindo brincadeiras e mostrando interesse genuíno pela exper", "potential": "C"}, {"dealname": "mariana ferreira", "closer": "Erick Paiva", "course": "DA", "utm_medium": "bloggers", "utm_content": "patriciavogtt", "priority": "medium", "score": "3", "temp": "Frio", "payable": "Yes", "stage": "245556944", "createdate": 1786406540514, "att": 1786476617796, "duration_min": 55.6, "sent_pos": 23, "sent_neu": 74, "sent_neg": 4, "summary": "1. Criação de Rapport:   - A conversa começou de forma descontraída e fluida, com troca de saudações amistosas entre o consultor (Eric) e o prospect (Mariana).    - O consultor rapidamente estabeleceu conexão ao perguntar sobre a experiência anterior de Mariana com mentoria de carreira e, mais tarde, ao mencionar que ambos estavam no Rio de Janeiro, chegando a sugerir locais interessantes no bairr", "potential": "B"}, {"dealname": "Gabriel Palma", "closer": "Erick Paiva", "course": "WD", "utm_medium": "cpc", "utm_content": "cid--23330113426_gid--186532386421_netwo", "priority": "medium", "score": "0", "temp": "Morno", "payable": "Yes", "stage": "245556944", "createdate": 1786420088820, "att": 1786460228117, "duration_min": 54.3, "sent_pos": 53, "sent_neu": 47, "sent_neg": 0, "summary": "1. Criação de Rapport e Primeira Impressão:   - A saudação inicial foi descontraída e acolhedora, criando um ambiente amigável e informal. O consultor demonstrou interesse genuíno pelo lead, fazendo perguntas pessoais sobre sua rotina, idade, localização e contexto familiar, sempre com elogios para reforçar a confiança. A interação foi fluida e mostrou bom nível de profissionalismo e preparo.2. Pe", "potential": "B"}, {"dealname": "Thiago Silva", "closer": "Closer N", "course": "MBA DA", "utm_medium": "cpc", "utm_content": "cid--120249066341450637_adset--online-po", "priority": "high", "score": "4", "temp": "Frio", "payable": "No", "stage": "232615402", "createdate": 1786409700044, "att": 1786468184868, "duration_min": 0, "sent_pos": 0, "sent_neu": 0, "sent_neg": 0, "summary": "", "potential": "B"}, {"dealname": "Paula Cristina mariot de Souza", "closer": "Yanara Silva", "course": "MBA AI", "utm_medium": "smm", "utm_content": "link_in_bio", "priority": "medium", "score": "0", "temp": "Morno", "payable": "No", "stage": "245556944", "createdate": 1785063590035, "att": 1786448101637, "duration_min": 31.1, "sent_pos": 40, "sent_neu": 59, "sent_neg": 0, "summary": "1. Criação de Rapport:   - A consultora Yanara começou com uma abordagem amigável e mostrou profissionalismo ao se apresentar e confirmar se a lead, Paula, conseguia ouvi-la bem.   - Ela estabeleceu uma conexão ao perguntar sobre a localização de Paula (Santa Catarina) e comentou sobre o clima, promovendo uma interação mais descontraída e criando proximidade.   - Yanara demonstrou empatia ao aceit", "potential": "C"}, {"dealname": "Lucas Trajano", "closer": "Closer I", "course": "MBA DS", "utm_medium": "smm", "utm_content": "", "priority": "medium", "score": "", "temp": "Quente", "payable": "Yes", "stage": "232615401", "createdate": 1785894013924, "att": 1786494559123, "duration_min": 0, "sent_pos": 0, "sent_neu": 0, "sent_neg": 0, "summary": "", "potential": "B"}, {"dealname": "Rosane Kupka", "closer": "Closer J", "course": "DA", "utm_medium": "cpc", "utm_content": "cid--120244104557520637_adset--online-co", "priority": "medium", "score": "2", "temp": "Frio", "payable": "No", "stage": "245556944", "createdate": 1786420875470, "att": 1786491732044, "duration_min": 0, "sent_pos": 0, "sent_neu": 0, "sent_neg": 0, "summary": "", "potential": "C"}, {"dealname": "Jessica Quini", "closer": "Closer F", "course": "DS", "utm_medium": "", "utm_content": "", "priority": "high", "score": "4", "temp": "Quente", "payable": "Yes", "stage": "245556944", "createdate": 1786454184137, "att": 1786466729789, "duration_min": 0, "sent_pos": 0, "sent_neu": 0, "sent_neg": 0, "summary": "", "potential": "B"}, {"dealname": "Chauanny Vitória Medeiros", "closer": "Closer F", "course": "MBA DS", "utm_medium": "crm", "utm_content": "brazil_closed-lost_was-at-ma_this-year_m", "priority": "medium", "score": "", "temp": "Quente", "payable": "Yes", "stage": "245556944", "createdate": 1785852899660, "att": 1786454027140, "duration_min": 0, "sent_pos": 0, "sent_neu": 0, "sent_neg": 0, "summary": "", "potential": "B"}, {"dealname": "Cleyton Alves Santos", "closer": "Raphael  Soares Luna", "course": "QA", "utm_medium": "bloggers", "utm_content": "nerdsdenegocios", "priority": "medium", "score": "", "temp": "Morno", "payable": "No", "stage": "245556944", "createdate": 1786474982445, "att": 1786482384718, "duration_min": 33.0, "sent_pos": 61, "sent_neu": 39, "sent_neg": 1, "summary": "1. Criação de Rapport   - O consultor iniciou com uma conversa descontraída, mencionando Uberlândia e criando uma conexão com o lead de forma leve. O tom era amistoso e casual, o que contribuiu para uma aproximação maior com o Cleiton.   - Utilizou-se de expressões coloquiais e demonstrou interesse pela realidade e pelos desafios do lead, o que manteve a conversa fluida.2. Perfil e Momento de Carr", "potential": "C"}, {"dealname": "Gabriella Rachid", "closer": "Jessica Silva", "course": "DA", "utm_medium": "partnerships", "utm_content": "CTI", "priority": "high", "score": "3", "temp": "Quente", "payable": "No", "stage": "245556944", "createdate": 1786468095873, "att": 1786489882598, "duration_min": 52.0, "sent_pos": 31, "sent_neu": 58, "sent_neg": 12, "summary": "1. Criação de Rapport:   - A consultora Jéssica iniciou a conversa de forma acolhedora e profissional, buscando criar um vínculo descontraído com Gabriela (\\\"Gabi\\\").   - Identificou-se como consultora de desenvolvimento de carreiras da TripleTen e expressou interesse genuíno em ajudar Gabi em seu momento de transição de carreira.   - A troca de experiências pessoais (como o histórico em pedagogia d", "potential": "B"}, {"dealname": "Jean Carlo Dos Santos", "closer": "Closer K", "course": "DS", "utm_medium": "smm", "utm_content": "link_in_bio", "priority": "high", "score": "3", "temp": "Frio", "payable": "Yes", "stage": "245556944", "createdate": 1786392655153, "att": 1786470639867, "duration_min": 0, "sent_pos": 0, "sent_neu": 0, "sent_neg": 0, "summary": "", "potential": "B"}, {"dealname": "Jhonatan pulido Zamora", "closer": "Vinicius Leao", "course": "DA", "utm_medium": "cpc", "utm_content": "cid--23330113426_gid--186532386421_netwo", "priority": "high", "score": "3", "temp": "Morno", "payable": "No", "stage": "245556944", "createdate": 1786030695293, "att": 1786481785928, "duration_min": 50.8, "sent_pos": 55, "sent_neu": 38, "sent_neg": 7, "summary": "1. Criação de rapport e quebra-gelo inicial:   - O consultor iniciou a conversa buscando criar uma conexão pessoal ao mencionar eventos climáticos recentes e estabelecer pontos em comum. O tom foi leve, amigável e profissional, o que ajudou a estabelecer um ambiente receptivo para a continuidade da conversa.2. Identificação do perfil do lead - Jonathan:   - Jonathan tem 14-15 anos de experiência n", "potential": "B"}, {"dealname": "Jadson pereira da silva", "closer": "Bernardo Magalhaes", "course": "WD", "utm_medium": "smm", "utm_content": "", "priority": "high", "score": "5", "temp": "Morno", "payable": "Yes", "stage": "245556944", "createdate": 1786462279682, "att": 1786487286429, "duration_min": 63.5, "sent_pos": 37, "sent_neu": 56, "sent_neg": 7, "summary": "1. Apresentação do consultor e objetivo da conversa     - Bernardo, consultor da Tipo10 com 9 anos de experiência em programação, destacou o objetivo do encontro: compreender os objetivos profissionais, entender a jornada do Jadson e auxiliá-lo no processo de transição para a área de tecnologia, considerando suas experiências atuais.2. Situação atual e interesses de Jadson     - Jadson atua como a", "potential": "A"}, {"dealname": "Ian Leonardo", "closer": "Erick Paiva", "course": "DA", "utm_medium": "cpc", "utm_content": "cid--120245660345700637_adset--online-co", "priority": "high", "score": "4", "temp": "Morno", "payable": "No", "stage": "245556944", "createdate": 1786476016143, "att": 1786490819877, "duration_min": 41.3, "sent_pos": 52, "sent_neu": 39, "sent_neg": 9, "summary": "1. Criação de Rapport:   - O consultor, Eric, iniciou a conversa com efetividade na criação de empatia. Ele fez perguntas pessoais (local onde moro, situação no momento da ligação, relação com namorada) e usou o fato de ambos serem do Rio de Janeiro para criar um ambiente confortável.   - Teve muito cuidado em usar saudações calorosas e reforçar o interesse em apoiar o lead com a transição de carr", "potential": "B"}, {"dealname": "Marcela", "closer": "Closer H", "course": "DA", "utm_medium": "cpc", "utm_content": "cid--120245660345700637_adset--online-co", "priority": "high", "score": "5", "temp": "Morno", "payable": "No", "stage": "245556944", "createdate": 1786471778593, "att": 1786479337565, "duration_min": 0, "sent_pos": 0, "sent_neu": 0, "sent_neg": 0, "summary": "", "potential": "B"}, {"dealname": "VINICIUS SIMOES", "closer": "Bruno Marques", "course": "DA", "utm_medium": "bloggers", "utm_content": "nerdsdenegocios", "priority": "medium", "score": "3", "temp": "Morno", "payable": "No", "stage": "245556944", "createdate": 1785949346519, "att": 1786473241159, "duration_min": 26.3, "sent_pos": 37, "sent_neu": 57, "sent_neg": 7, "summary": "1. Criação de Rapport e Estratégias de Quebra-Gelo Utilizadas:   - O consultor iniciou o diálogo de forma descontraída, mencionando informações pessoais, como a conversa anterior com a Letícia e detalhes sobre a rotina do lead, demonstrando engajamento e atenção à jornada do prospect.   - Mencionou a indicação do influenciador Peter (Nerd do Negócio), o que mostrou conhecimento sobre o ponto de co", "potential": "B"}];
-const noshows = [{"dealname": "Micaele", "utm_medium": "", "utm_content": "", "priority": "medium", "score": "", "course": "", "createdate": "05/08/2026", "stage": "MEETING NOT ATTENDED"}, {"dealname": "Maryna", "utm_medium": "smm", "utm_content": "", "priority": "high", "score": "7", "course": "DS", "createdate": "10/08/2026", "stage": "CLOSED-LOST"}, {"dealname": "Kaique De Souza Mendss", "utm_medium": "cpc", "utm_content": "", "priority": "medium", "score": "1", "course": "DS", "createdate": "05/08/2026", "stage": "MEETING NOT ATTENDED"}, {"dealname": "Evandro Nilo Costa", "utm_medium": "crm", "utm_content": "general_database_engaged-05082026", "priority": "medium", "score": "-1", "course": "DS", "createdate": "10/08/2026", "stage": "MEETING NOT ATTENDED"}, {"dealname": "Thiago Mina", "utm_medium": "teste", "utm_content": "variacao_a", "priority": "high", "score": "3", "course": "MBA DS", "createdate": "10/08/2026", "stage": "CLOSED-LOST"}, {"dealname": "Fred Garcia", "utm_medium": "smm", "utm_content": "link_in_bio", "priority": "medium", "score": "2", "course": "", "createdate": "04/08/2026", "stage": "MEETING SCHEDULED"}, {"dealname": "Esaú Gomes", "utm_medium": "", "utm_content": "", "priority": "high", "score": "4", "course": "WD", "createdate": "10/08/2026", "stage": "CLOSED-LOST"}, {"dealname": "Vitória Maciel De Araujo", "utm_medium": "crm", "utm_content": "da_leads-10082026", "priority": "high", "score": "8", "course": "DS", "createdate": "10/08/2026", "stage": "CONTACT ESTABLISHED"}, {"dealname": "Paulo Luiz", "utm_medium": "bloggers", "utm_content": "pajoaventuras", "priority": "medium", "score": "3", "course": "DS", "createdate": "11/08/2026", "stage": "CONTACT ESTABLISHED"}, {"dealname": "Gabrielle Ribeiro", "utm_medium": "crm", "utm_content": "brazil_brazil_high-priority_was-not-at-c", "priority": "high", "score": "3", "course": "DS", "createdate": "06/08/2026", "stage": "CLOSED-LOST"}];
-const closers = [{"name": "Bruno Marques", "reunioes": 3, "vendas": 0, "lost": 0, "aberto": 3, "avg_pos": 48, "avg_neg": 9, "avg_dur": 34.8, "courses": ["DA", "QA"]}, {"name": "Erick Paiva", "reunioes": 3, "vendas": 0, "lost": 0, "aberto": 3, "avg_pos": 43, "avg_neg": 4, "avg_dur": 50.4, "courses": ["WD", "DA"]}, {"name": "Vinicius Leao", "reunioes": 2, "vendas": 0, "lost": 0, "aberto": 2, "avg_pos": 54, "avg_neg": 8, "avg_dur": 42.2, "courses": ["DA"]}, {"name": "Jessica Silva", "reunioes": 2, "vendas": 0, "lost": 0, "aberto": 2, "avg_pos": 34, "avg_neg": 15, "avg_dur": 48.5, "courses": ["DA", "QA"]}, {"name": "Closer F", "reunioes": 2, "vendas": 0, "lost": 0, "aberto": 2, "avg_pos": 0, "avg_neg": 0, "avg_dur": 0.0, "courses": ["DS", "MBA DS"]}, {"name": "João  Oliveira", "reunioes": 1, "vendas": 0, "lost": 1, "aberto": 0, "avg_pos": 72, "avg_neg": 0, "avg_dur": 62.8, "courses": ["DS"]}, {"name": "Veronica Rocha", "reunioes": 1, "vendas": 0, "lost": 0, "aberto": 1, "avg_pos": 70, "avg_neg": 1, "avg_dur": 39.4, "courses": ["MBA DS"]}, {"name": "Raphael  Soares Luna", "reunioes": 1, "vendas": 0, "lost": 0, "aberto": 1, "avg_pos": 61, "avg_neg": 1, "avg_dur": 33.0, "courses": ["QA"]}, {"name": "Yanara Silva", "reunioes": 1, "vendas": 0, "lost": 0, "aberto": 1, "avg_pos": 40, "avg_neg": 0, "avg_dur": 31.1, "courses": ["MBA AI"]}, {"name": "Bernardo Magalhaes", "reunioes": 1, "vendas": 0, "lost": 0, "aberto": 1, "avg_pos": 37, "avg_neg": 7, "avg_dur": 63.5, "courses": ["WD"]}, {"name": "Closer N", "reunioes": 1, "vendas": 0, "lost": 1, "aberto": 0, "avg_pos": 0, "avg_neg": 0, "avg_dur": 0.0, "courses": ["MBA DA"]}, {"name": "Closer I", "reunioes": 1, "vendas": 1, "lost": 0, "aberto": 0, "avg_pos": 0, "avg_neg": 0, "avg_dur": 0.0, "courses": ["MBA DS"]}, {"name": "Closer J", "reunioes": 1, "vendas": 0, "lost": 0, "aberto": 1, "avg_pos": 0, "avg_neg": 0, "avg_dur": 0.0, "courses": ["DA"]}, {"name": "Closer K", "reunioes": 1, "vendas": 0, "lost": 0, "aberto": 1, "avg_pos": 0, "avg_neg": 0, "avg_dur": 0.0, "courses": ["DS"]}, {"name": "Closer H", "reunioes": 1, "vendas": 0, "lost": 0, "aberto": 1, "avg_pos": 0, "avg_neg": 0, "avg_dur": 0.0, "courses": ["DA"]}];
-const stageDist = {"CLOSED-LOST": 26, "TAKEN TO WORK": 162, "MEETING SCHEDULED": 23, "RESPONSIBLE APPOINTED": 49, "CONTACT ESTABLISHED": 22, "HIGH SCORE": 6, "MEETING/WEBINAR ATTENDED": 8, "CALL BOOKED": 4};
-const utmMedium = {"N/A": 26, "cpc": 137, "bloggers": 66, "crm": 13, "smm": 57, "partnerships": 1};
-const utmContent = {"Meta/Instagram_Reels": 59, "pajoaventuras": 33, "Meta/Instagram_Feed": 31, "Meta/Instagram_Stories": 26, "link_in_bio": 26, "nerdsdenegocios": 13, "Google/Search": 11, "Meta/Facebook_Mobile_Feed": 5, "general_database_engaged-11082026": 4, "brazil_closed-lost_not-at-ma_2-deals_las": 4};
+const attendedData = [{"name": "Alessandro", "course": "MBA DS", "utm_medium": "cpc", "utm_content": "Google CPC", "score": 4, "priority": "high", "temp": "Morno", "payable": "No", "cycle": 0, "stage": "245556944", "stage_name": "MEETING ATTENDED", "potencial": "B"}, {"name": "Allef Guimarães", "course": "WD", "utm_medium": "cpc", "utm_content": "Instagram Stories", "score": 3, "priority": "high", "temp": "Quente", "payable": "Yes", "cycle": 0, "stage": "232615401", "stage_name": "SUCCESSFUL PAYMENT", "potencial": "A"}, {"name": "DOUGLAS COSTA MARTINS", "course": "QA", "utm_medium": "crm", "utm_content": "general_database_engaged", "score": 3, "priority": "medium", "temp": "Morno", "payable": "No", "cycle": 1, "stage": "245556944", "stage_name": "MEETING ATTENDED", "potencial": "B"}, {"name": "Filipe Kroetz", "course": "DA", "utm_medium": "smm", "utm_content": "", "score": 0, "priority": "medium", "temp": "Morno", "payable": "Yes", "cycle": 1, "stage": "245556944", "stage_name": "MEETING ATTENDED", "potencial": "B"}, {"name": "Wilian Bugnhaki", "course": "MBA DA", "utm_medium": "cpc", "utm_content": "Instagram Reels", "score": 3, "priority": "medium", "temp": "Morno", "payable": "No", "cycle": 1, "stage": "245556944", "stage_name": "MEETING ATTENDED", "potencial": "B"}, {"name": "Lucas", "course": "DA", "utm_medium": "cpc", "utm_content": "Google CPC", "score": null, "priority": "medium", "temp": "Morno", "payable": "No", "cycle": 0, "stage": "245556944", "stage_name": "MEETING ATTENDED", "potencial": "C"}, {"name": "Fernando Cobo", "course": "WD", "utm_medium": "bloggers", "utm_content": "nerdsdenegocios", "score": null, "priority": "medium", "temp": "Morno", "payable": "Yes", "cycle": 7, "stage": "245556944", "stage_name": "MEETING ATTENDED", "potencial": "B"}, {"name": "Roberth William", "course": "DA", "utm_medium": "cpc", "utm_content": "Google CPC", "score": 4, "priority": "high", "temp": "Morno", "payable": "No", "cycle": 0, "stage": "245556944", "stage_name": "MEETING ATTENDED", "potencial": "B"}, {"name": "Suelane ramos", "course": "DA", "utm_medium": "", "utm_content": "", "score": 8, "priority": "high", "temp": "Morno", "payable": "Yes", "cycle": 1, "stage": "245556944", "stage_name": "MEETING ATTENDED", "potencial": "A"}, {"name": "Nadine Almada", "course": "WD", "utm_medium": "bloggers", "utm_content": "patriciavogtt", "score": null, "priority": "medium", "temp": "Morno", "payable": "Yes", "cycle": 1, "stage": "245556944", "stage_name": "MEETING ATTENDED", "potencial": "B"}, {"name": "Priscilla Jeane", "course": "QA", "utm_medium": "", "utm_content": "", "score": 5, "priority": "high", "temp": "Morno", "payable": "No", "cycle": 0, "stage": "245556944", "stage_name": "MEETING ATTENDED", "potencial": "A"}, {"name": "Bruno Inácio", "course": "DA", "utm_medium": "bloggers", "utm_content": "nerdsdenegocios", "score": 4, "priority": "high", "temp": "Morno", "payable": "Yes", "cycle": 0, "stage": "245556944", "stage_name": "MEETING ATTENDED", "potencial": "B"}, {"name": "Edivaldo Cabral", "course": "DA", "utm_medium": "cpc", "utm_content": "Instagram Stories", "score": 4, "priority": "high", "temp": "Morno", "payable": "No", "cycle": 0, "stage": "245556944", "stage_name": "MEETING ATTENDED", "potencial": "B"}, {"name": "ESTER CRISTINA", "course": "DS", "utm_medium": "crm", "utm_content": "general_database_sleepers", "score": 0, "priority": "medium", "temp": "Morno", "payable": "Yes", "cycle": 1, "stage": "245556944", "stage_name": "MEETING ATTENDED", "potencial": "B"}, {"name": "Luciene Ferreira", "course": "QA", "utm_medium": "cpc", "utm_content": "Instagram Reels", "score": null, "priority": "medium", "temp": "Frio", "payable": "No", "cycle": 0, "stage": "245556944", "stage_name": "MEETING ATTENDED", "potencial": "C"}, {"name": "nikolas bezerra da silva", "course": "MBA DS", "utm_medium": "cpc", "utm_content": "Instagram Stories", "score": 6, "priority": "high", "temp": "Quente", "payable": "Yes", "cycle": 6, "stage": "245556944", "stage_name": "MEETING ATTENDED", "potencial": "A"}, {"name": "Renan Cardia", "course": "DS", "utm_medium": "cpc", "utm_content": "Instagram Stories", "score": 3, "priority": "high", "temp": "", "payable": "", "cycle": 0, "stage": "245556944", "stage_name": "MEETING ATTENDED", "potencial": "B"}, {"name": "Suzana Pereira", "course": "DA", "utm_medium": "crm", "utm_content": "high_priority_closed_lost", "score": null, "priority": "medium", "temp": "Quente", "payable": "Yes", "cycle": 1, "stage": "245556944", "stage_name": "MEETING ATTENDED", "potencial": "A"}, {"name": "Nicolas Chagas", "course": "WD", "utm_medium": "bloggers", "utm_content": "nerdsdenegocios", "score": 2, "priority": "medium", "temp": "Morno", "payable": "Yes", "cycle": 0, "stage": "245556944", "stage_name": "MEETING ATTENDED", "potencial": "B"}, {"name": "Gadiel Moura", "course": "WD", "utm_medium": "cpc", "utm_content": "Instagram Reels", "score": 4, "priority": "high", "temp": "Quente", "payable": "Yes", "cycle": 7, "stage": "245556944", "stage_name": "MEETING ATTENDED", "potencial": "A"}, {"name": "Enderson damazio", "course": "QA", "utm_medium": "cpc", "utm_content": "Instagram Reels", "score": 3, "priority": "high", "temp": "Quente", "payable": "Yes", "cycle": 0, "stage": "245556944", "stage_name": "MEETING ATTENDED", "potencial": "A"}, {"name": "Mairon Abner", "course": "MBA AI", "utm_medium": "cpc", "utm_content": "Instagram Stories", "score": 0, "priority": "medium", "temp": "Morno", "payable": "No", "cycle": 24, "stage": "245556944", "stage_name": "MEETING ATTENDED", "potencial": "C"}, {"name": "Ingrid Martins Silva", "course": "QA", "utm_medium": "bloggers", "utm_content": "pablofakirr", "score": -1, "priority": "medium", "temp": "Quente", "payable": "No", "cycle": 0, "stage": "245556944", "stage_name": "MEETING ATTENDED", "potencial": "C"}, {"name": "Everton Borges", "course": "career-webinar", "utm_medium": "cpc", "utm_content": "Instagram Reels", "score": -1, "priority": "medium", "temp": "Morno", "payable": "No", "cycle": 0, "stage": "245556944", "stage_name": "MEETING ATTENDED", "potencial": "C"}, {"name": "Tainá", "course": "DA", "utm_medium": "cpc", "utm_content": "Instagram Reels", "score": 2, "priority": "medium", "temp": "Morno", "payable": "No", "cycle": 0, "stage": "245556944", "stage_name": "MEETING ATTENDED", "potencial": "C"}, {"name": "Vitor Ribeiro", "course": "DA", "utm_medium": "cpc", "utm_content": "Google CPC", "score": 3, "priority": "high", "temp": "Frio", "payable": "No", "cycle": 2, "stage": "232615402", "stage_name": "CLOSED-LOST", "potencial": "C"}, {"name": "Gabriel Santos", "course": "DS", "utm_medium": "crm", "utm_content": "brazil_closed_lost_reactivation", "score": 4, "priority": "high", "temp": "Morno", "payable": "No", "cycle": 0, "stage": "245556944", "stage_name": "MEETING ATTENDED", "potencial": "B"}, {"name": "Pedro Vinicius Lima", "course": "WD", "utm_medium": "", "utm_content": "", "score": 3, "priority": "medium", "temp": "Morno", "payable": "Yes", "cycle": 0, "stage": "245556944", "stage_name": "MEETING ATTENDED", "potencial": "B"}, {"name": "Kelly Freitas", "course": "DS", "utm_medium": "crm", "utm_content": "high_priority_career_quiz", "score": 0, "priority": "high", "temp": "Frio", "payable": "No", "cycle": 7, "stage": "245556944", "stage_name": "MEETING ATTENDED", "potencial": "C"}, {"name": "Marianne Marangoni", "course": "QA", "utm_medium": "cpc", "utm_content": "Instagram Feed", "score": 3, "priority": "high", "temp": "Morno", "payable": "Yes", "cycle": 0, "stage": "245556944", "stage_name": "MEETING ATTENDED", "potencial": "B"}, {"name": "Lucas Menezes", "course": "DS", "utm_medium": "cpc", "utm_content": "Instagram Stories", "score": 6, "priority": "medium", "temp": "Morno", "payable": "Yes", "cycle": 1, "stage": "245556944", "stage_name": "MEETING ATTENDED", "potencial": "A"}, {"name": "Luis Tomasoni", "course": "MBA AI", "utm_medium": "bloggers", "utm_content": "attekitadev", "score": 2, "priority": "high", "temp": "Morno", "payable": "No", "cycle": 4, "stage": "245556944", "stage_name": "MEETING ATTENDED", "potencial": "C"}, {"name": "Paulo Vinicius Bertao", "course": "MBA AI", "utm_medium": "partnerships", "utm_content": "globant", "score": 1, "priority": "medium", "temp": "Frio", "payable": "No", "cycle": 5, "stage": "245556944", "stage_name": "MEETING ATTENDED", "potencial": "C"}, {"name": "Jadson (Kombi)", "course": "DA", "utm_medium": "", "utm_content": "", "score": 2, "priority": "medium", "temp": "Frio", "payable": "Yes", "cycle": 0, "stage": "245556944", "stage_name": "MEETING ATTENDED", "potencial": "B"}, {"name": "Letícia Moraes", "course": "QA", "utm_medium": "", "utm_content": "", "score": 0, "priority": "medium", "temp": "Morno", "payable": "Yes", "cycle": 0, "stage": "245556944", "stage_name": "MEETING ATTENDED", "potencial": "B"}, {"name": "Jamile Fabre", "course": "DA", "utm_medium": "crm", "utm_content": "da_leads", "score": 8, "priority": "high", "temp": "Morno", "payable": "Yes", "cycle": 2, "stage": "245556944", "stage_name": "MEETING ATTENDED", "potencial": "A"}, {"name": "Ederson Soares Moreira", "course": "DA", "utm_medium": "bloggers", "utm_content": "pajoaventuras", "score": 3, "priority": "medium", "temp": "Morno", "payable": "No", "cycle": 1, "stage": "245556944", "stage_name": "MEETING ATTENDED", "potencial": "B"}, {"name": "Barbara comunian", "course": "QA", "utm_medium": "smm", "utm_content": "", "score": 3, "priority": "medium", "temp": "Frio", "payable": "Yes", "cycle": 0, "stage": "232615402", "stage_name": "CLOSED-LOST", "potencial": "C"}, {"name": "Patricia Fonseca", "course": "QA", "utm_medium": "bloggers", "utm_content": "nosdoisemcasa", "score": null, "priority": "medium", "temp": "Morno", "payable": "No", "cycle": 8, "stage": "245556944", "stage_name": "MEETING ATTENDED", "potencial": "C"}, {"name": "Daniely Wense", "course": "MBA AI", "utm_medium": "crm", "utm_content": "closed_lost_reactivation", "score": 1, "priority": "high", "temp": "Quente", "payable": "Yes", "cycle": 0, "stage": "245556944", "stage_name": "MEETING ATTENDED", "potencial": "A"}, {"name": "Ana Letícia de Sousa Paiva", "course": "MBA DS", "utm_medium": "", "utm_content": "", "score": 4, "priority": "high", "temp": "Morno", "payable": "No", "cycle": 6, "stage": "245556944", "stage_name": "MEETING ATTENDED", "potencial": "B"}, {"name": "Beatriz Mendes Ferreira", "course": "QA", "utm_medium": "cpc", "utm_content": "Instagram Feed", "score": 0, "priority": "low", "temp": "Quente", "payable": "No", "cycle": 0, "stage": "245556944", "stage_name": "MEETING ATTENDED", "potencial": "C"}, {"name": "Fernanda Furtado", "course": "DS", "utm_medium": "", "utm_content": "", "score": 3, "priority": "medium", "temp": "Morno", "payable": "Yes", "cycle": 1, "stage": "245556944", "stage_name": "MEETING ATTENDED", "potencial": "B"}, {"name": "Gustavo Meirelles", "course": "WD", "utm_medium": "smm", "utm_content": "", "score": null, "priority": "medium", "temp": "Quente", "payable": "Yes", "cycle": 2, "stage": "245556944", "stage_name": "MEETING ATTENDED", "potencial": "A"}];
 
-function pBadge(p){const m={A:'badge-a',B:'badge-b',C:'badge-c'};return `<span class="badge ${m[p]||'badge-c'}">${p}</span>`;}
-function tempBadge(t){const m={Quente:'badge-quente',Morno:'badge-morno',Frio:'badge-frio'};return `<span class="badge ${m[t]||''}">{t||'-'}</span>`.replace('{t||\'-\'}',t||'-');}
-function prioBadge(p){const m={high:'badge-high',medium:'badge-medium',low:'badge-low'};return `<span class="badge ${m[p]||''}">{p||'-'}</span>`.replace('{p||\'-\'}',p||'-');}
-function payBadge(p){return p==='Yes'?'<span class="badge badge-payable">✓ Sim</span>':'<span class="badge badge-nopay">Não</span>';}
-function stageBadge(s){const m={232615401:'badge-sale',232615402:'badge-lost',245556944:'badge-open'};const n=STAGE_MAP[s]||s;return `<span class="badge ${m[s]||'badge-open'}">${n}</span>`;}
-function ciclo(c,a){if(!c||!a)return'-';const d=Math.round((a-c)/86400000);return d===0?'mesmo dia':d+'d';}
-function sentBar(pos,neu,neg){
-  const hasData=pos+neu+neg>0;
-  if(!hasData)return '<span style="color:#9ca3af;font-size:11px">sem dados</span>';
-  return `<div style="display:flex;align-items:center;gap:5px">
-    <div class="sent-bar"><div class="sent-pos" style="width:${pos}%"></div><div class="sent-neu" style="width:${neu}%"></div><div class="sent-neg" style="width:${neg}%"></div></div>
-    <span style="font-size:10px;color:#6b7280">+${pos}% -${neg}%</span></div>`;
+const noshowData = [{"name": "Tairone Azevedo", "course": "DS", "utm_medium": "cpc", "utm_content": "Instagram Stories", "score": -1, "priority": "low", "created": "2026-08-12", "stage": "245556943"}, {"name": "Jurandir Andrade", "course": "MBA DS", "utm_medium": "", "utm_content": "", "score": 7, "priority": "high", "created": "2026-08-11", "stage": "CLOSED-LOST"}, {"name": "Alvaro Henrique Santos", "course": "MBA DS", "utm_medium": "", "utm_content": "", "score": 1, "priority": "medium", "created": "2026-08-10", "stage": "245556943"}, {"name": "Hemily Paixao", "course": "DS", "utm_medium": "cpc", "utm_content": "Instagram Reels", "score": -1, "priority": "medium", "created": "2026-08-11", "stage": "245556943"}, {"name": "Kauê Anjos", "course": "MBA DS", "utm_medium": "cpc", "utm_content": "Instagram Reels", "score": null, "priority": "medium", "created": "2026-08-07", "stage": "245556943"}, {"name": "Tatiana Lima Santana", "course": "DS", "utm_medium": "smm", "utm_content": "link_in_bio", "score": 4, "priority": "high", "created": "2026-08-11", "stage": "245556943"}, {"name": "Cristiane Talita Grande", "course": "DS", "utm_medium": "bloggers", "utm_content": "getoutsidebr", "score": 1, "priority": "medium", "created": "2026-08-10", "stage": "245556943"}, {"name": "Edilaine Wataya", "course": "MBA DS", "utm_medium": "smm", "utm_content": "link_in_bio", "score": 0, "priority": "medium", "created": "2026-08-12", "stage": "245556943"}, {"name": "Erick dos Santos", "course": "DS", "utm_medium": "cpc", "utm_content": "Instagram Reels", "score": -4, "priority": "low", "created": "2026-08-12", "stage": "245556943"}, {"name": "Mayara Christina Santos", "course": "DS", "utm_medium": "cpc", "utm_content": "Instagram Reels", "score": null, "priority": "medium", "created": "2026-08-07", "stage": "245556943"}, {"name": "nikolas bezerra da silva", "course": "MBA DS", "utm_medium": "cpc", "utm_content": "Instagram Stories", "score": 6, "priority": "high", "created": "2026-08-06", "stage": "245556944"}, {"name": "Phillip Veríssimo Silvério", "course": "DS", "utm_medium": "bloggers", "utm_content": "dibcodes", "score": null, "priority": "medium", "created": "2026-08-11", "stage": "245556943"}, {"name": "WYLSON FERNANDO LEITE", "course": "DS", "utm_medium": "cpc", "utm_content": "Google CPC", "score": 1, "priority": "medium", "created": "2026-08-12", "stage": "245556943"}, {"name": "Lucas Gomez", "course": "MBA DS", "utm_medium": "cpc", "utm_content": "Instagram Stories", "score": 4, "priority": "high", "created": "2026-08-11", "stage": "245556943"}, {"name": "Josias pacheco", "course": "DS", "utm_medium": "bloggers", "utm_content": "pajoaventuras", "score": 5, "priority": "high", "created": "2026-08-11", "stage": "245556943"}, {"name": "Bruno Henrique de Santana", "course": "DS", "utm_medium": "cpc", "utm_content": "Google CPC", "score": 3, "priority": "high", "created": "2026-08-05", "stage": "245556943"}, {"name": "Diego Santoro", "course": "DS", "utm_medium": "cpc", "utm_content": "Instagram Reels", "score": null, "priority": "medium", "created": "2026-08-12", "stage": "245556943"}, {"name": "Henrique Sobral", "course": "DS", "utm_medium": "crm", "utm_content": "brazil_welcome", "score": 5, "priority": "high", "created": "2026-08-11", "stage": "CONTACT EST."}, {"name": "Lucas Jose dos Santos", "course": "MBA DS", "utm_medium": "partnerships", "utm_content": "globant", "score": 2, "priority": "medium", "created": "2026-08-10", "stage": "245556943"}, {"name": "Tatiana Garcia", "course": "DS", "utm_medium": "bloggers", "utm_content": "marcando_territorios", "score": 0, "priority": "low", "created": "2026-08-10", "stage": "245556943"}, {"name": "Gabriel Hilario", "course": "DS", "utm_medium": "bloggers", "utm_content": "livrestrada_", "score": 4, "priority": "high", "created": "2026-08-11", "stage": "245556943"}, {"name": "Ezequiel Barbosa", "course": "DS", "utm_medium": "cpc", "utm_content": "Instagram Reels", "score": 6, "priority": "high", "created": "2026-08-11", "stage": "CONTACT EST."}, {"name": "Pabllo", "course": "DS", "utm_medium": "cpc", "utm_content": "Instagram Reels", "score": 3, "priority": "high", "created": "2026-08-05", "stage": "245556943"}, {"name": "Albert dos Santos Silva", "course": "DS", "utm_medium": "bloggers", "utm_content": "livrestrada_", "score": 1, "priority": "medium", "created": "2026-08-10", "stage": "245556943"}, {"name": "Luana Kimie", "course": "DS", "utm_medium": "crm", "utm_content": "general_database_engaged", "score": 2, "priority": "medium", "created": "2026-08-12", "stage": "245556943"}, {"name": "Anecy Guimarães", "course": "DS", "utm_medium": "crm", "utm_content": "closed_lost_reactivation", "score": 3, "priority": "high", "created": "2026-08-10", "stage": "245556943"}, {"name": "Laíza Genezzi", "course": "DS", "utm_medium": "", "utm_content": "", "score": null, "priority": "medium", "created": "2026-08-03", "stage": "245556943"}, {"name": "Allan Constancio", "course": "DS", "utm_medium": "smm", "utm_content": "", "score": 2, "priority": "medium", "created": "2026-08-11", "stage": "245556943"}, {"name": "Jamile Soares", "course": "DS", "utm_medium": "crm", "utm_content": "closed_lost_reactivation", "score": 2, "priority": "high", "created": "2026-08-11", "stage": "245556943"}, {"name": "Patricia Fonseca", "course": "QA", "utm_medium": "bloggers", "utm_content": "nosdoisemcasa", "score": null, "priority": "medium", "created": "2026-08-05", "stage": "245556944"}, {"name": "Leonardo Cavani", "course": "MBA DS", "utm_medium": "cpc", "utm_content": "Google CPC", "score": 5, "priority": "high", "created": "2026-08-11", "stage": "245556943"}, {"name": "Rafael Pereira", "course": "DS", "utm_medium": "bloggers", "utm_content": "pajoaventuras", "score": null, "priority": "medium", "created": "2026-08-11", "stage": "245556943"}, {"name": "Evandro Gomes", "course": "DS", "utm_medium": "", "utm_content": "", "score": -1, "priority": "medium", "created": "2026-08-10", "stage": "245556943"}];
+
+const elephanData = [{"closer": "Erick Paiva", "title": "Apresentação Bootcamp — Patrícia", "duration": 46.6, "deal_id": "515081235647", "lead_name": "Patricia Fonseca", "closer_pos": 22, "closer_neg": 7, "lead_pos": 10, "lead_neg": 18, "summary": "Consultor demonstrou interesse genuíno pela vida da lead, criando rapport. Lead expressou dificuldades financeiras e incerteza sobre mudança de carreira.", "result": "Em Aberto"}, {"closer": "Jessica Silva", "title": "PL-C Consultoria de Carreira — Lucas", "duration": 36.8, "deal_id": "516504874179", "lead_name": "Lucas", "closer_pos": 31, "closer_neg": 10, "lead_pos": 22, "lead_neg": 14, "summary": "Consultora criou ambiente amigável. Lead demonstrou interesse mas hesitação quanto ao investimento.", "result": "Em Aberto"}, {"closer": "Ana Viana", "title": "Isa:C — Wilian Bugnhaki", "duration": 22.5, "deal_id": "516115484875", "lead_name": "Wilian Bugnhaki", "closer_pos": 36, "closer_neg": 1, "lead_pos": 29, "lead_neg": 3, "summary": "Call curta com boa energia. Lead receptivo e positivo. Potencial bom para fechamento futuro.", "result": "Em Aberto"}, {"closer": "Raphael Soares Luna", "title": "Ligação de vídeo — sem lead vinculado", "duration": 40.2, "deal_id": "0", "lead_name": "—", "closer_pos": 55, "closer_neg": 2, "lead_pos": 42, "lead_neg": 13, "summary": "Call sem deal vinculado no HubSpot. Lead demonstrou interesse em transição de carreira.", "result": "Sem deal"}, {"closer": "Gabriel Morial", "title": "MBA LB — nikolas bezerra da silva", "duration": 61.7, "deal_id": "515201518791", "lead_name": "nikolas bezerra", "closer_pos": 46, "closer_neg": 5, "lead_pos": 23, "lead_neg": 25, "summary": "Especialista apresentou MBA em DS. Lead interessado mas com resistência sobre preço. Negociação em andamento — lead com score 6 e payable Yes.", "result": "Em Aberto"}, {"closer": "Raphael Soares Luna", "title": "LB Consultoria — sem deal", "duration": 26.4, "deal_id": "0", "lead_name": "—", "closer_pos": 48, "closer_neg": 3, "lead_pos": 30, "lead_neg": 8, "summary": "Consultoria de carreira sem deal vinculado. Lead em fase de avaliação.", "result": "Sem deal"}, {"closer": "Erick Paiva", "title": "LB Consultoria — Nicolas Chagas", "duration": 52.8, "deal_id": "516010929399", "lead_name": "Nicolas Chagas", "closer_pos": 38, "closer_neg": 7, "lead_pos": 35, "lead_neg": 12, "summary": "Lead demonstrou interesse em WD. Closer conduziu bem a apresentação. Lead com payable Yes.", "result": "Em Aberto"}, {"closer": "Bruno Marques", "title": "LB Consultoria — (deal 516101027065)", "duration": 7.1, "deal_id": "516101027065", "lead_name": "—", "closer_pos": 44, "closer_neg": 6, "lead_pos": 20, "lead_neg": 20, "summary": "Call muito curta (7min). Lead pode ter desistido ou houve problema de conexão.", "result": "Inconclusivo"}, {"closer": "Lucas Bonow", "title": "Negociação — Gabriel Santos", "duration": 48.4, "deal_id": "516413346006", "lead_name": "Gabriel Santos", "closer_pos": 72, "closer_neg": 2, "lead_pos": 25, "lead_neg": 5, "summary": "Excelente energia do closer. Lead de reativação (CRM) com boa receptividade. Boa chance de fechamento.", "result": "Em Aberto"}, {"closer": "Raphael Soares Luna", "title": "LB Consultoria — sem deal", "duration": 30.7, "deal_id": "0", "lead_name": "—", "closer_pos": 50, "closer_neg": 5, "lead_pos": 28, "lead_neg": 10, "summary": "Call de prospecção. Sem deal vinculado no HubSpot.", "result": "Sem deal"}, {"closer": "Veronica Rocha", "title": "MBA Consultoria — Mairon Abner", "duration": 50.2, "deal_id": "511275240672", "lead_name": "Mairon Abner", "closer_pos": 31, "closer_neg": 6, "lead_pos": 22, "lead_neg": 8, "summary": "Lead com 25 dias de ciclo. Call produtiva, lead ainda em avaliação do curso MBA AI.", "result": "Em Aberto"}, {"closer": "Natalia Martins", "title": "MBA Ligação — Edivaldo Cabral", "duration": 35.0, "deal_id": "516311221436", "lead_name": "Edivaldo Cabral", "closer_pos": 19, "closer_neg": 5, "lead_pos": 15, "lead_neg": 20, "summary": "Lead criado no mesmo dia. Apresentação de DA. Lead com resistência moderada.", "result": "Em Aberto"}, {"closer": "Veronica Rocha", "title": "MBA Ligação — Daniely Wense", "duration": 41.7, "deal_id": "516336863481", "lead_name": "Daniely Wense", "closer_pos": 35, "closer_neg": 5, "lead_pos": 28, "lead_neg": 8, "summary": "Lead de reativação (CRM). Temperatura Quente. Payable Yes. Boa receptividade.", "result": "Em Aberto"}, {"closer": "Raisa Fernandes", "title": "Apresentação Bootcamp — sem deal", "duration": 34.2, "deal_id": "null", "lead_name": "—", "closer_pos": 56, "closer_neg": 1, "lead_pos": 30, "lead_neg": 20, "summary": "Apresentação geral dos bootcamps. Lead sem deal criado no HubSpot.", "result": "Sem deal"}, {"closer": "Bernardo Magalhaes", "title": "LB Consultoria — Ana Letícia", "duration": 43.3, "deal_id": "515227513053", "lead_name": "Ana Letícia de Sousa Paiva", "closer_pos": 43, "closer_neg": 3, "lead_pos": 20, "lead_neg": 5, "summary": "Lead com score 4 e priority high. Call equilibrada. Lead avaliando MBA DS.", "result": "Em Aberto"}, {"closer": "Raisa Fernandes", "title": "Consultoria Transição TI — sem deal", "duration": 7.2, "deal_id": "0", "lead_name": "—", "closer_pos": 50, "closer_neg": 2, "lead_pos": 20, "lead_neg": 30, "summary": "Call curtíssima. Lead com alta resistência (30% neg). Possível desistência.", "result": "Sem deal"}, {"closer": "Bruno Marques", "title": "PL-C Consultoria — Lucas Menezes", "duration": 56.0, "deal_id": "516036826302", "lead_name": "Lucas Menezes", "closer_pos": 44, "closer_neg": 6, "lead_pos": 25, "lead_neg": 18, "summary": "Lead com score 6, payable Yes. Call longa e produtiva. Alto potencial de fechamento.", "result": "Em Aberto"}, {"closer": "Gabriel Morial", "title": "Tay:C Ligação — Alessandro (98min)", "duration": 98.2, "deal_id": "516368382152", "lead_name": "Alessandro", "closer_pos": 46, "closer_neg": 5, "lead_pos": 20, "lead_neg": 28, "summary": "⚠️ Call extremamente longa (98min). Lead MBA DS com resistência elevada (28% neg). Revisar objeções levantadas.", "result": "Em Aberto"}, {"closer": "Vinicius Leao", "title": "Consultoria — Letícia Moraes", "duration": 32.5, "deal_id": "516443527371", "lead_name": "Letícia Moraes", "closer_pos": 42, "closer_neg": 4, "lead_pos": 18, "lead_neg": 5, "summary": "Lead criada no mesmo dia. Payable Yes. Boa receptividade inicial.", "result": "Em Aberto"}, {"closer": "Bernardo Magalhaes", "title": "PL-C Consultoria — Suelane ramos", "duration": 32.7, "deal_id": "515802977510", "lead_name": "Suelane ramos", "closer_pos": 43, "closer_neg": 3, "lead_pos": 22, "lead_neg": 3, "summary": "Lead com score 8 e payable Yes — maior prioridade! Lead receptiva e positiva. Follow-up urgente.", "result": "Em Aberto"}, {"closer": "Jessica Silva", "title": "Consultoria — Beatriz Mendes", "duration": 66.2, "deal_id": "516123291890", "lead_name": "Beatriz Mendes Ferreira", "closer_pos": 34, "closer_neg": 10, "lead_pos": 20, "lead_neg": 18, "summary": "Lead Quente mas call longa. Score 0 mas temperatura positiva. Resistência moderada do lead.", "result": "Em Aberto"}, {"closer": "Yanara Silva", "title": "Análise de Dados — Vitor Ribeiro", "duration": 35.9, "deal_id": "515592626403", "lead_name": "Vitor Ribeiro", "closer_pos": 35, "closer_neg": 2, "lead_pos": 25, "lead_neg": 22, "summary": "Lead CLOSED-LOST após reunião. Temperatura Frio. Objeções não superadas.", "result": "LOST"}, {"closer": "Raphael Soares Luna", "title": "PL-C Consultoria — sem deal (89min)", "duration": 89.3, "deal_id": "0", "lead_name": "—", "closer_pos": 52, "closer_neg": 3, "lead_pos": 35, "lead_neg": 8, "summary": "⚠️ Call muito longa sem deal vinculado. Lead interessado mas sem cadastro no CRM.", "result": "Sem deal"}, {"closer": "Bruno Marques", "title": "Isa:C Consultoria — Suzana Pereira", "duration": 79.6, "deal_id": "516258664662", "lead_name": "Suzana Pereira", "closer_pos": 36, "closer_neg": 6, "lead_pos": 25, "lead_neg": 20, "summary": "Lead Quente com payable Yes. Call longa. Lead com histórico de reativação.", "result": "Em Aberto"}, {"closer": "Lucas Bonow", "title": "Apresentação — Nadine Almada", "duration": 33.7, "deal_id": "516033094895", "lead_name": "Nadine Almada", "closer_pos": 72, "closer_neg": 2, "lead_pos": 30, "lead_neg": 2, "summary": "Call eficiente. Lead Morno com payable Yes. Excelente energia do closer.", "result": "Em Aberto"}, {"closer": "Erick Paiva", "title": "Isa:C Consultoria — Priscilla Jeane", "duration": 80.4, "deal_id": "516447027410", "lead_name": "Priscilla Jeane", "closer_pos": 22, "closer_neg": 7, "lead_pos": 18, "lead_neg": 25, "summary": "Call longa com lead High Priority e score 5. Lead com alta resistência (25% neg). Revisar abordagem.", "result": "Em Aberto"}, {"closer": "Vinicius Leao", "title": "Bootcamp QA — Ingrid Martins", "duration": 29.5, "deal_id": "516393524438", "lead_name": "Ingrid Martins Silva", "closer_pos": 42, "closer_neg": 4, "lead_pos": 22, "lead_neg": 8, "summary": "Lead Quente via pablofakirr. Score -1 mas temperatura positiva. Call produtiva.", "result": "Em Aberto"}, {"closer": "Erick Paiva", "title": "Tay:C — Roberth William", "duration": 22.3, "deal_id": "516079943914", "lead_name": "Roberth William", "closer_pos": 38, "closer_neg": 3, "lead_pos": 20, "lead_neg": 8, "summary": "Call eficiente. Lead criado mesmo dia. Score 4, priority high.", "result": "Em Aberto"}, {"closer": "Bernardo Magalhaes", "title": "PL-C Consultoria — Pedro Vinicius", "duration": 33.6, "deal_id": "516060859583", "lead_name": "Pedro Vinicius Lima", "closer_pos": 43, "closer_neg": 3, "lead_pos": 18, "lead_neg": 3, "summary": "Lead criado mesmo dia. Payable Yes. Score 3. Boa receptividade.", "result": "Em Aberto"}, {"closer": "Bruno Marques", "title": "Exploração carreira — Fernando Cobo", "duration": 51.8, "deal_id": "515086068964", "lead_name": "Fernando Cobo", "closer_pos": 44, "closer_neg": 6, "lead_pos": 20, "lead_neg": 20, "summary": "Lead bloggers/nerdsdenegocios. Payable Yes. 7 dias de ciclo. Lead equilibrado.", "result": "Em Aberto"}, {"closer": "Veronica Rocha", "title": "REAG MBA — Luis Tomasoni", "duration": 37.2, "deal_id": "515415730392", "lead_name": "Luis Tomasoni", "closer_pos": 28, "closer_neg": 8, "lead_pos": 15, "lead_neg": 10, "summary": "Lead de reativação MBA AI. Bloggers/attekitadev. Score 2. Em avaliação.", "result": "Em Aberto"}, {"closer": "Raisa Fernandes", "title": "Tripleten — Barbara comunian", "duration": 65.4, "deal_id": "516037474492", "lead_name": "Barbara comunian", "closer_pos": 56, "closer_neg": 1, "lead_pos": 22, "lead_neg": 32, "summary": "Lead CLOSED-LOST mesmo com payable Yes. Alta resistência (32% neg). Objeções de preço não resolvidas.", "result": "LOST"}, {"closer": "Yanara Silva", "title": "Ligação — Ederson Soares", "duration": 0.0, "deal_id": "516018894072", "lead_name": "Ederson Soares Moreira", "closer_pos": 35, "closer_neg": 2, "lead_pos": 20, "lead_neg": 15, "summary": "Call com duração zero registrada. Possível problema técnico ou desistência imediata.", "result": "Inconclusivo"}, {"closer": "Vinicius Leao", "title": "TI e emprego — Everton Borges", "duration": 26.6, "deal_id": "516035214529", "lead_name": "Everton Borges", "closer_pos": 42, "closer_neg": 4, "lead_pos": 15, "lead_neg": 8, "summary": "Lead criado mesmo dia via Facebook. Score -1. Call de qualificação.", "result": "Em Aberto"}, {"closer": "Yanara Silva", "title": "Tay:C — DOUGLAS COSTA MARTINS", "duration": 46.0, "deal_id": "515823386841", "lead_name": "DOUGLAS COSTA MARTINS", "closer_pos": 53, "closer_neg": 2, "lead_pos": 20, "lead_neg": 8, "summary": "Lead CRM/email com boa receptividade. Call equilibrada. Score 3.", "result": "Em Aberto"}, {"closer": "Vinicius Leao", "title": "Isa:C — Tainá", "duration": 38.3, "deal_id": "516062258414", "lead_name": "Tainá", "closer_pos": 42, "closer_neg": 4, "lead_pos": 18, "lead_neg": 6, "summary": "Lead criada mesmo dia. DA. Score 2. Call produtiva e de qualificação.", "result": "Em Aberto"}];
+
+const closerStats = {"Raphael Soares Luna": {"calls": 5, "total_min": 233, "energia": 52, "resistencia": 8}, "Erick Paiva": {"calls": 4, "total_min": 202, "energia": 25, "resistencia": 8}, "Bruno Marques": {"calls": 4, "total_min": 194, "energia": 44, "resistencia": 20}, "Vinicius Leao": {"calls": 4, "total_min": 127, "energia": 42, "resistencia": 4}, "Veronica Rocha": {"calls": 3, "total_min": 129, "energia": 31, "resistencia": 6}, "Raisa Fernandes": {"calls": 3, "total_min": 107, "energia": 56, "resistencia": 26}, "Bernardo Magalhaes": {"calls": 3, "total_min": 110, "energia": 43, "resistencia": 3}, "Yanara Silva": {"calls": 3, "total_min": 82, "energia": 53, "resistencia": 22}, "Jessica Silva": {"calls": 2, "total_min": 103, "energia": 34, "resistencia": 16}, "Gabriel Morial": {"calls": 2, "total_min": 160, "energia": 41, "resistencia": 28}, "Lucas Bonow": {"calls": 2, "total_min": 82, "energia": 72, "resistencia": 2}, "Ana Viana": {"calls": 1, "total_min": 22, "energia": 36, "resistencia": 3}, "Natalia Martins": {"calls": 1, "total_min": 35, "energia": 19, "resistencia": 5}};
+
+// === RENDER FUNCTIONS ===
+
+function tempBadge(t) {
+  if (!t) return '<span class="badge-temp temp-morno">—</span>';
+  if (t==='Quente') return '<span class="badge-temp temp-quente">🔥 Quente</span>';
+  if (t==='Frio') return '<span class="badge-temp temp-frio">❄️ Frio</span>';
+  return '<span class="badge-temp temp-morno">🌤 Morno</span>';
+}
+function priBadge(p) {
+  if (!p) return '';
+  const cls = p==='high'?'pri-high':p==='medium'?'pri-medium':'pri-low';
+  return `<span class="badge-pri ${cls}">${p}</span>`;
+}
+function resultBadge(stage, stageName) {
+  if (stage==='232615401'||stageName==='SUCCESSFUL PAYMENT') return '<span class="badge-result result-sale">✅ Venda</span>';
+  if (stage==='232615402'||stageName==='CLOSED-LOST') return '<span class="badge-result result-lost">❌ Lost</span>';
+  return '<span class="badge-result result-open">🔵 Aberto</span>';
+}
+function potBadge(p) {
+  if (!p) return '';
+  return `<span class="badge-pot pot-${p.toLowerCase()}">${p}</span>`;
+}
+function payBadge(p) {
+  if (!p) return '<span class="badge-payable pay-no">—</span>';
+  return p==='Yes'?'<span class="badge-payable pay-yes">✓ Sim</span>':'<span class="badge-payable pay-no">Não</span>';
+}
+function sentBar(pos, neg) {
+  const neu = Math.max(0, 100-pos-neg);
+  return `<div class="sentiment-bar" title="Pos:${pos}% Neg:${neg}% Neu:${neu}%">
+    <div class="s-pos" style="width:${pos}%"></div>
+    <div class="s-neg" style="width:${neg}%"></div>
+    <div class="s-neu" style="width:${neu}%"></div>
+  </div>`;
 }
 
-// Funil
-function buildFunil(){
-  const container=document.getElementById('funil-container');
-  const colors={'CALL BOOKED':'#0b9e8a','HIGH SCORE':'#7c3aed','MEETING SCHEDULED':'#1e5fc2','MEETING/WEBINAR ATTENDED':'#16a34a','SUCCESSFUL PAYMENT':'#15803d','TAKEN TO WORK':'#0f2044','RESPONSIBLE APPOINTED':'#374151','CONTACT ESTABLISHED':'#6b7280','CLOSED-LOST':'#dc2626'};
-  const total=300;
-  const entries=Object.entries(stageDist).sort((a,b)=>b[1]-a[1]);
-  container.innerHTML=entries.map(([name,count])=>{
-    const pct=Math.round(count/total*100);
-    const color=colors[name]||'#1e5fc2';
-    return `<div class="funil-bar"><div class="funil-label">${name}</div><div class="funil-track"><div class="funil-fill" style="width:${Math.max(pct,2)}%;background:${color}"><span>${pct>5?pct+'%':''}</span></div></div><div class="funil-count">${count}</div></div>`;
-  }).join('');
-}
-
-// Bar charts
-function buildBar(id,data,limit=8){
-  const el=document.getElementById(id);if(!el)return;
-  const palette=['#1e5fc2','#0b9e8a','#7c3aed','#ea580c','#16a34a','#dc2626','#ca8a04','#0891b2'];
-  const entries=Object.entries(data).filter(([k])=>k&&k!=='N/A').sort((a,b)=>b[1]-a[1]).slice(0,limit);
-  const max=entries[0]?entries[0][1]:1;
-  el.innerHTML=entries.map(([k,v],i)=>{
-    const pct=Math.round(v/max*100);
-    return `<div class="bar-row"><div class="bar-key" title="${k}">${k}</div><div class="bar-track"><div class="bar-fill" style="width:${pct}%;background:${palette[i%palette.length]}"><span>${v>2?v:''}</span></div></div><div class="bar-val">${v}</div></div>`;
-  }).join('');
-}
-
-// Attended table
-function renderAtt(){
-  document.getElementById('att-tbody').innerHTML=attended.map(a=>{
-    const c=ciclo(a.createdate,a.att);
-    const dur=a.duration_min>0?a.duration_min+'min':'-';
-    const utm_short=a.utm_content?a.utm_content.substring(0,25)+(a.utm_content.length>25?'…':''):'-';
-    return `<tr data-utm_medium="${a.utm_medium}" data-priority="${a.priority}" data-temperatura="${a.temp}" data-resultado="${STAGE_MAP[a.stage]||a.stage}">
-      <td><strong>${a.dealname}</strong></td>
-      <td style="font-size:12px">${a.closer.split(' ')[0]}</td>
-      <td>${a.course||'-'}</td>
-      <td>${a.utm_medium||'-'}</td>
-      <td style="font-size:11px;max-width:130px" title="${a.utm_content}">${utm_short}</td>
-      <td>${prioBadge(a.priority)}</td>
-      <td>${a.score||'-'}</td>
-      <td>${tempBadge(a.temp)}</td>
-      <td>${payBadge(a.payable)}</td>
-      <td>${pBadge(a.potential)}</td>
-      <td>${c}</td>
-      <td>${dur}</td>
-      <td>${stageBadge(a.stage)}</td>
+// Render attended table
+function renderAttended(data) {
+  const tbody = document.getElementById('tbl-attended-body');
+  tbody.innerHTML = data.map(d => {
+    const cycle = d.cycle===0?'Mesmo dia':(d.cycle+'d');
+    return `<tr data-utm="${d.utm_medium}" data-pri="${d.priority}" data-temp="${d.temp}" data-payable="${d.payable}">
+      <td><strong>${d.name}</strong></td>
+      <td><span style="background:#eff6ff;color:#1e40af;padding:2px 7px;border-radius:6px;font-size:0.76rem;font-weight:600">${d.course}</span></td>
+      <td>${d.utm_medium||'—'}</td>
+      <td style="max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:0.75rem;color:#64748b">${d.utm_content||'—'}</td>
+      <td><strong>${d.score!=null?d.score:'—'}</strong></td>
+      <td>${priBadge(d.priority)}</td>
+      <td>${tempBadge(d.temp)}</td>
+      <td>${payBadge(d.payable)}</td>
+      <td><span style="color:#0891b2;font-weight:600">${cycle}</span></td>
+      <td>${resultBadge(d.stage, d.stage_name)}</td>
     </tr>`;
   }).join('');
 }
 
-// No-shows table
-function renderNs(){
-  document.getElementById('ns-tbody').innerHTML=noshows.map(ns=>{
-    return `<tr>
-      <td><strong>${ns.dealname}</strong></td>
-      <td>${ns.utm_medium||'-'}</td>
-      <td style="font-size:11px" title="${ns.utm_content}">${(ns.utm_content||'-').substring(0,30)}</td>
-      <td>${prioBadge(ns.priority)}</td>
-      <td>${ns.score||'-'}</td>
-      <td>${ns.course||'-'}</td>
-      <td>${ns.createdate}</td>
-      <td><span class="badge badge-open" style="font-size:10px">${ns.stage}</span></td>
+// Render noshow table
+function renderNoshow(data) {
+  const tbody = document.getElementById('tbl-noshow-body');
+  tbody.innerHTML = data.map(d => {
+    const stageLabel = d.stage==='245556943'?'No-Show':d.stage==='245556944'?'Atendido':d.stage==='232615402'?'Closed-Lost':d.stage;
+    const isHigh = d.priority==='high';
+    return `<tr data-utm="${d.utm_medium}" data-pri="${d.priority}" style="${isHigh?'background:#fff7f7':''}>
+      <td><strong>${d.name}</strong>${isHigh?' 🚨':''}</td>
+      <td><span style="background:#eff6ff;color:#1e40af;padding:2px 7px;border-radius:6px;font-size:0.76rem;font-weight:600">${d.course}</span></td>
+      <td>${d.utm_medium||'—'}</td>
+      <td style="max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:0.75rem;color:#64748b">${d.utm_content||'—'}</td>
+      <td><strong>${d.score!=null?d.score:'—'}</strong></td>
+      <td>${priBadge(d.priority)}</td>
+      <td>${d.created}</td>
+      <td><span style="font-size:0.78rem;color:#64748b">${stageLabel}</span></td>
     </tr>`;
   }).join('');
 }
 
-// Closer table
-function renderClosers(){
-  document.getElementById('closer-tbody').innerHTML=closers.sort((a,b)=>b.reunioes-a.reunioes||b.avg_pos-a.avg_pos).map(c=>{
-    const tx=c.reunioes>0?Math.round(c.vendas/c.reunioes*100):0;
-    const txColor=tx>20?'#16a34a':tx>0?'#ca8a04':'#6b7280';
-    const posBar=c.avg_pos>0?`<div style="display:flex;align-items:center;gap:4px"><div style="background:#e5f3ed;border-radius:3px;height:8px;width:60px;overflow:hidden"><div style="background:#16a34a;width:${c.avg_pos}%;height:100%"></div></div><span style="font-size:11px">${c.avg_pos}%</span></div>`:'<span style="color:#9ca3af;font-size:11px">N/D</span>';
-    const negBar=c.avg_neg>0?`<div style="display:flex;align-items:center;gap:4px"><div style="background:#fde8e8;border-radius:3px;height:8px;width:60px;overflow:hidden"><div style="background:#dc2626;width:${c.avg_neg}%;height:100%"></div></div><span style="font-size:11px">${c.avg_neg}%</span></div>`:'<span style="color:#9ca3af;font-size:11px">N/D</span>';
-    const dur=c.avg_dur>0?c.avg_dur+'min':'-';
-    return `<tr>
-      <td><strong>${c.name.split(' ')[0]} ${c.name.split(' ')[1]||''}</strong></td>
-      <td style="text-align:center">${c.reunioes}</td>
-      <td style="text-align:center">${c.vendas>0?`<span class="badge badge-sale">${c.vendas}</span>`:c.vendas}</td>
-      <td style="text-align:center">${c.lost>0?`<span class="badge badge-lost">${c.lost}</span>`:c.lost}</td>
-      <td style="text-align:center">${c.aberto}</td>
-      <td style="text-align:center;font-weight:700;color:${txColor}">${tx}%</td>
-      <td>${posBar}</td>
-      <td>${negBar}</td>
-      <td style="font-size:12px;color:#374151">${dur}</td>
-      <td style="font-size:11px;color:#6b7280">${c.courses.join(', ')||'-'}</td>
-    </tr>`;
-  }).join('');
-}
-
-// Ranking potencial
-function renderRanking(){
-  const sorted=[...attended].sort((a,b)=>{
-    const po={A:0,B:1,C:2};
-    if(po[a.potential]!==po[b.potential])return po[a.potential]-po[b.potential];
-    return (parseInt(b.score)||0)-(parseInt(a.score)||0);
+// Render potencial table
+function renderPotencial() {
+  const sorted = [...attendedData].filter(d=>d.stage!=='232615401').sort((a,b)=>{
+    const order = {A:0,B:1,C:2};
+    return (order[a.potencial]||2)-(order[b.potencial]||2);
   });
-  document.getElementById('ranking-tbody').innerHTML=sorted.slice(0,16).map((a,i)=>{
-    const acao=a.potential==='A'?'🔥 Ligar AGORA':a.potential==='B'?'📞 Follow-up hoje':'📅 Agendar próximo';
-    const dur=a.duration_min>0?a.duration_min+'min':'-';
-    const summary=a.summary?a.summary.replace(/"/g,'').replace(/'/g,"\'"):'Sem transcrição disponível';
-    const tipContent=`Resumo: ${summary.substring(0,250)}`;
+  const tbody = document.getElementById('tbl-potencial-body');
+  const acoes = {A:'📞 Ligar hoje — prioridade máxima',B:'📩 Follow-up por WhatsApp em até 24h',C:'📋 Nurturing — sequência de email'};
+  tbody.innerHTML = sorted.map(d=>`<tr>
+    <td><strong>${d.name}</strong></td>
+    <td><span style="background:#eff6ff;color:#1e40af;padding:2px 7px;border-radius:6px;font-size:0.76rem;font-weight:600">${d.course}</span></td>
+    <td>${potBadge(d.potencial)}</td>
+    <td><strong>${d.score!=null?d.score:'—'}</strong></td>
+    <td>${payBadge(d.payable)}</td>
+    <td>${tempBadge(d.temp)}</td>
+    <td>${priBadge(d.priority)}</td>
+    <td style="font-size:0.8rem;color:#475569">${acoes[d.potencial]||''}</td>
+  </tr>`).join('');
+}
+
+// Render Elephan table
+function renderElephantTable() {
+  const tbody = document.getElementById('tbl-elephan-body');
+  tbody.innerHTML = elephanData.map(d=>{
+    const resultCls = d.result==='LOST'?'result-lost':d.result==='Venda'?'result-sale':'result-open';
     return `<tr>
-      <td>${i+1}</td>
-      <td><strong>${a.dealname}</strong></td>
-      <td style="font-size:12px">${a.closer.split(' ')[0]}</td>
-      <td>${a.course||'-'}</td>
-      <td>${pBadge(a.potential)}</td>
-      <td>${payBadge(a.payable)}</td>
-      <td>${a.score||'-'}</td>
-      <td>${tempBadge(a.temp)}</td>
-      <td style="font-size:12px">${dur}</td>
-      <td>${sentBar(a.sent_pos,a.sent_neu,a.sent_neg)}</td>
-      <td style="font-size:12px;white-space:nowrap">${acao}</td>
+      <td><strong>${d.closer}</strong></td>
+      <td style="max-width:180px"><div style="font-weight:600;font-size:0.82rem">${d.title}</div><div style="font-size:0.72rem;color:#64748b">${d.lead_name}</div></td>
+      <td><span style="font-weight:700;color:#1e40af">${d.duration}min</span></td>
+      <td><span class="badge-result ${resultCls}">${d.result}</span></td>
+      <td>
+        <div style="font-size:0.72rem;color:#475569;margin-bottom:2px">Closer: ${d.closer_pos}% pos</div>
+        ${sentBar(d.closer_pos, d.closer_neg)}
+      </td>
+      <td>
+        <div style="font-size:0.72rem;color:#475569;margin-bottom:2px">Lead: ${d.lead_neg}% neg</div>
+        ${sentBar(d.lead_pos, d.lead_neg)}
+      </td>
+      <td style="max-width:220px;font-size:0.78rem;color:#475569">${d.summary}</td>
     </tr>`;
   }).join('');
 }
 
-// Elephan table
-function renderElephan(){
-  const withData=attended.filter(a=>a.duration_min>0);
-  const withoutData=attended.filter(a=>!a.duration_min||a.duration_min===0);
-  const all=[...withData,...withoutData];
-  document.getElementById('elephan-tbody').innerHTML=all.map(a=>{
-    const dur=a.duration_min>0?a.duration_min+'min':'<span style="color:#9ca3af">sem dados</span>';
-    const summary=a.summary?a.summary.substring(0,250).replace(/"/g,'\"'):'';
-    const summaryIcon=summary?`<span class="tooltip" data-tip="${summary}">💬</span>`:'-';
-    const posBar=a.sent_pos>0?`<div style="display:flex;align-items:center;gap:4px"><div style="background:#e5f3ed;border-radius:3px;height:8px;width:55px;overflow:hidden"><div style="background:#16a34a;width:${a.sent_pos}%;height:100%"></div></div><span style="font-size:11px">${a.sent_pos}%</span></div>`:'<span style="color:#9ca3af;font-size:11px">N/D</span>';
-    const negBar=a.sent_neg>0?`<div style="display:flex;align-items:center;gap:4px"><div style="background:#fde8e8;border-radius:3px;height:8px;width:55px;overflow:hidden"><div style="background:#dc2626;width:${a.sent_neg}%;height:100%"></div></div><span style="font-size:11px">${a.sent_neg}%</span></div>`:'<span style="color:#9ca3af;font-size:11px">N/D</span>';
-    return `<tr>
-      <td style="font-size:12px">${a.closer.split(' ')[0]} ${a.closer.split(' ')[1]||''}</td>
-      <td><strong>${a.dealname}</strong></td>
-      <td>${dur}</td>
-      <td>${stageBadge(a.stage)}</td>
-      <td>${posBar}</td>
-      <td>${negBar}</td>
-      <td style="text-align:center">${summaryIcon}</td>
-    </tr>`;
+// Render closer cards
+function renderCloserCards() {
+  const grid = document.getElementById('closer-grid');
+  const closerDeals = {};
+  elephanData.forEach(d=>{
+    if (!closerDeals[d.closer]) closerDeals[d.closer] = [];
+    closerDeals[d.closer].push(d);
+  });
+  
+  grid.innerHTML = Object.entries(closerStats).sort((a,b)=>b[1].calls-a[1].calls).map(([name,st])=>{
+    const deals = closerDeals[name]||[];
+    const sales = deals.filter(d=>d.result==='Venda').length;
+    const lost = deals.filter(d=>d.result==='LOST').length;
+    const avgDur = deals.length>0?(deals.reduce((s,d)=>s+d.duration,0)/deals.length).toFixed(0):0;
+    const energyColor = st.energia>=50?'#10b981':st.energia>=30?'#f59e0b':'#ef4444';
+    return `<div class="closer-card">
+      <div class="closer-name">👤 ${name}</div>
+      <div class="closer-kpis">
+        <div class="closer-kpi"><div class="closer-kpi-val">${st.calls}</div><div class="closer-kpi-lbl">Calls</div></div>
+        <div class="closer-kpi"><div class="closer-kpi-val">${st.total_min}min</div><div class="closer-kpi-lbl">Total</div></div>
+        <div class="closer-kpi"><div class="closer-kpi-val">${avgDur}min</div><div class="closer-kpi-lbl">Média</div></div>
+      </div>
+      <div class="sentiment-section">
+        <div class="sentiment-label"><span>⚡ Energia Closer</span><strong style="color:${energyColor}">${st.energia}%</strong></div>
+        <div class="sentiment-bar2"><div class="s-pos" style="width:${st.energia}%"></div><div class="s-neu" style="width:${100-st.energia}%"></div></div>
+        <div class="sentiment-label"><span>🛡️ Resistência Lead</span><strong style="color:${st.resistencia>20?'#ef4444':st.resistencia>10?'#f59e0b':'#10b981'}">${st.resistencia}%</strong></div>
+        <div class="sentiment-bar2"><div class="s-neg" style="width:${st.resistencia}%"></div><div class="s-neu" style="width:${100-st.resistencia}%"></div></div>
+      </div>
+    </div>`;
   }).join('');
 }
 
-// Alertas
-function renderAlertas(){
-  let html='';
-  const potA=attended.filter(a=>a.potential==='A'&&a.stage!=='232615401'&&a.stage!=='232615402');
-  if(potA.length)html+=`<div class="alert alert-danger"><div class="alert-icon">🔥</div><div class="alert-text"><strong>${potA.length} Potencial A sem fechamento:</strong> ${potA.map(a=>a.dealname).join(', ')} — follow-up urgente hoje.</div></div>`;
-  const highNs=noshows.filter(n=>n.priority==='high');
-  if(highNs.length)html+=`<div class="alert alert-danger"><div class="alert-icon">🚨</div><div class="alert-text"><strong>${highNs.length} no-show(s) high priority:</strong> ${highNs.map(n=>n.dealname).join(', ')} — reagendar imediatamente.</div></div>`;
-  const longCalls=attended.filter(a=>a.duration_min>90&&a.stage!=='232615401');
-  if(longCalls.length)html+=`<div class="alert alert-warning"><div class="alert-icon">⏱️</div><div class="alert-text"><strong>${longCalls.length} call(s) acima de 90min sem fechamento:</strong> ${longCalls.map(a=>a.dealname+' ('+a.duration_min+'min)').join(', ')} — revisar técnica de fechamento.</div></div>`;
-  const highNeg=attended.filter(a=>a.sent_neg>30);
-  if(highNeg.length)html+=`<div class="alert alert-warning"><div class="alert-icon">⚠️</div><div class="alert-text"><strong>${highNeg.length} lead(s) com alta resistência (negativo >30%):</strong> ${highNeg.map(a=>a.dealname+' ('+a.sent_neg+'%)').join(', ')} — analisar objeções.</div></div>`;
-  html+=`<div class="alert alert-info"><div class="alert-icon">📊</div><div class="alert-text"><strong>Taxa reunião→venda: 1/22 = 4,5%.</strong> Abaixo do esperado. Bernardo Magalhães teve 63,5min com Jadson (Pot.A, payable) — follow-up prioritário.</div></div>`;
-  document.getElementById('alertas-container').innerHTML=html;
+// Render alerts
+function renderAlerts() {
+  const container = document.getElementById('alerts-container');
+  const alerts = [];
+  
+  // Leads com alta resistência (neg > 25%)
+  elephanData.filter(d=>d.lead_neg>=25&&d.result!=='LOST').forEach(d=>{
+    alerts.push({title:`⚠️ Alta Resistência — ${d.lead_name}`,body:`Lead com ${d.lead_neg}% de sentimento negativo na call com ${d.closer} (${d.duration}min). Revisar objeções e preparar contra-argumentos antes do follow-up.`});
+  });
+  
+  // Calls > 90min sem fechamento
+  elephanData.filter(d=>d.duration>90&&d.result==='Em Aberto').forEach(d=>{
+    alerts.push({title:`⏰ Call Muito Longa Sem Fechamento — ${d.lead_name}`,body:`${d.closer} ficou ${d.duration}min em call sem fechar. Investigar objeções. Sugerir proposta escrita por WhatsApp.`});
+  });
+  
+  // No-shows high priority
+  const highNoshows = noshowData.filter(d=>d.priority==='high');
+  if (highNoshows.length > 0) {
+    alerts.push({title:`🚨 ${highNoshows.length} No-Shows com Priority HIGH`,body:`Reagendar imediatamente: ${highNoshows.map(d=>d.name).slice(0,6).join(', ')}... Score médio: ${Math.round(highNoshows.filter(d=>d.score!=null).reduce((s,d)=>s+(d.score||0),0)/highNoshows.filter(d=>d.score!=null).length)}.`});
+  }
+  
+  container.innerHTML = alerts.map(a=>`<div class="alert-box">
+    <div class="alert-title">${a.title}</div>
+    <div class="alert-body">${a.body}</div>
+  </div>`).join('');
 }
 
-// Recomendações
-function renderRecs(){
-  const recs=[
-    {icon:'🔥',text:'<strong>Prioridade máxima:</strong> Jadson pereira da silva — WD, score 5, Payable, call 63min com Bernardo. Lead quente, não converteu ontem. Ligar hoje cedo.'},
-    {icon:'🚨',text:'<strong>Reagendar no-shows high priority:</strong> Maryna (score 7!), Esaú Gomes, Vitória Maciel (score 8), Thiago Mina, Gabrielle Ribeiro — 5 leads de alto valor ausentes.'},
-    {icon:'📉',text:'<strong>Raphael Barroso (Bruno Marques, 47min) e Jhonatan Zamora (Vinicius, 50min):</strong> ambos com alta negatividade no sentimento do closer — revisar gravação para identificar falha de abordagem.'},
-    {icon:'📈',text:'<strong>Canal CPC lidera</strong> com 137 leads (46%). Meta/Instagram_Reels é o criativo mais efetivo (56 leads). "pajoaventuras" lidera entre influencers (33 leads).'},
-    {icon:'⚡',text:'<strong>68% das reuniões (15/22) aconteceram no mesmo dia da criação</strong> — fluxo imediato funcionando bem. Estratégia de speed-to-lead está ativa.'},
-    {icon:'🧠',text:'<strong>Treinamento:</strong> Jessica Silva teve 18% de negatividade na call de Marcela Vieira (Closer E). Bruno Marques teve 16% em Raphael Barroso. Priorizar roleplay de contorno de objeções.'},
-  ];
-  document.getElementById('rec-list').innerHTML=recs.map(r=>`<li><div class="rec-icon">${r.icon}</div><div>${r.text}</div></li>`).join('');
-}
-
-function filterRows(tbodyId,attr,val){
-  document.querySelectorAll(`#${tbodyId} tr`).forEach(tr=>{
-    tr.style.display=(!val||tr.dataset[attr]===val||tr.dataset[attr]?.toLowerCase()===val.toLowerCase())?'':'none';
+// Filter function
+function filterTable(tableId, attr, val) {
+  const tbody = document.getElementById(tableId+'-body');
+  if (!tbody) return;
+  Array.from(tbody.rows).forEach(row=>{
+    if (!val) { row.style.display=''; return; }
+    const cellVal = row.getAttribute('data-'+attr)||'';
+    row.style.display = cellVal===val?'':'none';
   });
 }
 
-function switchTab(tab){
+// Tab switch
+function switchTab(name) {
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
-  document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));
-  document.querySelector(`.tab[onclick*="${tab}"]`).classList.add('active');
-  document.getElementById(`tab-${tab}`).classList.add('active');
+  document.querySelectorAll('.content').forEach(c=>c.classList.remove('active'));
+  document.querySelector(`[onclick="switchTab('${name}')"]`).classList.add('active');
+  document.getElementById('tab-'+name).classList.add('active');
 }
 
-window.onload=function(){
-  buildFunil();
-  buildBar('utm-medium-chart',utmMedium);
-  const top10content={};
-  Object.entries(utmContent).slice(0,8).forEach(([k,v])=>{
-    const label=k.includes('cid--')?k.replace(/cid--[^_]+_adset--[^_]+_adsetid--[^_]+_source--[^_]+_placement--/,'').substring(0,25):k.substring(0,25);
-    top10content[label]=(top10content[label]||0)+v;
-  });
-  buildBar('utm-content-chart',top10content);
-  renderAtt();renderNs();renderClosers();renderRanking();renderElephan();renderAlertas();renderRecs();
-};
+// Init
+renderAttended(attendedData);
+renderNoshow(noshowData);
+renderPotencial();
+renderElephantTable();
+renderCloserCards();
+renderAlerts();
 </script>
 </body>
 </html>
