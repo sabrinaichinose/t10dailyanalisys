@@ -136,11 +136,11 @@ tr:nth-child(even):hover td{background:#f0f4ff}
   <div class="section">
     <div class="kpi-grid">
       <div class="kpi teal"><div class="kpi-value">300+</div><div class="kpi-label">Leads Criados</div><div class="kpi-sub">pipeline Brazil/Sales</div></div>
-      <div class="kpi green"><div class="kpi-value">44</div><div class="kpi-label">Reuniões Atendidas</div><div class="kpi-sub">37 com transcrição</div></div>
-      <div class="kpi"><div class="kpi-value">50%</div><div class="kpi-label">Taxa Same-Day</div><div class="kpi-sub">22 de 44 reuniões</div></div>
-      <div class="kpi orange"><div class="kpi-value">33</div><div class="kpi-label">No-Shows</div><div class="kpi-sub">43% do agendado</div></div>
-      <div class="kpi green"><div class="kpi-value">1</div><div class="kpi-label">Vendas</div><div class="kpi-sub">Allef G. · WD</div></div>
-      <div class="kpi"><div class="kpi-value">2,1d</div><div class="kpi-label">Ciclo Médio</div><div class="kpi-sub">criação → atendimento</div></div>
+      <div class="kpi green"><div class="kpi-value" id="kpi-att">44</div><div class="kpi-label">Reuniões Atendidas</div><div class="kpi-sub" id="kpi-att-sub">37 com transcrição</div></div>
+      <div class="kpi"><div class="kpi-value" id="kpi-sameday">50%</div><div class="kpi-label">Taxa Same-Day</div><div class="kpi-sub" id="kpi-sameday-sub">22 de 44 reuniões</div></div>
+      <div class="kpi orange"><div class="kpi-value" id="kpi-ns">33</div><div class="kpi-label">No-Shows</div><div class="kpi-sub" id="kpi-ns-sub">43% do agendado</div></div>
+      <div class="kpi green"><div class="kpi-value" id="kpi-vendas-mkt">1</div><div class="kpi-label">Vendas</div><div class="kpi-sub" id="kpi-vendas-mkt-sub">Allef G. · WD</div></div>
+      <div class="kpi"><div class="kpi-value" id="kpi-ciclo">2,1d</div><div class="kpi-label">Ciclo Médio</div><div class="kpi-sub">criação → atendimento</div></div>
     </div>
   </div>
 
@@ -151,9 +151,9 @@ tr:nth-child(even):hover td{background:#f0f4ff}
       <div class="funnel">
         <div class="funnel-item"><div class="funnel-label">Leads Criados</div><div class="funnel-bar-wrap"><div class="funnel-bar" style="width:100%;background:#1e40af">300+</div></div><div class="funnel-count">300+</div></div>
         <div class="funnel-item"><div class="funnel-label">Meeting Scheduled</div><div class="funnel-bar-wrap"><div class="funnel-bar" style="width:51%;background:#0891b2">~77</div></div><div class="funnel-count">~77</div></div>
-        <div class="funnel-item"><div class="funnel-label">Meeting Attended</div><div class="funnel-bar-wrap"><div class="funnel-bar" style="width:14.7%;background:#10b981">44</div></div><div class="funnel-count">44</div></div>
-        <div class="funnel-item"><div class="funnel-label">No-Show</div><div class="funnel-bar-wrap"><div class="funnel-bar" style="width:11%;background:#f59e0b">33</div></div><div class="funnel-count">33</div></div>
-        <div class="funnel-item"><div class="funnel-label">Venda Confirmada</div><div class="funnel-bar-wrap"><div class="funnel-bar" style="width:1%;background:#065f46;min-width:36px">1</div></div><div class="funnel-count">1</div></div>
+        <div class="funnel-item"><div class="funnel-label">Meeting Attended</div><div class="funnel-bar-wrap"><div class="funnel-bar" id="funnel-att-bar" style="width:14.7%;background:#10b981">44</div></div><div class="funnel-count" id="funnel-att-count">44</div></div>
+        <div class="funnel-item"><div class="funnel-label">No-Show</div><div class="funnel-bar-wrap"><div class="funnel-bar" id="funnel-ns-bar" style="width:11%;background:#f59e0b">33</div></div><div class="funnel-count" id="funnel-ns-count">33</div></div>
+        <div class="funnel-item"><div class="funnel-label">Venda Confirmada</div><div class="funnel-bar-wrap"><div class="funnel-bar" id="funnel-venda-bar" style="width:1%;background:#065f46;min-width:36px">1</div></div><div class="funnel-count" id="funnel-venda-count">1</div></div>
       </div>
     </div>
   </div>
@@ -262,10 +262,10 @@ tr:nth-child(even):hover td{background:#f0f4ff}
       <div class="breakdown-card">
         <h4>⏱️ Ciclo de Atendimento</h4>
         <div class="ciclo-grid" style="margin-top:8px">
-          <div class="ciclo-item"><div class="ciclo-count">22</div><div class="ciclo-label">Mesmo dia</div></div>
-          <div class="ciclo-item"><div class="ciclo-count">11</div><div class="ciclo-label">1–3 dias</div></div>
-          <div class="ciclo-item"><div class="ciclo-count">8</div><div class="ciclo-label">4–7 dias</div></div>
-          <div class="ciclo-item"><div class="ciclo-count">3</div><div class="ciclo-label">8+ dias</div></div>
+          <div class="ciclo-item"><div class="ciclo-count" id="ciclo-0">22</div><div class="ciclo-label">Mesmo dia</div></div>
+          <div class="ciclo-item"><div class="ciclo-count" id="ciclo-13">11</div><div class="ciclo-label">1–3 dias</div></div>
+          <div class="ciclo-item"><div class="ciclo-count" id="ciclo-47">8</div><div class="ciclo-label">4–7 dias</div></div>
+          <div class="ciclo-item"><div class="ciclo-count" id="ciclo-8p">3</div><div class="ciclo-label">8+ dias</div></div>
         </div>
       </div>
     </div>
@@ -276,18 +276,18 @@ tr:nth-child(even):hover td{background:#f0f4ff}
 <div class="content" id="tab-vendas">
   <div class="section">
     <div class="kpi-grid">
-      <div class="kpi green"><div class="kpi-value">1</div><div class="kpi-label">Vendas</div><div class="kpi-sub">Allef G. · WD</div></div>
-      <div class="kpi"><div class="kpi-value">41</div><div class="kpi-label">Em Aberto</div><div class="kpi-sub">stage attended</div></div>
-      <div class="kpi red"><div class="kpi-value">2</div><div class="kpi-label">Lost Hoje</div><div class="kpi-sub">Vitor R. · Barbara C.</div></div>
-      <div class="kpi green"><div class="kpi-value">10</div><div class="kpi-label">Potencial A</div><div class="kpi-sub">prioridade máxima</div></div>
-      <div class="kpi orange"><div class="kpi-value">23</div><div class="kpi-label">Potencial B</div><div class="kpi-sub">trabalhar com atenção</div></div>
-      <div class="kpi teal"><div class="kpi-value">37</div><div class="kpi-label">Calls Gravadas</div><div class="kpi-sub">análise Elephan</div></div>
+      <div class="kpi green"><div class="kpi-value" id="kpi-v-vendas">1</div><div class="kpi-label">Vendas</div><div class="kpi-sub" id="kpi-v-vendas-sub">Allef G. · WD</div></div>
+      <div class="kpi"><div class="kpi-value" id="kpi-v-aberto">41</div><div class="kpi-label">Em Aberto</div><div class="kpi-sub">stage attended</div></div>
+      <div class="kpi red"><div class="kpi-value" id="kpi-v-lost">2</div><div class="kpi-label">Lost Hoje</div><div class="kpi-sub" id="kpi-v-lost-sub">Vitor R. · Barbara C.</div></div>
+      <div class="kpi green"><div class="kpi-value" id="kpi-v-pota">10</div><div class="kpi-label">Potencial A</div><div class="kpi-sub">prioridade máxima</div></div>
+      <div class="kpi orange"><div class="kpi-value" id="kpi-v-potb">23</div><div class="kpi-label">Potencial B</div><div class="kpi-sub">trabalhar com atenção</div></div>
+      <div class="kpi teal"><div class="kpi-value" id="kpi-v-calls">37</div><div class="kpi-label">Calls Gravadas</div><div class="kpi-sub">análise Elephan</div></div>
     </div>
   </div>
 
   <!-- Closers -->
   <div class="section">
-    <div class="section-title">Performance por Closer — 10/08/2026 (Elephan)</div>
+    <div class="section-title" id="closer-title">Performance por Closer — 10/08/2026 (Elephan)</div>
     <div class="closer-grid" id="closer-grid"></div>
   </div>
 
@@ -646,7 +646,81 @@ function initElephCloserFilter(){
 // ======= TAB =======
 function switchTab(name){document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));document.querySelectorAll('.content').forEach(c=>c.classList.remove('active'));document.querySelector(`[onclick="switchTab('${name}')"]`).classList.add('active');document.getElementById('tab-'+name).classList.add('active');}
 
+// ======= DYNAMIC KPIs =======
+function initKPIs(){
+  const att=attendedData.length, ns=noshowData.length, total=att+ns;
+  const sameDay=attendedData.filter(d=>(d.cycle||0)===0).length;
+  const vendas=attendedData.filter(d=>d.stage==='Fechou');
+  const lost=attendedData.filter(d=>d.stage==='Closed-Lost');
+  const emAberto=attendedData.filter(d=>d.stage!=='Fechou'&&d.stage!=='Closed-Lost');
+  const potA=attendedData.filter(d=>d.potencial==='A').length;
+  const potB=attendedData.filter(d=>d.potencial==='B').length;
+  const calls=elephanData.length;
+  const avgCycle=att>0?(attendedData.reduce((s,d)=>s+(d.cycle||0),0)/att):0;
+  const nsRate=total>0?Math.round(ns/total*100):0;
+  const sdRate=att>0?Math.round(sameDay/att*100):0;
+  const vendaNomes=vendas.slice(0,2).map(d=>d.name.split(' ').slice(0,2).join(' ')).join(' · ');
+  const lostNomes=lost.slice(0,2).map(d=>d.name.split(' ')[0]).join(' · ');
+  const avgCycleStr=avgCycle.toFixed(1).replace('.',',')+' d';
+
+  // Marketing KPIs
+  document.getElementById('kpi-att').textContent=att;
+  document.getElementById('kpi-att-sub').textContent=calls+' com transcrição';
+  document.getElementById('kpi-sameday').textContent=sdRate+'%';
+  document.getElementById('kpi-sameday-sub').textContent=sameDay+' de '+att+' reuniões';
+  document.getElementById('kpi-ns').textContent=ns;
+  document.getElementById('kpi-ns-sub').textContent=nsRate+'% do agendado';
+  document.getElementById('kpi-vendas-mkt').textContent=vendas.length;
+  document.getElementById('kpi-vendas-mkt-sub').textContent=vendaNomes||'—';
+  document.getElementById('kpi-ciclo').textContent=avgCycleStr;
+
+  // Funil (relative to attended+noshow total)
+  const fBase=Math.max(total,1);
+  const fw=v=>Math.max(2,Math.round(v/fBase*70))+'%';
+  const attBar=document.getElementById('funnel-att-bar');
+  attBar.style.width=fw(att); attBar.textContent=att;
+  document.getElementById('funnel-att-count').textContent=att;
+  const nsBar=document.getElementById('funnel-ns-bar');
+  nsBar.style.width=fw(ns); nsBar.textContent=ns;
+  document.getElementById('funnel-ns-count').textContent=ns;
+  const vBar=document.getElementById('funnel-venda-bar');
+  vBar.style.width=Math.max(2,Math.round(vendas.length/fBase*70))+'%'; vBar.textContent=vendas.length;
+  document.getElementById('funnel-venda-count').textContent=vendas.length;
+
+  // Vendas KPIs
+  document.getElementById('kpi-v-vendas').textContent=vendas.length;
+  document.getElementById('kpi-v-vendas-sub').textContent=vendaNomes||'—';
+  document.getElementById('kpi-v-aberto').textContent=emAberto.length;
+  document.getElementById('kpi-v-lost').textContent=lost.length;
+  document.getElementById('kpi-v-lost-sub').textContent=lostNomes||'—';
+  document.getElementById('kpi-v-pota').textContent=potA;
+  document.getElementById('kpi-v-potb').textContent=potB;
+  document.getElementById('kpi-v-calls').textContent=calls;
+
+  // Ciclo grid
+  const c0=attendedData.filter(d=>(d.cycle||0)===0).length;
+  const c13=attendedData.filter(d=>(d.cycle||0)>=1&&(d.cycle||0)<=3).length;
+  const c47=attendedData.filter(d=>(d.cycle||0)>=4&&(d.cycle||0)<=7).length;
+  const c8p=attendedData.filter(d=>(d.cycle||0)>=8).length;
+  document.getElementById('ciclo-0').textContent=c0;
+  document.getElementById('ciclo-13').textContent=c13;
+  document.getElementById('ciclo-47').textContent=c47;
+  document.getElementById('ciclo-8p').textContent=c8p;
+
+  // Closer title date (read from date input)
+  const dateVal=document.getElementById('date-picker')?document.getElementById('date-picker').value:'';
+  if(dateVal){
+    const [y,m,d]=dateVal.split('-');
+    document.getElementById('closer-title').textContent='Performance por Closer — '+d+'/'+m+'/'+y+' (Elephan)';
+  }
+
+  // Section counts
+  document.getElementById('count-attended').textContent=att;
+  document.getElementById('count-noshow').textContent=ns;
+}
+
 // ======= INIT =======
+initKPIs();
 initMs('ms-att-course', attendedData, 'course', 'attended');
 initMs('ms-ns-course', noshowData, 'course', 'noshow');
 initMs('ms-pot-course', attendedData, 'course', 'potencial');

@@ -120,7 +120,7 @@ tr:nth-child(even):hover td{background:#f0f4ff}
       <div class="date-hint">Navegue entre dashboards salvos</div>
     </div>
     <button class="date-nav-btn" onclick="navDate(-1)" title="Dia anterior">◀</button>
-    <input type="date" id="date-picker" value="2026-08-11" onchange="navigateDate(this.value)">
+    <input type="date" id="date-picker" value="2026-08-13" onchange="navigateDate(this.value)">
     <button class="date-nav-btn" onclick="navDate(1)" title="Próximo dia">▶</button>
   </div>
 </div>
@@ -287,7 +287,7 @@ tr:nth-child(even):hover td{background:#f0f4ff}
 
   <!-- Closers -->
   <div class="section">
-    <div class="section-title" id="closer-title">Performance por Closer — 11/08/2026 (Elephan)</div>
+    <div class="section-title" id="closer-title">Performance por Closer — 13/08/2026 (Elephan)</div>
     <div class="closer-grid" id="closer-grid"></div>
   </div>
 
@@ -357,70 +357,107 @@ tr:nth-child(even):hover td{background:#f0f4ff}
 <script>
 // ======= DATA =======
 const attendedData = [
-  {name:"Yasmin Borba",course:"DS",utm_medium:"crm",utm_content:"Email CRM Engajados",score:4,priority:"high",temp:"Morno",payable:"No",stage:"Closed-Lost",potencial:"B"},
-  {name:"Raphael Barroso",course:"DA",utm_medium:"cpc",utm_content:"Instagram Feed",score:4,priority:"high",temp:"Morno",payable:"No",stage:"Meeting Attended",potencial:"B"},
-  {name:"Igor Rodrigues Silva",course:"DA",utm_medium:"bloggers",utm_content:"nerdsdenegocios",score:null,priority:"medium",temp:"Morno",payable:"No",stage:"Meeting Attended",potencial:"C"},
-  {name:"Caio Felicio",course:"MBA DS",utm_medium:"bloggers",utm_content:"attekitadev",score:3,priority:"medium",temp:"Morno",payable:"No",stage:"Meeting Attended",potencial:"B"},
-  {name:"mariana ferreira",course:"DA",utm_medium:"bloggers",utm_content:"patriciavogtt",score:3,priority:"medium",temp:"Frio",payable:"Yes",stage:"Meeting Attended",potencial:"B"},
-  {name:"Marcela Vieira",course:"QA",utm_medium:"",utm_content:"",score:null,priority:"medium",temp:"Morno",payable:"No",stage:"Meeting Attended",potencial:"C"},
-  {name:"marcia santos",course:"QA",utm_medium:"cpc",utm_content:"Facebook Mobile Feed",score:-1,priority:"medium",temp:"Morno",payable:"No",stage:"Meeting Attended",potencial:"C"},
-  {name:"Gabriel Palma",course:"WD",utm_medium:"cpc",utm_content:"Google CPC",score:0,priority:"medium",temp:"Morno",payable:"Yes",stage:"Meeting Attended",potencial:"B"},
-  {name:"Thiago Silva",course:"MBA DA",utm_medium:"cpc",utm_content:"Instagram Feed",score:4,priority:"high",temp:"Frio",payable:"No",stage:"Closed-Lost",potencial:"B"},
-  {name:"Lucas Trajano",course:"MBA DS",utm_medium:"smm",utm_content:"link_in_bio",score:null,priority:"medium",temp:"Quente",payable:"Yes",stage:"Fechou",potencial:"A"},
-  {name:"Paula Cristina mariot de Souza",course:"MBA AI",utm_medium:"smm",utm_content:"link_in_bio",score:0,priority:"medium",temp:"Morno",payable:"No",stage:"Meeting Attended",potencial:"C"},
-  {name:"Rosane Kupka",course:"DA",utm_medium:"cpc",utm_content:"Instagram Stories",score:2,priority:"medium",temp:"Frio",payable:"No",stage:"Meeting Attended",potencial:"C"},
-  {name:"Jessica Quini",course:"DS",utm_medium:"",utm_content:"",score:4,priority:"high",temp:"Quente",payable:"Yes",stage:"Meeting Attended",potencial:"A"},
-  {name:"Chauanny Vitória Medeiros",course:"MBA DS",utm_medium:"crm",utm_content:"CRM Closed-Lost",score:null,priority:"medium",temp:"Quente",payable:"Yes",stage:"Meeting Attended",potencial:"A"},
-  {name:"Cleyton Alves Santos",course:"QA",utm_medium:"bloggers",utm_content:"nerdsdenegocios",score:null,priority:"medium",temp:"Morno",payable:"No",stage:"Meeting Attended",potencial:"C"},
-  {name:"Jean Carlo Dos Santos",course:"DS",utm_medium:"smm",utm_content:"link_in_bio",score:3,priority:"high",temp:"Frio",payable:"Yes",stage:"Meeting Attended",potencial:"B"},
-  {name:"Gabriella Rachid",course:"DA",utm_medium:"partnerships",utm_content:"CTI",score:3,priority:"high",temp:"Quente",payable:"No",stage:"Meeting Attended",potencial:"B"},
-  {name:"Jhonatan pulido Zamora",course:"DA",utm_medium:"cpc",utm_content:"Google CPC",score:3,priority:"high",temp:"Morno",payable:"No",stage:"Closed-Lost",potencial:"B"},
-  {name:"Jadson pereira da silva",course:"WD",utm_medium:"smm",utm_content:"smm",score:5,priority:"high",temp:"Morno",payable:"Yes",stage:"Meeting Attended",potencial:"A"},
-  {name:"Ian Leonardo",course:"DA",utm_medium:"cpc",utm_content:"Instagram Reels",score:4,priority:"high",temp:"Morno",payable:"No",stage:"Meeting Attended",potencial:"B"},
-  {name:"VINICIUS SIMOES",course:"DA",utm_medium:"bloggers",utm_content:"nerdsdenegocios",score:3,priority:"medium",temp:"Morno",payable:"No",stage:"Meeting Attended",potencial:"B"},
-  {name:"Marcela",course:"DA",utm_medium:"cpc",utm_content:"Facebook Mobile Reels",score:5,priority:"high",temp:"Morno",payable:"No",stage:"Meeting Attended",potencial:"B"}
+  {name:"Keli Rossa",course:"DS",utm_medium:"bloggers",utm_content:"getoutsidebr",score:1,priority:"medium",temp:"Frio",payable:"No",stage:"Em Aberto",potencial:"C"},
+  {name:"Alan Leal",course:"WD",utm_medium:"smm",utm_content:"smm",score:1,priority:"medium",temp:"Frio",payable:"Yes",stage:"Meeting Attended",potencial:"B"},
+  {name:"Gustavo Orlando",course:"DA",utm_medium:"cpc",utm_content:"Google CPC",score:2,priority:"high",temp:"Morno",payable:"No",stage:"Meeting Attended",potencial:"C"},
+  {name:"Thiago Silva Pereira",course:"MBA DS",utm_medium:"cpc",utm_content:"Instagram Reels",score:4,priority:"high",temp:"Morno",payable:"No",stage:"Meeting Attended",potencial:"B"},
+  {name:"Renata Irina Gonçalves Moreira",course:"DA",utm_medium:"cpc",utm_content:"Instagram Reels",score:-2,priority:"low",temp:"Morno",payable:"Yes",stage:"Meeting Attended",potencial:"B"},
+  {name:"Natan",course:"DS",utm_medium:"cpc",utm_content:"Instagram Reels",score:0,priority:"medium",temp:"Morno",payable:"No",stage:"Meeting Attended",potencial:"C"},
+  {name:"Priscila Silva Batista",course:"DA",utm_medium:"cpc",utm_content:"Instagram Reels",score:1,priority:"medium",temp:"Morno",payable:"No",stage:"Meeting Attended",potencial:"C"},
+  {name:"Bruna Rodrigues",course:"DA",utm_medium:"cpc",utm_content:"Google CPC",score:-2,priority:"high",temp:"Morno",payable:"No",stage:"Closed-Lost",potencial:"C"},
+  {name:"Paulo Magalhães",course:"WD",utm_medium:"bloggers",utm_content:"nerdsdenegocios",score:null,priority:"medium",temp:"Quente",payable:"No",stage:"Meeting Attended",potencial:"C"},
+  {name:"Dayse Moura",course:"DA",utm_medium:"",utm_content:"",score:0,priority:"medium",temp:"Frio",payable:"No",stage:"Meeting Attended",potencial:"C"},
+  {name:"Evandro Nilo Costa",course:"DS",utm_medium:"crm",utm_content:"Email CRM Engajados",score:-1,priority:"medium",temp:"Quente",payable:"Yes",stage:"Em Aberto",potencial:"A"},
+  {name:"Diego Souza",course:"DS",utm_medium:"cpc",utm_content:"Instagram Reels",score:0,priority:"medium",temp:"Morno",payable:"Yes",stage:"Meeting Attended",potencial:"B"},
+  {name:"Katiucia Lima",course:"DA",utm_medium:"",utm_content:"",score:0,priority:"medium",temp:"Morno",payable:"No",stage:"Meeting Attended",potencial:"C"},
+  {name:"Fred Garcia",course:"DA",utm_medium:"smm",utm_content:"link_in_bio",score:2,priority:"medium",temp:"Frio",payable:"No",stage:"Closed-Lost",potencial:"C"},
+  {name:"Carla Eduarda",course:"MBA DA",utm_medium:"smm",utm_content:"smm",score:3,priority:"medium",temp:"Frio",payable:"No",stage:"Meeting Attended",potencial:"B"},
+  {name:"Gabriel Bessa",course:"DS",utm_medium:"cpc",utm_content:"Google CPC",score:1,priority:"medium",temp:"Quente",payable:"No",stage:"Em Aberto",potencial:"C"},
+  {name:"Gutemberg Rapôso da Silva Ferreira",course:"DS",utm_medium:"crm",utm_content:"Email CRM Leads",score:3,priority:"high",temp:"Morno",payable:"No",stage:"Closed-Lost",potencial:"B"},
+  {name:"Matheus Gustavo Correa",course:"DA",utm_medium:"",utm_content:"",score:-1,priority:"medium",temp:"Morno",payable:"Yes",stage:"Meeting Attended",potencial:"B"},
+  {name:"ERNESTO JUERGEN GUSE",course:"DS",utm_medium:"partnerships",utm_content:"CTI",score:null,priority:"medium",temp:"Morno",payable:"No",stage:"Meeting Attended",potencial:"C"},
+  {name:"Monique rocha",course:"DS",utm_medium:"crm",utm_content:"CRM Closed-Lost",score:null,priority:"medium",temp:"Quente",payable:"Yes",stage:"Meeting Attended",potencial:"A"},
+  {name:"OTÁVIO",course:"QA",utm_medium:"",utm_content:"",score:2,priority:"medium",temp:"Morno",payable:"No",stage:"Meeting Attended",potencial:"C"},
+  {name:"GABRIEL CAPIZANI DOS SANTOS",course:"MBA DS",utm_medium:"bloggers",utm_content:"attekitadev",score:2,priority:"medium",temp:"Morno",payable:"No",stage:"Meeting Attended",potencial:"C"},
+  {name:"Richard Luan",course:"QA",utm_medium:"cpc",utm_content:"Instagram Reels",score:3,priority:"high",temp:"Morno",payable:"No",stage:"Meeting Attended",potencial:"B"},
+  {name:"Luna thurn",course:"DS",utm_medium:"cpc",utm_content:"Instagram Reels",score:4,priority:"high",temp:"Morno",payable:"Yes",stage:"Meeting Attended",potencial:"B"},
+  {name:"Marcelo Santos Honório",course:"DA",utm_medium:"cpc",utm_content:"Instagram Stories",score:null,priority:"medium",temp:"Morno",payable:"Yes",stage:"Meeting Attended",potencial:"B"},
+  {name:"Jefferson Timotheo",course:"DA",utm_medium:"cpc",utm_content:"cid--{{campaign.id}}_adset--{{adset",score:8,priority:"high",temp:"Morno",payable:"No",stage:"Meeting Attended",potencial:"B"},
+  {name:"Jéssica Freitas",course:"DA",utm_medium:"crm",utm_content:"CRM Closed-Lost",score:4,priority:"high",temp:"Morno",payable:"No",stage:"Meeting Attended",potencial:"B"},
+  {name:"Emerson de Oliveira",course:"QA",utm_medium:"bloggers",utm_content:"boraalibr",score:1,priority:"medium",temp:"Quente",payable:"No",stage:"Meeting Attended",potencial:"C"},
+  {name:"Ana",course:"QA",utm_medium:"cpc",utm_content:"Instagram Feed",score:2,priority:"high",temp:"Morno",payable:"No",stage:"Meeting Attended",potencial:"C"},
+  {name:"Marcos Tavares",course:"MBA DS",utm_medium:"cpc",utm_content:"Instagram Reels",score:2,priority:"medium",temp:"Morno",payable:"No",stage:"Meeting Attended",potencial:"C"}
 ];
 const noshowData = [
-  {name:"Micaele",course:"",utm_medium:"",utm_content:"",score:null,priority:"medium",stage:"No-Show"},
-  {name:"Maryna",course:"DS",utm_medium:"smm",utm_content:"smm",score:7,priority:"high",stage:"Closed-Lost"},
-  {name:"Kaique De Souza Mendss",course:"DS",utm_medium:"cpc",utm_content:"Google CPC",score:1,priority:"medium",stage:"No-Show"},
-  {name:"Evandro Nilo Costa",course:"DS",utm_medium:"crm",utm_content:"Email CRM Engajados",score:-1,priority:"medium",stage:"No-Show"},
-  {name:"Thiago Mina",course:"MBA DS",utm_medium:"teste",utm_content:"variacao_a",score:3,priority:"high",stage:"Closed-Lost"},
-  {name:"Esaú Gomes",course:"WD",utm_medium:"",utm_content:"",score:4,priority:"high",stage:"Closed-Lost"},
-  {name:"Vitória Maciel De Araujo",course:"DS",utm_medium:"crm",utm_content:"Email CRM Leads",score:8,priority:"high",stage:"No-Show"},
-  {name:"Fred Garcia",course:"",utm_medium:"smm",utm_content:"link_in_bio",score:2,priority:"medium",stage:"No-Show"},
-  {name:"Paulo Luiz",course:"DS",utm_medium:"bloggers",utm_content:"pajoaventuras",score:3,priority:"medium",stage:"No-Show"},
-  {name:"Gabrielle Ribeiro",course:"DS",utm_medium:"crm",utm_content:"CRM Alta Prioridade",score:3,priority:"high",stage:"No-Show"}
+  {name:"Anna Ellen de Paula Amurim",course:"DS",utm_medium:"cpc",utm_content:"Instagram Reels",score:3,priority:"high",stage:"No-Show"},
+  {name:"Gustavo Wilian Bueno Dos Santos",course:"DS",utm_medium:"bloggers",utm_content:"nerdsdenegocios",score:2,priority:"medium",stage:"No-Show"},
+  {name:"VITOR SPESSE RODRIGUES",course:"DS",utm_medium:"bloggers",utm_content:"nerdsdenegocios",score:null,priority:"medium",stage:"No-Show"},
+  {name:"Julio guimaraes",course:"DS",utm_medium:"bloggers",utm_content:"pablofakirr",score:-1,priority:"low",stage:"No-Show"},
+  {name:"Jhonny Domingues Braga",course:"MBA DS",utm_medium:"smm",utm_content:"smm",score:1,priority:"medium",stage:"No-Show"},
+  {name:"Wellington Cabral",course:"DS",utm_medium:"crm",utm_content:"CRM Closed-Lost",score:1,priority:"high",stage:"No-Show"},
+  {name:"Alexandre",course:"DS",utm_medium:"cpc",utm_content:"Instagram Stories",score:1,priority:"medium",stage:"No-Show"},
+  {name:"Anna Claudia Santos",course:"DS",utm_medium:"cpc",utm_content:"Instagram Feed",score:null,priority:"medium",stage:"No-Show"},
+  {name:"Anderson Lima",course:"DS",utm_medium:"crm",utm_content:"CRM Closed-Lost",score:1,priority:"high",stage:"No-Show"},
+  {name:"Vitor Mano",course:"DS",utm_medium:"cpc",utm_content:"Facebook",score:2,priority:"high",stage:"No-Show"},
+  {name:"Leonardo Oliveira",course:"DS",utm_medium:"smm",utm_content:"smm",score:4,priority:"high",stage:"No-Show"},
+  {name:"Thiago Costa",course:"DS",utm_medium:"bloggers",utm_content:"pajoaventuras",score:null,priority:"medium",stage:"No-Show"},
+  {name:"vinicius motta",course:"DS",utm_medium:"crm",utm_content:"CRM Closed-Lost",score:0,priority:"medium",stage:"No-Show"},
+  {name:"Mariana cunha",course:"DS",utm_medium:"crm",utm_content:"CRM Closed-Lost",score:4,priority:"high",stage:"No-Show"},
+  {name:"Luana Correa",course:"DS",utm_medium:"cpc",utm_content:"Instagram Stories",score:3,priority:"high",stage:"No-Show"},
+  {name:"Da silva Gonçalves",course:"DS",utm_medium:"smm",utm_content:"smm",score:5,priority:"high",stage:"No-Show"},
+  {name:"Adans dantos",course:"DS",utm_medium:"crm",utm_content:"CRM Closed-Lost",score:2,priority:"high",stage:"No-Show"},
+  {name:"Iuri romao de Andrade Domingues",course:"DS",utm_medium:"cpc",utm_content:"Instagram Reels",score:null,priority:"medium",stage:"No-Show"},
+  {name:"Felipe Martins Alcalay",course:"DS",utm_medium:"crm",utm_content:"CRM Closed-Lost",score:-2,priority:"high",stage:"No-Show"},
+  {name:"Karen Kathleen de Oliveira Mendes",course:"DS",utm_medium:"crm",utm_content:"CRM Closed-Lost",score:3,priority:"high",stage:"No-Show"}
 ];
 const elephanData = [
-  {closer:"Raphael  Soares Luna",title:"PL-C : Consultoria de Carreira",lead:"— (sem deal)",duration:40.7,result:"Sem deal",cp:60,cn:3,lp:23,ln:16,summary:"1. Criação de Rapport:<br>   - O consultor começou a conversa com uma saudação amistosa e compartilhou uma experiência pessoal ..."},
-  {closer:"Erick Paiva",title:"Tay:C/ Ligação de vídeo com o consultor ",lead:"Ian Leonardo",duration:41.3,result:"Em Aberto",cp:52,cn:9,lp:18,ln:14,summary:"1. Criação de Rapport:<br>   - O consultor, Eric, iniciou a conversa com efetividade na criação de empatia. Ele fez perguntas p..."},
-  {closer:"Jessica Silva",title:"PL-C : Consultoria de Carreira",lead:"Gabriella Rachid",duration:52.0,result:"Em Aberto",cp:15,cn:35,lp:31,ln:9,summary:"1. Criação de Rapport:<br>   - A consultora Jéssica iniciou a conversa de forma acolhedora e profissional, buscando criar um ví..."},
-  {closer:"Vinicius Leao",title:"Apresentação de curso em análise de dado",lead:"Igor Rodrigues Silva",duration:33.7,result:"Em Aberto",cp:54,cn:8,lp:7,ln:1,summary:"1. Criação de Rapport:<br>   - O consultor iniciou a conversa de forma descontraída, elogiando Brasília e a arquitetura local, ..."},
-  {closer:"Bernardo Magalhaes",title:"Tay:C/Ligação de vídeo com o consultor d",lead:"Jadson pereira da silva",duration:63.5,result:"Em Aberto",cp:27,cn:25,lp:37,ln:7,summary:"1. Apresentação do consultor e objetivo da conversa  <br>   - Bernardo, consultor da Tipo10 com 9 anos de experiência em progra..."},
-  {closer:"Raphael  Soares Luna",title:"Tay:C/Ligação de vídeo com o consultor d",lead:"Cleyton Alves Santos",duration:33.0,result:"Em Aberto",cp:61,cn:1,lp:12,ln:53,summary:"1. Criação de Rapport<br>   - O consultor iniciou com uma conversa descontraída, mencionando Uberlândia e criando uma conexão c..."},
-  {closer:"João  Oliveira",title:"Exploração de carreira - Yasmin e Triple",lead:"Yasmin Borba",duration:62.8,result:"Perdeu",cp:72,cn:0,lp:28,ln:38,summary:"1. Criação de Rapport e Abordagem Inicial:<br>   - O consultor, João, iniciou a conversa com uma saudação profissional, mantend..."},
-  {closer:"Yanara Silva",title:"Exploração de carreira em análise de dad",lead:"— (sem deal)",duration:60.4,result:"Sem deal",cp:61,cn:3,lp:26,ln:17,summary:"1. Introdução e construção de rapport:<br>   - A ligação começou com problemas técnicos, mas a consultora foi paciente, demonst..."},
-  {closer:"Erick Paiva",title:"LB : C - Consultoria",lead:"mariana ferreira",duration:55.6,result:"Em Aberto",cp:23,cn:4,lp:28,ln:10,summary:"1. Criação de Rapport:<br>   - A conversa começou de forma descontraída e fluida, com troca de saudações amistosas entre o cons..."},
-  {closer:"Bruno Marques",title:"Apresentação TripleTen e oportunidades t",lead:"VINICIUS SIMOES",duration:26.3,result:"Em Aberto",cp:37,cn:4,lp:36,ln:29,summary:"1. Criação de Rapport e Estratégias de Quebra-Gelo Utilizadas:<br>   - O consultor iniciou o diálogo de forma descontraída, men..."},
-  {closer:"Jessica Silva",title:"Isa:C - Consultoria de carreira",lead:"Marcela Vieira",duration:45.1,result:"Em Aberto",cp:38,cn:15,lp:20,ln:29,summary:"1. Criação de rapport e quebra-gelo inicial:<br>   - O consultor Jéssica foi amigável e empático desde o início, o que ajudou a..."},
-  {closer:"Vinicius Leao",title:"Consulta para transição de carreira - Te",lead:"Jhonatan pulido Zamora",duration:50.8,result:"Perdeu",cp:12,cn:37,lp:55,ln:4,summary:"1. Criação de rapport e quebra-gelo inicial:<br>   - O consultor iniciou a conversa buscando criar uma conexão pessoal ao menci..."},
-  {closer:"Bruno Marques",title:"Transição de carreira para tecnologia - ",lead:"marcia santos",duration:30.8,result:"Em Aberto",cp:78,cn:2,lp:19,ln:23,summary:"<b>Extensão não funcionou nem para tentar gravar e nem para convocar o notetaker. Acabei fazendo a gravação via google meet, ma..."},
-  {closer:"Veronica Rocha",title:"MBA-TAY:C/Ligação de vídeo com o consult",lead:"Caio Felicio",duration:39.4,result:"Em Aberto",cp:70,cn:0,lp:35,ln:6,summary:"1. Criação de Rapport e Quebra-Gelo<br>   - A conversa iniciou de forma cordial e com um tom acolhedor. Verônica se apresentou ..."},
-  {closer:"Erick Paiva",title:"Isa:C - Consultoria de carreira",lead:"Gabriel Palma",duration:54.3,result:"Em Aberto",cp:53,cn:0,lp:25,ln:5,summary:"1. Criação de Rapport e Primeira Impressão:<br>   - A saudação inicial foi descontraída e acolhedora, criando um ambiente amigá..."},
-  {closer:"Bruno Marques",title:"Mudança de carreira para tecnologia - Ra",lead:"Raphael Barroso",duration:47.4,result:"Em Aberto",cp:29,cn:12,lp:15,ln:8,summary:"Resumo Analítico da Conversa<br><br>1. Nome do Lead e Contexto Inicial<br>   - Nome do Lead: Rafael.<br>   - Momento de vida: E..."},
-  {closer:"Yanara Silva",title:"MBA-Tay/Ligação de vídeo com o consultor",lead:"Paula Cristina mariot de Souza",duration:31.1,result:"Em Aberto",cp:0,cn:0,lp:23,ln:30,summary:"1. Criação de Rapport:<br>   - A consultora Yanara começou com uma abordagem amigável e mostrou profissionalismo ao se apresent..."}
+  {closer:"Raisa Fernandes",title:"Consultoria Tripleten Tem - Curso Analis",lead:"— (deal 516638514371)",duration:34.3,result:"Em Aberto",cp:67,cn:0,lp:34,ln:16,summary:"1. Criação de Rapport e Quebra de Gelo  <br>   - A consultora iniciou a conversa de forma acolhedora, pedindo que o lead compar..."},
+  {closer:"Erick Paiva",title:"Tay:C/Ligação de vídeo com o consultor d",lead:"ERNESTO JUERGEN GUSE",duration:97.5,result:"Em Aberto",cp:39,cn:5,lp:27,ln:17,summary:"1. Criação de Rapport e Quebra-Gelo  <br>   - A conversa começou de forma descontraída, com o vendedor se preocupando em criar ..."},
+  {closer:"Raisa Fernandes",title:"Discussão sobre migração de carreira par",lead:"Fred Garcia",duration:11.8,result:"Perdeu",cp:46,cn:0,lp:0,ln:28,summary:"1. Criação de Rapport<br>    - O consultor iniciou a conversa de maneira amistosa, solicitando que o lead, Fred, compartilhasse..."},
+  {closer:"Raphael  Soares Luna",title:"PL-C : Consultoria de Carreira",lead:"— (sem deal)",duration:47.3,result:"Sem deal",cp:49,cn:13,lp:72,ln:3,summary:"1. Rapport e Quebra-Gelo:<br>   - O consultor iniciou a conversa com um tom amigável e despojado, comentando sobre rotina de so..."},
+  {closer:"Raphael  Soares Luna",title:"Isa:C - Consultoria de carreira",lead:"— (sem deal)",duration:22.5,result:"Sem deal",cp:78,cn:0,lp:24,ln:22,summary:"1. Criação de Rapport:<br>   - O consultor iniciou a conversa tentando criar conexão pessoal, demonstrando interesse em um assu..."},
+  {closer:"Veronica Rocha",title:"Retorno sobre o MBA",lead:"— (deal 443306275024)",duration:24.5,result:"Em Aberto",cp:36,cn:5,lp:6,ln:41,summary:"1. Criação de Rapport  <br>   - Estratégias de Quebra-Gelo: Verônica começou a conversa de maneira acessível e amigável, mencio..."},
+  {closer:"Lucas Bonow",title:"Consultoria TripleTen - Mudança para Pro",lead:"Paulo Magalhães",duration:48.6,result:"Em Aberto",cp:41,cn:25,lp:57,ln:9,summary:"1. Criação de Rapport:<br>   - A conversa inicial foi bem informal e calorosa, com bastante interação pessoal. O Lucas comparti..."},
+  {closer:"Veronica Rocha",title:"MBA - PL C: Consultoria de Carreira",lead:"Thiago Silva Pereira",duration:50.7,result:"Em Aberto",cp:34,cn:1,lp:15,ln:29,summary:"1. Criação de Rapport e Apresentação Inicial  <br>   - A consultora iniciou com uma saudação amigável, mostrando interesse genu..."},
+  {closer:"Raisa Fernandes",title:"Consultoria para transição de carreira -",lead:"Dayse Moura",duration:51.0,result:"Em Aberto",cp:10,cn:21,lp:57,ln:6,summary:"1. Criação de Rapport  <br>   - O consultor aplicou técnicas eficientes de criação de rapport ao conectar-se com a lead por mei..."},
+  {closer:"Veronica Rocha",title:"Retorno sobre o MBA",lead:"— (deal 506172096710)",duration:17.8,result:"Em Aberto",cp:42,cn:2,lp:32,ln:15,summary:"1. Criação de Rapport e Contexto Inicial:<br>   - O consultor (Verônica) iniciou a conversa de forma calorosa e profissional, p..."},
+  {closer:"Natalia Martins",title:"MBA PL-C: Ligação de vídeo com o consult",lead:"Carla Eduarda",duration:38.5,result:"Em Aberto",cp:17,cn:11,lp:42,ln:5,summary:"1. Criação de Rapport e Quebra-Gelo Inicial  <br>   - A conversa começou de maneira leve e amigável, com a lead mencionando o c..."},
+  {closer:"Raisa Fernandes",title:"Apresentação Bootcamp e transição de car",lead:"Marcelo Santos Honório",duration:46.5,result:"Em Aberto",cp:61,cn:1,lp:22,ln:10,summary:"1. Criação de Rapport e Quebra-Gelo<br>   - A consultora começou elogiando o background acadêmico do lead, focando na formação ..."},
+  {closer:"Bruno Marques",title:"Consultoria e proposta TripleTen para Ot",lead:"— (sem deal)",duration:83.0,result:"Sem deal",cp:56,cn:5,lp:13,ln:21,summary:"1. Estratégias de Quebra-Gelo e Criação de Rapport<br>   - A consultoria começou de maneira bem descontraída e personalizada, c..."},
+  {closer:"João  Oliveira",title:"Atendimento e proposta para curso de Aná",lead:"Renata Irina Gonçalves Moreira",duration:58.0,result:"Em Aberto",cp:63,cn:0,lp:37,ln:17,summary:"1. Criação de Rapport<br>   - O consultor João começou com uma abordagem amigável, comentou sobre sua localização (Salvador, Ba..."},
+  {closer:"Lucas Bonow",title:"Monique - Bootcamp Ciência de Dados",lead:"Monique rocha",duration:30.0,result:"Em Aberto",cp:71,cn:5,lp:64,ln:1,summary:"1. Criação de Rapport e Quebra-Gelo:<br>   - O consultor iniciou a conversa de forma calorosa e receptiva, buscando confirmar a..."},
+  {closer:"Erick Paiva",title:"LB: C - Consultoria",lead:"Katiucia Lima",duration:38.5,result:"Em Aberto",cp:17,cn:19,lp:32,ln:8,summary:"Resumo Detalhado da Reunião<br><br>1. Quebra-gelo e Criação de Rapport:<br>   - O consultor começou explicando como a reunião i..."},
+  {closer:"Yanara Silva",title:"Isa:C - Consultoria de carreira",lead:"Priscila Silva Batista",duration:44.5,result:"Em Aberto",cp:80,cn:3,lp:26,ln:33,summary:"1. Criação do Rapport e Estratégias de Quebra-Gelo  <br>   - A consultora abriu a conversa de maneira amigável e descontraída a..."},
+  {closer:"Raphael  Soares Luna",title:"Isa:C - Consultoria de carreira",lead:"— (sem deal)",duration:34.9,result:"Sem deal",cp:66,cn:0,lp:59,ln:7,summary:"1. Estratégias de Quebra-Gelo e Criação de Rapport  <br>   - O consultor iniciou o contato criando um ambiente amigável, person..."},
+  {closer:"Erick Paiva",title:"Apresentação de Bootcamp para transição ",lead:"Richard Luan",duration:36.6,result:"Em Aberto",cp:31,cn:7,lp:12,ln:29,summary:"1. Criação de Rapport  <br>   - Foi feita uma abordagem inicial descontraída, aproveitando os interesses do lead para construir..."},
+  {closer:"Daniel Augusto  Macedo Ribeiro",title:"Apresentação de cursos - Tripleten",lead:"Ana",duration:40.8,result:"Em Aberto",cp:38,cn:1,lp:25,ln:10,summary:"1. Criação de Rapport e Abordagem Inicial:<br>   - O consultor iniciou a conversa de maneira amigável e informal, ajustando o t..."},
+  {closer:"Raphael  Soares Luna",title:"Isa:C - Consultoria de carreira",lead:"— (sem deal)",duration:22.2,result:"Sem deal",cp:76,cn:0,lp:23,ln:29,summary:"1. Criação de Rapport e Quebra-Gelo  <br>   - A consultoria começou com um tom descontraído e acolhedor, criando uma empatia in..."},
+  {closer:"Gabriel Morial",title:"PL- C: Consultoria de Carreira",lead:"Gabriel Bessa",duration:46.6,result:"Em Aberto",cp:40,cn:8,lp:21,ln:22,summary:"1. Criação de Rapport e Quebra de Gelo:<br>   - O consultor iniciou a conversa com um tom amigável e informal, elogiando a cida..."},
+  {closer:"Raphael  Soares Luna",title:"LB :C- Consultoria",lead:"— (sem deal)",duration:7.4,result:"Sem deal",cp:45,cn:14,lp:48,ln:1,summary:"1. Criação de Rapport e Quebra-gelo  <br>   - A interação começou com uma saudação amigável e descontraída. O consultor, Rafa, ..."},
+  {closer:"Vinicius Leao",title:"Apresentação de bootcamp - Transição de ",lead:"Natan",duration:27.9,result:"Em Aberto",cp:49,cn:1,lp:61,ln:4,summary:"1. Rapport Inicial e Introdução à Conversa:<br>   - O consultor inicia a conversa com um tom amigável e profissional, buscando ..."},
+  {closer:"Jessica Silva",title:"PL- C : Consultoria de Carreira",lead:"Matheus Gustavo Correa",duration:27.0,result:"Em Aberto",cp:43,cn:10,lp:7,ln:28,summary:"1. Criação de rapport e quebra-gelo:  <br>   - O consultor iniciou a conversa de maneira profissional e amigável, criando um cl..."},
+  {closer:"Lucas Bonow",title:"Plano de transição para ciência de dados",lead:"Gutemberg Rapôso da Silva Ferreira",duration:67.3,result:"Perdeu",cp:15,cn:51,lp:38,ln:11,summary:"Resumo Analítico da Conversa<br><br>1. Criação de Rapport e Contexto Inicial<br>   - O consultor começou a conversa de maneira ..."},
+  {closer:"Veronica Rocha",title:"MBA LB: C - Consultoria",lead:"GABRIEL CAPIZANI DOS SANTOS",duration:30.0,result:"Em Aberto",cp:58,cn:3,lp:4,ln:20,summary:"Resumo da Conversa de Consultoria de Carreira com o Lead Gabriel<br><br>1. Criação de Rapport e Personalização da Abordagem<br>..."},
+  {closer:"Lucas Bonow",title:"Apresentação curso - Analista de Dados",lead:"Jéssica Freitas",duration:41.4,result:"Em Aberto",cp:51,cn:2,lp:19,ln:11,summary:"1. Criação de Rapport  <br>   - A conversa inicial foi eficaz ao criar um ambiente de empatia e proximidade, com o consultor co..."},
+  {closer:"Vinicius Leao",title:"Ligação de vídeo com o consultor de carr",lead:"Marcos Tavares",duration:43.1,result:"Em Aberto",cp:18,cn:21,lp:61,ln:0,summary:"1. Criação de Rapport e Estratégias de Quebra-Gelo  <br>   - A consultora iniciou a conversa com um tom amigável e profissional..."},
+  {closer:"Yanara Silva",title:"Reag PL-C : Consultoria de Carreira",lead:"Bruna Rodrigues",duration:41.5,result:"Perdeu",cp:36,cn:2,lp:19,ln:21,summary:"1. Criação de Rapport e Quebra-Gelo  <br>   - O início da conversa foi cortês e acolhedor, com perguntas para confirmar se a le..."},
+  {closer:"Jessica Silva",title:"LB :C- Consultoria",lead:"Jefferson Timotheo",duration:50.1,result:"Em Aberto",cp:14,cn:29,lp:54,ln:5,summary:"1. Criação de Rapport:  <br>   - A consultora inicia a conversa com um tom amistoso e empático, estabelecendo uma conexão inici..."},
+  {closer:"Bruno Marques",title:"Ligação de vídeo com o consultor de carr",lead:"Gustavo Orlando",duration:81.7,result:"Em Aberto",cp:26,cn:19,lp:23,ln:26,summary:"1. Quebra-gelo e Introdução  <br>   - O consultor de carreira iniciou a conversa de maneira receptiva e inclusiva, reforçando q..."}
 ];
 const closerStats = {
-  "Erick Paiva":{calls:3,min:151,energia:43,resist:10},
-  "Bruno Marques":{calls:3,min:104,energia:48,resist:20},
-  "Raphael  Soares Luna":{calls:2,min:74,energia:60,resist:34},
-  "Jessica Silva":{calls:2,min:97,energia:26,resist:19},
-  "Vinicius Leao":{calls:2,min:85,energia:33,resist:2},
-  "Yanara Silva":{calls:2,min:91,energia:30,resist:24},
-  "Bernardo Magalhaes":{calls:1,min:64,energia:27,resist:7},
-  "João  Oliveira":{calls:1,min:63,energia:72,resist:38},
-  "Veronica Rocha":{calls:1,min:39,energia:70,resist:6}
+  "Raphael  Soares Luna":{calls:5,min:134,energia:63,resist:12},
+  "Raisa Fernandes":{calls:4,min:143,energia:46,resist:15},
+  "Veronica Rocha":{calls:4,min:123,energia:42,resist:26},
+  "Lucas Bonow":{calls:4,min:187,energia:44,resist:8},
+  "Erick Paiva":{calls:3,min:172,energia:29,resist:18},
+  "Bruno Marques":{calls:2,min:165,energia:41,resist:24},
+  "Yanara Silva":{calls:2,min:86,energia:58,resist:27},
+  "Vinicius Leao":{calls:2,min:71,energia:34,resist:2},
+  "Jessica Silva":{calls:2,min:77,energia:28,resist:16},
+  "Natalia Martins":{calls:1,min:38,energia:17,resist:5},
+  "João  Oliveira":{calls:1,min:58,energia:63,resist:17},
+  "Daniel Augusto  Macedo Ribeiro":{calls:1,min:41,energia:38,resist:10},
+  "Gabriel Morial":{calls:1,min:47,energia:40,resist:22}
 };
 
 // ======= MULTI-SELECT =======
