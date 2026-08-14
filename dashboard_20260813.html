@@ -135,7 +135,7 @@ tr:nth-child(even):hover td{background:#f0f4ff}
 
   <div class="section">
     <div class="kpi-grid">
-      <div class="kpi teal"><div class="kpi-value">300+</div><div class="kpi-label">Leads Criados</div><div class="kpi-sub">pipeline Brazil/Sales</div></div>
+      <div class="kpi teal"><div class="kpi-value" id="kpi-leads">277</div><div class="kpi-label">Leads Criados</div><div class="kpi-sub">pipeline Brazil/Sales</div></div>
       <div class="kpi green"><div class="kpi-value" id="kpi-att">44</div><div class="kpi-label">Reuniões Atendidas</div><div class="kpi-sub" id="kpi-att-sub">37 com transcrição</div></div>
       <div class="kpi"><div class="kpi-value" id="kpi-sameday">50%</div><div class="kpi-label">Taxa Same-Day</div><div class="kpi-sub" id="kpi-sameday-sub">22 de 44 reuniões</div></div>
       <div class="kpi orange"><div class="kpi-value" id="kpi-ns">33</div><div class="kpi-label">No-Shows</div><div class="kpi-sub" id="kpi-ns-sub">43% do agendado</div></div>
@@ -149,7 +149,7 @@ tr:nth-child(even):hover td{background:#f0f4ff}
     <div class="section-title">Funil do Dia</div>
     <div class="table-wrap">
       <div class="funnel">
-        <div class="funnel-item"><div class="funnel-label">Leads Criados</div><div class="funnel-bar-wrap"><div class="funnel-bar" style="width:100%;background:#1e40af">300+</div></div><div class="funnel-count">300+</div></div>
+        <div class="funnel-item"><div class="funnel-label">Leads Criados</div><div class="funnel-bar-wrap"><div class="funnel-bar" id="funnel-leads-bar" style="width:100%;background:#1e40af">277</div></div><div class="funnel-count" id="funnel-leads-count">277</div></div>
         <div class="funnel-item"><div class="funnel-label">Meeting Scheduled</div><div class="funnel-bar-wrap"><div class="funnel-bar" style="width:51%;background:#0891b2">~77</div></div><div class="funnel-count">~77</div></div>
         <div class="funnel-item"><div class="funnel-label">Meeting Attended</div><div class="funnel-bar-wrap"><div class="funnel-bar" id="funnel-att-bar" style="width:14.7%;background:#10b981">44</div></div><div class="funnel-count" id="funnel-att-count">44</div></div>
         <div class="funnel-item"><div class="funnel-label">No-Show</div><div class="funnel-bar-wrap"><div class="funnel-bar" id="funnel-ns-bar" style="width:11%;background:#f59e0b">33</div></div><div class="funnel-count" id="funnel-ns-count">33</div></div>
@@ -310,7 +310,7 @@ tr:nth-child(even):hover td{background:#f0f4ff}
         <button onclick="resetFilters('potencial')" style="font-size:0.75rem;padding:4px 10px;border:1px solid #e2e8f0;border-radius:6px;background:#fff;cursor:pointer;color:#64748b">↺ Limpar</button>
       </div>
       <table>
-        <thead><tr><th>Lead</th><th>Curso</th><th>Potencial</th><th>Score</th><th>Payable</th><th>Temp</th><th>Priority</th><th>Ação Recomendada</th></tr></thead>
+        <thead><tr><th>Lead</th><th>Closer</th><th>Curso</th><th>Potencial</th><th>Score</th><th>Payable</th><th>Temp</th><th>Priority</th><th>Ação Recomendada</th></tr></thead>
         <tbody id="tbl-potencial-body"></tbody>
       </table>
       <div class="no-results" id="no-potencial" style="display:none">Nenhum lead encontrado com os filtros selecionados.</div>
@@ -357,56 +357,57 @@ tr:nth-child(even):hover td{background:#f0f4ff}
 <script>
 // ======= DATA =======
 const attendedData = [
-  {name:"Keli Rossa",course:"DS",utm_medium:"bloggers",utm_content:"getoutsidebr",score:1,priority:"medium",temp:"Frio",payable:"No",stage:"Em Aberto",potencial:"C"},
-  {name:"Alan Leal",course:"WD",utm_medium:"smm",utm_content:"smm",score:1,priority:"medium",temp:"Frio",payable:"Yes",stage:"Meeting Attended",potencial:"B"},
-  {name:"Gustavo Orlando",course:"DA",utm_medium:"cpc",utm_content:"Google CPC",score:2,priority:"high",temp:"Morno",payable:"No",stage:"Meeting Attended",potencial:"C"},
-  {name:"Thiago Silva Pereira",course:"MBA DS",utm_medium:"cpc",utm_content:"Instagram Reels",score:4,priority:"high",temp:"Morno",payable:"No",stage:"Meeting Attended",potencial:"B"},
-  {name:"Renata Irina Gonçalves Moreira",course:"DA",utm_medium:"cpc",utm_content:"Instagram Reels",score:-2,priority:"low",temp:"Morno",payable:"Yes",stage:"Meeting Attended",potencial:"B"},
-  {name:"Natan",course:"DS",utm_medium:"cpc",utm_content:"Instagram Reels",score:0,priority:"medium",temp:"Morno",payable:"No",stage:"Meeting Attended",potencial:"C"},
-  {name:"Priscila Silva Batista",course:"DA",utm_medium:"cpc",utm_content:"Instagram Reels",score:1,priority:"medium",temp:"Morno",payable:"No",stage:"Meeting Attended",potencial:"C"},
-  {name:"Bruna Rodrigues",course:"DA",utm_medium:"cpc",utm_content:"Google CPC",score:-2,priority:"high",temp:"Morno",payable:"No",stage:"Closed-Lost",potencial:"C"},
-  {name:"Paulo Magalhães",course:"WD",utm_medium:"bloggers",utm_content:"nerdsdenegocios",score:null,priority:"medium",temp:"Quente",payable:"No",stage:"Meeting Attended",potencial:"C"},
-  {name:"Dayse Moura",course:"DA",utm_medium:"",utm_content:"",score:0,priority:"medium",temp:"Frio",payable:"No",stage:"Meeting Attended",potencial:"C"},
-  {name:"Evandro Nilo Costa",course:"DS",utm_medium:"crm",utm_content:"Email CRM Engajados",score:-1,priority:"medium",temp:"Quente",payable:"Yes",stage:"Em Aberto",potencial:"A"},
-  {name:"Diego Souza",course:"DS",utm_medium:"cpc",utm_content:"Instagram Reels",score:0,priority:"medium",temp:"Morno",payable:"Yes",stage:"Meeting Attended",potencial:"B"},
-  {name:"Katiucia Lima",course:"DA",utm_medium:"",utm_content:"",score:0,priority:"medium",temp:"Morno",payable:"No",stage:"Meeting Attended",potencial:"C"},
-  {name:"Fred Garcia",course:"DA",utm_medium:"smm",utm_content:"link_in_bio",score:2,priority:"medium",temp:"Frio",payable:"No",stage:"Closed-Lost",potencial:"C"},
-  {name:"Carla Eduarda",course:"MBA DA",utm_medium:"smm",utm_content:"smm",score:3,priority:"medium",temp:"Frio",payable:"No",stage:"Meeting Attended",potencial:"B"},
-  {name:"Gabriel Bessa",course:"DS",utm_medium:"cpc",utm_content:"Google CPC",score:1,priority:"medium",temp:"Quente",payable:"No",stage:"Em Aberto",potencial:"C"},
-  {name:"Gutemberg Rapôso da Silva Ferreira",course:"DS",utm_medium:"crm",utm_content:"Email CRM Leads",score:3,priority:"high",temp:"Morno",payable:"No",stage:"Closed-Lost",potencial:"B"},
-  {name:"Matheus Gustavo Correa",course:"DA",utm_medium:"",utm_content:"",score:-1,priority:"medium",temp:"Morno",payable:"Yes",stage:"Meeting Attended",potencial:"B"},
-  {name:"ERNESTO JUERGEN GUSE",course:"DS",utm_medium:"partnerships",utm_content:"CTI",score:null,priority:"medium",temp:"Morno",payable:"No",stage:"Meeting Attended",potencial:"C"},
-  {name:"Monique rocha",course:"DS",utm_medium:"crm",utm_content:"CRM Closed-Lost",score:null,priority:"medium",temp:"Quente",payable:"Yes",stage:"Meeting Attended",potencial:"A"},
-  {name:"OTÁVIO",course:"QA",utm_medium:"",utm_content:"",score:2,priority:"medium",temp:"Morno",payable:"No",stage:"Meeting Attended",potencial:"C"},
-  {name:"GABRIEL CAPIZANI DOS SANTOS",course:"MBA DS",utm_medium:"bloggers",utm_content:"attekitadev",score:2,priority:"medium",temp:"Morno",payable:"No",stage:"Meeting Attended",potencial:"C"},
-  {name:"Richard Luan",course:"QA",utm_medium:"cpc",utm_content:"Instagram Reels",score:3,priority:"high",temp:"Morno",payable:"No",stage:"Meeting Attended",potencial:"B"},
-  {name:"Luna thurn",course:"DS",utm_medium:"cpc",utm_content:"Instagram Reels",score:4,priority:"high",temp:"Morno",payable:"Yes",stage:"Meeting Attended",potencial:"B"},
-  {name:"Marcelo Santos Honório",course:"DA",utm_medium:"cpc",utm_content:"Instagram Stories",score:null,priority:"medium",temp:"Morno",payable:"Yes",stage:"Meeting Attended",potencial:"B"},
-  {name:"Jefferson Timotheo",course:"DA",utm_medium:"cpc",utm_content:"cid--{{campaign.id}}_adset--{{adset",score:8,priority:"high",temp:"Morno",payable:"No",stage:"Meeting Attended",potencial:"B"},
-  {name:"Jéssica Freitas",course:"DA",utm_medium:"crm",utm_content:"CRM Closed-Lost",score:4,priority:"high",temp:"Morno",payable:"No",stage:"Meeting Attended",potencial:"B"},
-  {name:"Emerson de Oliveira",course:"QA",utm_medium:"bloggers",utm_content:"boraalibr",score:1,priority:"medium",temp:"Quente",payable:"No",stage:"Meeting Attended",potencial:"C"},
-  {name:"Ana",course:"QA",utm_medium:"cpc",utm_content:"Instagram Feed",score:2,priority:"high",temp:"Morno",payable:"No",stage:"Meeting Attended",potencial:"C"},
-  {name:"Marcos Tavares",course:"MBA DS",utm_medium:"cpc",utm_content:"Instagram Reels",score:2,priority:"medium",temp:"Morno",payable:"No",stage:"Meeting Attended",potencial:"C"}
+  {name:"Keli Rossa",course:"DS",utm_medium:"bloggers",utm_content:"getoutsidebr",score:1,priority:"medium",temp:"Frio",payable:"No",stage:"Em Aberto",potencial:"C",closer:"Raisa Fernandes"},
+  {name:"Alan Leal",course:"WD",utm_medium:"smm",utm_content:"smm",score:1,priority:"medium",temp:"Frio",payable:"Yes",stage:"Meeting Attended",potencial:"B",closer:"Larissa Ciuldim"},
+  {name:"Gustavo Orlando",course:"DA",utm_medium:"cpc",utm_content:"cid--23330113426_c",score:2,priority:"high",temp:"Morno",payable:"No",stage:"Meeting Attended",potencial:"C",closer:"Bruno Marques"},
+  {name:"Thiago Silva Pereira",course:"MBA DS",utm_medium:"cpc",utm_content:"cid--120245653476400637_ig_Reels",score:4,priority:"high",temp:"Morno",payable:"No",stage:"Meeting Attended",potencial:"B",closer:"Verônica Merched"},
+  {name:"Natan",course:"DS",utm_medium:"cpc",utm_content:"cid--120245660345700637_ig_Reels",score:0,priority:"medium",temp:"Morno",payable:"No",stage:"Meeting Attended",potencial:"C",closer:"Vinícius Leão"},
+  {name:"Renata Irina Goncalves Moreira",course:"DA",utm_medium:"cpc",utm_content:"cid--120244104557520637_ig_Reels",score:-2,priority:"low",temp:"Morno",payable:"Yes",stage:"Meeting Attended",potencial:"B",closer:"João Oliveira"},
+  {name:"Priscila Silva Batista",course:"DA",utm_medium:"cpc",utm_content:"cid--120244104557520637_ig_Reels",score:1,priority:"medium",temp:"Morno",payable:"No",stage:"Meeting Attended",potencial:"C",closer:"Yanara Silva"},
+  {name:"Bruna Rodrigues",course:"DA",utm_medium:"cpc",utm_content:"cid--23330113426_m",score:-2,priority:"high",temp:"Morno",payable:"No",stage:"Closed-Lost",potencial:"C",closer:"Yanara Silva"},
+  {name:"Dayse Moura",course:"DA",utm_medium:null,utm_content:"",score:0,priority:"medium",temp:"Frio",payable:"No",stage:"Meeting Attended",potencial:"C",closer:"Raisa Fernandes"},
+  {name:"Paulo Magalhaes",course:"WD",utm_medium:"bloggers",utm_content:"nerdsdenegocios",score:null,priority:"medium",temp:"Quente",payable:"No",stage:"Meeting Attended",potencial:"C",closer:"Lucas Bonow"},
+  {name:"Diego Souza",course:"DS",utm_medium:"cpc",utm_content:"cid--120245660345700637_ig_Reels",score:0,priority:"medium",temp:"Morno",payable:"Yes",stage:"Meeting Attended",potencial:"B",closer:"Daniel Augusto Ribeiro"},
+  {name:"Evandro Nilo Costa",course:"DS",utm_medium:"crm",utm_content:"Email CRM Engajados",score:-1,priority:"medium",temp:"Quente",payable:"Yes",stage:"Em Aberto",potencial:"A",closer:"Raphael Soares"},
+  {name:"Katiucia Lima",course:"DA",utm_medium:null,utm_content:"",score:0,priority:"medium",temp:"Morno",payable:"No",stage:"Meeting Attended",potencial:"C",closer:"Erick Paiva"},
+  {name:"Fred Garcia",course:"DA",utm_medium:"smm",utm_content:"link_in_bio",score:2,priority:"medium",temp:"Frio",payable:"No",stage:"Closed-Lost",potencial:"C",closer:"Raisa Fernandes"},
+  {name:"Carla Eduarda",course:"MBA DA",utm_medium:"smm",utm_content:"smm",score:3,priority:"medium",temp:"Frio",payable:"No",stage:"Meeting Attended",potencial:"B",closer:"Natália Martins"},
+  {name:"Gabriel Bessa",course:"DS",utm_medium:"cpc",utm_content:"cid--23330113426_c",score:1,priority:"medium",temp:"Quente",payable:"No",stage:"Em Aberto",potencial:"C",closer:"Gabriel Morial"},
+  {name:"Gutemberg Raposo da Silva Ferreira",course:"DS",utm_medium:"crm",utm_content:"Email CRM Leads",score:3,priority:"high",temp:"Morno",payable:"No",stage:"Closed-Lost",potencial:"B",closer:"Lucas Bonow"},
+  {name:"Matheus Gustavo Correa",course:"DA",utm_medium:null,utm_content:"",score:-1,priority:"medium",temp:"Morno",payable:"Yes",stage:"Meeting Attended",potencial:"B",closer:"Jessica Silva"},
+  {name:"ERNESTO JUERGEN GUSE",course:"DS",utm_medium:"partnerships",utm_content:"CTI",score:null,priority:"medium",temp:"Morno",payable:"No",stage:"Meeting Attended",potencial:"C",closer:"Erick Paiva"},
+  {name:"Monique rocha",course:"DS",utm_medium:"crm",utm_content:"CRM Closed-Lost",score:null,priority:"medium",temp:"Quente",payable:"Yes",stage:"Meeting Attended",potencial:"A",closer:"Lucas Bonow"},
+  {name:"GABRIEL CAPIZANI DOS SANTOS",course:"MBA DS",utm_medium:"bloggers",utm_content:"attekitadev",score:2,priority:"medium",temp:"Morno",payable:"No",stage:"Meeting Attended",potencial:"C",closer:"Verônica Merched"},
+  {name:"OTAVIO",course:"QA",utm_medium:null,utm_content:"",score:2,priority:"medium",temp:"Morno",payable:"No",stage:"Meeting Attended",potencial:"C",closer:"Bruno Marques"},
+  {name:"Luna thurn",course:"DS",utm_medium:"cpc",utm_content:"cid--120245660345700637_ig_Reels",score:4,priority:"high",temp:"Morno",payable:"Yes",stage:"Meeting Attended",potencial:"B",closer:"Raphael Soares"},
+  {name:"Richard Luan",course:"QA",utm_medium:"cpc",utm_content:"cid--120245660345700637_ig_Reels",score:3,priority:"high",temp:"Morno",payable:"No",stage:"Meeting Attended",potencial:"B",closer:"Erick Paiva"},
+  {name:"Marcelo Santos Honorio",course:"DA",utm_medium:"cpc",utm_content:"cid--120244104557520637_ig_Stories",score:null,priority:"medium",temp:"Morno",payable:"Yes",stage:"Meeting Attended",potencial:"B",closer:"Raisa Fernandes"},
+  {name:"Jefferson Timotheo",course:"DA",utm_medium:"cpc",utm_content:"cid--campaign_adset",score:8,priority:"high",temp:"Morno",payable:"No",stage:"Meeting Attended",potencial:"B",closer:"Jessica Silva"},
+  {name:"Jessica Freitas",course:"DA",utm_medium:"crm",utm_content:"CRM Closed-Lost",score:4,priority:"high",temp:"Morno",payable:"No",stage:"Meeting Attended",potencial:"B",closer:"Lucas Bonow"},
+  {name:"Emerson de Oliveira",course:"QA",utm_medium:"bloggers",utm_content:"boraalibr",score:1,priority:"medium",temp:"Quente",payable:null,stage:"Meeting Attended",potencial:"C",closer:"Gabriel Morial"},
+  {name:"Ana",course:"QA",utm_medium:"cpc",utm_content:"cid--120245660345700637_ig_Feed",score:2,priority:"high",temp:"Morno",payable:"No",stage:"Meeting Attended",potencial:"C",closer:"Daniel Augusto Ribeiro"},
+  {name:"Marcos Tavares",course:"MBA DS",utm_medium:"cpc",utm_content:"cid--120249066341450637_ig_Reels",score:2,priority:"medium",temp:"Morno",payable:"No",stage:"Meeting Attended",potencial:"C",closer:"Verônica Merched"}
 ];
 const noshowData = [
-  {name:"Anna Ellen de Paula Amurim",course:"DS",utm_medium:"cpc",utm_content:"Instagram Reels",score:3,priority:"high",stage:"No-Show"},
+  {name:"Anna Ellen de Paula Amurim",course:"DS",utm_medium:"cpc",utm_content:"cid--120245660345700637_ig_Reels",score:3,priority:"high",stage:"No-Show"},
   {name:"Gustavo Wilian Bueno Dos Santos",course:"DS",utm_medium:"bloggers",utm_content:"nerdsdenegocios",score:2,priority:"medium",stage:"No-Show"},
   {name:"VITOR SPESSE RODRIGUES",course:"DS",utm_medium:"bloggers",utm_content:"nerdsdenegocios",score:null,priority:"medium",stage:"No-Show"},
   {name:"Julio guimaraes",course:"DS",utm_medium:"bloggers",utm_content:"pablofakirr",score:-1,priority:"low",stage:"No-Show"},
   {name:"Jhonny Domingues Braga",course:"MBA DS",utm_medium:"smm",utm_content:"smm",score:1,priority:"medium",stage:"No-Show"},
   {name:"Wellington Cabral",course:"DS",utm_medium:"crm",utm_content:"CRM Closed-Lost",score:1,priority:"high",stage:"No-Show"},
-  {name:"Alexandre",course:"DS",utm_medium:"cpc",utm_content:"Instagram Stories",score:1,priority:"medium",stage:"No-Show"},
-  {name:"Anna Claudia Santos",course:"DS",utm_medium:"cpc",utm_content:"Instagram Feed",score:null,priority:"medium",stage:"No-Show"},
+  {name:"Alexandre",course:"DS",utm_medium:"cpc",utm_content:"cid--120245660345700637_ig_Stories",score:1,priority:"medium",stage:"No-Show"},
+  {name:"Anna Claudia Santos",course:"DS",utm_medium:"cpc",utm_content:"cid--120244104557520637_ig_Feed",score:null,priority:"medium",stage:"No-Show"},
   {name:"Anderson Lima",course:"DS",utm_medium:"crm",utm_content:"CRM Closed-Lost",score:1,priority:"high",stage:"No-Show"},
-  {name:"Vitor Mano",course:"DS",utm_medium:"cpc",utm_content:"Facebook",score:2,priority:"high",stage:"No-Show"},
-  {name:"Leonardo Oliveira",course:"DS",utm_medium:"smm",utm_content:"smm",score:4,priority:"high",stage:"No-Show"},
+  {name:"Vitor Mano",course:"DS",utm_medium:"cpc",utm_content:"cid--120245653476400637_fb_Stories",score:2,priority:"high",stage:"No-Show"},
   {name:"Thiago Costa",course:"DS",utm_medium:"bloggers",utm_content:"pajoaventuras",score:null,priority:"medium",stage:"No-Show"},
+  {name:"Leonardo Oliveira",course:"DS",utm_medium:"smm",utm_content:"smm",score:4,priority:"high",stage:"No-Show"},
   {name:"vinicius motta",course:"DS",utm_medium:"crm",utm_content:"CRM Closed-Lost",score:0,priority:"medium",stage:"No-Show"},
   {name:"Mariana cunha",course:"DS",utm_medium:"crm",utm_content:"CRM Closed-Lost",score:4,priority:"high",stage:"No-Show"},
-  {name:"Luana Correa",course:"DS",utm_medium:"cpc",utm_content:"Instagram Stories",score:3,priority:"high",stage:"No-Show"},
-  {name:"Da silva Gonçalves",course:"DS",utm_medium:"smm",utm_content:"smm",score:5,priority:"high",stage:"No-Show"},
+  {name:"Luana Correa",course:"DS",utm_medium:"cpc",utm_content:"cid--120245660345700637_ig_Stories",score:3,priority:"high",stage:"No-Show"},
+  {name:"ariane Silva",course:"DS",utm_medium:"cpc",utm_content:"cid--120244104557520637_ig_Stories",score:4,priority:"high",stage:"Closed-Lost"},
+  {name:"Da silva Goncalves",course:"DS",utm_medium:"smm",utm_content:"smm",score:5,priority:"high",stage:"No-Show"},
   {name:"Adans dantos",course:"DS",utm_medium:"crm",utm_content:"CRM Closed-Lost",score:2,priority:"high",stage:"No-Show"},
-  {name:"Iuri romao de Andrade Domingues",course:"DS",utm_medium:"cpc",utm_content:"Instagram Reels",score:null,priority:"medium",stage:"No-Show"},
+  {name:"Iuri romao de Andrade Domingues",course:"DS",utm_medium:"cpc",utm_content:"cid--120245660345700637_ig_Reels",score:null,priority:"medium",stage:"No-Show"},
   {name:"Felipe Martins Alcalay",course:"DS",utm_medium:"crm",utm_content:"CRM Closed-Lost",score:-2,priority:"high",stage:"No-Show"},
   {name:"Karen Kathleen de Oliveira Mendes",course:"DS",utm_medium:"crm",utm_content:"CRM Closed-Lost",score:3,priority:"high",stage:"No-Show"}
 ];
@@ -417,14 +418,14 @@ const elephanData = [
   {closer:"Raphael  Soares Luna",title:"PL-C : Consultoria de Carreira",lead:"— (sem deal)",duration:47.3,result:"Sem deal",cp:49,cn:13,lp:72,ln:3,summary:"1. Rapport e Quebra-Gelo:<br>   - O consultor iniciou a conversa com um tom amigável e despojado, comentando sobre rotina de so..."},
   {closer:"Raphael  Soares Luna",title:"Isa:C - Consultoria de carreira",lead:"— (sem deal)",duration:22.5,result:"Sem deal",cp:78,cn:0,lp:24,ln:22,summary:"1. Criação de Rapport:<br>   - O consultor iniciou a conversa tentando criar conexão pessoal, demonstrando interesse em um assu..."},
   {closer:"Veronica Rocha",title:"Retorno sobre o MBA",lead:"— (deal 443306275024)",duration:24.5,result:"Em Aberto",cp:36,cn:5,lp:6,ln:41,summary:"1. Criação de Rapport  <br>   - Estratégias de Quebra-Gelo: Verônica começou a conversa de maneira acessível e amigável, mencio..."},
-  {closer:"Lucas Bonow",title:"Consultoria TripleTen - Mudança para Pro",lead:"Paulo Magalhães",duration:48.6,result:"Em Aberto",cp:41,cn:25,lp:57,ln:9,summary:"1. Criação de Rapport:<br>   - A conversa inicial foi bem informal e calorosa, com bastante interação pessoal. O Lucas comparti..."},
+  {closer:"Lucas Bonow",title:"Consultoria TripleTen - Mudança para Pro",lead:"Paulo Magalhaes",duration:48.6,result:"Em Aberto",cp:41,cn:25,lp:57,ln:9,summary:"1. Criação de Rapport:<br>   - A conversa inicial foi bem informal e calorosa, com bastante interação pessoal. O Lucas comparti..."},
   {closer:"Veronica Rocha",title:"MBA - PL C: Consultoria de Carreira",lead:"Thiago Silva Pereira",duration:50.7,result:"Em Aberto",cp:34,cn:1,lp:15,ln:29,summary:"1. Criação de Rapport e Apresentação Inicial  <br>   - A consultora iniciou com uma saudação amigável, mostrando interesse genu..."},
   {closer:"Raisa Fernandes",title:"Consultoria para transição de carreira -",lead:"Dayse Moura",duration:51.0,result:"Em Aberto",cp:10,cn:21,lp:57,ln:6,summary:"1. Criação de Rapport  <br>   - O consultor aplicou técnicas eficientes de criação de rapport ao conectar-se com a lead por mei..."},
   {closer:"Veronica Rocha",title:"Retorno sobre o MBA",lead:"— (deal 506172096710)",duration:17.8,result:"Em Aberto",cp:42,cn:2,lp:32,ln:15,summary:"1. Criação de Rapport e Contexto Inicial:<br>   - O consultor (Verônica) iniciou a conversa de forma calorosa e profissional, p..."},
   {closer:"Natalia Martins",title:"MBA PL-C: Ligação de vídeo com o consult",lead:"Carla Eduarda",duration:38.5,result:"Em Aberto",cp:17,cn:11,lp:42,ln:5,summary:"1. Criação de Rapport e Quebra-Gelo Inicial  <br>   - A conversa começou de maneira leve e amigável, com a lead mencionando o c..."},
-  {closer:"Raisa Fernandes",title:"Apresentação Bootcamp e transição de car",lead:"Marcelo Santos Honório",duration:46.5,result:"Em Aberto",cp:61,cn:1,lp:22,ln:10,summary:"1. Criação de Rapport e Quebra-Gelo<br>   - A consultora começou elogiando o background acadêmico do lead, focando na formação ..."},
+  {closer:"Raisa Fernandes",title:"Apresentação Bootcamp e transição de car",lead:"Marcelo Santos Honorio",duration:46.5,result:"Em Aberto",cp:61,cn:1,lp:22,ln:10,summary:"1. Criação de Rapport e Quebra-Gelo<br>   - A consultora começou elogiando o background acadêmico do lead, focando na formação ..."},
   {closer:"Bruno Marques",title:"Consultoria e proposta TripleTen para Ot",lead:"— (sem deal)",duration:83.0,result:"Sem deal",cp:56,cn:5,lp:13,ln:21,summary:"1. Estratégias de Quebra-Gelo e Criação de Rapport<br>   - A consultoria começou de maneira bem descontraída e personalizada, c..."},
-  {closer:"João  Oliveira",title:"Atendimento e proposta para curso de Aná",lead:"Renata Irina Gonçalves Moreira",duration:58.0,result:"Em Aberto",cp:63,cn:0,lp:37,ln:17,summary:"1. Criação de Rapport<br>   - O consultor João começou com uma abordagem amigável, comentou sobre sua localização (Salvador, Ba..."},
+  {closer:"João  Oliveira",title:"Atendimento e proposta para curso de Aná",lead:"Renata Irina Goncalves Moreira",duration:58.0,result:"Em Aberto",cp:63,cn:0,lp:37,ln:17,summary:"1. Criação de Rapport<br>   - O consultor João começou com uma abordagem amigável, comentou sobre sua localização (Salvador, Ba..."},
   {closer:"Lucas Bonow",title:"Monique - Bootcamp Ciência de Dados",lead:"Monique rocha",duration:30.0,result:"Em Aberto",cp:71,cn:5,lp:64,ln:1,summary:"1. Criação de Rapport e Quebra-Gelo:<br>   - O consultor iniciou a conversa de forma calorosa e receptiva, buscando confirmar a..."},
   {closer:"Erick Paiva",title:"LB: C - Consultoria",lead:"Katiucia Lima",duration:38.5,result:"Em Aberto",cp:17,cn:19,lp:32,ln:8,summary:"Resumo Detalhado da Reunião<br><br>1. Quebra-gelo e Criação de Rapport:<br>   - O consultor começou explicando como a reunião i..."},
   {closer:"Yanara Silva",title:"Isa:C - Consultoria de carreira",lead:"Priscila Silva Batista",duration:44.5,result:"Em Aberto",cp:80,cn:3,lp:26,ln:33,summary:"1. Criação do Rapport e Estratégias de Quebra-Gelo  <br>   - A consultora abriu a conversa de maneira amigável e descontraída a..."},
@@ -436,9 +437,9 @@ const elephanData = [
   {closer:"Raphael  Soares Luna",title:"LB :C- Consultoria",lead:"— (sem deal)",duration:7.4,result:"Sem deal",cp:45,cn:14,lp:48,ln:1,summary:"1. Criação de Rapport e Quebra-gelo  <br>   - A interação começou com uma saudação amigável e descontraída. O consultor, Rafa, ..."},
   {closer:"Vinicius Leao",title:"Apresentação de bootcamp - Transição de ",lead:"Natan",duration:27.9,result:"Em Aberto",cp:49,cn:1,lp:61,ln:4,summary:"1. Rapport Inicial e Introdução à Conversa:<br>   - O consultor inicia a conversa com um tom amigável e profissional, buscando ..."},
   {closer:"Jessica Silva",title:"PL- C : Consultoria de Carreira",lead:"Matheus Gustavo Correa",duration:27.0,result:"Em Aberto",cp:43,cn:10,lp:7,ln:28,summary:"1. Criação de rapport e quebra-gelo:  <br>   - O consultor iniciou a conversa de maneira profissional e amigável, criando um cl..."},
-  {closer:"Lucas Bonow",title:"Plano de transição para ciência de dados",lead:"Gutemberg Rapôso da Silva Ferreira",duration:67.3,result:"Perdeu",cp:15,cn:51,lp:38,ln:11,summary:"Resumo Analítico da Conversa<br><br>1. Criação de Rapport e Contexto Inicial<br>   - O consultor começou a conversa de maneira ..."},
+  {closer:"Lucas Bonow",title:"Plano de transição para ciência de dados",lead:"Gutemberg Raposo da Silva Ferreira",duration:67.3,result:"Perdeu",cp:15,cn:51,lp:38,ln:11,summary:"Resumo Analítico da Conversa<br><br>1. Criação de Rapport e Contexto Inicial<br>   - O consultor começou a conversa de maneira ..."},
   {closer:"Veronica Rocha",title:"MBA LB: C - Consultoria",lead:"GABRIEL CAPIZANI DOS SANTOS",duration:30.0,result:"Em Aberto",cp:58,cn:3,lp:4,ln:20,summary:"Resumo da Conversa de Consultoria de Carreira com o Lead Gabriel<br><br>1. Criação de Rapport e Personalização da Abordagem<br>..."},
-  {closer:"Lucas Bonow",title:"Apresentação curso - Analista de Dados",lead:"Jéssica Freitas",duration:41.4,result:"Em Aberto",cp:51,cn:2,lp:19,ln:11,summary:"1. Criação de Rapport  <br>   - A conversa inicial foi eficaz ao criar um ambiente de empatia e proximidade, com o consultor co..."},
+  {closer:"Lucas Bonow",title:"Apresentação curso - Analista de Dados",lead:"Jessica Freitas",duration:41.4,result:"Em Aberto",cp:51,cn:2,lp:19,ln:11,summary:"1. Criação de Rapport  <br>   - A conversa inicial foi eficaz ao criar um ambiente de empatia e proximidade, com o consultor co..."},
   {closer:"Vinicius Leao",title:"Ligação de vídeo com o consultor de carr",lead:"Marcos Tavares",duration:43.1,result:"Em Aberto",cp:18,cn:21,lp:61,ln:0,summary:"1. Criação de Rapport e Estratégias de Quebra-Gelo  <br>   - A consultora iniciou a conversa com um tom amigável e profissional..."},
   {closer:"Yanara Silva",title:"Reag PL-C : Consultoria de Carreira",lead:"Bruna Rodrigues",duration:41.5,result:"Perdeu",cp:36,cn:2,lp:19,ln:21,summary:"1. Criação de Rapport e Quebra-Gelo  <br>   - O início da conversa foi cortês e acolhedor, com perguntas para confirmar se a le..."},
   {closer:"Jessica Silva",title:"LB :C- Consultoria",lead:"Jefferson Timotheo",duration:50.1,result:"Em Aberto",cp:14,cn:29,lp:54,ln:5,summary:"1. Criação de Rapport:  <br>   - A consultora inicia a conversa com um tom amistoso e empático, estabelecendo uma conexão inici..."},
@@ -459,6 +460,8 @@ const closerStats = {
   "Daniel Augusto  Macedo Ribeiro":{calls:1,min:41,energia:38,resist:10},
   "Gabriel Morial":{calls:1,min:47,energia:40,resist:22}
 };
+
+const leadsCreados = 212;
 
 // ======= MULTI-SELECT =======
 const msState = {};
@@ -618,7 +621,7 @@ function courseBadge(c){return`<span class="badge-course">${c||'—'}</span>`;}
 // ======= ROW RENDERS =======
 function renderAttendedRow(d){const cyc=d.cycle===0?'Mesmo dia':d.cycle+'d';return`<tr><td><strong>${d.name}</strong></td><td>${courseBadge(d.course)}</td><td>${d.utm_medium||'—'}</td><td style="max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:0.75rem;color:#64748b">${d.utm_content||'—'}</td><td><strong>${d.score!=null?d.score:'—'}</strong></td><td>${priBadge(d.priority)}</td><td>${tempBadge(d.temp)}</td><td>${payBadge(d.payable)}</td><td><span style="color:#0891b2;font-weight:600">${cyc}</span></td><td>${resultBadge(d.stage)}</td></tr>`;}
 function renderNoshowRow(d){const isH=d.priority==='high';return`<tr style="${isH?'background:#fff7f7':''}"><td><strong>${d.name}</strong>${isH?' 🚨':''}</td><td>${courseBadge(d.course)}</td><td>${d.utm_medium||'—'}</td><td style="max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:0.75rem;color:#64748b">${d.utm_content||'—'}</td><td><strong>${d.score!=null?d.score:'—'}</strong></td><td>${priBadge(d.priority)}</td><td>${d.created}</td><td><span style="font-size:0.78rem;color:#64748b">${d.stage}</span></td></tr>`;}
-function renderPotencialRow(d){const acoes={A:'📞 Ligar hoje',B:'📩 Follow-up WhatsApp 24h',C:'📋 Nurturing email'};return`<tr><td><strong>${d.name}</strong></td><td>${courseBadge(d.course)}</td><td>${potBadge(d.potencial)}</td><td><strong>${d.score!=null?d.score:'—'}</strong></td><td>${payBadge(d.payable)}</td><td>${tempBadge(d.temp)}</td><td>${priBadge(d.priority)}</td><td style="font-size:0.8rem;color:#475569">${acoes[d.potencial]||''}</td></tr>`;}
+function renderPotencialRow(d){const acoes={A:'📞 Ligar hoje',B:'📩 Follow-up WhatsApp 24h',C:'📋 Nurturing email'};return`<tr><td><strong>${d.name}</strong></td><td style="font-size:0.82rem;color:#475569;white-space:nowrap">${d.closer||'—'}</td><td>${courseBadge(d.course)}</td><td>${potBadge(d.potencial)}</td><td><strong>${d.score!=null?d.score:'—'}</strong></td><td>${payBadge(d.payable)}</td><td>${tempBadge(d.temp)}</td><td>${priBadge(d.priority)}</td><td style="font-size:0.8rem;color:#475569">${acoes[d.potencial]||''}</td></tr>`;}
 function renderElephRow(d){const rc=d.result==='LOST'?'result-lost':d.result==='Venda'?'result-sale':'result-open';return`<tr><td><strong>${d.closer}</strong></td><td><div style="font-weight:600;font-size:0.82rem">${d.title}</div><div style="font-size:0.72rem;color:#64748b">${d.lead}</div></td><td><span style="font-weight:700;color:#1e40af">${d.duration}min</span></td><td><span class="badge-result ${rc}">${d.result}</span></td><td><div style="font-size:0.72rem;color:#475569;margin-bottom:2px">Closer: ${d.cp}% pos</div>${sentBar(d.cp,d.cn)}</td><td><div style="font-size:0.72rem;color:#475569;margin-bottom:2px">Lead: ${d.ln}% neg</div>${sentBar(d.lp,d.ln)}</td><td style="max-width:200px;font-size:0.78rem;color:#475569">${d.summary}</td></tr>`;}
 
 // ======= CLOSER CARDS =======
@@ -698,9 +701,14 @@ function initKPIs(){
   document.getElementById('kpi-vendas-mkt-sub').textContent=vendaNomes||'—';
   document.getElementById('kpi-ciclo').textContent=avgCycleStr;
 
-  // Funil (relative to attended+noshow total)
-  const fBase=Math.max(total,1);
-  const fw=v=>Math.max(2,Math.round(v/fBase*70))+'%';
+  // Leads criados
+  document.getElementById('kpi-leads').textContent=leadsCreados;
+  document.getElementById('funnel-leads-bar').textContent=leadsCreados;
+  document.getElementById('funnel-leads-count').textContent=leadsCreados;
+
+  // Funil (relative to leads criados)
+  const fBase=Math.max(leadsCreados,1);
+  const fw=v=>Math.max(2,Math.round(v/fBase*100))+'%';
   const attBar=document.getElementById('funnel-att-bar');
   attBar.style.width=fw(att); attBar.textContent=att;
   document.getElementById('funnel-att-count').textContent=att;

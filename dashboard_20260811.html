@@ -135,7 +135,7 @@ tr:nth-child(even):hover td{background:#f0f4ff}
 
   <div class="section">
     <div class="kpi-grid">
-      <div class="kpi teal"><div class="kpi-value">300+</div><div class="kpi-label">Leads Criados</div><div class="kpi-sub">pipeline Brazil/Sales</div></div>
+      <div class="kpi teal"><div class="kpi-value" id="kpi-leads">277</div><div class="kpi-label">Leads Criados</div><div class="kpi-sub">pipeline Brazil/Sales</div></div>
       <div class="kpi green"><div class="kpi-value" id="kpi-att">44</div><div class="kpi-label">Reuniões Atendidas</div><div class="kpi-sub" id="kpi-att-sub">37 com transcrição</div></div>
       <div class="kpi"><div class="kpi-value" id="kpi-sameday">50%</div><div class="kpi-label">Taxa Same-Day</div><div class="kpi-sub" id="kpi-sameday-sub">22 de 44 reuniões</div></div>
       <div class="kpi orange"><div class="kpi-value" id="kpi-ns">33</div><div class="kpi-label">No-Shows</div><div class="kpi-sub" id="kpi-ns-sub">43% do agendado</div></div>
@@ -149,7 +149,7 @@ tr:nth-child(even):hover td{background:#f0f4ff}
     <div class="section-title">Funil do Dia</div>
     <div class="table-wrap">
       <div class="funnel">
-        <div class="funnel-item"><div class="funnel-label">Leads Criados</div><div class="funnel-bar-wrap"><div class="funnel-bar" style="width:100%;background:#1e40af">300+</div></div><div class="funnel-count">300+</div></div>
+        <div class="funnel-item"><div class="funnel-label">Leads Criados</div><div class="funnel-bar-wrap"><div class="funnel-bar" id="funnel-leads-bar" style="width:100%;background:#1e40af">277</div></div><div class="funnel-count" id="funnel-leads-count">277</div></div>
         <div class="funnel-item"><div class="funnel-label">Meeting Scheduled</div><div class="funnel-bar-wrap"><div class="funnel-bar" style="width:51%;background:#0891b2">~77</div></div><div class="funnel-count">~77</div></div>
         <div class="funnel-item"><div class="funnel-label">Meeting Attended</div><div class="funnel-bar-wrap"><div class="funnel-bar" id="funnel-att-bar" style="width:14.7%;background:#10b981">44</div></div><div class="funnel-count" id="funnel-att-count">44</div></div>
         <div class="funnel-item"><div class="funnel-label">No-Show</div><div class="funnel-bar-wrap"><div class="funnel-bar" id="funnel-ns-bar" style="width:11%;background:#f59e0b">33</div></div><div class="funnel-count" id="funnel-ns-count">33</div></div>
@@ -310,7 +310,7 @@ tr:nth-child(even):hover td{background:#f0f4ff}
         <button onclick="resetFilters('potencial')" style="font-size:0.75rem;padding:4px 10px;border:1px solid #e2e8f0;border-radius:6px;background:#fff;cursor:pointer;color:#64748b">↺ Limpar</button>
       </div>
       <table>
-        <thead><tr><th>Lead</th><th>Curso</th><th>Potencial</th><th>Score</th><th>Payable</th><th>Temp</th><th>Priority</th><th>Ação Recomendada</th></tr></thead>
+        <thead><tr><th>Lead</th><th>Closer</th><th>Curso</th><th>Potencial</th><th>Score</th><th>Payable</th><th>Temp</th><th>Priority</th><th>Ação Recomendada</th></tr></thead>
         <tbody id="tbl-potencial-body"></tbody>
       </table>
       <div class="no-results" id="no-potencial" style="display:none">Nenhum lead encontrado com os filtros selecionados.</div>
@@ -357,38 +357,38 @@ tr:nth-child(even):hover td{background:#f0f4ff}
 <script>
 // ======= DATA =======
 const attendedData = [
-  {name:"Yasmin Borba",course:"DS",utm_medium:"crm",utm_content:"Email CRM Engajados",score:4,priority:"high",temp:"Morno",payable:"No",stage:"Closed-Lost",potencial:"B"},
-  {name:"Raphael Barroso",course:"DA",utm_medium:"cpc",utm_content:"Instagram Feed",score:4,priority:"high",temp:"Morno",payable:"No",stage:"Meeting Attended",potencial:"B"},
-  {name:"Igor Rodrigues Silva",course:"DA",utm_medium:"bloggers",utm_content:"nerdsdenegocios",score:null,priority:"medium",temp:"Morno",payable:"No",stage:"Meeting Attended",potencial:"C"},
-  {name:"Caio Felicio",course:"MBA DS",utm_medium:"bloggers",utm_content:"attekitadev",score:3,priority:"medium",temp:"Morno",payable:"No",stage:"Meeting Attended",potencial:"B"},
-  {name:"mariana ferreira",course:"DA",utm_medium:"bloggers",utm_content:"patriciavogtt",score:3,priority:"medium",temp:"Frio",payable:"Yes",stage:"Meeting Attended",potencial:"B"},
-  {name:"Marcela Vieira",course:"QA",utm_medium:"",utm_content:"",score:null,priority:"medium",temp:"Morno",payable:"No",stage:"Meeting Attended",potencial:"C"},
-  {name:"marcia santos",course:"QA",utm_medium:"cpc",utm_content:"Facebook Mobile Feed",score:-1,priority:"medium",temp:"Morno",payable:"No",stage:"Meeting Attended",potencial:"C"},
-  {name:"Gabriel Palma",course:"WD",utm_medium:"cpc",utm_content:"Google CPC",score:0,priority:"medium",temp:"Morno",payable:"Yes",stage:"Meeting Attended",potencial:"B"},
-  {name:"Thiago Silva",course:"MBA DA",utm_medium:"cpc",utm_content:"Instagram Feed",score:4,priority:"high",temp:"Frio",payable:"No",stage:"Closed-Lost",potencial:"B"},
-  {name:"Lucas Trajano",course:"MBA DS",utm_medium:"smm",utm_content:"link_in_bio",score:null,priority:"medium",temp:"Quente",payable:"Yes",stage:"Fechou",potencial:"A"},
-  {name:"Paula Cristina mariot de Souza",course:"MBA AI",utm_medium:"smm",utm_content:"link_in_bio",score:0,priority:"medium",temp:"Morno",payable:"No",stage:"Meeting Attended",potencial:"C"},
-  {name:"Rosane Kupka",course:"DA",utm_medium:"cpc",utm_content:"Instagram Stories",score:2,priority:"medium",temp:"Frio",payable:"No",stage:"Meeting Attended",potencial:"C"},
-  {name:"Jessica Quini",course:"DS",utm_medium:"",utm_content:"",score:4,priority:"high",temp:"Quente",payable:"Yes",stage:"Meeting Attended",potencial:"A"},
-  {name:"Chauanny Vitória Medeiros",course:"MBA DS",utm_medium:"crm",utm_content:"CRM Closed-Lost",score:null,priority:"medium",temp:"Quente",payable:"Yes",stage:"Meeting Attended",potencial:"A"},
-  {name:"Cleyton Alves Santos",course:"QA",utm_medium:"bloggers",utm_content:"nerdsdenegocios",score:null,priority:"medium",temp:"Morno",payable:"No",stage:"Meeting Attended",potencial:"C"},
-  {name:"Jean Carlo Dos Santos",course:"DS",utm_medium:"smm",utm_content:"link_in_bio",score:3,priority:"high",temp:"Frio",payable:"Yes",stage:"Meeting Attended",potencial:"B"},
-  {name:"Gabriella Rachid",course:"DA",utm_medium:"partnerships",utm_content:"CTI",score:3,priority:"high",temp:"Quente",payable:"No",stage:"Meeting Attended",potencial:"B"},
-  {name:"Jhonatan pulido Zamora",course:"DA",utm_medium:"cpc",utm_content:"Google CPC",score:3,priority:"high",temp:"Morno",payable:"No",stage:"Closed-Lost",potencial:"B"},
-  {name:"Jadson pereira da silva",course:"WD",utm_medium:"smm",utm_content:"smm",score:5,priority:"high",temp:"Morno",payable:"Yes",stage:"Meeting Attended",potencial:"A"},
-  {name:"Ian Leonardo",course:"DA",utm_medium:"cpc",utm_content:"Instagram Reels",score:4,priority:"high",temp:"Morno",payable:"No",stage:"Meeting Attended",potencial:"B"},
-  {name:"VINICIUS SIMOES",course:"DA",utm_medium:"bloggers",utm_content:"nerdsdenegocios",score:3,priority:"medium",temp:"Morno",payable:"No",stage:"Meeting Attended",potencial:"B"},
-  {name:"Marcela",course:"DA",utm_medium:"cpc",utm_content:"Facebook Mobile Reels",score:5,priority:"high",temp:"Morno",payable:"No",stage:"Meeting Attended",potencial:"B"}
+  {name:"Yasmin Borba",course:"DS",utm_medium:"crm",utm_content:"Email CRM Engajados",score:4,priority:"high",temp:"Morno",payable:"No",stage:"Closed-Lost",potencial:"B",closer:"João Oliveira"},
+  {name:"Raphael Barroso",course:"DA",utm_medium:"cpc",utm_content:"cid--120244104557520637_ig_Feed",score:4,priority:"high",temp:"Morno",payable:"No",stage:"Meeting Attended",potencial:"B",closer:"Bruno Marques"},
+  {name:"Igor Rodrigues Silva",course:"DA",utm_medium:"bloggers",utm_content:"nerdsdenegocios",score:null,priority:"medium",temp:"Morno",payable:"No",stage:"Meeting Attended",potencial:"C",closer:"Vinícius Leão"},
+  {name:"Marcela Vieira",course:"QA",utm_medium:null,utm_content:"",score:null,priority:"medium",temp:"Morno",payable:"No",stage:"Meeting Attended",potencial:"C",closer:"Jessica Silva"},
+  {name:"mariana ferreira",course:"DA",utm_medium:"bloggers",utm_content:"patriciavogtt",score:3,priority:"medium",temp:"Frio",payable:"Yes",stage:"Meeting Attended",potencial:"B",closer:"Erick Paiva"},
+  {name:"marcia santos",course:"QA",utm_medium:"cpc",utm_content:"cid--120245660345700637_fb_Feed",score:-1,priority:"medium",temp:"Morno",payable:"No",stage:"Meeting Attended",potencial:"C",closer:"Bruno Marques"},
+  {name:"Caio Felicio",course:"MBA DS",utm_medium:"bloggers",utm_content:"attekitadev",score:3,priority:"medium",temp:"Morno",payable:"No",stage:"Meeting Attended",potencial:"B",closer:"Verônica Merched"},
+  {name:"Gabriel Palma",course:"WD",utm_medium:"cpc",utm_content:"cid--23330113426_m",score:0,priority:"medium",temp:"Morno",payable:"Yes",stage:"Meeting Attended",potencial:"B",closer:"Erick Paiva"},
+  {name:"Thiago Silva",course:"MBA DA",utm_medium:"cpc",utm_content:"cid--120249066341450637_ig_Feed",score:4,priority:"high",temp:"Frio",payable:"No",stage:"Closed-Lost",potencial:"B",closer:"Lucas Bonow"},
+  {name:"Lucas Trajano",course:"MBA DS",utm_medium:"smm",utm_content:"smm",score:null,priority:"medium",temp:"Quente",payable:"Yes",stage:"Fechou",potencial:"A",closer:"Larissa Ciuldim"},
+  {name:"Paula Cristina mariot de Souza",course:"MBA AI",utm_medium:"smm",utm_content:"link_in_bio",score:0,priority:"medium",temp:"Morno",payable:"No",stage:"Meeting Attended",potencial:"C",closer:"Yanara Silva"},
+  {name:"Rosane Kupka",course:"DA",utm_medium:"cpc",utm_content:"cid--120244104557520637_ig_Stories",score:2,priority:"medium",temp:"Frio",payable:"No",stage:"Meeting Attended",potencial:"C",closer:"Natália Martins"},
+  {name:"Chauanny Vitoria Medeiros",course:"MBA DS",utm_medium:"crm",utm_content:"CRM Closed-Lost",score:null,priority:"medium",temp:"Quente",payable:"Yes",stage:"Meeting Attended",potencial:"A",closer:"Verônica Merched"},
+  {name:"Jessica Quini",course:"DS",utm_medium:null,utm_content:"",score:4,priority:"high",temp:"Quente",payable:"Yes",stage:"Meeting Attended",potencial:"A",closer:"Verônica Merched"},
+  {name:"Cleyton Alves Santos",course:"QA",utm_medium:"bloggers",utm_content:"nerdsdenegocios",score:null,priority:"medium",temp:"Morno",payable:"No",stage:"Meeting Attended",potencial:"C",closer:"Raphael Soares"},
+  {name:"Gabriella Rachid",course:"DA",utm_medium:"partnerships",utm_content:"CTI",score:3,priority:"high",temp:"Quente",payable:"No",stage:"Meeting Attended",potencial:"B",closer:"Jessica Silva"},
+  {name:"Jean Carlo Dos Santos",course:"DS",utm_medium:"smm",utm_content:"link_in_bio",score:3,priority:"high",temp:"Frio",payable:"Yes",stage:"Meeting Attended",potencial:"B",closer:"Daniel Augusto Ribeiro"},
+  {name:"Jhonatan pulido Zamora",course:"DA",utm_medium:"cpc",utm_content:"cid--23330113426_m",score:3,priority:"high",temp:"Morno",payable:"No",stage:"Closed-Lost",potencial:"B",closer:"Vinícius Leão"},
+  {name:"Jadson pereira da silva",course:"WD",utm_medium:"smm",utm_content:"smm",score:5,priority:"high",temp:"Morno",payable:"Yes",stage:"Meeting Attended",potencial:"A",closer:"Bernardo Magalhães"},
+  {name:"Ian Leonardo",course:"DA",utm_medium:"cpc",utm_content:"cid--120245660345700637_ig_Reels",score:4,priority:"high",temp:"Morno",payable:"No",stage:"Meeting Attended",potencial:"B",closer:"Erick Paiva"},
+  {name:"VINICIUS SIMOES",course:"DA",utm_medium:"bloggers",utm_content:"nerdsdenegocios",score:3,priority:"medium",temp:"Morno",payable:"No",stage:"Meeting Attended",potencial:"B",closer:"Bruno Marques"},
+  {name:"Marcela",course:"DA",utm_medium:"cpc",utm_content:"cid--120245660345700637_fb_Reels",score:5,priority:"high",temp:"Morno",payable:"No",stage:"Closed-Lost",potencial:"B",closer:"Yanara Silva"}
 ];
 const noshowData = [
-  {name:"Micaele",course:"",utm_medium:"",utm_content:"",score:null,priority:"medium",stage:"No-Show"},
+  {name:"Micaele",course:null,utm_medium:null,utm_content:"",score:null,priority:"medium",stage:"Closed-Lost"},
   {name:"Maryna",course:"DS",utm_medium:"smm",utm_content:"smm",score:7,priority:"high",stage:"Closed-Lost"},
-  {name:"Kaique De Souza Mendss",course:"DS",utm_medium:"cpc",utm_content:"Google CPC",score:1,priority:"medium",stage:"No-Show"},
-  {name:"Evandro Nilo Costa",course:"DS",utm_medium:"crm",utm_content:"Email CRM Engajados",score:-1,priority:"medium",stage:"No-Show"},
+  {name:"Kaique De Souza Mendss",course:"DS",utm_medium:"cpc",utm_content:"cid--23330113426_m",score:1,priority:"medium",stage:"Closed-Lost"},
+  {name:"Evandro Nilo Costa",course:"DS",utm_medium:"crm",utm_content:"Email CRM Engajados",score:-1,priority:"medium",stage:"Em Aberto"},
   {name:"Thiago Mina",course:"MBA DS",utm_medium:"teste",utm_content:"variacao_a",score:3,priority:"high",stage:"Closed-Lost"},
-  {name:"Esaú Gomes",course:"WD",utm_medium:"",utm_content:"",score:4,priority:"high",stage:"Closed-Lost"},
-  {name:"Vitória Maciel De Araujo",course:"DS",utm_medium:"crm",utm_content:"Email CRM Leads",score:8,priority:"high",stage:"No-Show"},
-  {name:"Fred Garcia",course:"",utm_medium:"smm",utm_content:"link_in_bio",score:2,priority:"medium",stage:"No-Show"},
+  {name:"Vitoria Maciel De Araujo",course:"DS",utm_medium:"crm",utm_content:"Email CRM Leads",score:8,priority:"high",stage:"No-Show"},
+  {name:"Esau Gomes",course:"WD",utm_medium:null,utm_content:"",score:4,priority:"high",stage:"Closed-Lost"},
+  {name:"Fred Garcia",course:"DA",utm_medium:"smm",utm_content:"link_in_bio",score:2,priority:"medium",stage:"Closed-Lost"},
   {name:"Paulo Luiz",course:"DS",utm_medium:"bloggers",utm_content:"pajoaventuras",score:3,priority:"medium",stage:"No-Show"},
   {name:"Gabrielle Ribeiro",course:"DS",utm_medium:"crm",utm_content:"CRM Alta Prioridade",score:3,priority:"high",stage:"No-Show"}
 ];
@@ -422,6 +422,8 @@ const closerStats = {
   "João  Oliveira":{calls:1,min:63,energia:72,resist:38},
   "Veronica Rocha":{calls:1,min:39,energia:70,resist:6}
 };
+
+const leadsCreados = 289;
 
 // ======= MULTI-SELECT =======
 const msState = {};
@@ -581,7 +583,7 @@ function courseBadge(c){return`<span class="badge-course">${c||'—'}</span>`;}
 // ======= ROW RENDERS =======
 function renderAttendedRow(d){const cyc=d.cycle===0?'Mesmo dia':d.cycle+'d';return`<tr><td><strong>${d.name}</strong></td><td>${courseBadge(d.course)}</td><td>${d.utm_medium||'—'}</td><td style="max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:0.75rem;color:#64748b">${d.utm_content||'—'}</td><td><strong>${d.score!=null?d.score:'—'}</strong></td><td>${priBadge(d.priority)}</td><td>${tempBadge(d.temp)}</td><td>${payBadge(d.payable)}</td><td><span style="color:#0891b2;font-weight:600">${cyc}</span></td><td>${resultBadge(d.stage)}</td></tr>`;}
 function renderNoshowRow(d){const isH=d.priority==='high';return`<tr style="${isH?'background:#fff7f7':''}"><td><strong>${d.name}</strong>${isH?' 🚨':''}</td><td>${courseBadge(d.course)}</td><td>${d.utm_medium||'—'}</td><td style="max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:0.75rem;color:#64748b">${d.utm_content||'—'}</td><td><strong>${d.score!=null?d.score:'—'}</strong></td><td>${priBadge(d.priority)}</td><td>${d.created}</td><td><span style="font-size:0.78rem;color:#64748b">${d.stage}</span></td></tr>`;}
-function renderPotencialRow(d){const acoes={A:'📞 Ligar hoje',B:'📩 Follow-up WhatsApp 24h',C:'📋 Nurturing email'};return`<tr><td><strong>${d.name}</strong></td><td>${courseBadge(d.course)}</td><td>${potBadge(d.potencial)}</td><td><strong>${d.score!=null?d.score:'—'}</strong></td><td>${payBadge(d.payable)}</td><td>${tempBadge(d.temp)}</td><td>${priBadge(d.priority)}</td><td style="font-size:0.8rem;color:#475569">${acoes[d.potencial]||''}</td></tr>`;}
+function renderPotencialRow(d){const acoes={A:'📞 Ligar hoje',B:'📩 Follow-up WhatsApp 24h',C:'📋 Nurturing email'};return`<tr><td><strong>${d.name}</strong></td><td style="font-size:0.82rem;color:#475569;white-space:nowrap">${d.closer||'—'}</td><td>${courseBadge(d.course)}</td><td>${potBadge(d.potencial)}</td><td><strong>${d.score!=null?d.score:'—'}</strong></td><td>${payBadge(d.payable)}</td><td>${tempBadge(d.temp)}</td><td>${priBadge(d.priority)}</td><td style="font-size:0.8rem;color:#475569">${acoes[d.potencial]||''}</td></tr>`;}
 function renderElephRow(d){const rc=d.result==='LOST'?'result-lost':d.result==='Venda'?'result-sale':'result-open';return`<tr><td><strong>${d.closer}</strong></td><td><div style="font-weight:600;font-size:0.82rem">${d.title}</div><div style="font-size:0.72rem;color:#64748b">${d.lead}</div></td><td><span style="font-weight:700;color:#1e40af">${d.duration}min</span></td><td><span class="badge-result ${rc}">${d.result}</span></td><td><div style="font-size:0.72rem;color:#475569;margin-bottom:2px">Closer: ${d.cp}% pos</div>${sentBar(d.cp,d.cn)}</td><td><div style="font-size:0.72rem;color:#475569;margin-bottom:2px">Lead: ${d.ln}% neg</div>${sentBar(d.lp,d.ln)}</td><td style="max-width:200px;font-size:0.78rem;color:#475569">${d.summary}</td></tr>`;}
 
 // ======= CLOSER CARDS =======
@@ -661,9 +663,14 @@ function initKPIs(){
   document.getElementById('kpi-vendas-mkt-sub').textContent=vendaNomes||'—';
   document.getElementById('kpi-ciclo').textContent=avgCycleStr;
 
-  // Funil (relative to attended+noshow total)
-  const fBase=Math.max(total,1);
-  const fw=v=>Math.max(2,Math.round(v/fBase*70))+'%';
+  // Leads criados
+  document.getElementById('kpi-leads').textContent=leadsCreados;
+  document.getElementById('funnel-leads-bar').textContent=leadsCreados;
+  document.getElementById('funnel-leads-count').textContent=leadsCreados;
+
+  // Funil (relative to leads criados)
+  const fBase=Math.max(leadsCreados,1);
+  const fw=v=>Math.max(2,Math.round(v/fBase*100))+'%';
   const attBar=document.getElementById('funnel-att-bar');
   attBar.style.width=fw(att); attBar.textContent=att;
   document.getElementById('funnel-att-count').textContent=att;
