@@ -3,127 +3,422 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dashboard Diário — TripleTen Brasil</title>
+<title>Dashboard Fds 14-15/08 — TripleTen Brasil</title>
 <style>
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Segoe UI',system-ui,sans-serif;background:#f0f4f8;color:#1e293b;min-height:100vh}
-
-.header{background:linear-gradient(135deg,#0f2557 0%,#1e40af 60%,#0891b2 100%);color:#fff;padding:28px 40px}
-.header h1{font-size:1.7rem;font-weight:800;letter-spacing:-0.5px}
-.header p{font-size:0.9rem;opacity:0.75;margin-top:6px}
-
-.container{max-width:900px;margin:0 auto;padding:40px 24px}
-
-.section-label{font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#64748b;margin-bottom:16px}
-
-.card-latest{
-  background:#fff;
-  border-radius:16px;
-  padding:28px 32px;
-  box-shadow:0 4px 20px rgba(30,64,175,0.10);
-  border-left:6px solid #1e40af;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:20px;
-  margin-bottom:32px;
-  transition:box-shadow 0.2s;
-}
-.card-latest:hover{box-shadow:0 8px 32px rgba(30,64,175,0.15)}
-
-.card-latest .badge{
-  background:#1e40af;
-  color:#fff;
-  font-size:0.7rem;
-  font-weight:700;
-  padding:3px 10px;
-  border-radius:20px;
-  text-transform:uppercase;
-  letter-spacing:0.5px;
-  margin-bottom:10px;
-  display:inline-block;
-}
-.card-latest h2{font-size:1.4rem;font-weight:800;color:#0f2557;margin-bottom:4px}
-.card-latest p{font-size:0.88rem;color:#64748b}
-
-.btn-primary{
-  display:inline-flex;
-  align-items:center;
-  gap:8px;
-  background:linear-gradient(135deg,#1e40af,#0891b2);
-  color:#fff;
-  text-decoration:none;
-  padding:13px 26px;
-  border-radius:12px;
-  font-weight:700;
-  font-size:0.95rem;
-  white-space:nowrap;
-  transition:opacity 0.2s, transform 0.15s;
-  box-shadow:0 4px 12px rgba(30,64,175,0.25);
-}
-.btn-primary:hover{opacity:0.92;transform:translateY(-1px)}
-
-.history-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px}
-
-.card{
-  background:#fff;
-  border-radius:12px;
-  padding:22px 24px;
-  box-shadow:0 1px 4px rgba(0,0,0,0.07);
-  border-top:4px solid #e2e8f0;
-  text-decoration:none;
-  color:inherit;
-  display:block;
-  transition:all 0.2s;
-}
-.card:hover{box-shadow:0 6px 20px rgba(0,0,0,0.10);transform:translateY(-2px);border-top-color:#1e40af}
-.card .date{font-size:0.78rem;color:#94a3b8;font-weight:600;margin-bottom:8px;text-transform:uppercase;letter-spacing:0.5px}
-.card h3{font-size:1.05rem;font-weight:700;color:#0f2557;margin-bottom:4px}
-.card .link-label{font-size:0.82rem;color:#1e40af;font-weight:600;margin-top:12px;display:flex;align-items:center;gap:4px}
-
-.footer{text-align:center;padding:40px 24px 32px;font-size:0.8rem;color:#94a3b8}
+  :root{--navy:#0f2044;--blue:#1a4a8a;--teal:#0e7490;--teal-l:#06b6d4;--green:#16a34a;--red:#dc2626;--yellow:#d97706;--purple:#7c3aed;--g50:#f8fafc;--g100:#f1f5f9;--g200:#e2e8f0;--g400:#94a3b8;--g600:#475569;--g800:#1e293b;}
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--g50);color:var(--g800);font-size:14px;}
+  .header{background:linear-gradient(135deg,var(--navy) 0%,var(--blue) 100%);color:#fff;padding:18px 28px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;}
+  .header h1{font-size:19px;font-weight:700;}
+  .header .sub{font-size:11px;opacity:.8;margin-top:3px;}
+  .hbadge{background:rgba(255,255,255,.2);border-radius:20px;padding:5px 14px;font-size:12px;font-weight:600;}
+  .day-sel{background:#fff;border-bottom:1px solid var(--g200);padding:10px 28px;display:flex;gap:8px;flex-wrap:wrap;}
+  .day-btn{padding:7px 20px;border:2px solid var(--g200);background:#fff;border-radius:20px;cursor:pointer;font-size:13px;font-weight:600;color:var(--g600);transition:all .2s;}
+  .day-btn.active{background:var(--navy);border-color:var(--navy);color:#fff;}
+  .day-btn:hover:not(.active){border-color:var(--blue);color:var(--blue);}
+  .tab-sel{background:var(--g100);border-bottom:1px solid var(--g200);padding:0 28px;display:flex;}
+  .tab-btn{padding:11px 22px;border:none;background:transparent;cursor:pointer;font-size:14px;font-weight:600;color:var(--g600);border-bottom:3px solid transparent;transition:all .2s;}
+  .tab-btn.active{color:var(--blue);border-bottom-color:var(--blue);background:#fff;}
+  .content{padding:20px 28px;}
+  .kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(148px,1fr));gap:12px;margin-bottom:18px;}
+  .kpi{background:#fff;border-radius:10px;padding:14px 16px;box-shadow:0 1px 4px rgba(0,0,0,.08);border-left:4px solid var(--blue);}
+  .kpi.g{border-left-color:var(--green)}.kpi.r{border-left-color:var(--red)}.kpi.y{border-left-color:var(--yellow)}.kpi.t{border-left-color:var(--teal)}.kpi.p{border-left-color:var(--purple)}
+  .kpi-l{font-size:10px;color:var(--g400);font-weight:700;text-transform:uppercase;letter-spacing:.5px;}
+  .kpi-v{font-size:25px;font-weight:800;color:var(--navy);margin:5px 0 2px;}
+  .kpi-s{font-size:11px;color:var(--g600);}
+  .sec{background:#fff;border-radius:10px;padding:16px 20px;margin-bottom:16px;box-shadow:0 1px 4px rgba(0,0,0,.08);}
+  .sec-t{font-size:14px;font-weight:700;color:var(--navy);margin-bottom:12px;padding-bottom:8px;border-bottom:2px solid var(--g100);}
+  .two-col{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:16px;}
+  table{width:100%;border-collapse:collapse;font-size:12px;}
+  th{background:var(--g100);color:var(--g600);font-weight:700;padding:8px 10px;text-align:left;font-size:10px;text-transform:uppercase;letter-spacing:.4px;}
+  td{padding:8px 10px;border-bottom:1px solid var(--g100);vertical-align:middle;}
+  tr:nth-child(even) td{background:var(--g50);}
+  tr:hover td{background:#eff6ff;}
+  .b{display:inline-block;padding:2px 7px;border-radius:9px;font-size:10px;font-weight:700;}
+  .tq{background:#fef2f2;color:var(--red)}.tm{background:#fffbeb;color:var(--yellow)}.tf{background:#eff6ff;color:var(--blue)}
+  .ph{background:#fef2f2;color:var(--red)}.pm{background:#fffbeb;color:var(--yellow)}.pl{background:#f0fdf4;color:var(--green)}
+  .rv{background:#f0fdf4;color:var(--green)}.rl{background:#fef2f2;color:var(--red)}.ra{background:#eff6ff;color:var(--blue)}
+  .rr{background:#fef9c3;color:#854d0e}.r3{background:#f5f3ff;color:var(--purple)}
+  .pa{display:inline-block;width:20px;height:20px;border-radius:50%;font-size:11px;font-weight:800;text-align:center;line-height:20px;background:#f0fdf4;color:var(--green);}
+  .pb{display:inline-block;width:20px;height:20px;border-radius:50%;font-size:11px;font-weight:800;text-align:center;line-height:20px;background:#fffbeb;color:var(--yellow);}
+  .pc{display:inline-block;width:20px;height:20px;border-radius:50%;font-size:11px;font-weight:800;text-align:center;line-height:20px;background:var(--g100);color:var(--g400);}
+  .fr{display:flex;align-items:center;gap:10px;margin-bottom:5px;}
+  .fl{width:165px;font-size:11px;color:var(--g600);text-align:right;flex-shrink:0;}
+  .fbw{flex:1;background:var(--g100);border-radius:3px;height:21px;overflow:hidden;}
+  .fb{height:100%;border-radius:3px;display:flex;align-items:center;padding-left:6px;font-size:11px;font-weight:700;color:#fff;}
+  .fc{width:30px;font-size:12px;font-weight:700;color:var(--navy);}
+  .ur{display:flex;align-items:center;gap:8px;margin-bottom:6px;}
+  .un{width:115px;font-size:11px;color:var(--g600);}
+  .ubw{flex:1;background:var(--g100);border-radius:3px;height:18px;}
+  .ub{height:100%;border-radius:3px;background:linear-gradient(90deg,var(--teal),var(--teal-l));}
+  .uc{width:32px;font-size:12px;font-weight:700;color:var(--navy);}
+  .al{padding:10px 14px;border-radius:8px;margin-bottom:8px;}
+  .al-r{background:#fef2f2;border-left:3px solid var(--red)}.al-y{background:#fffbeb;border-left:3px solid var(--yellow)}
+  .al-g{background:#f0fdf4;border-left:3px solid var(--green)}.al-b{background:#eff6ff;border-left:3px solid var(--blue)}
+  .al-h{font-weight:700;font-size:12px;}.al-d{font-size:11px;color:var(--g600);margin-top:2px;}
+  .sbar{display:inline-flex;height:13px;border-radius:6px;overflow:hidden;width:110px;vertical-align:middle;}
+  .sp{background:#22c55e}.sn{background:#94a3b8}.sg{background:#ef4444}
+  .pb2{height:7px;border-radius:3px;background:var(--g100);overflow:hidden;}
+  .pf{height:100%;border-radius:3px;background:linear-gradient(90deg,var(--blue),var(--teal));}
+  .scb{display:inline-flex;height:9px;border-radius:4px;overflow:hidden;width:75px;vertical-align:middle;}
+  .scf{height:100%;}.sce{background:var(--g100);}
+  .fi{padding:6px 12px;border:1px solid var(--g200);border-radius:8px;font-size:12px;outline:none;margin-bottom:10px;}
+  .fi:focus{border-color:var(--blue);}
+  .tt{position:relative;cursor:help;}
+  .tt:hover::after{content:attr(data-tip);position:absolute;bottom:125%;left:50%;transform:translateX(-50%);background:#1e293b;color:#fff;padding:6px 10px;border-radius:6px;font-size:11px;z-index:10;max-width:260px;white-space:normal;line-height:1.4;}
+  @media(max-width:768px){.content{padding:12px;}.kpi-grid{grid-template-columns:repeat(2,1fr);}.two-col{grid-template-columns:1fr;}}
 </style>
 </head>
 <body>
-
 <div class="header">
-  <h1>📊 Dashboard Diário · TripleTen Brasil</h1>
-  <p>Acompanhamento diário de vendas, leads e conversão</p>
+  <div>
+    <div class="h1" style="font-size:19px;font-weight:700;">📊 Dashboard Fds — Sexta 14/08 + Sábado 15/08/2026</div>
+    <div class="sub">TripleTen Brasil · Pipeline Brazil/Sales · Gerado 17/08 · Elephan + HubSpot CRM</div>
+  </div>
+  <div class="hbadge">🗓 Semana 33 · 2026</div>
+</div>
+<div class="day-sel">
+  <button class="day-btn active" onclick="switchDay('sexta',this)">📅 Sexta-feira 14/08</button>
+  <button class="day-btn" onclick="switchDay('sabado',this)">📅 Sábado 15/08</button>
+  <button class="day-btn" onclick="switchDay('consolidado',this)">📊 Consolidado Fds</button>
+</div>
+<div class="tab-sel">
+  <button class="tab-btn active" onclick="switchTab('marketing',this)">📈 Marketing</button>
+  <button class="tab-btn" onclick="switchTab('vendas',this)">🎯 Vendas</button>
+</div>
+<div id="app"></div>
+<div style="text-align:center;padding:12px;color:var(--g400);font-size:11px;border-top:1px solid var(--g200);margin-top:16px">
+  Dashboard TripleTen Brasil · Gerado automaticamente 17/08/2026 · Pipeline Brazil/Sales (110797558) · Elephan + HubSpot CRM
 </div>
 
-<div class="container">
+<script>
+// ─── DATA INJECTED BY GENERATOR ───────────────────────────────────────────
 
-  <div class="section-label">Mais recente</div>
-  <div class="card-latest">
-    <div>
-      <span class="badge">Hoje</span>
-      <h2>Dashboard — 12 de agosto de 2026</h2>
-      <p>Visão completa de leads, ligações, propostas e conversão do dia</p>
+const ELEPHAN_FRI = [{"id": "6a7efb9df0b40f49b0e063ba", "date": "2026-08-14", "time": "11:27", "seller": "Jessica Silva", "lead": "Tay:C/Ligação de vídeo com o consultor de car", "duration": 47.5, "sent_pos": 39, "sent_neg": 14, "sent_neu": 44, "lead_pos": 46, "lead_neg": 7, "deal_id": "516400788717", "outcome": "O lead demonstra interesse genuíno em fazer a migração de carreira para programação, está em busca de uma solução estrut", "summary": "Resumo Analítico e Aprofundado da Conversa#1. Criação de Rapport e Estratégias de Quebra-Gelo- A consultora, Jéssica, iniciou a conversa de forma acolhedora, criando um clima amistoso e confiante, com"}, {"id": "6a7f243454cf9d5813f47050", "date": "2026-08-14", "time": "14:20", "seller": "Vinicius Leao", "lead": "Apresentação de curso - Transição para TI", "duration": 27.6, "sent_pos": 42, "sent_neg": 16, "sent_neu": 35, "lead_pos": 19, "lead_neg": 36, "deal_id": "516752303321", "outcome": "O lead demonstrou interesse genuíno na transição de carreira para a área de dados e tecnologia, considerando seus objeti", "summary": "1. Estabelecimento de Rapport e Primeira Impressão:   - O consultor utilizou empatia e uma abordagem casual para criar uma conexão natural com o prospect, Paulo. Comentários sobre sua rotina, viagens "}, {"id": "6a7f292c5aec95f9a70201ec", "date": "2026-08-14", "time": "14:41", "seller": "Raisa Fernandes", "lead": "Apresentação do Bootcamp da Tripleten Tem", "duration": 14.2, "sent_pos": 34, "sent_neg": 1, "sent_neu": 65, "lead_pos": 35, "lead_neg": 0, "deal_id": "0", "outcome": "Apesar do interesse do cliente na área de tecnologia, ele ainda precisa avaliar o investimento financeiro. Além disso, a", "summary": "1. Criação de Rapport e Interação Inicial:   - A consultora iniciou a conversa de forma descontraída e com tom investigativo, utilizando estratégias para criar empatia, como perguntar sobre a vida do "}, {"id": "6a7f2cd8f0b40f49b0e0cd7c", "date": "2026-08-14", "time": "14:57", "seller": "Jessica Silva", "lead": "Tay:C/Ligação de vídeo com o consultor de car", "duration": 26.5, "sent_pos": 37, "sent_neg": 7, "sent_neu": 56, "lead_pos": 38, "lead_neg": 6, "deal_id": "516362935543", "outcome": "Potência de conversão com cliente interessado, mas aguardando análise dos valores até segunda-feira.", "summary": "1. Criação de Rapport e Abertura da Conversa:   - A abordagem inicial foi amistosa e descontraída, com validação sobre questões técnicas de áudio e agendamento.   - A consultora estabeleceu um tom emp"}, {"id": "6a7f359e54cf9d5813f4705d", "date": "2026-08-14", "time": "15:34", "seller": "Lucas Bonow", "lead": "Discussão sobre curso TripleTen - Ciência de ", "duration": 60.3, "sent_pos": 55, "sent_neg": 10, "sent_neu": 23, "lead_pos": 35, "lead_neg": 20, "deal_id": "516715746530", "outcome": "O cliente demonstra interesse genuíno em mudar de carreira, busca informações detalhadas sobre a formação e reconhece o ", "summary": "Resumo da Conversa de Consultoria de Carreira1. Criação de Rapport:   - O consultor Lucas estabeleceu um tom amigável desde o início, mencionando o clima frio como quebra-gelo.   - Edgar, o lead, foi "}, {"id": "6a7f42359c4c7ba66f93bcd9", "date": "2026-08-14", "time": "16:28", "seller": "Raisa Fernandes", "lead": "Discussão sobre migração e carreira em Portug", "duration": 55.4, "sent_pos": 27, "sent_neg": 33, "sent_neu": 39, "lead_pos": 10, "lead_neg": 60, "deal_id": "0", "outcome": "A cliente tem interesse claro na solução e deseja investir na sua formação em tecnologia, mas enfrenta barreiras finance", "summary": "1. Criação de Rapport:   - O consultor iniciou a conversa com um tom de cordialidade ao comentar sobre a qualidade da internet de Portugal e conseguiu engajar a prospect com comentários leves. A prosp"}, {"id": "6a7f4823f0b40f49b0e100c6", "date": "2026-08-14", "time": "16:53", "seller": "Erick Paiva", "lead": "Tay:C/Ligação de vídeo com o consultor de car", "duration": 53.5, "sent_pos": 22, "sent_neg": 13, "sent_neu": 63, "lead_pos": 25, "lead_neg": 21, "deal_id": "516344085728", "outcome": "Identificando o potencial de fechamento com base na interação e nas objeções levantadas.", "summary": "1. Criação de rapport   - O consultor (Eric) iniciou com tom amigável e descontraído, mencionando gostar de ouvir e interessando-se pela comunicação casual e aberta. Estabeleceu um vínculo rápido ao m"}, {"id": "6a7f4a7a4d4bcdda4c578177", "date": "2026-08-14", "time": "17:03", "seller": "Bruno Marques", "lead": "Transição de carreira: De educação física par", "duration": 50.5, "sent_pos": 45, "sent_neg": 18, "sent_neu": 29, "lead_pos": 23, "lead_neg": 46, "deal_id": "516264625366", "outcome": "Lead demostrou abertura, interesse e valorização das propostas apresentadas, mas quer refletir antes de tomar uma decisã", "summary": "1. Criação de Rapport     - O consultor iniciou a reunião em um tom amigável e empático, destacando que é usuário de serviços de personal trainer, o que ajudou a estabelecer uma conexão com o lead (Cr"}, {"id": "6a7f518194288df72defbc27", "date": "2026-08-14", "time": "17:33", "seller": "Vinicius Leao", "lead": "Discussão sobre carreira e bootcamp de tecnol", "duration": 143.8, "sent_pos": 44, "sent_neg": 13, "sent_neu": 41, "lead_pos": 51, "lead_neg": 9, "deal_id": "0", "outcome": "O cliente demonstra um interesse elevado no produto, reconhecendo o potencial de transição de carreira para análise de d", "summary": "1. Criação de Rapport e Abertura da Conversa:   - O consultor, Vinícius, começou com um tom amigável e empático. Demonstrou interesse genuíno na trajetória do lead, Robert, relembrando detalhes compar"}, {"id": "6a7f65243dde6fef975c828c", "date": "2026-08-14", "time": "18:57", "seller": "Jessica Silva", "lead": "Isa:C - Consultoria de carreira", "duration": 26.6, "sent_pos": 55, "sent_neg": 5, "sent_neu": 39, "lead_pos": 22, "lead_neg": 11, "deal_id": "516732884210", "outcome": "A lead demonstrou interesse claro na solução e relatou alinhamento com o curso oferecido. No entanto, ainda precisa toma", "summary": "1. Criação de Rapport e Contextualização Inicial   - A consultora Jéssica iniciou a conversa em um tom descontraído, buscando criar uma conexão com a Rafaela logo no início, perguntando sobre como ela"}, {"id": "6a7f6d9bb9d8f0c9016e1fd4", "date": "2026-08-14", "time": "19:33", "seller": "João  Oliveira", "lead": "Apresentação de Bootcamp em Tecnologia - Math", "duration": 54.0, "sent_pos": 70, "sent_neg": 2, "sent_neu": 28, "lead_pos": 72, "lead_neg": 1, "deal_id": "516739809487", "outcome": "A conversa teve bons momentos de apresentação de produto e identificação das necessidades do cliente, mas o preço parece", "summary": "1. Criação de Rapport:   - O consultor utilizou um tom amigável e humano, buscando conexão pessoal ao perguntar sobre a rotina e vida do Matheus. Ele demonstrou empatia ao comentar sobre os desafios d"}, {"id": "6a7f71ab3a9113f8f8afe4c6", "date": "2026-08-14", "time": "19:51", "seller": "Gabriel Morial", "lead": "LB: C - Consultoria", "duration": 60.8, "sent_pos": 48, "sent_neg": 9, "sent_neu": 22, "lead_pos": 70, "lead_neg": 2, "deal_id": "844830271678", "outcome": "Apesar do lead ainda estar em processo de decisão sobre qual carreira quer seguir, há um forte potencial de conversão co", "summary": "1. Criação de Rapport:    - A conversa inicial foi descontraída e humana, com quebra de gelo ao falar sobre localizações e clima. Vitor mencionou ser de Goiânia, atualmente em Brasília, e a interação "}, {"id": "6a7f72513dde6fef975ca223", "date": "2026-08-14", "time": "19:53", "seller": "Bernardo Magalhaes", "lead": "Discussão sobre curso de analista de QA - Tri", "duration": 44.4, "sent_pos": 9, "sent_neg": 11, "sent_neu": 79, "lead_pos": 11, "lead_neg": 13, "deal_id": "", "outcome": "O cliente demonstrou grande interesse ao esclarecer múltiplas dúvidas sobre o curso, incluindo valores, restituição, det", "summary": "1. Criação de Rapport e Estratégias de Quebra-Gelo:   - A conversa inicial demonstrou uma abordagem amigável, com o consultor sendo atencioso ao iniciar o contato e mantendo um tom de voz calmo e conf"}, {"id": "6a7f75b4863752660c13a4cd", "date": "2026-08-14", "time": "20:08", "seller": "Lucas Bonow", "lead": "Planejamento de Carreira e Bootcamp de Dev Sa", "duration": 22.3, "sent_pos": 30, "sent_neg": 5, "sent_neu": 64, "lead_pos": 24, "lead_neg": 8, "deal_id": "0", "outcome": "O cliente demonstrou forte interesse no curso, mas optou por esperar a próxima turma, indicando uma intenção futura posi", "summary": "1. Criação de Rapport:    - A consultora iniciou a conversa com um tom acolhedor e empático, estabelecendo uma conexão com Sarah ao mencionar suas experiências relacionadas à carreira, mercado no Bras"}, {"id": "6a7f769ab9d8f0c901802160", "date": "2026-08-14", "time": "20:12", "seller": "Daniel Augusto  Macedo Ribeiro", "lead": "Exploração de curso em tecnologia na Triplete", "duration": 42.1, "sent_pos": 48, "sent_neg": 9, "sent_neu": 43, "lead_pos": 53, "lead_neg": 7, "deal_id": "", "outcome": "O lead demonstrou interesse genuíno na área de tecnologia, vê valor na formação oferecida e na estrutura da escola, mas ", "summary": "1. Criação de Rapport e Introdução     - Durante a introdução, o lead (Mário) compartilhou sua paixão por atletismo e mencionou a participação em competições importantes. O consultor (Daniel) demonstr"}, {"id": "6a7f778809846d4d46c5723f", "date": "2026-08-14", "time": "20:16", "seller": "Erick Paiva", "lead": "Mentoria de carreira e introdução à tecnologi", "duration": 78.1, "sent_pos": 30, "sent_neg": 10, "sent_neu": 58, "lead_pos": 25, "lead_neg": 20, "deal_id": "516721536188", "outcome": "O lead demonstrou grande interesse pelo aprendizado em tecnologia e afirmou repetidas vezes que quer realizar cursos na ", "summary": "1. Introdução e Criação de Rapport     O consultor iniciou a conversa com um tom solícito e acolhedor, buscando criar conexão pessoal com o lead. O lead, Jorge, apresentou vários aspectos da sua vida "}, {"id": "6a7f8302863752660c13a4d4", "date": "2026-08-14", "time": "21:05", "seller": "Vinicius Leao", "lead": "Consultoria sobre Bootcamp em Análise de Dado", "duration": 46.8, "sent_pos": 53, "sent_neg": 5, "sent_neu": 37, "lead_pos": 48, "lead_neg": 1, "deal_id": "516683702518", "outcome": "A lead apresentou interesse claro no curso, identificou o valor agregado ao programa em relação ao mercado de trabalho e", "summary": "1. Criação de Rapport e Quebra-Gelo:   - O consultor utilizou uma abordagem calorosa para estabelecer uma conexão com Chantel, elogiando seu nome e tentando pronunciá-lo corretamente, além de se descu"}, {"id": "6a7f8da4b9d8f0c901a02e2e", "date": "2026-08-14", "time": "21:50", "seller": "Raisa Fernandes", "lead": "Planejamento futuro e interesse em tecnologia", "duration": 37.9, "sent_pos": 65, "sent_neg": 8, "sent_neu": 27, "lead_pos": 38, "lead_neg": 21, "deal_id": "", "outcome": "A lead tem interesse aparente em tecnologia e educação, e a solução parece estar dentro de seu planejamento a médio praz", "summary": "1. Criação de rapport e ambiente da conversa     - A consultora estabeleceu rapidamente uma conexão com a lead ao utilizar um tom leve, informal e acolhedor.   - O lead demonstrou simpatia, mencionand"}, {"id": "6a7f964e93785a4bd53adfa0", "date": "2026-08-14", "time": "22:27", "seller": "Ana Viana", "lead": "PL-C : Consultoria de Carreira", "duration": 18.1, "sent_pos": 22, "sent_neg": 4, "sent_neu": 75, "lead_pos": 14, "lead_neg": 8, "deal_id": "516723402995", "outcome": "O cliente está interessado em mudar para a área de tecnologia, já possui formação prévia em Análise de Sistemas e se mos", "summary": "1. Criação de Rapport:   - A conversa começou com uma saudação descontraída e simpática, usando um tom próximo e amigável. A consultora, Ana, buscou desde o início criar uma empatia com Gilberto, cone"}];
+const ELEPHAN_SAT = [{"id": "6a805b2cd787378c59e2fcc4", "date": "2026-08-15", "time": "12:27", "seller": "Erick Paiva", "lead": "Tay:C/Ligação vídeo com o consultor", "duration": 65.5, "sent_pos": 20, "sent_neg": 13, "sent_neu": 66, "lead_pos": 16, "lead_neg": 23, "deal_id": "516789727431", "outcome": "O cliente demonstrou interesse em migrar para o setor de tecnologia, mencionou claramente a frustração com sua situação ", "summary": "1. Criação de Rapport: O consultor Eric iniciou a conversa apresentando-se de forma muito amigável, demonstrando interesse no lead (Evânio) com perguntas abertas sobre a vida, interesses e anseios. El"}, {"id": "6a806403d99c060a383bfa7e", "date": "2026-08-15", "time": "13:05", "seller": "Yanara Silva", "lead": "Reagendamento de reunião para segunda-feira", "duration": 1.5, "sent_pos": 1, "sent_neg": 0, "sent_neu": 99, "lead_pos": 3, "lead_neg": 0, "deal_id": "", "outcome": "A interação atual não apresentou elementos claros de avanço com intenção de fechamento, mas agendou uma próxima conversa", "summary": "1. Compreensão inicial do lead e contexto de disponibilidade:    - O lead informou estar ocupado, pois estava trabalhando durante a ligação. Para atender à ligação, precisou ir até o carro, ressaltand"}, {"id": "6a806c483d1d78c160f208e8", "date": "2026-08-15", "time": "13:40", "seller": "Yanara Silva", "lead": "Apresentação do Bootcamp - TripleTen", "duration": 46.0, "sent_pos": 43, "sent_neg": 9, "sent_neu": 48, "lead_pos": 21, "lead_neg": 23, "deal_id": "516982574285", "outcome": "Cliente está muito interessado em aprender análise de dados, vê valor na solução, possui uma necessidade profissional im", "summary": "1. Criação de Rapport: A consultora iniciou a conversa em um tom caloroso e amigável, proporcionando um ambiente confortável para a conversa. Houve saudações amigáveis e momentos de descontração, como"}, {"id": "6a806fa23d1d78c160f209ef", "date": "2026-08-15", "time": "13:54", "seller": "Bernardo Magalhaes", "lead": "Consultoria de carreira para transição à área", "duration": 109.2, "sent_pos": 8, "sent_neg": 8, "sent_neu": 82, "lead_pos": 11, "lead_neg": 5, "deal_id": "516927398135", "outcome": "O prospecto tem interesse real em transição de carreira para tecnologia, mas os recursos financeiros limitados tornam o ", "summary": "1. Criação de Rapport e Quebra-Gelo     - A conversa foi iniciada de forma objetiva, com uma saudação profissional e amigável. Logo no início, o consultor buscou criar conexão ao mencionar que também "}, {"id": "6a807799f215a2b3bcde2a14", "date": "2026-08-15", "time": "14:28", "seller": "Raisa Fernandes", "lead": "Apresentação curso QA - Tripleten", "duration": 53.3, "sent_pos": 68, "sent_neg": 3, "sent_neu": 28, "lead_pos": 77, "lead_neg": 3, "deal_id": "516947329268", "outcome": "O cliente mostrou interesse na mudança de carreira e valorizou os benefícios oferecidos pelo programa. No entanto, expre", "summary": "1. Criação de Rapport   - O consultor iniciou a conversa de forma simpática e com foco no lead, parabenizando-o por já estar na área de tecnologia, ainda que em uma posição de suporte. Mostrou um olha"}, {"id": "6a8081e53d1d78c160f2100e", "date": "2026-08-15", "time": "15:12", "seller": "Erick Paiva", "lead": "Consultoria de transição para tecnologia", "duration": 31.2, "sent_pos": 8, "sent_neg": 10, "sent_neu": 78, "lead_pos": 10, "lead_neg": 7, "deal_id": "516927398135", "outcome": "Lead interessado em transição de carreira para a área de tecnologia, mas com restrições financeiras significativas.", "summary": "1. Criação de Rapport e Quebra-Gelo Inicial:    - O consultor procurou adaptar o tom e ritmo da conversa ao momento do lead (que estava atendendo clientes), demonstrando flexibilidade. O lead foi educ"}, {"id": "6a808ddf3d1d78c160f2134a", "date": "2026-08-15", "time": "16:03", "seller": "Erick Paiva", "lead": "Mentoria de carreira e escolha de MBA", "duration": 62.7, "sent_pos": 28, "sent_neg": 7, "sent_neu": 64, "lead_pos": 13, "lead_neg": 23, "deal_id": "516952393969", "outcome": "A cliente tem interesse claro em realizar uma transição de carreira para a área de tecnologia e está aberta às possibili", "summary": "1. Inicialização e Criação de Rapport:     - A consultoria começou com um tom amistoso e acolhedor, apresentado por um consultor experiente (Eric) e acompanhado por um aprendiz (Bernardo). Foi obtida "}, {"id": "6a808ef9f215a2b3bcde2a19", "date": "2026-08-15", "time": "16:08", "seller": "Raisa Fernandes", "lead": "Consultoria de Carreira - Transição para TI n", "duration": 61.1, "sent_pos": 54, "sent_neg": 12, "sent_neu": 28, "lead_pos": 65, "lead_neg": 7, "deal_id": "516102896857", "outcome": "Levantamento inicial de necessidades e os sinais de interesse demonstrados pelo cliente indicam boa probabilidade de con", "summary": "1. Criação de Rapport e Quebra de Gelo:   - A consultora se apresentou de forma amigável e direta, pedindo para o lead sentir-se à vontade chamando-a de \"Rai\".   - A abordagem inicial foi perguntar so"}, {"id": "6a809e5ad99c060a383c0aaf", "date": "2026-08-15", "time": "17:14", "seller": "Bernardo Magalhaes", "lead": "Consulta sobre carreira em tecnologia - Tripl", "duration": 38.3, "sent_pos": 37, "sent_neg": 6, "sent_neu": 58, "lead_pos": 40, "lead_neg": 2, "deal_id": "516908483771", "outcome": "A cliente demonstrou interesse em ingressar na área de tecnologia, especificamente como analista de qualidade, mas demon", "summary": "1. Abertura e Criação de Rapport:  O consultor iniciou a conversa de forma empática, destacando sua experiência de quase 10 anos na área de tecnologia e estabelecendo uma conexão inicial sincera com a"}, {"id": "6a80a412d99c060a383c0c6d", "date": "2026-08-15", "time": "17:38", "seller": "Erick Paiva", "lead": "Consulta sobre transição de carreira na Trico", "duration": 23.1, "sent_pos": 11, "sent_neg": 7, "sent_neu": 80, "lead_pos": 0, "lead_neg": 0, "deal_id": "516944601332", "outcome": "O potencial de conversão está limitado pelas condições financeiras atuais do lead e pela discordância com o preço da sol", "summary": "1. Criação de rapport e saudação inicial:   - O consultor iniciou a conversa de forma descontraída, demonstrando profissionalismo e empatia.   - O tom foi amigável, com uma saudação calorosa, tentando"}, {"id": "6a80ac81d787378c59e33020", "date": "2026-08-15", "time": "18:14", "seller": "Bernardo Magalhaes", "lead": "PL-C : Consultoria de Carreira", "duration": 31.0, "sent_pos": 27, "sent_neg": 3, "sent_neu": 68, "lead_pos": 30, "lead_neg": 1, "deal_id": "516914999514", "outcome": "O cliente demonstrou interesse genuíno na área, porém destacou limitações financeiras e mencionou necessidade de organiz", "summary": "1. Perfil do cliente e Introdução do Consultor   - O cliente, chamado Guilherme, trabalha como supervisor de logística há 15 anos, atuando no período noturno, mas está insatisfeito e buscando uma tran"}, {"id": "6a80b014d787378c59e33280", "date": "2026-08-15", "time": "18:29", "seller": "Yanara Silva", "lead": "Consultoria de carreira - Tripleten e Isabell", "duration": 50.3, "sent_pos": 22, "sent_neg": 9, "sent_neu": 67, "lead_pos": 0, "lead_neg": 0, "deal_id": "494846973117", "outcome": "A lead demonstra interesse em realizar o curso e mudar de carreira, porém tem fortes questões em relação ao tempo dispon", "summary": "1. Criação de Rapport e Contexto Inicial:    - A especialista, Yanara, começou a conversa com uma saudação amável e profissional, apresentando-se como especialista de carreira da TripleTen. O tom foi "}, {"id": "6a80b687d787378c59e33687", "date": "2026-08-15", "time": "18:57", "seller": "Erick Paiva", "lead": "Isa:C - Consultoria de carreira", "duration": 51.3, "sent_pos": 30, "sent_neg": 22, "sent_neu": 49, "lead_pos": 19, "lead_neg": 44, "deal_id": "517019825348", "outcome": "Lead interessado em fazer a transição de carreira para tecnologia, explicitamente motivado por qualidade de vida e possi", "summary": "1. Criação de Rapport e Contextualização Inicial     - O consultor Erick inicia a conversa de forma descontraída, utilizando quebras de gelo como perguntar sobre o violão e dialogar brevemente sobre s"}, {"id": "6a80c4a5d787378c59e33fe2", "date": "2026-08-15", "time": "19:57", "seller": "Bernardo Magalhaes", "lead": "MBA PL-C: Ligação de vídeo com o consultor de", "duration": 48.4, "sent_pos": 21, "sent_neg": 10, "sent_neu": 67, "lead_pos": 21, "lead_neg": 11, "deal_id": "516950474994", "outcome": "A cliente demonstrou interesse genuíno nos MBAs oferecidos, está animada para retornar ao mercado e aberta a propostas d", "summary": "1. Problemas técnicos iniciais     - A chamada iniciou com dificuldades técnicas, como problemas de áudio. Isso resultou em um pequeno atraso, enquanto ambas as partes ajustavam as configurações de áu"}, {"id": "6a80c645d787378c59e34100", "date": "2026-08-15", "time": "20:04", "seller": "Erick Paiva", "lead": "Consultoria de carreira - Transição para dado", "duration": 74.3, "sent_pos": 21, "sent_neg": 22, "sent_neu": 51, "lead_pos": 16, "lead_neg": 32, "deal_id": "516429906121", "outcome": "O cliente demonstrou interesse em realizar o curso oferecido pelo vendedor, concorda com o valor do desconto, e justific", "summary": "1. Criação de rapport:   - O consultor Éric começou a conversa de forma descontraída e receptiva, criando um ambiente confortável para o lead, Henrique.   - Ele abriu a conversa com perguntas amigávei"}, {"id": "6a80dc4cb9d8f0c901db32a9", "date": "2026-08-15", "time": "21:38", "seller": "Raisa Fernandes", "lead": "Entrevista sobre curso de tecnologia na Tripo", "duration": 35.9, "sent_pos": 61, "sent_neg": 9, "sent_neu": 27, "lead_pos": 36, "lead_neg": 27, "deal_id": "", "outcome": "O cliente demonstra alto interesse e já iniciou pesquisas sobre cursos na área de tecnologia. No entanto, enfrenta limit", "summary": "Resumo Analítico da Conversa com o Lead1. Criação de Rapport e Quebra-Gelo   - O consultor mencionou Santa Catarina e o clima chuvoso para engajar no início. O lead, Gilson, demonstrou receptividade c"}];
+const SCORECARD = [{"name": "Bruno Marques", "avg": 8.5, "calls": 1, "low": "—", "high": "Solução/problema (9.0)"}, {"name": "Lucas Bonow", "avg": 8.05, "calls": 2, "low": "Consequências (6.0)", "high": "Fechamento (9.0), Solução (9.0)"}, {"name": "Jessica Silva", "avg": 8.03, "calls": 3, "low": "Consequências (7.33)", "high": "Diagnóstico (8.67), Solução (8.67)"}, {"name": "João Oliveira", "avg": 8.3, "calls": 1, "low": "Consequências (7.0)", "high": "Abertura (9.0), Diagnóstico (9.0)"}, {"name": "Daniel Ribeiro", "avg": 8.3, "calls": 1, "low": "Consequências (7.0)", "high": "Lógica reunião (9.0), Solução (9.0)"}, {"name": "Gabriel Morial", "avg": 8.2, "calls": 1, "low": "Personalização SDR (6.0)", "high": "Lógica reunião (9.0), Solução (9.0)"}, {"name": "Vinicius Leao", "avg": 7.97, "calls": 3, "low": "Fechamento (7.0)", "high": "Diagnóstico (8.67), Solução (8.67)"}, {"name": "Erick Paiva", "avg": 7.44, "calls": 8, "low": "Abertura (6.56), Fechamento (6.57)", "high": "Diagnóstico (8.38), Problemas (8.13)"}, {"name": "Bernardo Magalhaes", "avg": 7.23, "calls": 3, "low": "Consequências (5.67)", "high": "Abertura (8.33), Lógica (8.0)"}, {"name": "Ana Viana", "avg": 6.9, "calls": 1, "low": "Fechamento (5.0)", "high": "Diagnóstico (8.0), Solução (8.0)"}, {"name": "Yanara Silva", "avg": 6.4, "calls": 3, "low": "Urgência (4.67), Personalização (4.67)", "high": "Diagnóstico (8.0), Lógica (8.0)"}, {"name": "Raisa Fernandes", "avg": 6.05, "calls": 6, "low": "Personalização (5.0), Fechamento (5.17), Consequências (5.17)", "high": "Identificação problemas (7.17)"}];
+
+
+const DATA = {
+  sexta:{
+    kpis:{criados:193,atendidos:27,noshows:22,vendas:1,lost:2,aberto:24,avg_cycle:1.1,same_day:13,pct_same:6.7,pot_a:6,pot_b:6,pot_c:15},
+    funnel:{"TAKEN TO WORK":121,"CLOSED-LOST":25,"MEETING SCHEDULED":13,"CONTACT ESTABLISHED":12,"MEETING ATTENDED":10,"MEETING NOT ATTENDED":10,"READY TO PAY":1,"SUCCESSFUL PAYMENT":1},
+    utm:{cpc:124,bloggers:23,smm:21,"(orgânico/direto)":19,crm:3,social:3},
+    attended:[
+      {n:"Arthur Guimaraes Salvario",c:"Daniel Ribeiro",course:"DS",utm:"—",prio:"high",score:"—",temp:"Quente",pay:"Yes",cycle:0,result:"232615401",pot:"A"},
+      {n:"Danielle Pena",c:"Larissa Ciuldim",course:"DS",utm:"bloggers",prio:"high",score:"4",temp:"Quente",pay:"Yes",cycle:0.8,result:"245556944",pot:"A"},
+      {n:"Pedro Ivo",c:"Verônica Merched",course:"MBA DS",utm:"crm",prio:"high",score:"4",temp:"Quente",pay:"Yes",cycle:0.2,result:"245556944",pot:"A"},
+      {n:"Rafaela França",c:"Jessica Silva",course:"DA",utm:"cpc",prio:"high",score:"4",temp:"Morno",pay:"Yes",cycle:0.5,result:"245556944",pot:"A"},
+      {n:"Crístian Goettmes",c:"Bruno Marques",course:"DA",utm:"cpc",prio:"high",score:"3",temp:"Morno",pay:"Yes",cycle:2.3,result:"245556944",pot:"A"},
+      {n:"Paulo Ficher Trassatti",c:"Vinícius Leão",course:"CS",utm:"smm",prio:"medium",score:"3",temp:"Quente",pay:"Yes",cycle:0.8,result:"245556944",pot:"B"},
+      {n:"Mario de Oliveira",c:"Daniel Ribeiro",course:"WD",utm:"smm",prio:"medium",score:"1",temp:"Morno",pay:"Yes",cycle:0.1,result:"245556944",pot:"B"},
+      {n:"Cristiane Tavares",c:"Natália Martins",course:"MBA DS",utm:"smm",prio:"medium",score:"1",temp:"Quente",pay:"Yes",cycle:2.9,result:"245556944",pot:"B"},
+      {n:"Adriele Silva",c:"Yanara Silva",course:"DA",utm:"—",prio:"high",score:"4",temp:"Quente",pay:"No",cycle:1.6,result:"245556944",pot:"B"},
+      {n:"Bruno Serafim",c:"Jessica Silva",course:"WD",utm:"smm",prio:"high",score:"5",temp:"Morno",pay:"No",cycle:1.8,result:"245556944",pot:"B"},
+      {n:"Arthur Oliveira",c:"Larissa Ciuldim",course:"DS",utm:"cpc",prio:"high",score:"0",temp:"Morno",pay:"Yes",cycle:1.2,result:"245556944",pot:"B"},
+      {n:"Angel Ezequiel",c:"Daniel Ribeiro",course:"DS",utm:"cpc",prio:"medium",score:"-1",temp:"Morno",pay:"Yes",cycle:2.6,result:"4570449117",pot:"B"},
+      {n:"Roberth",c:"Vinícius Leão",course:"DA",utm:"cpc",prio:"high",score:"4",temp:"Frio",pay:"No",cycle:0.5,result:"245556944",pot:"C"},
+      {n:"Shantel Guirruta",c:"Vinícius Leão",course:"DA",utm:"smm",prio:"high",score:"2",temp:"Morno",pay:"No",cycle:1.3,result:"245556944",pot:"C"},
+      {n:"Matheus Henrique",c:"João Oliveira",course:"QA",utm:"cpc",prio:"high",score:"2",temp:"Morno",pay:"No",cycle:0.6,result:"245556944",pot:"C"},
+      {n:"Edgar Rodrigues",c:"Lucas Bonow",course:"DS",utm:"cpc",prio:"medium",score:"1",temp:"Morno",pay:"No",cycle:0.1,result:"245556944",pot:"C"},
+      {n:"vitor vinicius de lima",c:"Raisa Fernandes",course:"DA",utm:"bloggers",prio:"medium",score:"2",temp:"Frio",pay:"No",cycle:0.9,result:"245556944",pot:"C"},
+      {n:"Anderson costa videira",c:"Daniel Ribeiro",course:"QA",utm:"cpc",prio:"medium",score:"—",temp:"Frio",pay:"No",cycle:0.1,result:"245556944",pot:"C"},
+      {n:"GEORGE PICANÇO",c:"Raphael Soares",course:"DA",utm:"bloggers",prio:"medium",score:"1",temp:"Morno",pay:"No",cycle:0.8,result:"245556944",pot:"C"},
+      {n:"Ana carolina da costa",c:"Jessica Silva",course:"DA",utm:"crm",prio:"high",score:"2",temp:"Morno",pay:"No",cycle:2.0,result:"245556944",pot:"C"},
+      {n:"wallison henrique",c:"Raisa Fernandes",course:"DA",utm:"smm",prio:"medium",score:"-1",temp:"Frio",pay:"No",cycle:1.7,result:"245556944",pot:"C"},
+      {n:"Elisandra Tomaz",c:"Raisa Fernandes",course:"WD",utm:"cpc",prio:"medium",score:"0",temp:"Frio",pay:"No",cycle:1.1,result:"245556944",pot:"C"},
+      {n:"Alexandre",c:"Larissa Ciuldim",course:"WD",utm:"cpc",prio:"medium",score:"1",temp:"Frio",pay:"No",cycle:1.2,result:"245556944",pot:"C"},
+      {n:"Joao victor campos",c:"Larissa Ciuldim",course:"WD",utm:"cpc",prio:"high",score:"4",temp:"Frio",pay:"No",cycle:0.2,result:"245556944",pot:"C"},
+      {n:"Erick Oliveira",c:"Raphael Soares",course:"MBA DS",utm:"cpc",prio:"medium",score:"0",temp:"Morno",pay:"No",cycle:0.9,result:"4570449117",pot:"C"},
+      {n:"ANDRE MATOS",c:"João Oliveira",course:"DS",utm:"cpc",prio:"medium",score:"—",temp:"Frio",pay:"No",cycle:1.8,result:"232615402",pot:"C"},
+      {n:"Débora Caetano",c:"Gabriel Morial",course:"QA",utm:"cpc",prio:"low",score:"-3",temp:"—",pay:"No",cycle:0.1,result:"232615402",pot:"C"},
+    ],
+    noshows:[
+      {n:"Felipe Lima",p:"high",s:"8",u:"bloggers",d:"14/08"},
+      {n:"Railson Nogueira",p:"high",s:"7",u:"cpc",d:"12/08"},
+      {n:"Raynner Daher",p:"high",s:"5",u:"crm",d:"13/08"},
+      {n:"Gisele Santos",p:"high",s:"4",u:"cpc",d:"13/08"},
+      {n:"Anderson Drumond",p:"high",s:"3",u:"bloggers",d:"13/08"},
+      {n:"Lucas Murashita",p:"high",s:"2",u:"cpc",d:"13/08"},
+      {n:"Mateus Pires",p:"high",s:"2",u:"cpc",d:"11/08"},
+      {n:"Paula",p:"medium",s:"—",u:"smm",d:"11/08"},
+      {n:"Tom oliveira",p:"medium",s:"1",u:"—",d:"09/08"},
+      {n:"Henrique Rocha",p:"medium",s:"2",u:"partnerships",d:"13/08"},
+      {n:"Luiz Felipe",p:"medium",s:"3",u:"cpc",d:"12/08"},
+      {n:"Tabata Pierri",p:"medium",s:"3",u:"smm",d:"12/08"},
+      {n:"Thiago Lira",p:"medium",s:"0",u:"bloggers",d:"11/08"},
+      {n:"Lucas Adriano",p:"medium",s:"1",u:"cpc",d:"12/08"},
+      {n:"Diego Passos",p:"medium",s:"0",u:"smm",d:"09/08"},
+      {n:"Monica Prado",p:"medium",s:"—",u:"cpc",d:"02/08"},
+      {n:"Eduardo Tangi",p:"medium",s:"—",u:"crm",d:"05/08"},
+      {n:"Bruna Correa",p:"medium",s:"—",u:"crm",d:"11/08"},
+      {n:"Rafaela Ribeiro",p:"medium",s:"—",u:"bloggers",d:"04/04"},
+      {n:"Erick Oliveira NS",p:"medium",s:"0",u:"cpc",d:"13/08"},
+      {n:"Elon",p:"medium",s:"1",u:"—",d:"11/08"},
+      {n:"Windslay Cardoso",p:"low",s:"-3",u:"cpc",d:"13/08"},
+    ],
+    closer_perf:[
+      {c:"Daniel Ribeiro",r:4,v:1,l:0,a:3},{c:"Larissa Ciuldim",r:4,v:0,l:0,a:4},
+      {c:"Raisa Fernandes",r:3,v:0,l:0,a:3},{c:"Vinícius Leão",r:3,v:0,l:0,a:3},
+      {c:"Jessica Silva",r:3,v:0,l:0,a:3},{c:"João Oliveira",r:2,v:0,l:1,a:1},
+      {c:"Bruno Marques",r:1,v:0,l:0,a:1},{c:"Lucas Bonow",r:1,v:0,l:0,a:1},
+      {c:"Raphael Soares",r:1,v:0,l:0,a:1},{c:"Yanara Silva",r:1,v:0,l:0,a:1},
+      {c:"Natália Martins",r:1,v:0,l:0,a:1},{c:"Gabriel Morial",r:1,v:0,l:1,a:0},
+      {c:"Verônica Merched",r:1,v:0,l:0,a:1},{c:"Erick Paiva",r:1,v:0,l:0,a:1},
+    ],
+  },
+  sabado:{
+    kpis:{criados:167,atendidos:17,noshows:19,vendas:0,lost:3,aberto:14,avg_cycle:9.7,same_day:10,pct_same:6.0,pot_a:5,pot_b:4,pot_c:8},
+    funnel:{"TAKEN TO WORK":130,"CLOSED-LOST":20,"MEETING SCHEDULED":5,"CONTACT ESTABLISHED":4,"MEETING ATTENDED":6,"MEETING NOT ATTENDED":1,"HIGH SCORE":1},
+    utm:{cpc:108,smm:24,bloggers:19,"(orgânico/direto)":9,crm:6,partnerships:1},
+    attended:[
+      {n:"Mariana Nery",c:"Bernardo Magalhães",course:"MBA DS",utm:"cpc",prio:"high",score:"4",temp:"Quente",pay:"Yes",cycle:0.7,result:"245556944",pot:"A"},
+      {n:"Thaís Veiga",c:"Erick Paiva",course:"MBA AI",utm:"cpc",prio:"high",score:"0",temp:"Morno",pay:"Yes",cycle:0.1,result:"245556944",pot:"A"},
+      {n:"Vítor Fernandes",c:"Gabriel Morial",course:"DS",utm:"bloggers",prio:"high",score:"8",temp:"Morno",pay:"Yes",cycle:1.3,result:"245556944",pot:"A"},
+      {n:"Rafael Laplace de Andrade",c:"Yanara Silva",course:"QA",utm:"cpc",prio:"low",score:"0",temp:"Morno",pay:"Yes",cycle:0.6,result:"245556944",pot:"A"},
+      {n:"Guilherme Dean Soares",c:"Bernardo Magalhães",course:"QA",utm:"smm",prio:"medium",score:"—",temp:"Morno",pay:"Yes",cycle:0.1,result:"245556944",pot:"A"},
+      {n:"Evanio Lucas",c:"Erick Paiva",course:"WD",utm:"cpc",prio:"high",score:"3",temp:"Morno",pay:"Yes",cycle:0.9,result:"232350150",pot:"B"},
+      {n:"Isabelle Leite da Silva",c:"Yanara Silva",course:"DA",utm:"cpc",prio:"high",score:"0",temp:"Morno",pay:"Yes",cycle:173,result:"245556944",pot:"B"},
+      {n:"HENRIQUE DA SILVA SILVEIRA",c:"Erick Paiva",course:"DA",utm:"smm",prio:"high",score:"7",temp:"Morno",pay:"No",cycle:3.0,result:"245556944",pot:"C"},
+      {n:"Diogo Teixeira",c:"Erick Paiva",course:"DA",utm:"cpc",prio:"high",score:"2",temp:"Quente",pay:"No",cycle:0.4,result:"245556944",pot:"C"},
+      {n:"Janaina luiza Gonçalves",c:"Erick Paiva",course:"DA",utm:"cpc",prio:"high",score:"2",temp:"Morno",pay:"No",cycle:0.7,result:"245556944",pot:"C"},
+      {n:"Bruno Paiva",c:"Raisa Fernandes",course:"DA",utm:"crm",prio:"high",score:"4",temp:"Frio",pay:"No",cycle:3.9,result:"245556944",pot:"C"},
+      {n:"Rodrigo Soares",c:"Raisa Fernandes",course:"WD",utm:"cpc",prio:"medium",score:"-1",temp:"Frio",pay:"No",cycle:0.8,result:"245556944",pot:"C"},
+      {n:"Wallace",c:"Raisa Fernandes",course:"QA",utm:"cpc",prio:"high",score:"2",temp:"Frio",pay:"No",cycle:0.0,result:"245556944",pot:"C"},
+      {n:"Gilson Nascimento",c:"Raisa Fernandes",course:"WD",utm:"cpc",prio:"medium",score:"-2",temp:"Frio",pay:"No",cycle:0.1,result:"245556944",pot:"C"},
+      {n:"Gilberto Rangel",c:"Ana Viana",course:"DA",utm:"bloggers",prio:"medium",score:"0",temp:"Frio",pay:"No",cycle:1.9,result:"232615402",pot:"C"},
+      {n:"Anderson Tibes de Oliveira",c:"Yanara Silva",course:"DA",utm:"cpc",prio:"high",score:"7",temp:"Frio",pay:"No",cycle:0.7,result:"232615402",pot:"C"},
+      {n:"Gere.sasuke",c:"Erick Paiva",course:"WD",utm:"cpc",prio:"high",score:"2",temp:"Morno",pay:"No",cycle:0.9,result:"232615402",pot:"C"},
+    ],
+    noshows:[
+      {n:"Keverton Silva",p:"high",s:"9",u:"cpc",d:"13/08"},
+      {n:"Beatriz Franco",p:"high",s:"8",u:"cpc",d:"14/08"},
+      {n:"João Pedro Brito",p:"high",s:"6",u:"cpc",d:"14/08"},
+      {n:"Victor Nóbrega",p:"high",s:"6",u:"cpc",d:"14/08"},
+      {n:"João Paulo manhães",p:"high",s:"4",u:"smm",d:"13/08"},
+      {n:"Nestor Bruno Moura",p:"high",s:"4",u:"smm",d:"14/08"},
+      {n:"Rodolfo Alvarenga",p:"high",s:"3",u:"cpc",d:"15/08"},
+      {n:"Lucius Bowen Milholo",p:"high",s:"3",u:"crm",d:"13/08"},
+      {n:"Karla Crepaldi",p:"high",s:"2",u:"crm",d:"13/08"},
+      {n:"Leandro Siqueira",p:"high",s:"2",u:"smm",d:"11/08"},
+      {n:"Zenildo Silva",p:"medium",s:"2",u:"cpc",d:"14/08"},
+      {n:"Thiago Santos",p:"medium",s:"1",u:"smm",d:"15/08"},
+      {n:"Cauã Mata",p:"medium",s:"2",u:"—",d:"14/08"},
+      {n:"Rafaella Costa",p:"medium",s:"3",u:"cpc",d:"14/08"},
+      {n:"Maria Eduarda Souza",p:"medium",s:"3",u:"bloggers",d:"14/08"},
+      {n:"Pedro Henrique M.",p:"medium",s:"2",u:"cpc",d:"15/08"},
+      {n:"Adryan gabriel",p:"medium",s:"-1",u:"cpc",d:"14/08"},
+      {n:"LENICE santos",p:"medium",s:"-1",u:"cpc",d:"13/08"},
+      {n:"Deisiany Vasconcelos",p:"medium",s:"-1",u:"cpc",d:"12/08"},
+    ],
+    closer_perf:[
+      {c:"Erick Paiva",r:6,v:0,l:1,a:5},{c:"Raisa Fernandes",r:4,v:0,l:0,a:4},
+      {c:"Yanara Silva",r:3,v:0,l:1,a:2},{c:"Bernardo Magalhães",r:2,v:0,l:0,a:2},
+      {c:"Gabriel Morial",r:1,v:0,l:0,a:1},{c:"Ana Viana",r:1,v:0,l:1,a:0},
+    ],
+  },
+  consolidado:{
+    kpis:{criados:360,atendidos:44,noshows:41,vendas:1,lost:5,aberto:38,avg_cycle:5.4,pot_a:11},
+    utm:{cpc:232,smm:45,bloggers:42,"(orgânico/direto)":28,crm:9,social:3,partnerships:1},
+  },
+};
+
+let cDay='sexta',cTab='marketing';
+
+function switchDay(d,btn){cDay=d;document.querySelectorAll('.day-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');render();}
+function switchTab(t,btn){cTab=t;document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');render();}
+
+function rb(r){
+  if(r==='232615401') return '<span class="b rv">✅ VENDA</span>';
+  if(r==='232615402') return '<span class="b rl">❌ LOST</span>';
+  if(r==='4570449117') return '<span class="b r3">♻ 3RD LINE</span>';
+  if(r==='232350150') return '<span class="b rr">💰 READY TO PAY</span>';
+  return '<span class="b ra">🔵 EM ABERTO</span>';
+}
+function pb(p){return p==='high'?'<span class="b ph">🔴 Alta</span>':p==='medium'?'<span class="b pm">🟡 Média</span>':'<span class="b pl">🟢 Baixa</span>';}
+function tb(t){return t==='Quente'?'<span class="b tq">🔥 Quente</span>':t==='Frio'?'<span class="b tf">❄ Frio</span>':t==='Morno'?'<span class="b tm">🌤 Morno</span>':'<span class="b tm">—</span>';}
+function potb(p){return `<span class="p${p.toLowerCase()}">${p}</span>`;}
+function sentBar(pos,neg,neu){
+  const t=pos+neg+neu||1;
+  const pp=(pos/t*100).toFixed(0),np=(neg/t*100).toFixed(0),nup=(neu/t*100).toFixed(0);
+  return `<div class="sbar tt" data-tip="✅ ${pp}% Pos | ❌ ${np}% Neg | ⬜ ${nup}% Neu"><div class="sp" style="width:${pp}%"></div><div class="sn" style="width:${nup}%"></div><div class="sg" style="width:${np}%"></div></div>`;
+}
+
+function kpis(k){
+  const nsr=((k.noshows/(k.atendidos+k.noshows||1))*100).toFixed(0);
+  const cv=k.atendidos>0?(k.vendas/k.atendidos*100).toFixed(1):0;
+  return `<div class="kpi-grid">
+    <div class="kpi t"><div class="kpi-l">Leads Criados</div><div class="kpi-v">${k.criados}</div><div class="kpi-s">no dia</div></div>
+    <div class="kpi"><div class="kpi-l">Reuniões Atendidas</div><div class="kpi-v">${k.atendidos}</div><div class="kpi-s">${(k.atendidos/k.criados*100).toFixed(1)}% dos criados</div></div>
+    <div class="kpi y"><div class="kpi-l">No-shows</div><div class="kpi-v">${k.noshows}</div><div class="kpi-s">${nsr}% de falta</div></div>
+    <div class="kpi g"><div class="kpi-l">Vendas</div><div class="kpi-v">${k.vendas}</div><div class="kpi-s">${cv}% conversão</div></div>
+    <div class="kpi r"><div class="kpi-l">Closed-Lost</div><div class="kpi-v">${k.lost}</div><div class="kpi-s">no período</div></div>
+    <div class="kpi"><div class="kpi-l">Em Aberto</div><div class="kpi-v">${k.aberto}</div><div class="kpi-s">aguardando desfecho</div></div>
+    ${k.avg_cycle!==undefined?`<div class="kpi"><div class="kpi-l">Ciclo Médio</div><div class="kpi-v">${k.avg_cycle}d</div><div class="kpi-s">criação → reunião</div></div>`:''}
+    ${k.pot_a!==undefined?`<div class="kpi p"><div class="kpi-l">Potencial A</div><div class="kpi-v">${k.pot_a}</div><div class="kpi-s">follow-up urgente</div></div>`:''}
+  </div>`;
+}
+
+function funnel(f){
+  const colors={"TAKEN TO WORK":"#1a4a8a","CONTACT ESTABLISHED":"#0e7490","MEETING SCHEDULED":"#0891b2","MEETING ATTENDED":"#16a34a","MEETING NOT ATTENDED":"#d97706","CLOSED-LOST":"#dc2626","SUCCESSFUL PAYMENT":"#15803d","READY TO PAY":"#059669","HIGH SCORE":"#7c3aed"};
+  const order=["HIGH SCORE","TAKEN TO WORK","CONTACT ESTABLISHED","MEETING SCHEDULED","MEETING NOT ATTENDED","MEETING ATTENDED","READY TO PAY","SUCCESSFUL PAYMENT","CLOSED-LOST"];
+  const items=order.filter(s=>f[s]>0).map(s=>[s,f[s]]);
+  const mx=Math.max(...items.map(([,v])=>v));
+  return items.map(([s,c])=>`<div class="fr"><div class="fl">${s}</div><div class="fbw"><div class="fb" style="width:${(c/mx*100).toFixed(0)}%;background:${colors[s]||'#1a4a8a'}">${c>=5?c:''}</div></div><div class="fc">${c}</div></div>`).join('');
+}
+
+function utm(u){
+  const items=Object.entries(u).sort(([,a],[,b])=>b-a);
+  const mx=Math.max(...items.map(([,v])=>v));
+  return items.map(([n,c])=>`<div class="ur"><div class="un">${n}</div><div class="ubw"><div class="ub" style="width:${(c/mx*100).toFixed(0)}%"></div></div><div class="uc">${c}</div></div>`).join('');
+}
+
+function attendedTable(att){
+  return `<input class="fi" placeholder="🔍 Filtrar..." oninput="ft(this,'at1')">
+  <table id="at1"><thead><tr><th>Lead</th><th>Closer</th><th>Curso</th><th>UTM</th><th>Priority</th><th>Score</th><th>Temp.</th><th>Pay</th><th>Ciclo</th><th>Resultado</th><th>Pot.</th></tr></thead><tbody>
+  ${att.map(d=>`<tr><td>${d.n}</td><td><strong>${d.c}</strong></td><td><span class="b ra">${d.course}</span></td><td>${d.utm!=='—'?`<span class="b tf">${d.utm}</span>`:'—'}</td><td>${pb(d.prio)}</td><td>${d.score}</td><td>${tb(d.temp)}</td><td>${d.pay==='Yes'?'✅':'❌'}</td><td>${d.cycle>50?`<span style="color:var(--red)">${d.cycle}d</span>`:d.cycle+'d'}</td><td>${rb(d.result)}</td><td>${potb(d.pot)}</td></tr>`).join('')}
+  </tbody></table>`;
+}
+
+function noshowTable(ns){
+  const hc=ns.filter(n=>n.p==='high'||parseInt(n.s)>=5).length;
+  return `<p style="color:var(--yellow);font-weight:700;font-size:12px;margin-bottom:10px">⚠ ${hc} no-shows alta prioridade — reagendamento urgente</p>
+  <table><thead><tr><th>Lead</th><th>Priority</th><th>Score</th><th>UTM</th><th>Criação</th></tr></thead><tbody>
+  ${ns.map(n=>`<tr><td>${n.n}</td><td>${pb(n.p)}</td><td>${n.s}</td><td>${n.u!=='—'?`<span class="b tf">${n.u}</span>`:'—'}</td><td>${n.d}</td></tr>`).join('')}
+  </tbody></table>`;
+}
+
+function closerTable(perf){
+  const mx=Math.max(...perf.map(p=>p.r));
+  return `<table><thead><tr><th>Closer</th><th>Reuniões</th><th>Volume</th><th>Vendas</th><th>Lost</th><th>Aberto</th><th>Conv%</th></tr></thead><tbody>
+  ${perf.map(p=>{
+    const cv=p.r>0?(p.v/p.r*100).toFixed(0):0;
+    return `<tr><td><strong>${p.c}</strong></td><td>${p.r}</td><td><div class="pb2"><div class="pf" style="width:${(p.r/mx*100).toFixed(0)}%"></div></div></td><td>${p.v>0?`<strong style="color:var(--green)">${p.v}</strong>`:p.v}</td><td>${p.l>0?`<span style="color:var(--red)">${p.l}</span>`:p.l}</td><td>${p.a}</td><td>${cv>0?`<strong style="color:var(--green)">${cv}%</strong>`:`<span style="color:var(--g400)">${cv}%</span>`}</td></tr>`;
+  }).join('')}
+  </tbody></table>`;
+}
+
+function potTable(att){
+  const rows=[
+    ...att.filter(d=>d.pot==='A').map(d=>({...d,action:"📞 Ligar hoje"})),
+    ...att.filter(d=>d.pot==='B').slice(0,5).map(d=>({...d,action:"📧 Follow-up WhatsApp"})),
+  ];
+  if(!rows.length) return '<p style="color:var(--g400)">Nenhum lead A/B.</p>';
+  return `<table><thead><tr><th>Pot.</th><th>Lead</th><th>Closer</th><th>Score</th><th>Pay</th><th>Ciclo</th><th>Ação</th></tr></thead><tbody>
+  ${rows.map(d=>`<tr><td>${potb(d.pot)}</td><td><strong>${d.n}</strong></td><td>${d.c}</td><td>${d.score}</td><td>${d.pay==='Yes'?'✅':'❌'}</td><td>${d.cycle}d</td><td style="font-size:11px;color:var(--teal)">${d.action}</td></tr>`).join('')}
+  </tbody></table>`;
+}
+
+function elephanTable(entries){
+  if(!entries||!entries.length) return '<p style="color:var(--g400)">Sem transcrições disponíveis.</p>';
+  return `<table><thead><tr><th>Hora</th><th>Closer</th><th>Lead/Título</th><th>Duração</th><th>Sentimento</th><th>Outcome</th></tr></thead><tbody>
+  ${entries.map(e=>`<tr>
+    <td>${e.time}</td>
+    <td><strong>${e.seller}</strong></td>
+    <td style="font-size:11px;max-width:160px">${(e.lead||e.title||'—').substring(0,40)}</td>
+    <td>${e.duration}min</td>
+    <td>${sentBar(e.sent_pos,e.sent_neg,e.sent_neu)}</td>
+    <td style="font-size:11px;max-width:200px;color:var(--g600)">${e.outcome.substring(0,100)}…</td>
+  </tr>`).join('')}
+  </tbody></table>`;
+}
+
+function scorecardTable(){
+  return `<table><thead><tr><th>Closer</th><th>Calls</th><th>Score</th><th>Barra</th><th>🔴 Ponto Fraco</th><th>🟢 Ponto Forte</th></tr></thead><tbody>
+  ${SCORECARD.map(s=>{
+    const c=s.avg>=8?'var(--green)':s.avg>=7?'var(--teal)':s.avg>=6?'var(--yellow)':'var(--red)';
+    const pct=(s.avg/10*100).toFixed(0);
+    return `<tr><td><strong>${s.name}</strong></td><td>${s.calls}</td><td style="font-weight:800;color:${c}">${s.avg.toFixed(2)}</td><td><div class="scb"><div class="scf" style="width:${pct}%;background:${c}"></div><div class="sce" style="width:${100-pct}%"></div></div></td><td style="font-size:11px;color:var(--red)">${s.low}</td><td style="font-size:11px;color:var(--green)">${s.high}</td></tr>`;
+  }).join('')}
+  </tbody></table>`;
+}
+
+function alerts(d){
+  const nsr=((d.kpis.noshows/(d.kpis.atendidos+d.kpis.noshows||1))*100).toFixed(0);
+  const items=[];
+  if(nsr>40) items.push({t:'r',h:`🚨 Taxa de no-show: ${nsr}%`,d:`${d.kpis.noshows} leads faltaram. Reforçar confirmação D-1 às 20h e H-2 manual.`});
+  if(d.kpis.vendas===0) items.push({t:'y',h:'⚠ Nenhuma venda registrada',d:`${d.kpis.pot_a} leads Potencial A em aberto. Acionar follow-up hoje.`});
+  else items.push({t:'g',h:`✅ ${d.kpis.vendas} venda(s) registrada(s)`,d:'Manter ritmo com os leads em aberto.'});
+  items.push({t:'b',h:'🐘 Elephan: Objeção financeira dominante no fds',d:'Padrão identificado: adiamento 2-3 meses por restrição orçamentária. EBAC mencionada com financiamento. Reforçar ROI + parcelamento no pitch.'});
+  if(d.kpis.pot_a>0) items.push({t:'g',h:`🏆 ${d.kpis.pot_a} leads Potencial A identificados`,d:'Contato imediato antes das 12h desta segunda-feira.'});
+  const lc=(d.closer_perf||[]).filter(p=>p.l>0);
+  if(lc.length) items.push({t:'r',h:`❌ Closers com lost: ${lc.map(c=>c.c).join(', ')}`,d:'Analisar transcrição no Elephan para identificar ponto de ruptura.'});
+  return items.map(a=>`<div class="al al-${a.t}"><div class="al-h">${a.h}</div><div class="al-d">${a.d}</div></div>`).join('');
+}
+
+function training(){
+  return [
+    {t:'r',h:'🔴 Raisa Fernandes — Atenção urgente (score 6.05)',d:'Personalização (5.0), Fechamento (5.17), Consequências (5.17), Urgência (5.33) — abaixo da média em 4 dimensões. Propor roleplay individual focado em fechamento antes das reuniões desta semana.'},
+    {t:'y',h:'🟡 Yanara Silva — Urgência e personalização (score 6.40)',d:'Urgência (4.67) e Personalização SDR (4.67) são os pontos mais críticos. Treinar técnica "custo da inação" e uso do briefing do SDR antes de cada reunião.'},
+    {t:'y',h:'🟡 Erick Paiva — Abertura e fechamento (score 7.44 / 8 calls)',d:'Com o maior volume de calls do fds (8), abaixo da média em Abertura (6.56) e Fechamento (6.57). Padronizar script de abertura e praticar técnica de fechamento direto.'},
+    {t:'g',h:'🟢 Benchmark: Bruno Marques (8.5), Lucas Bonow (8.05), Jessica Silva (8.03)',d:'Execução de alta qualidade. Indicar como referência para sessão de boas práticas — compartilhar gravações como benchmark de abertura e fechamento.'},
+    {t:'b',h:'📋 Treinamento coletivo: Gestão de Objeção Financeira',d:'Todos os closers enfrentaram a mesma barreira. Preparar argumentário específico: ROI detalhado por curso, cases de alunos com perfil similar, simulação de parcelamento vs. custo de não agir.'},
+  ].map(a=>`<div class="al al-${a.t}"><div class="al-h">${a.h}</div><div class="al-d">${a.d}</div></div>`).join('');
+}
+
+function ft(input,tid){
+  const f=input.value.toLowerCase();
+  document.getElementById(tid)?.querySelectorAll('tbody tr').forEach(r=>{r.style.display=r.textContent.toLowerCase().includes(f)?'':'none';});
+}
+
+function renderConsolidado(){
+  const allAtt=[...DATA.sexta.attended,...DATA.sabado.attended];
+  const cp={};
+  [...DATA.sexta.closer_perf,...DATA.sabado.closer_perf].forEach(p=>{
+    if(!cp[p.c]) cp[p.c]={c:p.c,r:0,v:0,l:0,a:0};
+    cp[p.c].r+=p.r;cp[p.c].v+=p.v;cp[p.c].l+=p.l;cp[p.c].a+=p.a;
+  });
+  const perf=Object.values(cp).sort((a,b)=>b.r-a.r);
+  const allEph=[...ELEPHAN_FRI,...ELEPHAN_SAT];
+  const k=DATA.consolidado.kpis;
+  const nsr=((k.noshows/(k.atendidos+k.noshows))*100).toFixed(0);
+  if(cTab==='marketing'){
+    return `<div class="content">${kpis(k)}
+    <div class="sec"><div class="sec-t">📦 UTM Medium — Fds Completo</div>${utm(DATA.consolidado.utm)}</div>
+    <div class="sec"><div class="sec-t">✅ Todas as Reuniões Atendidas — Fds</div>${attendedTable(allAtt)}</div>
+    </div>`;
+  }
+  return `<div class="content">${kpis(k)}
+  <div class="sec"><div class="sec-t">👥 Performance Closers — Consolidado</div>${closerTable(perf)}</div>
+  <div class="sec"><div class="sec-t">🏆 Potencial A — Prioridade Segunda-feira</div>${potTable(allAtt)}</div>
+  <div class="sec"><div class="sec-t">🐘 Transcrições Elephan — Fds Completo (${allEph.length} calls)</div>${elephanTable(allEph)}</div>
+  <div class="sec"><div class="sec-t">📊 Scorecard por Closer — Fds</div>${scorecardTable()}</div>
+  <div class="sec"><div class="sec-t">🚨 Alertas e Recomendações</div>
+    <div class="al al-r"><div class="al-h">🚨 Taxa de no-show: ${nsr}% — 41 faltas no fds</div><div class="al-d">9 leads high priority faltaram no sábado (Keverton score 9, Beatriz score 8, João Pedro score 6). Contato de reagendamento hoje de manhã.</div></div>
+    <div class="al al-y"><div class="al-h">⚠ Conversão 2.3% (1 venda em 44 reuniões)</div><div class="al-d">Principal padrão Elephan: objeção financeira + adiamento 2-3 meses. EBAC mencionada como concorrente com financiamento próprio. Preparar contra-argumentação para semana.</div></div>
+    <div class="al al-g"><div class="al-h">✅ 11 leads Potencial A identificados — janela quente</div><div class="al-d">Contato de todos antes das 12h: Mariana Nery (MBA DS, score 4, Quente), Danielle Pena (DS, score 4), Pedro Ivo (MBA DS, score 4), Crístian Goettmes (DA, score 3), Rafaela França (DA, score 4).</div></div>
+    <div class="al al-b"><div class="al-h">📚 Treinamento prioritário: Raisa (6.05) e Yanara (6.40)</div><div class="al-d">Dois closers abaixo de 6.5 com múltiplos calls. Roleplay antes das reuniões desta semana. Usar Bruno Marques (8.5) como benchmark.</div></div>
+  </div>
+  <div class="sec"><div class="sec-t">📚 Recomendações de Treinamento</div>${training()}</div>
+  </div>`;
+}
+
+function render(){
+  if(cDay==='consolidado'){document.getElementById('app').innerHTML=renderConsolidado();return;}
+  const d=DATA[cDay];
+  const eph=cDay==='sexta'?ELEPHAN_FRI:ELEPHAN_SAT;
+  const label=cDay==='sexta'?'Sexta 14/08':'Sábado 15/08';
+  if(cTab==='marketing'){
+    document.getElementById('app').innerHTML=`<div class="content">${kpis(d.kpis)}
+    <div class="two-col">
+      <div class="sec"><div class="sec-t">📊 Funil — ${label}</div>${funnel(d.funnel)}</div>
+      <div class="sec"><div class="sec-t">📡 UTM Medium — ${label}</div>${utm(d.utm)}</div>
     </div>
-    <a href="dashboard_20260812.html" class="btn-primary">
-      Abrir →
-    </a>
-  </div>
-
-  <div class="section-label">Histórico</div>
-  <div class="history-grid">
-
-    <a href="dashboard_20260811.html" class="card">
-      <div class="date">11 de agosto de 2026</div>
-      <h3>Dashboard Diário</h3>
-      <div class="link-label">Ver dashboard →</div>
-    </a>
-
-    <a href="dashboard_20260810.html" class="card">
-      <div class="date">10 de agosto de 2026</div>
-      <h3>Dashboard Diário</h3>
-      <div class="link-label">Ver dashboard →</div>
-    </a>
-
-  </div>
-</div>
-
-<div class="footer">TripleTen Brasil · Atualizado em agosto de 2026</div>
-
+    <div class="sec"><div class="sec-t">✅ Reuniões Atendidas — ${label}</div>${attendedTable(d.attended)}</div>
+    <div class="sec"><div class="sec-t">⚠ No-shows — ${label}</div>${noshowTable(d.noshows)}</div>
+    </div>`;
+  } else {
+    document.getElementById('app').innerHTML=`<div class="content">${kpis(d.kpis)}
+    <div class="sec"><div class="sec-t">👥 Performance por Closer — ${label}</div>${closerTable(d.closer_perf)}</div>
+    <div class="sec"><div class="sec-t">🏆 Ranking Potencial A/B — ${label}</div>${potTable(d.attended)}</div>
+    <div class="sec"><div class="sec-t">🐘 Transcrições Elephan — ${label} (${eph.length} calls)</div>${elephanTable(eph)}</div>
+    <div class="sec"><div class="sec-t">📊 Scorecard por Closer — Fds</div>${scorecardTable()}</div>
+    <div class="sec"><div class="sec-t">🚨 Alertas Críticos — ${label}</div>${alerts(d)}</div>
+    <div class="sec"><div class="sec-t">📚 Recomendações de Treinamento</div>${training()}</div>
+    </div>`;
+  }
+}
+window.onload=function(){render();};
+</script>
 </body>
 </html>
