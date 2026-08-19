@@ -103,10 +103,10 @@ tr:last-child td{border-bottom:none;}
 .rb{font-size:12px;color:#374151;line-height:1.5;}
 #nav-message{background:#fffbeb;border-bottom:1px solid #fde68a;padding:6px 32px;font-size:12px;min-height:0;}
 
-.day-bar{background:#f0f4ff;border-bottom:2px solid var(--border);padding:8px 32px;display:flex;align-items:center;gap:10px;}
-.dbtn{padding:7px 20px;border-radius:20px;border:2px solid var(--border);background:var(--white);cursor:pointer;font-size:13px;font-weight:700;color:var(--gray);transition:all .15s;}
-.dbtn:hover{border-color:var(--navy);color:var(--navy);}
-.dbtn.active{border-color:var(--navy);background:var(--navy);color:white;}
+
+
+
+
 .day-pane{display:none;} .day-pane.active{display:block;}
 </style>
 </head>
@@ -135,11 +135,6 @@ tr:last-child td{border-bottom:none;}
   <button class="pbtn boot"  id="pbtn-boot" onclick="setFilter('bootcamp')">⚡ Bootcamp (29)</button>
   <button class="pbtn mba"   id="pbtn-mba"  onclick="setFilter('mba')">🎓 MBA (8)</button>
   <span class="finfo" id="finfo"></span>
-</div>
-<div class="day-bar">
-  <span class="plbl">📅 Dia:</span>
-  <button class="dbtn active" id="dbtn-seg" onclick="setDay('seg')">Segunda 17/08</button>
-  <button class="dbtn"        id="dbtn-ter" onclick="setDay('ter')">Terça 18/08</button>
 </div>
 <div class="tabs">
   <div class="tab active" onclick="switchTab('mkt')">📈 Marketing</div>
@@ -266,7 +261,7 @@ tr:last-child td{border-bottom:none;}
 <div class="kpi-grid">
 <div class="kpi"><div class="kpi-lbl">Leads Criados</div><div class="kpi-val" id="t-k-criados">290</div><div class="kpi-sub" id="t-k-criados-s">em 18/08/2026</div></div>
 <div class="kpi g"><div class="kpi-lbl">Reuniões Atendidas</div><div class="kpi-val" id="t-k-atend">23</div><div class="kpi-sub" id="t-k-atend-s">4 mesmo dia</div></div>
-<div class="kpi t"><div class="kpi-lbl">Meeting Scheduled</div><div class="kpi-val">—</div><div class="kpi-sub">aguardando</div></div>
+<div class="kpi t"><div class="kpi-lbl">Meeting Scheduled</div><div class="kpi-val" id="t-k-ms">53</div><div class="kpi-sub" id="t-k-ms-s">agendadas em 18/08</div></div>
 <div class="kpi r"><div class="kpi-lbl">No-Shows</div><div class="kpi-val" id="t-k-ns">33</div><div class="kpi-sub">do total agendado</div></div>
 <div class="kpi y"><div class="kpi-lbl">Vendas</div><div class="kpi-val" id="t-k-vend">2</div><div class="kpi-sub" id="t-k-vend-s">taxa: 8.7%</div></div>
 <div class="kpi p"><div class="kpi-lbl">Ciclo Médio</div><div class="kpi-val">2.2d</div><div class="kpi-sub">criação → reunião</div></div>
@@ -448,12 +443,14 @@ tr:last-child td{border-bottom:none;}
 <script>
 const KPI={"all": {"atendidas": 37, "vendas": 3, "lost": 1, "aberto": 33, "pot_a": 2, "pot_b": 24, "mesmo_dia": 22, "noshows": 10}, "bootcamp": {"atendidas": 29, "vendas": 3, "lost": 1, "aberto": 25, "pot_a": 2, "pot_b": 16, "mesmo_dia": 18, "noshows": 9}, "mba": {"atendidas": 8, "vendas": 0, "lost": 0, "aberto": 8, "pot_a": 0, "pot_b": 8, "mesmo_dia": 4, "noshows": 1}};
 
-const KPI_TER={"all":{"atendidas":23,"vendas":2,"lost":2,"aberto":19,"pot_a":1,"pot_b":11,"mesmo_dia":4,"noshows":33,"criados":290},"bootcamp":{"atendidas":19,"vendas":2,"lost":2,"aberto":15,"pot_a":1,"pot_b":9,"mesmo_dia":3,"noshows":25,"criados":215},"mba":{"atendidas":4,"vendas":0,"lost":0,"aberto":4,"pot_a":0,"pot_b":2,"mesmo_dia":1,"noshows":8,"criados":54}};
+const KPI_TER={"all":{"atendidas":23,"vendas":2,"lost":2,"aberto":19,"pot_a":1,"pot_b":11,"mesmo_dia":4,"noshows":33,"criados":290,"ms":53},"bootcamp":{"atendidas":19,"vendas":2,"lost":2,"aberto":15,"pot_a":1,"pot_b":9,"mesmo_dia":3,"noshows":25,"criados":215,"ms":41},"mba":{"atendidas":4,"vendas":0,"lost":0,"aberto":4,"pot_a":0,"pot_b":2,"mesmo_dia":1,"noshows":8,"criados":54,"ms":12}};
 let curDay='seg';
 function setDay(d){
+  const dateMap={'seg':'2026-08-17','ter':'2026-08-18'};
+  if(dateMap[d]){document.getElementById('dpicker').value=dateMap[d];updateNav();}
   curDay=d;
-  document.getElementById('dbtn-seg').classList.toggle('active',d==='seg');
-  document.getElementById('dbtn-ter').classList.toggle('active',d==='ter');
+  const bs=document.getElementById('dbtn-seg');if(bs)bs.classList.toggle('active',d==='seg');
+  const bt=document.getElementById('dbtn-ter');if(bt)bt.classList.toggle('active',d==='ter');
   // show/hide mkt day panes
   document.getElementById('d-seg-mkt').classList.toggle('active',d==='seg');
   document.getElementById('d-ter-mkt').classList.toggle('active',d==='ter');
@@ -515,6 +512,7 @@ function updateKPIs(f){
   if(f==='all'){set(pfx+'k-criados',criados_all);set(pfx+'k-criados-s','em '+lbl+'/2026');}
   else if(f==='mba'){set(pfx+'k-criados',k.criados||0);set(pfx+'k-criados-s','🎓 de '+criados_all+' criados');}
   else{set(pfx+'k-criados',k.criados||0);set(pfx+'k-criados-s','⚡ de '+criados_all+' criados');}
+  if(curDay==='ter'&&k.ms!=null){set('t-k-ms',k.ms);set('t-k-ms-s',f==='all'?'agendadas em 18/08':(f==='mba'?'🎓 MBA':'⚡ Bootcamp'));}
 }
 function set(id,v){const e=document.getElementById(id);if(e)e.textContent=v;}
 function countVis(id){const t=document.getElementById(id);return t?[...t.querySelectorAll('tr')].filter(r=>r.style.display!=='none').length:0;}
@@ -546,7 +544,19 @@ function isWE(d){const day=new Date(d+'T12:00:00').getDay();return day===0||day=
 function addBiz(ds,delta){let d=new Date(ds+'T12:00:00'),c=0,s=delta>0?1:-1;while(c<Math.abs(delta)){d.setDate(d.getDate()+s);if(!isWE(d.toISOString().split('T')[0]))c++;}return d.toISOString().split('T')[0];}
 function updateNav(){const v=document.getElementById('dpicker').value;document.getElementById('day-label').textContent=DAYS[new Date(v+'T12:00:00').getDay()];document.getElementById('btn-next').classList.toggle('disabled',v>=TODAY);}
 function navigateDate(delta){const t=addBiz(document.getElementById('dpicker').value,delta);if(delta>0&&t>TODAY)return;navigateToDate(t);}
-function navigateToDate(ds){if(!ds)return;if(isWE(ds)){alert('Sem dashboard nos fins de semana.');document.getElementById('dpicker').value=CUR;return;}const fn='dashboard_'+ds.replace(/-/g,'')+'.html';if(window.location.hostname==='sabrinaichinose.github.io'){window.location.href=GH+fn;return;}fetch(fn,{method:'HEAD'}).then(r=>{if(r.ok)window.location.href=fn;else showGH(fn,ds);}).catch(()=>showGH(fn,ds));}
+function navigateToDate(ds){
+  if(!ds)return;
+  if(isWE(ds)){alert('Sem dashboard nos fins de semana.');document.getElementById('dpicker').value=CUR;return;}
+  if(ds==='2026-08-17'){setDay('seg');document.getElementById('dpicker').value=ds;updateNav();return;}
+  if(ds==='2026-08-18'){setDay('ter');document.getElementById('dpicker').value=ds;updateNav();return;}
+  const fn='dashboard_'+ds.replace(/-/g,'')+'.html';
+  if(window.location.hostname==='sabrinaichinose.github.io'){window.location.href=GH+fn;return;}
+  fetch(fn,{method:'HEAD'}).then(r=>{if(r.ok)window.location.href=fn;else showGH(fn,ds);}).catch(()=>showGH(fn,ds));
+}
 function showGH(fn,ds){const d=new Date(ds+'T12:00:00');document.getElementById('nav-message').innerHTML=`<span style="color:#b45309;">⚠️ Dashboard de <b>${d.toLocaleDateString('pt-BR',{weekday:'long',day:'2-digit',month:'2-digit',year:'numeric'})}</b> não disponível localmente. <a href="${GH+fn}" target="_blank" style="color:#1a56db;font-weight:700;">Abrir no GitHub Pages →</a> <button onclick="document.getElementById('nav-message').innerHTML=''" style="border:none;background:none;cursor:pointer;">✕</button></span>`;}
-document.addEventListener('DOMContentLoaded',()=>{document.getElementById('dpicker').value=CUR;updateNav();});
+document.addEventListener('DOMContentLoaded',()=>{
+  document.getElementById('dpicker').value='2026-08-18';
+  updateNav();
+  setDay('ter');
+});
 </script></body></html>
