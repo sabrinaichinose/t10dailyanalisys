@@ -1,2006 +1,388 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dashboard Diário TripleTen Brasil — 17/08/2026</title>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Dashboard TripleTen — 17/08/2026</title>
 <style>
-  :root {
-    --navy: #0f2044;
-    --blue: #1a56db;
-    --teal: #0e9f8e;
-    --light: #f0f4ff;
-    --bg: #f5f7fb;
-    --white: #ffffff;
-    --gray: #6b7280;
-    --border: #e2e8f0;
-    --red: #ef4444;
-    --green: #10b981;
-    --yellow: #f59e0b;
-    --orange: #f97316;
-    --purple: #8b5cf6;
-  }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: 'Segoe UI', Arial, sans-serif; background: var(--bg); color: #1e293b; font-size: 14px; }
-  
-  /* HEADER */
-  .header { background: linear-gradient(135deg, var(--navy) 0%, #1e3a6e 100%); color: white; padding: 20px 32px; display: flex; align-items: center; justify-content: space-between; }
-  .header h1 { font-size: 22px; font-weight: 700; letter-spacing: 0.5px; }
-  .header .date-badge { background: rgba(255,255,255,0.15); padding: 6px 16px; border-radius: 20px; font-size: 13px; font-weight: 600; }
-  .header .subtitle { font-size: 12px; opacity: 0.7; margin-top: 2px; }
-  
-  /* TABS */
-  .tabs { background: var(--white); border-bottom: 2px solid var(--border); padding: 0 32px; display: flex; gap: 4px; }
-  .tab { padding: 14px 24px; cursor: pointer; font-weight: 600; font-size: 14px; color: var(--gray); border-bottom: 3px solid transparent; margin-bottom: -2px; transition: all 0.2s; }
-  .tab.active { color: var(--blue); border-bottom-color: var(--blue); }
-  .tab:hover { color: var(--navy); }
-  
-  /* CONTENT */
-  .content { padding: 24px 32px; display: none; }
-  .content.active { display: block; }
-  
-  /* KPI GRID */
-  .kpi-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 14px; margin-bottom: 24px; }
-  .kpi { background: var(--white); border-radius: 10px; padding: 16px; border: 1px solid var(--border); position: relative; overflow: hidden; }
-  .kpi::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--blue); }
-  .kpi.green::before { background: var(--green); }
-  .kpi.red::before { background: var(--red); }
-  .kpi.teal::before { background: var(--teal); }
-  .kpi.yellow::before { background: var(--yellow); }
-  .kpi.purple::before { background: var(--purple); }
-  .kpi-label { font-size: 11px; color: var(--gray); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
-  .kpi-value { font-size: 28px; font-weight: 800; color: var(--navy); margin: 4px 0; }
-  .kpi-sub { font-size: 11px; color: var(--gray); }
-  
-  /* SECTION */
-  .section { background: var(--white); border-radius: 10px; border: 1px solid var(--border); margin-bottom: 20px; }
-  .section-header { padding: 16px 20px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
-  .section-title { font-size: 15px; font-weight: 700; color: var(--navy); }
-  .section-body { padding: 16px 20px; }
-  
-  /* FUNNEL */
-  .funnel { display: flex; flex-direction: column; gap: 6px; }
-  .funnel-bar { display: flex; align-items: center; gap: 10px; }
-  .funnel-label { width: 200px; font-size: 12px; color: #334155; font-weight: 600; text-align: right; }
-  .funnel-track { flex: 1; background: var(--light); border-radius: 4px; height: 28px; position: relative; }
-  .funnel-fill { height: 100%; border-radius: 4px; background: linear-gradient(90deg, var(--blue), var(--teal)); transition: width 0.5s; display: flex; align-items: center; justify-content: flex-end; padding-right: 8px; }
-  .funnel-fill span { font-size: 11px; font-weight: 700; color: white; white-space: nowrap; }
-  .funnel-count { width: 40px; font-size: 13px; font-weight: 700; color: var(--navy); }
-  
-  /* TABLE */
-  .table-wrap { overflow-x: auto; }
-  table { width: 100%; border-collapse: collapse; font-size: 12px; }
-  thead tr { background: var(--light); }
-  th { padding: 9px 10px; text-align: left; font-weight: 700; color: var(--navy); font-size: 11px; text-transform: uppercase; letter-spacing: 0.4px; white-space: nowrap; }
-  td { padding: 8px 10px; border-bottom: 1px solid var(--border); }
-  tr:hover td { background: var(--light); }
-  tr:last-child td { border-bottom: none; }
-  
-  /* BADGES */
-  .badge { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
-  .badge-high { background: #fee2e2; color: #b91c1c; }
-  .badge-medium { background: #fef3c7; color: #92400e; }
-  .badge-low { background: #f1f5f9; color: #475569; }
-  .badge-quente { background: #fef3c7; color: #b45309; }
-  .badge-morno { background: #dbeafe; color: #1d4ed8; }
-  .badge-frio { background: #e0f2fe; color: #0369a1; }
-  .badge-sale { background: #d1fae5; color: #065f46; }
-  .badge-lost { background: #fee2e2; color: #991b1b; }
-  .badge-open { background: #f1f5f9; color: #475569; }
-  .badge-A { background: #d1fae5; color: #065f46; }
-  .badge-B { background: #dbeafe; color: #1d4ed8; }
-  .badge-C { background: #f3f4f6; color: #6b7280; }
-  .badge-cpc { background: #ede9fe; color: #6d28d9; }
-  .badge-bloggers { background: #fce7f3; color: #9d174d; }
-  .badge-smm { background: #e0f2fe; color: #0369a1; }
-  .badge-social { background: #dbeafe; color: #1e40af; }
-  .badge-direto { background: #f1f5f9; color: #64748b; }
-  
-  /* 2-col GRID */
-  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px; }
-  
-  /* FILTER */
-  .filter-bar { display: flex; gap: 8px; margin-bottom: 12px; flex-wrap: wrap; }
-  .filter-btn { padding: 4px 12px; border: 1px solid var(--border); border-radius: 14px; background: var(--white); cursor: pointer; font-size: 11px; font-weight: 600; color: var(--gray); transition: all 0.15s; }
-  .filter-btn.active { background: var(--blue); color: white; border-color: var(--blue); }
-  
-  /* CLOSER GRID */
-  .closer-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
-  .closer-card { background: var(--light); border-radius: 8px; padding: 12px; border: 1px solid var(--border); }
-  .closer-name { font-weight: 700; font-size: 12px; color: var(--navy); margin-bottom: 8px; }
-  .closer-stats { display: flex; gap: 8px; flex-wrap: wrap; }
-  .closer-stat { text-align: center; }
-  .closer-stat-val { font-size: 18px; font-weight: 800; }
-  .closer-stat-lbl { font-size: 9px; color: var(--gray); text-transform: uppercase; }
-  .closer-conv { margin-top: 6px; font-size: 10px; color: var(--gray); }
-  .conv-bar { height: 4px; background: var(--border); border-radius: 2px; margin-top: 3px; }
-  .conv-fill { height: 100%; border-radius: 2px; background: var(--green); }
-  
-  /* ALERT */
-  .alert { background: #fff7ed; border: 1px solid #fed7aa; border-radius: 8px; padding: 12px 16px; margin-bottom: 10px; display: flex; gap: 10px; align-items: flex-start; }
-  .alert-icon { font-size: 18px; flex-shrink: 0; }
-  .alert-title { font-weight: 700; font-size: 12px; color: #7c2d12; }
-  .alert-body { font-size: 12px; color: #92400e; margin-top: 2px; }
-  
-  /* UTM CHART */
-  .utm-bars { display: flex; flex-direction: column; gap: 8px; }
-  .utm-row { display: flex; align-items: center; gap: 10px; }
-  .utm-name { width: 120px; font-size: 12px; font-weight: 600; text-align: right; color: #334155; }
-  .utm-track { flex: 1; background: var(--light); border-radius: 3px; height: 22px; }
-  .utm-fill { height: 100%; border-radius: 3px; display: flex; align-items: center; padding-left: 8px; font-size: 11px; font-weight: 700; color: white; }
-  .utm-num { width: 24px; font-size: 12px; font-weight: 700; color: var(--navy); }
-  
-  /* CICLO */
-  .ciclo-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
-  .ciclo-card { text-align: center; background: var(--light); border-radius: 8px; padding: 14px; }
-  .ciclo-val { font-size: 26px; font-weight: 800; color: var(--navy); }
-  .ciclo-lbl { font-size: 11px; color: var(--gray); margin-top: 2px; }
-  
-  /* RECOMENDAÇÃO */
-  .rec { background: linear-gradient(135deg, #eff6ff, #f0fdf4); border: 1px solid #bfdbfe; border-radius: 8px; padding: 14px 16px; margin-bottom: 10px; }
-  .rec-title { font-weight: 700; font-size: 13px; color: var(--navy); margin-bottom: 4px; }
-  .rec-body { font-size: 12px; color: #374151; line-height: 1.5; }
-  
-  .potencial-rank { display: flex; flex-direction: column; gap: 8px; }
-  .rank-item { display: flex; align-items: center; gap: 12px; background: var(--light); border-radius: 8px; padding: 10px 14px; border-left: 4px solid; }
-  .rank-item.A { border-color: var(--green); }
-  .rank-item.B { border-color: var(--blue); }
-  .rank-item.C { border-color: var(--gray); }
-  .rank-name { font-weight: 700; flex: 1; }
-  .rank-details { font-size: 11px; color: var(--gray); }
-  .rank-action { font-size: 11px; font-weight: 600; }
-  .rank-action.A { color: var(--green); }
-  .rank-action.B { color: var(--blue); }
-  
-  /* DATE NAV */
-  .date-nav { background: var(--white); border-bottom: 1px solid var(--border); padding: 8px 32px; display: flex; align-items: center; gap: 12px; }
-  .date-nav-btn { display: inline-flex; align-items: center; gap: 6px; padding: 6px 14px; border: 1px solid var(--border); border-radius: 6px; background: var(--white); color: var(--navy); font-size: 12px; font-weight: 600; cursor: pointer; text-decoration: none; transition: all 0.15s; }
-  .date-nav-btn:hover { background: var(--light); border-color: var(--blue); color: var(--blue); }
-  .date-nav-btn:disabled, .date-nav-btn.disabled { opacity: 0.4; pointer-events: none; }
-  .date-nav-center { flex: 1; display: flex; align-items: center; justify-content: center; gap: 10px; }
-  .date-picker { padding: 5px 10px; border: 1px solid var(--border); border-radius: 6px; font-size: 12px; font-weight: 600; color: var(--navy); background: var(--white); cursor: pointer; }
-  .date-picker:focus { outline: 2px solid var(--blue); }
-  .date-nav-label { font-size: 11px; color: var(--gray); }
-  .date-nav-tag { background: var(--light); color: var(--navy); font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 10px; }
-
-  @media(max-width: 900px) {
-    .kpi-grid { grid-template-columns: repeat(3, 1fr); }
-    .closer-grid { grid-template-columns: repeat(2, 1fr); }
-    .grid-2 { grid-template-columns: 1fr; }
-    .header { flex-direction: column; align-items: flex-start; gap: 8px; }
-  }
+:root{--navy:#0f2044;--blue:#1a56db;--teal:#0e9f8e;--light:#f0f4ff;--bg:#f5f7fb;--white:#fff;--gray:#6b7280;--border:#e2e8f0;--red:#ef4444;--green:#10b981;--yellow:#f59e0b;--purple:#8b5cf6;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Segoe UI',Arial,sans-serif;background:var(--bg);color:#1e293b;font-size:14px;}
+.header{background:linear-gradient(135deg,var(--navy),#1e3a6e);color:white;padding:18px 32px;display:flex;align-items:center;justify-content:space-between;}
+.header h1{font-size:21px;font-weight:700;}
+.header .sub{font-size:11px;opacity:.7;margin-top:2px;}
+.date-badge{background:rgba(255,255,255,.15);padding:6px 16px;border-radius:20px;font-size:13px;font-weight:600;}
+.date-nav{background:var(--white);border-bottom:1px solid var(--border);padding:8px 32px;display:flex;align-items:center;gap:12px;}
+.dnav-btn{padding:6px 14px;border:1px solid var(--border);border-radius:6px;background:var(--white);color:var(--navy);font-size:12px;font-weight:600;cursor:pointer;text-decoration:none;transition:all .15s;}
+.dnav-btn:hover{background:var(--light);color:var(--blue);}
+.dnav-btn.disabled{opacity:.4;pointer-events:none;}
+.dnav-center{flex:1;display:flex;align-items:center;justify-content:center;gap:10px;}
+.dpicker{padding:5px 10px;border:1px solid var(--border);border-radius:6px;font-size:12px;font-weight:600;color:var(--navy);background:var(--white);cursor:pointer;}
+.dtag{background:var(--light);color:var(--navy);font-size:11px;font-weight:700;padding:3px 10px;border-radius:10px;}
+.product-bar{background:#f8faff;border-bottom:2px solid var(--border);padding:10px 32px;display:flex;align-items:center;gap:10px;}
+.plbl{font-size:11px;font-weight:700;color:var(--gray);text-transform:uppercase;letter-spacing:.5px;margin-right:4px;}
+.pbtn{padding:7px 20px;border-radius:20px;border:2px solid var(--border);background:var(--white);cursor:pointer;font-size:12px;font-weight:700;color:var(--gray);transition:all .15s;}
+.pbtn:hover{border-color:var(--navy);color:var(--navy);}
+.pbtn.active{border-color:var(--navy);background:var(--navy);color:white;}
+.pbtn.active.boot{border-color:var(--teal);background:var(--teal);}
+.pbtn.active.mba{border-color:var(--purple);background:var(--purple);}
+.finfo{margin-left:auto;font-size:11px;color:var(--gray);font-style:italic;}
+.tabs{background:var(--white);border-bottom:2px solid var(--border);padding:0 32px;display:flex;gap:4px;}
+.tab{padding:14px 24px;cursor:pointer;font-weight:600;font-size:14px;color:var(--gray);border-bottom:3px solid transparent;margin-bottom:-2px;transition:all .2s;}
+.tab.active{color:var(--blue);border-bottom-color:var(--blue);}
+.pane{padding:24px 32px;display:none;}
+.pane.active{display:block;}
+.kpi-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:14px;margin-bottom:24px;}
+.kpi{background:var(--white);border-radius:10px;padding:16px;border:1px solid var(--border);position:relative;overflow:hidden;}
+.kpi::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--blue);}
+.kpi.g::before{background:var(--green);} .kpi.r::before{background:var(--red);}
+.kpi.t::before{background:var(--teal);} .kpi.y::before{background:var(--yellow);} .kpi.p::before{background:var(--purple);}
+.kpi-lbl{font-size:11px;color:var(--gray);font-weight:600;text-transform:uppercase;letter-spacing:.5px;}
+.kpi-val{font-size:28px;font-weight:800;color:var(--navy);margin:4px 0;}
+.kpi-sub{font-size:11px;color:var(--gray);}
+.section{background:var(--white);border-radius:10px;border:1px solid var(--border);margin-bottom:20px;}
+.sh{padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+.st{font-size:15px;font-weight:700;color:var(--navy);}
+.sb{padding:16px 20px;}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px;}
+.funnel{display:flex;flex-direction:column;gap:6px;}
+.frow{display:flex;align-items:center;gap:10px;}
+.flbl{width:200px;font-size:12px;color:#334155;font-weight:600;text-align:right;}
+.ftrack{flex:1;background:var(--light);border-radius:4px;height:28px;}
+.ffill{height:100%;border-radius:4px;display:flex;align-items:center;justify-content:flex-end;padding-right:8px;}
+.ffill span{font-size:11px;font-weight:700;color:white;}
+.utm-bars{display:flex;flex-direction:column;gap:8px;}
+.urow{display:flex;align-items:center;gap:10px;}
+.unm{width:130px;font-size:12px;font-weight:600;text-align:right;color:#334155;}
+.utrack{flex:1;background:var(--light);border-radius:3px;height:22px;}
+.ufill{height:100%;border-radius:3px;display:flex;align-items:center;padding-left:8px;font-size:11px;font-weight:700;color:white;}
+.ciclo-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;}
+.ccard{text-align:center;background:var(--light);border-radius:8px;padding:14px;}
+.cval{font-size:26px;font-weight:800;color:var(--navy);}
+.clbl{font-size:11px;color:var(--gray);margin-top:2px;}
+.table-wrap{overflow-x:auto;}
+table{width:100%;border-collapse:collapse;font-size:12px;}
+thead tr{background:var(--light);}
+th{padding:9px 10px;text-align:left;font-weight:700;color:var(--navy);font-size:11px;text-transform:uppercase;letter-spacing:.4px;white-space:nowrap;}
+td{padding:8px 10px;border-bottom:1px solid var(--border);}
+tr:hover td{background:var(--light);}
+tr:last-child td{border-bottom:none;}
+.badge{display:inline-block;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:700;text-transform:uppercase;}
+.badge-high{background:#fee2e2;color:#b91c1c;} .badge-medium{background:#fef3c7;color:#92400e;} .badge-low{background:#f1f5f9;color:#475569;}
+.badge-quente{background:#fef3c7;color:#b45309;} .badge-morno{background:#dbeafe;color:#1d4ed8;} .badge-frio{background:#e0f2fe;color:#0369a1;}
+.badge-sale{background:#d1fae5;color:#065f46;} .badge-lost{background:#fee2e2;color:#991b1b;} .badge-open{background:#f1f5f9;color:#475569;}
+.badge-A{background:#d1fae5;color:#065f46;} .badge-B{background:#dbeafe;color:#1d4ed8;} .badge-C{background:#f3f4f6;color:#6b7280;}
+.badge-cpc{background:#ede9fe;color:#6d28d9;} .badge-bloggers{background:#fce7f3;color:#9d174d;}
+.badge-smm{background:#e0f2fe;color:#0369a1;} .badge-social{background:#dbeafe;color:#1e40af;} .badge-direto{background:#f1f5f9;color:#64748b;}
+.badge-mba{background:#ede9fe;color:#5b21b6;font-size:9px;} .badge-boot{background:#d1fae5;color:#065f46;font-size:9px;}
+.fbar{display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;}
+.fbtn{padding:4px 12px;border:1px solid var(--border);border-radius:14px;background:var(--white);cursor:pointer;font-size:11px;font-weight:600;color:var(--gray);transition:all .15s;}
+.fbtn.active{background:var(--blue);color:white;border-color:var(--blue);}
+.closer-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;}
+.cc{background:var(--light);border-radius:8px;padding:12px;border:1px solid var(--border);}
+.cc-name{font-weight:700;font-size:12px;color:var(--navy);margin-bottom:4px;}
+.cc-sub{font-size:10px;color:var(--gray);margin-bottom:8px;}
+.cc-stats{display:flex;gap:8px;flex-wrap:wrap;}
+.cs{text-align:center;}
+.cs-val{font-size:18px;font-weight:800;}
+.cs-lbl{font-size:9px;color:var(--gray);text-transform:uppercase;}
+.conv-bar{height:4px;background:var(--border);border-radius:2px;margin-top:3px;}
+.conv-fill{height:100%;border-radius:2px;background:var(--green);}
+.rank-list{display:flex;flex-direction:column;gap:8px;}
+.rank-item{display:flex;align-items:center;gap:12px;background:var(--light);border-radius:8px;padding:10px 14px;border-left:4px solid;}
+.rank-item.A{border-color:var(--green);} .rank-item.B{border-color:var(--blue);} .rank-item.C{border-color:var(--gray);}
+.rname{font-weight:700;flex:1;}
+.rdet{font-size:11px;color:var(--gray);}
+.ract{font-size:11px;font-weight:600;}
+.ract.A{color:var(--green);} .ract.B{color:var(--blue);}
+.alert{background:#fff7ed;border:1px solid #fed7aa;border-radius:8px;padding:12px 16px;margin-bottom:10px;display:flex;gap:10px;align-items:flex-start;}
+.ai{font-size:18px;flex-shrink:0;}
+.at{font-weight:700;font-size:12px;color:#7c2d12;}
+.ab{font-size:12px;color:#92400e;margin-top:2px;}
+.rec{background:linear-gradient(135deg,#eff6ff,#f0fdf4);border:1px solid #bfdbfe;border-radius:8px;padding:14px 16px;margin-bottom:10px;}
+.rt{font-weight:700;font-size:13px;color:var(--navy);margin-bottom:4px;}
+.rb{font-size:12px;color:#374151;line-height:1.5;}
+#nav-message{background:#fffbeb;border-bottom:1px solid #fde68a;padding:6px 32px;font-size:12px;min-height:0;}
 </style>
 </head>
 <body>
-
 <div class="header">
   <div>
-    <div style="font-size:11px;opacity:0.6;margin-bottom:2px;">TripleTen Brasil · Pipeline: Brazil / Sales</div>
+    <div style="font-size:11px;opacity:.6;margin-bottom:2px;">TripleTen Brasil · Pipeline: Brazil / Sales</div>
     <h1>📊 Dashboard Diário de Reuniões</h1>
-    <div class="subtitle">Dados do dia anterior — gerado automaticamente</div>
+    <div class="sub">Dados do dia anterior — gerado automaticamente</div>
   </div>
   <div class="date-badge">📅 17/08/2026</div>
 </div>
-
 <div class="date-nav">
-  <a id="btn-prev" class="date-nav-btn" href="#" onclick="navigateDate(-1);return false;">← Dia anterior</a>
-  <div class="date-nav-center">
-    <span class="date-nav-label">Data:</span>
-    <input type="date" id="date-picker" class="date-picker" value="2026-08-17" onchange="navigateToDate(this.value)" />
-    <span class="date-nav-tag" id="day-label">segunda-feira</span>
+  <a id="btn-prev" class="dnav-btn" href="#" onclick="navigateDate(-1);return false;">← Dia anterior</a>
+  <div class="dnav-center">
+    <span style="font-size:12px;color:var(--gray);">Data:</span>
+    <input type="date" id="dpicker" class="dpicker" value="2026-08-17" onchange="navigateToDate(this.value)" />
+    <span class="dtag" id="day-label"></span>
   </div>
-  <a id="btn-next" class="date-nav-btn disabled" href="#" onclick="navigateDate(1);return false;">Próximo dia →</a>
+  <a id="btn-next" class="dnav-btn disabled" href="#" onclick="navigateDate(1);return false;">Próximo dia →</a>
 </div>
-<div id="nav-message" style="background:#fffbeb;border-bottom:1px solid #fde68a;padding:6px 32px;font-size:12px;min-height:0;"></div>
-
+<div id="nav-message"></div>
+<div class="product-bar">
+  <span class="plbl">🎓 Produto:</span>
+  <button class="pbtn active" id="pbtn-all"  onclick="setFilter('all')">Todos (37 reuniões)</button>
+  <button class="pbtn boot"  id="pbtn-boot" onclick="setFilter('bootcamp')">⚡ Bootcamp (29)</button>
+  <button class="pbtn mba"   id="pbtn-mba"  onclick="setFilter('mba')">🎓 MBA (8)</button>
+  <span class="finfo" id="finfo"></span>
+</div>
 <div class="tabs">
-  <div class="tab active" onclick="switchTab('marketing')">📈 Marketing</div>
-  <div class="tab" onclick="switchTab('vendas')">🎯 Vendas</div>
+  <div class="tab active" onclick="switchTab('mkt')">📈 Marketing</div>
+  <div class="tab" onclick="switchTab('vnd')">🎯 Vendas</div>
 </div>
 
-<!-- ======================== ABA MARKETING ======================== -->
-<div id="tab-marketing" class="content active">
-
-  <!-- KPIs -->
-  <div class="kpi-grid">
-    <div class="kpi">
-      <div class="kpi-label">Leads Criados</div>
-      <div class="kpi-value">272</div>
-      <div class="kpi-sub">em 17/08/2026</div>
-    </div>
-    <div class="kpi green">
-      <div class="kpi-label">Reuniões Atendidas</div>
-      <div class="kpi-value">37</div>
-      <div class="kpi-sub">59.5% mesmo dia</div>
-    </div>
-    <div class="kpi teal">
-      <div class="kpi-label">Meeting Scheduled</div>
-      <div class="kpi-value">12</div>
-      <div class="kpi-sub">aguardando atendimento</div>
-    </div>
-    <div class="kpi red">
-      <div class="kpi-label">No-Shows</div>
-      <div class="kpi-value">10</div>
-      <div class="kpi-sub">21.3% da agenda</div>
-    </div>
-    <div class="kpi yellow">
-      <div class="kpi-label">Vendas</div>
-      <div class="kpi-value">3</div>
-      <div class="kpi-sub">taxa: 8.1%</div>
-    </div>
-    <div class="kpi purple">
-      <div class="kpi-label">Ciclo Médio</div>
-      <div class="kpi-value">1.3d</div>
-      <div class="kpi-sub">criação → reunião</div>
-    </div>
-  </div>
-
-  <!-- FUNNEL + UTMs -->
-  <div class="grid-2">
-    <!-- Funil por stage -->
-    <div class="section">
-      <div class="section-header">
-        <div class="section-title">🔽 Funil — Leads Criados 17/08</div>
-        <div style="font-size:11px;color:var(--gray);">Total: 272</div>
-      </div>
-      <div class="section-body">
-        <div class="funnel">
-
-          <div class="funnel-bar">
-            <div class="funnel-label">Responsible Appointed</div>
-            <div class="funnel-track">
-              <div class="funnel-fill" style="width:22%;background:#1a56db;">
-                <span>28</span>
-              </div>
-            </div>
-          </div>
-          <div class="funnel-bar">
-            <div class="funnel-label">Taken to Work</div>
-            <div class="funnel-track">
-              <div class="funnel-fill" style="width:100%;background:#0e9f8e;">
-                <span>125</span>
-              </div>
-            </div>
-          </div>
-          <div class="funnel-bar">
-            <div class="funnel-label">Contact Established</div>
-            <div class="funnel-track">
-              <div class="funnel-fill" style="width:33%;background:#8b5cf6;">
-                <span>41</span>
-              </div>
-            </div>
-          </div>
-          <div class="funnel-bar">
-            <div class="funnel-label">Call Booked</div>
-            <div class="funnel-track">
-              <div class="funnel-fill" style="width:8%;background:#f59e0b;">
-                <span>10</span>
-              </div>
-            </div>
-          </div>
-          <div class="funnel-bar">
-            <div class="funnel-label">Meeting Scheduled</div>
-            <div class="funnel-track">
-              <div class="funnel-fill" style="width:10%;background:#f97316;">
-                <span>12</span>
-              </div>
-            </div>
-          </div>
-          <div class="funnel-bar">
-            <div class="funnel-label">Meeting Attended</div>
-            <div class="funnel-track">
-              <div class="funnel-fill" style="width:10%;background:#10b981;">
-                <span>12</span>
-              </div>
-            </div>
-          </div>
-          <div class="funnel-bar">
-            <div class="funnel-label">High Score</div>
-            <div class="funnel-track">
-              <div class="funnel-fill" style="width:2%;background:#0ea5e9;">
-                <span>2</span>
-              </div>
-            </div>
-          </div>
-          <div class="funnel-bar">
-            <div class="funnel-label">Successful Payment</div>
-            <div class="funnel-track">
-              <div class="funnel-fill" style="width:2%;background:#059669;">
-                <span>2</span>
-              </div>
-            </div>
-          </div>
-          <div class="funnel-bar">
-            <div class="funnel-label">Closed-Lost</div>
-            <div class="funnel-track">
-              <div class="funnel-fill" style="width:32%;background:#ef4444;">
-                <span>40</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- UTM Breakdown -->
-    <div class="section">
-      <div class="section-header">
-        <div class="section-title">📣 Breakdown por Canal (Reuniões)</div>
-      </div>
-      <div class="section-body">
-        <div style="margin-bottom:16px;">
-          <div style="font-size:12px;font-weight:700;color:var(--navy);margin-bottom:8px;">UTM Medium</div>
-          <div class="utm-bars">
-
-            <div class="utm-row">
-              <div class="utm-name">cpc</div>
-              <div class="utm-track"><div class="utm-fill" style="width:100%;background:#8b5cf6;">14</div></div>
-            </div>
-            <div class="utm-row">
-              <div class="utm-name">bloggers</div>
-              <div class="utm-track"><div class="utm-fill" style="width:64%;background:#ec4899;">9</div></div>
-            </div>
-            <div class="utm-row">
-              <div class="utm-name">direto</div>
-              <div class="utm-track"><div class="utm-fill" style="width:50%;background:#64748b;">7</div></div>
-            </div>
-            <div class="utm-row">
-              <div class="utm-name">smm</div>
-              <div class="utm-track"><div class="utm-fill" style="width:29%;background:#0ea5e9;">4</div></div>
-            </div>
-            <div class="utm-row">
-              <div class="utm-name">social</div>
-              <div class="utm-track"><div class="utm-fill" style="width:21%;background:#06b6d4;">3</div></div>
-            </div>
-          </div>
-        </div>
-        <div>
-          <div style="font-size:12px;font-weight:700;color:var(--navy);margin-bottom:8px;">Top Criativos / Influencers (Bloggers)</div>
-          <div class="utm-bars">
-
-            <div class="utm-row">
-              <div class="utm-name">pabloepativlogs</div>
-              <div class="utm-track"><div class="utm-fill" style="width:100%;background:#ec4899;">3</div></div>
-            </div>
-            <div class="utm-row">
-              <div class="utm-name">pablofakirr</div>
-              <div class="utm-track"><div class="utm-fill" style="width:67%;background:#ec4899;">2</div></div>
-            </div>
-            <div class="utm-row">
-              <div class="utm-name">nerdsdenegocios</div>
-              <div class="utm-track"><div class="utm-fill" style="width:67%;background:#ec4899;">2</div></div>
-            </div>
-            <div class="utm-row">
-              <div class="utm-name">attekitadev</div>
-              <div class="utm-track"><div class="utm-fill" style="width:33%;background:#ec4899;">1</div></div>
-            </div>
-            <div class="utm-row">
-              <div class="utm-name">thenews</div>
-              <div class="utm-track"><div class="utm-fill" style="width:33%;background:#ec4899;">1</div></div>
-            </div>
-            <div class="utm-row">
-              <div class="utm-name">tosemkit</div>
-              <div class="utm-track"><div class="utm-fill" style="width:33%;background:#ec4899;">1</div></div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- CICLO -->
-  <div class="section" style="margin-bottom:20px;">
-    <div class="section-header"><div class="section-title">⏱️ Ciclo: Criação → Reunião</div></div>
-    <div class="section-body">
-      <div class="ciclo-grid">
-        <div class="ciclo-card" style="border-top:3px solid var(--green);">
-          <div class="ciclo-val">22</div>
-          <div class="ciclo-lbl">Mesmo dia</div>
-        </div>
-        <div class="ciclo-card" style="border-top:3px solid var(--teal);">
-          <div class="ciclo-val">10</div>
-          <div class="ciclo-lbl">1 a 3 dias</div>
-        </div>
-        <div class="ciclo-card" style="border-top:3px solid var(--yellow);">
-          <div class="ciclo-val">4</div>
-          <div class="ciclo-lbl">4 a 7 dias</div>
-        </div>
-        <div class="ciclo-card" style="border-top:3px solid var(--red);">
-          <div class="ciclo-val">1</div>
-          <div class="ciclo-lbl">8+ dias</div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- TABELA: LEADS ATENDIDOS NO MESMO DIA -->
-  <div class="section" style="margin-bottom:20px;">
-    <div class="section-header">
-      <div class="section-title">⚡ Atendidos no Mesmo Dia (22)</div>
-    </div>
-    <div class="section-body">
-      <div class="table-wrap">
-        <table>
-          <thead><tr>
-            <th>Lead</th><th>Curso</th><th>UTM Medium</th><th>UTM Content</th><th>Score</th><th>Priority</th><th>Temperatura</th><th>Payable</th><th>Resultado</th><th>Potencial</th>
-          </tr></thead>
-          <tbody id="same-day-tbody">
-<tr>
-      <td><b>Yuri Martins Barreto</b></td>
-      <td>WD</td>
-      <td><span class="badge badge-cpc">cpc</span></td>
-      <td style="max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">cpc_facebook_feed</td>
-      <td><b>6</b></td>
-      <td><span class="badge badge-high">high</span></td>
-      <td><span class="badge badge-morno">Morno</span></td>
-      <td>✅</td>
-      <td><span class="badge badge-sale">✅ Venda</span></td>
-      <td><span class="badge badge-A">A</span></td>
-    </tr><tr>
-      <td><b>Carlos Leonardo</b></td>
-      <td>Python</td>
-      <td><span class="badge badge-smm">smm</span></td>
-      <td style="max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">link_in_bio</td>
-      <td><b>0</b></td>
-      <td><span class="badge badge-medium">medium</span></td>
-      <td><span class="badge badge-morno">Morno</span></td>
-      <td>✅</td>
-      <td><span class="badge badge-open">🔄 Em aberto</span></td>
-      <td><span class="badge badge-B">B</span></td>
-    </tr><tr>
-      <td><b>Shayuri Backes</b></td>
-      <td>DA</td>
-      <td><span class="badge badge-social">social</span></td>
-      <td style="max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">link_in_bio</td>
-      <td><b>0</b></td>
-      <td><span class="badge badge-medium">medium</span></td>
-      <td><span class="badge badge-morno">Morno</span></td>
-      <td>❌</td>
-      <td><span class="badge badge-open">🔄 Em aberto</span></td>
-      <td><span class="badge badge-C">C</span></td>
-    </tr><tr>
-      <td><b>Felipe Masayuki Yoza Flores</b></td>
-      <td>WD</td>
-      <td><span class="badge badge-cpc">cpc</span></td>
-      <td style="max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">cpc_ig_stories_2</td>
-      <td><b>12</b></td>
-      <td><span class="badge badge-high">high</span></td>
-      <td><span class="badge badge-quente">Quente</span></td>
-      <td>❌</td>
-      <td><span class="badge badge-sale">✅ Venda</span></td>
-      <td><span class="badge badge-B">B</span></td>
-    </tr><tr>
-      <td><b>Luiz Felipe Morais</b></td>
-      <td>DA</td>
-      <td><span class="badge badge-cpc">cpc</span></td>
-      <td style="max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">google_search</td>
-      <td><b>1</b></td>
-      <td><span class="badge badge-high">high</span></td>
-      <td><span class="badge badge-morno">Morno</span></td>
-      <td>❌</td>
-      <td><span class="badge badge-open">🔄 Em aberto</span></td>
-      <td><span class="badge badge-C">C</span></td>
-    </tr><tr>
-      <td><b>Emerson Santiago</b></td>
-      <td>WD</td>
-      <td><span class="badge badge-cpc">cpc</span></td>
-      <td style="max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">google_search_mobile</td>
-      <td><b>2</b></td>
-      <td><span class="badge badge-high">high</span></td>
-      <td><span class="badge badge-frio">Frio</span></td>
-      <td>❌</td>
-      <td><span class="badge badge-open">🔄 Em aberto</span></td>
-      <td><span class="badge badge-C">C</span></td>
-    </tr><tr>
-      <td><b>Rodrigo Azeredo</b></td>
-      <td>MBA DA</td>
-      <td><span class="badge badge-direto">direto</span></td>
-      <td style="max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">—</td>
-      <td><b>7</b></td>
-      <td><span class="badge badge-high">high</span></td>
-      <td><span class="badge badge-frio">Frio</span></td>
-      <td>❌</td>
-      <td><span class="badge badge-open">🔄 Em aberto</span></td>
-      <td><span class="badge badge-B">B</span></td>
-    </tr><tr>
-      <td><b>Tamara Danielle</b></td>
-      <td>WD</td>
-      <td><span class="badge badge-bloggers">bloggers</span></td>
-      <td style="max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">pablofakirr</td>
-      <td><b>0</b></td>
-      <td><span class="badge badge-medium">medium</span></td>
-      <td><span class="badge badge-morno">Morno</span></td>
-      <td>❌</td>
-      <td><span class="badge badge-open">🔄 Em aberto</span></td>
-      <td><span class="badge badge-C">C</span></td>
-    </tr><tr>
-      <td><b>André Teófilo</b></td>
-      <td>QA</td>
-      <td><span class="badge badge-direto">direto</span></td>
-      <td style="max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">—</td>
-      <td><b>4</b></td>
-      <td><span class="badge badge-high">high</span></td>
-      <td><span class="badge badge-open">—</span></td>
-      <td>❌</td>
-      <td><span class="badge badge-open">🔄 Em aberto</span></td>
-      <td><span class="badge badge-B">B</span></td>
-    </tr><tr>
-      <td><b>Alexandre De Melo Oliveira</b></td>
-      <td>WD</td>
-      <td><span class="badge badge-direto">direto</span></td>
-      <td style="max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">—</td>
-      <td><b>0</b></td>
-      <td><span class="badge badge-medium">medium</span></td>
-      <td><span class="badge badge-quente">Quente</span></td>
-      <td>✅</td>
-      <td><span class="badge badge-open">🔄 Em aberto</span></td>
-      <td><span class="badge badge-B">B</span></td>
-    </tr><tr>
-      <td><b>Cynthia Souza Dias</b></td>
-      <td>QA</td>
-      <td><span class="badge badge-smm">smm</span></td>
-      <td style="max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">link_in_bio</td>
-      <td><b>0</b></td>
-      <td><span class="badge badge-medium">medium</span></td>
-      <td><span class="badge badge-morno">Morno</span></td>
-      <td>✅</td>
-      <td><span class="badge badge-sale">✅ Venda</span></td>
-      <td><span class="badge badge-B">B</span></td>
-    </tr><tr>
-      <td><b>Peter Macedo</b></td>
-      <td>MBA AI</td>
-      <td><span class="badge badge-bloggers">bloggers</span></td>
-      <td style="max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">attekitadev</td>
-      <td><b>2</b></td>
-      <td><span class="badge badge-medium">medium</span></td>
-      <td><span class="badge badge-morno">Morno</span></td>
-      <td>✅</td>
-      <td><span class="badge badge-open">🔄 Em aberto</span></td>
-      <td><span class="badge badge-B">B</span></td>
-    </tr><tr>
-      <td><b>ADRIANO MARTINS DE LIMA</b></td>
-      <td>WD</td>
-      <td><span class="badge badge-bloggers">bloggers</span></td>
-      <td style="max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">nerdsdenegocios</td>
-      <td><b>1</b></td>
-      <td><span class="badge badge-medium">medium</span></td>
-      <td><span class="badge badge-morno">Morno</span></td>
-      <td>❌</td>
-      <td><span class="badge badge-open">🔄 Em aberto</span></td>
-      <td><span class="badge badge-C">C</span></td>
-    </tr><tr>
-      <td><b>Mauricio Prudente</b></td>
-      <td>DA</td>
-      <td><span class="badge badge-direto">direto</span></td>
-      <td style="max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">—</td>
-      <td><b>3</b></td>
-      <td><span class="badge badge-high">high</span></td>
-      <td><span class="badge badge-quente">Quente</span></td>
-      <td>✅</td>
-      <td><span class="badge badge-open">🔄 Em aberto</span></td>
-      <td><span class="badge badge-B">B</span></td>
-    </tr><tr>
-      <td><b>Alexsandro da Silva</b></td>
-      <td>QA</td>
-      <td><span class="badge badge-cpc">cpc</span></td>
-      <td style="max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">google_search</td>
-      <td><b>8</b></td>
-      <td><span class="badge badge-high">high</span></td>
-      <td><span class="badge badge-morno">Morno</span></td>
-      <td>✅</td>
-      <td><span class="badge badge-open">🔄 Em aberto</span></td>
-      <td><span class="badge badge-A">A</span></td>
-    </tr><tr>
-      <td><b>Fagner Lessa</b></td>
-      <td>DA</td>
-      <td><span class="badge badge-bloggers">bloggers</span></td>
-      <td style="max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">pabloepativlogs</td>
-      <td><b>5</b></td>
-      <td><span class="badge badge-high">high</span></td>
-      <td><span class="badge badge-morno">Morno</span></td>
-      <td>❌</td>
-      <td><span class="badge badge-open">🔄 Em aberto</span></td>
-      <td><span class="badge badge-B">B</span></td>
-    </tr><tr>
-      <td><b>Samuel de Oliveira Nogueira</b></td>
-      <td>DA</td>
-      <td><span class="badge badge-cpc">cpc</span></td>
-      <td style="max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">google_search</td>
-      <td><b>2</b></td>
-      <td><span class="badge badge-high">high</span></td>
-      <td><span class="badge badge-morno">Morno</span></td>
-      <td>✅</td>
-      <td><span class="badge badge-open">🔄 Em aberto</span></td>
-      <td><span class="badge badge-B">B</span></td>
-    </tr><tr>
-      <td><b>Lucas Dalmeida</b></td>
-      <td>MBA DA</td>
-      <td><span class="badge badge-bloggers">bloggers</span></td>
-      <td style="max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">thenews</td>
-      <td><b>4</b></td>
-      <td><span class="badge badge-high">high</span></td>
-      <td><span class="badge badge-morno">Morno</span></td>
-      <td>❌</td>
-      <td><span class="badge badge-open">🔄 Em aberto</span></td>
-      <td><span class="badge badge-B">B</span></td>
-    </tr><tr>
-      <td><b>Larisse Cruz</b></td>
-      <td>DS</td>
-      <td><span class="badge badge-direto">direto</span></td>
-      <td style="max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">—</td>
-      <td><b>2</b></td>
-      <td><span class="badge badge-high">high</span></td>
-      <td><span class="badge badge-morno">Morno</span></td>
-      <td>✅</td>
-      <td><span class="badge badge-open">🔄 Em aberto</span></td>
-      <td><span class="badge badge-B">B</span></td>
-    </tr><tr>
-      <td><b>Rafael Íkaro Lopes Ferreira</b></td>
-      <td>DA</td>
-      <td><span class="badge badge-bloggers">bloggers</span></td>
-      <td style="max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">pabloepativlogs</td>
-      <td><b>5</b></td>
-      <td><span class="badge badge-high">high</span></td>
-      <td><span class="badge badge-morno">Morno</span></td>
-      <td>❌</td>
-      <td><span class="badge badge-open">🔄 Em aberto</span></td>
-      <td><span class="badge badge-B">B</span></td>
-    </tr><tr>
-      <td><b>Edson Fraga</b></td>
-      <td>MBA AI</td>
-      <td><span class="badge badge-cpc">cpc</span></td>
-      <td style="max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">google_search</td>
-      <td><b>5</b></td>
-      <td><span class="badge badge-high">high</span></td>
-      <td><span class="badge badge-morno">Morno</span></td>
-      <td>❌</td>
-      <td><span class="badge badge-open">🔄 Em aberto</span></td>
-      <td><span class="badge badge-B">B</span></td>
-    </tr><tr>
-      <td><b>Mateus de Lima Leal</b></td>
-      <td>DA</td>
-      <td><span class="badge badge-social">social</span></td>
-      <td style="max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">link_in_bio</td>
-      <td><b>0</b></td>
-      <td><span class="badge badge-low">low</span></td>
-      <td><span class="badge badge-open">—</span></td>
-      <td>❌</td>
-      <td><span class="badge badge-lost">❌ Lost</span></td>
-      <td><span class="badge badge-C">C</span></td>
-    </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </div>
-
-  <!-- TABELA: TODOS ATENDIDOS -->
-  <div class="section" style="margin-bottom:20px;">
-    <div class="section-header">
-      <div class="section-title">📋 Todas as Reuniões Atendidas (37)</div>
-    </div>
-    <div class="section-body">
-      <div class="filter-bar" id="medium-filters">
-        <button class="filter-btn active" onclick="filterMedium('all')">Todos</button>
-        <button class="filter-btn" onclick="filterMedium('cpc')">CPC</button>
-        <button class="filter-btn" onclick="filterMedium('bloggers')">Bloggers</button>
-        <button class="filter-btn" onclick="filterMedium('smm')">SMM</button>
-        <button class="filter-btn" onclick="filterMedium('social')">Social</button>
-        <button class="filter-btn" onclick="filterMedium('direto')">Direto</button>
-      </div>
-      <div class="table-wrap">
-        <table>
-          <thead><tr>
-            <th>Lead</th><th>Closer</th><th>Curso</th><th>Medium</th><th>Score</th><th>Priority</th><th>Temp.</th><th>Payable</th><th>Ciclo</th><th>Resultado</th><th>Pot.</th>
-          </tr></thead>
-          <tbody id="all-attended-tbody">
-<tr data-medium="bloggers">
-      <td><b>Thales</b></td>
-      <td>Bruno Marques</td>
-      <td>DS</td>
-      <td><span class="badge badge-bloggers">bloggers</span></td>
-      <td><b>1</b></td>
-      <td><span class="badge badge-high">high</span></td>
-      <td><span class="badge badge-morno">Morno</span></td>
-      <td>✅</td>
-      <td>1.0d</td>
-      <td><span class="badge badge-open">🔄 Aberto</span></td>
-      <td><span class="badge badge-B">B</span></td>
-    </tr><tr data-medium="cpc">
-      <td><b>Tiago Ramalho</b></td>
-      <td>João Oliveira</td>
-      <td>DS</td>
-      <td><span class="badge badge-cpc">cpc</span></td>
-      <td><b>4</b></td>
-      <td><span class="badge badge-high">high</span></td>
-      <td><span class="badge badge-morno">Morno</span></td>
-      <td>✅</td>
-      <td>3.3d</td>
-      <td><span class="badge badge-open">🔄 Aberto</span></td>
-      <td><span class="badge badge-B">B</span></td>
-    </tr><tr data-medium="cpc">
-      <td><b>Yuri Martins Barreto</b></td>
-      <td>Raphael Soares</td>
-      <td>WD</td>
-      <td><span class="badge badge-cpc">cpc</span></td>
-      <td><b>6</b></td>
-      <td><span class="badge badge-high">high</span></td>
-      <td><span class="badge badge-morno">Morno</span></td>
-      <td>✅</td>
-      <td>0.4d</td>
-      <td><span class="badge badge-sale">✅ Venda</span></td>
-      <td><span class="badge badge-A">A</span></td>
-    </tr><tr data-medium="smm">
-      <td><b>Carlos Leonardo</b></td>
-      <td>Gabriel Morial</td>
-      <td>Python</td>
-      <td><span class="badge badge-smm">smm</span></td>
-      <td><b>0</b></td>
-      <td><span class="badge badge-medium">medium</span></td>
-      <td><span class="badge badge-morno">Morno</span></td>
-      <td>✅</td>
-      <td>0.5d</td>
-      <td><span class="badge badge-open">🔄 Aberto</span></td>
-      <td><span class="badge badge-B">B</span></td>
-    </tr><tr data-medium="bloggers">
-      <td><b>Bruna Luiza</b></td>
-      <td>Daniel Augusto Ribeiro</td>
-      <td>DA</td>
-      <td><span class="badge badge-bloggers">bloggers</span></td>
-      <td><b>3</b></td>
-      <td><span class="badge badge-high">high</span></td>
-      <td><span class="badge badge-quente">Quente</span></td>
-      <td>✅</td>
-      <td>1.2d</td>
-      <td><span class="badge badge-open">🔄 Aberto</span></td>
-      <td><span class="badge badge-B">B</span></td>
-    </tr><tr data-medium="cpc">
-      <td><b>Pedro Ornellas</b></td>
-      <td>Larissa Ciuldim</td>
-      <td>MBA DS</td>
-      <td><span class="badge badge-cpc">cpc</span></td>
-      <td><b>3</b></td>
-      <td><span class="badge badge-medium">medium</span></td>
-      <td><span class="badge badge-frio">Frio</span></td>
-      <td>❌</td>
-      <td>2.2d</td>
-      <td><span class="badge badge-open">🔄 Aberto</span></td>
-      <td><span class="badge badge-B">B</span></td>
-    </tr><tr data-medium="social">
-      <td><b>Shayuri Backes</b></td>
-      <td>Bruno Marques</td>
-      <td>DA</td>
-      <td><span class="badge badge-social">social</span></td>
-      <td><b>0</b></td>
-      <td><span class="badge badge-medium">medium</span></td>
-      <td><span class="badge badge-morno">Morno</span></td>
-      <td>❌</td>
-      <td>0.3d</td>
-      <td><span class="badge badge-open">🔄 Aberto</span></td>
-      <td><span class="badge badge-C">C</span></td>
-    </tr><tr data-medium="cpc">
-      <td><b>Felipe Masayuki Yoza Flores</b></td>
-      <td>Vinícius Leão</td>
-      <td>WD</td>
-      <td><span class="badge badge-cpc">cpc</span></td>
-      <td><b>12</b></td>
-      <td><span class="badge badge-high">high</span></td>
-      <td><span class="badge badge-quente">Quente</span></td>
-      <td>❌</td>
-      <td>0.7d</td>
-      <td><span class="badge badge-sale">✅ Venda</span></td>
-      <td><span class="badge badge-B">B</span></td>
-    </tr><tr data-medium="social">
-      <td><b>Valdineia Albuquerque</b></td>
-      <td>Vinícius Leão</td>
-      <td>DA</td>
-      <td><span class="badge badge-social">social</span></td>
-      <td><b>2</b></td>
-      <td><span class="badge badge-high">high</span></td>
-      <td><span class="badge badge-morno">Morno</span></td>
-      <td>❌</td>
-      <td>1.1d</td>
-      <td><span class="badge badge-open">🔄 Aberto</span></td>
-      <td><span class="badge badge-C">C</span></td>
-    </tr><tr data-medium="cpc">
-      <td><b>Luiz Felipe Morais</b></td>
-      <td>Jessica Silva</td>
-      <td>DA</td>
-      <td><span class="badge badge-cpc">cpc</span></td>
-      <td><b>1</b></td>
-      <td><span class="badge badge-high">high</span></td>
-      <td><span class="badge badge-morno">Morno</span></td>
-      <td>❌</td>
-      <td>0.1d</td>
-      <td><span class="badge badge-open">🔄 Aberto</span></td>
-      <td><span class="badge badge-C">C</span></td>
-    </tr><tr data-medium="cpc">
-      <td><b>Emerson Santiago</b></td>
-      <td>Verônica Merched</td>
-      <td>WD</td>
-      <td><span class="badge badge-cpc">cpc</span></td>
-      <td><b>2</b></td>
-      <td><span class="badge badge-high">high</span></td>
-      <td><span class="badge badge-frio">Frio</span></td>
-      <td>❌</td>
-      <td>0.8d</td>
-      <td><span class="badge badge-open">🔄 Aberto</span></td>
-      <td><span class="badge badge-C">C</span></td>
-    </tr><tr data-medium="direto">
-      <td><b>Thiago Fonseca</b></td>
-      <td>Raphael Soares</td>
-      <td>DS</td>
-      <td><span class="badge badge-direto">direto</span></td>
-      <td><b>2</b></td>
-      <td><span class="badge badge-high">high</span></td>
-      <td><span class="badge badge-morno">Morno</span></td>
-      <td>✅</td>
-      <td>1.1d</td>
-      <td><span class="badge badge-open">🔄 Aberto</span></td>
-      <td><span class="badge badge-B">B</span></td>
-    </tr><tr data-medium="cpc">
-      <td><b>Isabella Santana</b></td>
-      <td>Lucas Bonow Einhardt</td>
-      <td>DA</td>
-      <td><span class="badge badge-cpc">cpc</span></td>
-      <td><b>0</b></td>
-      <td><span class="badge badge-medium">medium</span></td>
-      <td><span class="badge badge-quente">Quente</span></td>
-      <td>❌</td>
-      <td>2.0d</td>
-      <td><span class="badge badge-open">🔄 Aberto</span></td>
-      <td><span class="badge badge-C">C</span></td>
-    </tr><tr data-medium="direto">
-      <td><b>Rodrigo Azeredo</b></td>
-      <td>Roberto Branco</td>
-      <td>MBA DA</td>
-      <td><span class="badge badge-direto">direto</span></td>
-      <td><b>7</b></td>
-      <td><span class="badge badge-high">high</span></td>
-      <td><span class="badge badge-frio">Frio</span></td>
-      <td>❌</td>
-      <td>0.1d</td>
-      <td><span class="badge badge-open">🔄 Aberto</span></td>
-      <td><span class="badge badge-B">B</span></td>
-    </tr><tr data-medium="cpc">
-      <td><b>Patrine Masi Fernandes</b></td>
-      <td>Daniel Augusto Ribeiro</td>
-      <td>DS</td>
-      <td><span class="badge badge-cpc">cpc</span></td>
-      <td><b>2</b></td>
-      <td><span class="badge badge-high">high</span></td>
-      <td><span class="badge badge-morno">Morno</span></td>
-      <td>❌</td>
-      <td>2.7d</td>
-      <td><span class="badge badge-open">🔄 Aberto</span></td>
-      <td><span class="badge badge-C">C</span></td>
-    </tr><tr data-medium="smm">
-      <td><b>Filipe Magnus Guedes</b></td>
-      <td>Yanara Silva</td>
-      <td>DA</td>
-      <td><span class="badge badge-smm">smm</span></td>
-      <td><b>3</b></td>
-      <td><span class="badge badge-medium">medium</span></td>
-      <td><span class="badge badge-morno">Morno</span></td>
-      <td>❌</td>
-      <td>3.0d</td>
-      <td><span class="badge badge-open">🔄 Aberto</span></td>
-      <td><span class="badge badge-B">B</span></td>
-    </tr><tr data-medium="bloggers">
-      <td><b>Tamara Danielle</b></td>
-      <td>Yanara Silva</td>
-      <td>WD</td>
-      <td><span class="badge badge-bloggers">bloggers</span></td>
-      <td><b>0</b></td>
-      <td><span class="badge badge-medium">medium</span></td>
-      <td><span class="badge badge-morno">Morno</span></td>
-      <td>❌</td>
-      <td>0.2d</td>
-      <td><span class="badge badge-open">🔄 Aberto</span></td>
-      <td><span class="badge badge-C">C</span></td>
-    </tr><tr data-medium="direto">
-      <td><b>André Teófilo</b></td>
-      <td>Gabriel Morial</td>
-      <td>QA</td>
-      <td><span class="badge badge-direto">direto</span></td>
-      <td><b>4</b></td>
-      <td><span class="badge badge-high">high</span></td>
-      <td><span class="badge badge-—">—</span></td>
-      <td>❌</td>
-      <td>0.7d</td>
-      <td><span class="badge badge-open">🔄 Aberto</span></td>
-      <td><span class="badge badge-B">B</span></td>
-    </tr><tr data-medium="direto">
-      <td><b>Alexandre De Melo Oliveira</b></td>
-      <td>Lucas Bonow Einhardt</td>
-      <td>WD</td>
-      <td><span class="badge badge-direto">direto</span></td>
-      <td><b>0</b></td>
-      <td><span class="badge badge-medium">medium</span></td>
-      <td><span class="badge badge-quente">Quente</span></td>
-      <td>✅</td>
-      <td>0.1d</td>
-      <td><span class="badge badge-open">🔄 Aberto</span></td>
-      <td><span class="badge badge-B">B</span></td>
-    </tr><tr data-medium="smm">
-      <td><b>Cynthia Souza Dias</b></td>
-      <td>Raphael Soares</td>
-      <td>QA</td>
-      <td><span class="badge badge-smm">smm</span></td>
-      <td><b>0</b></td>
-      <td><span class="badge badge-medium">medium</span></td>
-      <td><span class="badge badge-morno">Morno</span></td>
-      <td>✅</td>
-      <td>0.5d</td>
-      <td><span class="badge badge-sale">✅ Venda</span></td>
-      <td><span class="badge badge-B">B</span></td>
-    </tr><tr data-medium="cpc">
-      <td><b>Robert Miranda</b></td>
-      <td>Raphael Soares</td>
-      <td>DS</td>
-      <td><span class="badge badge-cpc">cpc</span></td>
-      <td><b>0</b></td>
-      <td><span class="badge badge-medium">medium</span></td>
-      <td><span class="badge badge-morno">Morno</span></td>
-      <td>✅</td>
-      <td>3.8d</td>
-      <td><span class="badge badge-open">🔄 Aberto</span></td>
-      <td><span class="badge badge-B">B</span></td>
-    </tr><tr data-medium="smm">
-      <td><b>Diego Passos</b></td>
-      <td>Lucas Bonow Einhardt</td>
-      <td>QA</td>
-      <td><span class="badge badge-smm">smm</span></td>
-      <td><b>0</b></td>
-      <td><span class="badge badge-medium">medium</span></td>
-      <td><span class="badge badge-morno">Morno</span></td>
-      <td>❌</td>
-      <td>8.1d</td>
-      <td><span class="badge badge-open">🔄 Aberto</span></td>
-      <td><span class="badge badge-C">C</span></td>
-    </tr><tr data-medium="bloggers">
-      <td><b>Peter Macedo</b></td>
-      <td>Natália Martins</td>
-      <td>MBA AI</td>
-      <td><span class="badge badge-bloggers">bloggers</span></td>
-      <td><b>2</b></td>
-      <td><span class="badge badge-medium">medium</span></td>
-      <td><span class="badge badge-morno">Morno</span></td>
-      <td>✅</td>
-      <td>0.2d</td>
-      <td><span class="badge badge-open">🔄 Aberto</span></td>
-      <td><span class="badge badge-B">B</span></td>
-    </tr><tr data-medium="cpc">
-      <td><b>Camila Jorge</b></td>
-      <td>Larissa Ciuldim</td>
-      <td>MBA AI</td>
-      <td><span class="badge badge-cpc">cpc</span></td>
-      <td><b>3</b></td>
-      <td><span class="badge badge-medium">medium</span></td>
-      <td><span class="badge badge-quente">Quente</span></td>
-      <td>✅</td>
-      <td>3.4d</td>
-      <td><span class="badge badge-open">🔄 Aberto</span></td>
-      <td><span class="badge badge-B">B</span></td>
-    </tr><tr data-medium="bloggers">
-      <td><b>ADRIANO MARTINS DE LIMA</b></td>
-      <td>Bruno Marques</td>
-      <td>WD</td>
-      <td><span class="badge badge-bloggers">bloggers</span></td>
-      <td><b>1</b></td>
-      <td><span class="badge badge-medium">medium</span></td>
-      <td><span class="badge badge-morno">Morno</span></td>
-      <td>❌</td>
-      <td>0.1d</td>
-      <td><span class="badge badge-open">🔄 Aberto</span></td>
-      <td><span class="badge badge-C">C</span></td>
-    </tr><tr data-medium="direto">
-      <td><b>Mauricio Prudente</b></td>
-      <td>Verônica Merched</td>
-      <td>DA</td>
-      <td><span class="badge badge-direto">direto</span></td>
-      <td><b>3</b></td>
-      <td><span class="badge badge-high">high</span></td>
-      <td><span class="badge badge-quente">Quente</span></td>
-      <td>✅</td>
-      <td>0.1d</td>
-      <td><span class="badge badge-open">🔄 Aberto</span></td>
-      <td><span class="badge badge-B">B</span></td>
-    </tr><tr data-medium="cpc">
-      <td><b>Thereza Cristina Faccio</b></td>
-      <td>Verônica Merched</td>
-      <td>MBA AI</td>
-      <td><span class="badge badge-cpc">cpc</span></td>
-      <td><b>3</b></td>
-      <td><span class="badge badge-high">high</span></td>
-      <td><span class="badge badge-quente">Quente</span></td>
-      <td>❌</td>
-      <td>1.0d</td>
-      <td><span class="badge badge-open">🔄 Aberto</span></td>
-      <td><span class="badge badge-B">B</span></td>
-    </tr><tr data-medium="cpc">
-      <td><b>Alexsandro da Silva</b></td>
-      <td>Erick Paiva</td>
-      <td>QA</td>
-      <td><span class="badge badge-cpc">cpc</span></td>
-      <td><b>8</b></td>
-      <td><span class="badge badge-high">high</span></td>
-      <td><span class="badge badge-morno">Morno</span></td>
-      <td>✅</td>
-      <td>0.1d</td>
-      <td><span class="badge badge-open">🔄 Aberto</span></td>
-      <td><span class="badge badge-A">A</span></td>
-    </tr><tr data-medium="bloggers">
-      <td><b>Fagner Lessa</b></td>
-      <td>João Oliveira</td>
-      <td>DA</td>
-      <td><span class="badge badge-bloggers">bloggers</span></td>
-      <td><b>5</b></td>
-      <td><span class="badge badge-high">high</span></td>
-      <td><span class="badge badge-morno">Morno</span></td>
-      <td>❌</td>
-      <td>0.9d</td>
-      <td><span class="badge badge-open">🔄 Aberto</span></td>
-      <td><span class="badge badge-B">B</span></td>
-    </tr><tr data-medium="cpc">
-      <td><b>Samuel de Oliveira Nogueira</b></td>
-      <td>Daniel Augusto Ribeiro</td>
-      <td>DA</td>
-      <td><span class="badge badge-cpc">cpc</span></td>
-      <td><b>2</b></td>
-      <td><span class="badge badge-high">high</span></td>
-      <td><span class="badge badge-morno">Morno</span></td>
-      <td>✅</td>
-      <td>0.8d</td>
-      <td><span class="badge badge-open">🔄 Aberto</span></td>
-      <td><span class="badge badge-B">B</span></td>
-    </tr><tr data-medium="bloggers">
-      <td><b>Lucas Dalmeida</b></td>
-      <td>Riane Chagas</td>
-      <td>MBA DA</td>
-      <td><span class="badge badge-bloggers">bloggers</span></td>
-      <td><b>4</b></td>
-      <td><span class="badge badge-high">high</span></td>
-      <td><span class="badge badge-morno">Morno</span></td>
-      <td>❌</td>
-      <td>0.5d</td>
-      <td><span class="badge badge-open">🔄 Aberto</span></td>
-      <td><span class="badge badge-B">B</span></td>
-    </tr><tr data-medium="direto">
-      <td><b>Larisse Cruz</b></td>
-      <td>Bernardo Magalhães</td>
-      <td>DS</td>
-      <td><span class="badge badge-direto">direto</span></td>
-      <td><b>2</b></td>
-      <td><span class="badge badge-high">high</span></td>
-      <td><span class="badge badge-morno">Morno</span></td>
-      <td>✅</td>
-      <td>0.8d</td>
-      <td><span class="badge badge-open">🔄 Aberto</span></td>
-      <td><span class="badge badge-B">B</span></td>
-    </tr><tr data-medium="bloggers">
-      <td><b>Vinicius Silva De Jesus</b></td>
-      <td>Roberto Branco</td>
-      <td>DA</td>
-      <td><span class="badge badge-bloggers">bloggers</span></td>
-      <td><b>2</b></td>
-      <td><span class="badge badge-medium">medium</span></td>
-      <td><span class="badge badge-morno">Morno</span></td>
-      <td>❌</td>
-      <td>3.9d</td>
-      <td><span class="badge badge-open">🔄 Aberto</span></td>
-      <td><span class="badge badge-C">C</span></td>
-    </tr><tr data-medium="direto">
-      <td><b>Paulo Pandin</b></td>
-      <td>Riane Chagas</td>
-      <td>MBA AI</td>
-      <td><span class="badge badge-direto">direto</span></td>
-      <td><b>0</b></td>
-      <td><span class="badge badge-low">low</span></td>
-      <td><span class="badge badge-morno">Morno</span></td>
-      <td>✅</td>
-      <td>1.4d</td>
-      <td><span class="badge badge-open">🔄 Aberto</span></td>
-      <td><span class="badge badge-B">B</span></td>
-    </tr><tr data-medium="bloggers">
-      <td><b>Rafael Íkaro Lopes Ferreira</b></td>
-      <td>Jessica Silva</td>
-      <td>DA</td>
-      <td><span class="badge badge-bloggers">bloggers</span></td>
-      <td><b>5</b></td>
-      <td><span class="badge badge-high">high</span></td>
-      <td><span class="badge badge-morno">Morno</span></td>
-      <td>❌</td>
-      <td>0.1d</td>
-      <td><span class="badge badge-open">🔄 Aberto</span></td>
-      <td><span class="badge badge-B">B</span></td>
-    </tr><tr data-medium="cpc">
-      <td><b>Edson Fraga</b></td>
-      <td>Lucas Bonow Einhardt</td>
-      <td>MBA AI</td>
-      <td><span class="badge badge-cpc">cpc</span></td>
-      <td><b>5</b></td>
-      <td><span class="badge badge-high">high</span></td>
-      <td><span class="badge badge-morno">Morno</span></td>
-      <td>❌</td>
-      <td>0.2d</td>
-      <td><span class="badge badge-open">🔄 Aberto</span></td>
-      <td><span class="badge badge-B">B</span></td>
-    </tr><tr data-medium="social">
-      <td><b>Mateus de Lima Leal</b></td>
-      <td>Gabriel Morial</td>
-      <td>DA</td>
-      <td><span class="badge badge-social">social</span></td>
-      <td><b>0</b></td>
-      <td><span class="badge badge-low">low</span></td>
-      <td><span class="badge badge-—">—</span></td>
-      <td>❌</td>
-      <td>0.9d</td>
-      <td><span class="badge badge-lost">❌ Lost</span></td>
-      <td><span class="badge badge-C">C</span></td>
-    </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </div>
-
-  <!-- NO-SHOWS -->
-  <div class="section" style="margin-bottom:20px;">
-    <div class="section-header">
-      <div class="section-title">🚫 No-Shows (10)</div>
-    </div>
-    <div class="section-body">
-      <div class="table-wrap">
-        <table>
-          <thead><tr>
-            <th>Lead</th><th>Curso</th><th>UTM Medium</th><th>UTM Source</th><th>Score</th><th>Priority</th><th>Status Atual</th><th>Ação</th>
-          </tr></thead>
-          <tbody>
-<tr>
-      <td><b>Marcos Lobo</b></td>
-      <td></td>
-      <td><span class="badge badge-direto">direto</span></td>
-      <td></td>
-      <td><b>-3</b></td>
-      <td><span class="badge badge-medium">medium</span></td>
-      <td>❌ Closed-Lost</td>
-      <td style="color:var(--blue);font-weight:600;">Email reativação</td>
-    </tr><tr>
-      <td><b>Matheus Aparecido da Silva</b></td>
-      <td>MBA DS</td>
-      <td><span class="badge badge-cpc">cpc</span></td>
-      <td>facebook</td>
-      <td><b>1</b></td>
-      <td><span class="badge badge-medium">medium</span></td>
-      <td>❌ Closed-Lost</td>
-      <td style="color:var(--blue);font-weight:600;">Email reativação</td>
-    </tr><tr>
-      <td><b>Karoline Angelo</b></td>
-      <td>DS</td>
-      <td><span class="badge badge-cpc">cpc</span></td>
-      <td>facebook</td>
-      <td><b>7</b></td>
-      <td><span class="badge badge-high">high</span></td>
-      <td>⭐ High Score</td>
-      <td style="color:var(--blue);font-weight:600;">🔁 Reagendar urgente</td>
-    </tr><tr>
-      <td><b>Anderson de Souza Pereira</b></td>
-      <td>DS</td>
-      <td><span class="badge badge-direto">direto</span></td>
-      <td></td>
-      <td><b>4</b></td>
-      <td><span class="badge badge-high">high</span></td>
-      <td>❌ Closed-Lost</td>
-      <td style="color:var(--blue);font-weight:600;">📞 Follow-up</td>
-    </tr><tr>
-      <td><b>Gabrielle Gonzalez</b></td>
-      <td>DS</td>
-      <td><span class="badge badge-cpc">cpc</span></td>
-      <td>facebook</td>
-      <td><b>5</b></td>
-      <td><span class="badge badge-high">high</span></td>
-      <td>⭐ High Score</td>
-      <td style="color:var(--blue);font-weight:600;">🔁 Reagendar urgente</td>
-    </tr><tr>
-      <td><b>José Maria</b></td>
-      <td>DS</td>
-      <td><span class="badge badge-bloggers">bloggers</span></td>
-      <td>youtube</td>
-      <td><b>1</b></td>
-      <td><span class="badge badge-medium">medium</span></td>
-      <td>❌ Closed-Lost</td>
-      <td style="color:var(--blue);font-weight:600;">Email reativação</td>
-    </tr><tr>
-      <td><b>Larisse Cruz</b></td>
-      <td>DS</td>
-      <td><span class="badge badge-direto">direto</span></td>
-      <td></td>
-      <td><b>2</b></td>
-      <td><span class="badge badge-high">high</span></td>
-      <td>✅ Attended</td>
-      <td style="color:var(--blue);font-weight:600;">📞 Follow-up</td>
-    </tr><tr>
-      <td><b>Leopoldo Bengue</b></td>
-      <td>DS</td>
-      <td><span class="badge badge-crm">crm</span></td>
-      <td>email</td>
-      <td><b>8</b></td>
-      <td><span class="badge badge-high">high</span></td>
-      <td>⭐ High Score</td>
-      <td style="color:var(--blue);font-weight:600;">🔁 Reagendar urgente</td>
-    </tr><tr>
-      <td><b>DANIEL DOMINGUES GOMES PAZ</b></td>
-      <td>QA</td>
-      <td><span class="badge badge-smm">smm</span></td>
-      <td>facebook</td>
-      <td><b>5</b></td>
-      <td><span class="badge badge-high">high</span></td>
-      <td>❌ Closed-Lost</td>
-      <td style="color:var(--blue);font-weight:600;">🔁 Reagendar urgente</td>
-    </tr><tr>
-      <td><b>Pablo Inocencio</b></td>
-      <td>DA</td>
-      <td><span class="badge badge-bloggers">bloggers</span></td>
-      <td>instagram</td>
-      <td><b>2</b></td>
-      <td><span class="badge badge-medium">medium</span></td>
-      <td>❌ Closed-Lost</td>
-      <td style="color:var(--blue);font-weight:600;">Email reativação</td>
-    </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </div>
-
-</div><!-- end tab-marketing -->
-
-<!-- ======================== ABA VENDAS ======================== -->
-<div id="tab-vendas" class="content">
-
-  <div class="kpi-grid">
-    <div class="kpi green">
-      <div class="kpi-label">Vendas</div>
-      <div class="kpi-value">3</div>
-      <div class="kpi-sub">taxa: 8.1% de conversão</div>
-    </div>
-    <div class="kpi">
-      <div class="kpi-label">Em Aberto</div>
-      <div class="kpi-value">33</div>
-      <div class="kpi-sub">aguardando fechamento</div>
-    </div>
-    <div class="kpi red">
-      <div class="kpi-label">Closed-Lost</div>
-      <div class="kpi-value">1</div>
-      <div class="kpi-sub">de 37 atendidas</div>
-    </div>
-    <div class="kpi teal">
-      <div class="kpi-label">Potencial A</div>
-      <div class="kpi-value">2</div>
-      <div class="kpi-sub">alta prioridade</div>
-    </div>
-    <div class="kpi yellow">
-      <div class="kpi-label">Potencial B</div>
-      <div class="kpi-value">24</div>
-      <div class="kpi-sub">follow-up prioritário</div>
-    </div>
-    <div class="kpi purple">
-      <div class="kpi-label">No-Shows Valiosos</div>
-      <div class="kpi-value">4</div>
-      <div class="kpi-sub">score ≥ 5, reagendar</div>
-    </div>
-  </div>
-
-  <!-- PERFORMANCE CLOSERS -->
-  <div class="section" style="margin-bottom:20px;">
-    <div class="section-header"><div class="section-title">👥 Performance por Closer</div></div>
-    <div class="section-body">
-      <div class="closer-grid">
-
-        <div class="closer-card">
-          <div class="closer-name">Raphael Soares</div>
-          <div class="closer-stats">
-            <div class="closer-stat">
-              <div class="closer-stat-val" style="color:var(--navy);">4</div>
-              <div class="closer-stat-lbl">Reuniões</div>
-            </div>
-            <div class="closer-stat">
-              <div class="closer-stat-val" style="color:var(--green);">2</div>
-              <div class="closer-stat-lbl">Vendas</div>
-            </div>
-            <div class="closer-stat">
-              <div class="closer-stat-val" style="color:var(--red);">0</div>
-              <div class="closer-stat-lbl">Lost</div>
-            </div>
-            <div class="closer-stat">
-              <div class="closer-stat-val" style="color:var(--gray);">2</div>
-              <div class="closer-stat-lbl">Aberto</div>
-            </div>
-          </div>
-          <div class="closer-conv">Conv: 50%
-            <div class="conv-bar"><div class="conv-fill" style="width:50%;"></div></div>
-          </div>
-        </div>
-        <div class="closer-card">
-          <div class="closer-name">Vinícius Leão</div>
-          <div class="closer-stats">
-            <div class="closer-stat">
-              <div class="closer-stat-val" style="color:var(--navy);">2</div>
-              <div class="closer-stat-lbl">Reuniões</div>
-            </div>
-            <div class="closer-stat">
-              <div class="closer-stat-val" style="color:var(--green);">1</div>
-              <div class="closer-stat-lbl">Vendas</div>
-            </div>
-            <div class="closer-stat">
-              <div class="closer-stat-val" style="color:var(--red);">0</div>
-              <div class="closer-stat-lbl">Lost</div>
-            </div>
-            <div class="closer-stat">
-              <div class="closer-stat-val" style="color:var(--gray);">1</div>
-              <div class="closer-stat-lbl">Aberto</div>
-            </div>
-          </div>
-          <div class="closer-conv">Conv: 50%
-            <div class="conv-bar"><div class="conv-fill" style="width:50%;"></div></div>
-          </div>
-        </div>
-        <div class="closer-card">
-          <div class="closer-name">Bruno Marques</div>
-          <div class="closer-stats">
-            <div class="closer-stat">
-              <div class="closer-stat-val" style="color:var(--navy);">3</div>
-              <div class="closer-stat-lbl">Reuniões</div>
-            </div>
-            <div class="closer-stat">
-              <div class="closer-stat-val" style="color:var(--green);">0</div>
-              <div class="closer-stat-lbl">Vendas</div>
-            </div>
-            <div class="closer-stat">
-              <div class="closer-stat-val" style="color:var(--red);">0</div>
-              <div class="closer-stat-lbl">Lost</div>
-            </div>
-            <div class="closer-stat">
-              <div class="closer-stat-val" style="color:var(--gray);">3</div>
-              <div class="closer-stat-lbl">Aberto</div>
-            </div>
-          </div>
-          <div class="closer-conv">Conv: 0%
-            <div class="conv-bar"><div class="conv-fill" style="width:0%;"></div></div>
-          </div>
-        </div>
-        <div class="closer-card">
-          <div class="closer-name">João Oliveira</div>
-          <div class="closer-stats">
-            <div class="closer-stat">
-              <div class="closer-stat-val" style="color:var(--navy);">2</div>
-              <div class="closer-stat-lbl">Reuniões</div>
-            </div>
-            <div class="closer-stat">
-              <div class="closer-stat-val" style="color:var(--green);">0</div>
-              <div class="closer-stat-lbl">Vendas</div>
-            </div>
-            <div class="closer-stat">
-              <div class="closer-stat-val" style="color:var(--red);">0</div>
-              <div class="closer-stat-lbl">Lost</div>
-            </div>
-            <div class="closer-stat">
-              <div class="closer-stat-val" style="color:var(--gray);">2</div>
-              <div class="closer-stat-lbl">Aberto</div>
-            </div>
-          </div>
-          <div class="closer-conv">Conv: 0%
-            <div class="conv-bar"><div class="conv-fill" style="width:0%;"></div></div>
-          </div>
-        </div>
-        <div class="closer-card">
-          <div class="closer-name">Gabriel Morial</div>
-          <div class="closer-stats">
-            <div class="closer-stat">
-              <div class="closer-stat-val" style="color:var(--navy);">3</div>
-              <div class="closer-stat-lbl">Reuniões</div>
-            </div>
-            <div class="closer-stat">
-              <div class="closer-stat-val" style="color:var(--green);">0</div>
-              <div class="closer-stat-lbl">Vendas</div>
-            </div>
-            <div class="closer-stat">
-              <div class="closer-stat-val" style="color:var(--red);">1</div>
-              <div class="closer-stat-lbl">Lost</div>
-            </div>
-            <div class="closer-stat">
-              <div class="closer-stat-val" style="color:var(--gray);">2</div>
-              <div class="closer-stat-lbl">Aberto</div>
-            </div>
-          </div>
-          <div class="closer-conv">Conv: 0%
-            <div class="conv-bar"><div class="conv-fill" style="width:0%;"></div></div>
-          </div>
-        </div>
-        <div class="closer-card">
-          <div class="closer-name">Daniel Augusto Ribeiro</div>
-          <div class="closer-stats">
-            <div class="closer-stat">
-              <div class="closer-stat-val" style="color:var(--navy);">3</div>
-              <div class="closer-stat-lbl">Reuniões</div>
-            </div>
-            <div class="closer-stat">
-              <div class="closer-stat-val" style="color:var(--green);">0</div>
-              <div class="closer-stat-lbl">Vendas</div>
-            </div>
-            <div class="closer-stat">
-              <div class="closer-stat-val" style="color:var(--red);">0</div>
-              <div class="closer-stat-lbl">Lost</div>
-            </div>
-            <div class="closer-stat">
-              <div class="closer-stat-val" style="color:var(--gray);">3</div>
-              <div class="closer-stat-lbl">Aberto</div>
-            </div>
-          </div>
-          <div class="closer-conv">Conv: 0%
-            <div class="conv-bar"><div class="conv-fill" style="width:0%;"></div></div>
-          </div>
-        </div>
-        <div class="closer-card">
-          <div class="closer-name">Larissa Ciuldim</div>
-          <div class="closer-stats">
-            <div class="closer-stat">
-              <div class="closer-stat-val" style="color:var(--navy);">2</div>
-              <div class="closer-stat-lbl">Reuniões</div>
-            </div>
-            <div class="closer-stat">
-              <div class="closer-stat-val" style="color:var(--green);">0</div>
-              <div class="closer-stat-lbl">Vendas</div>
-            </div>
-            <div class="closer-stat">
-              <div class="closer-stat-val" style="color:var(--red);">0</div>
-              <div class="closer-stat-lbl">Lost</div>
-            </div>
-            <div class="closer-stat">
-              <div class="closer-stat-val" style="color:var(--gray);">2</div>
-              <div class="closer-stat-lbl">Aberto</div>
-            </div>
-          </div>
-          <div class="closer-conv">Conv: 0%
-            <div class="conv-bar"><div class="conv-fill" style="width:0%;"></div></div>
-          </div>
-        </div>
-        <div class="closer-card">
-          <div class="closer-name">Jessica Silva</div>
-          <div class="closer-stats">
-            <div class="closer-stat">
-              <div class="closer-stat-val" style="color:var(--navy);">2</div>
-              <div class="closer-stat-lbl">Reuniões</div>
-            </div>
-            <div class="closer-stat">
-              <div class="closer-stat-val" style="color:var(--green);">0</div>
-              <div class="closer-stat-lbl">Vendas</div>
-            </div>
-            <div class="closer-stat">
-              <div class="closer-stat-val" style="color:var(--red);">0</div>
-              <div class="closer-stat-lbl">Lost</div>
-            </div>
-            <div class="closer-stat">
-              <div class="closer-stat-val" style="color:var(--gray);">2</div>
-              <div class="closer-stat-lbl">Aberto</div>
-            </div>
-          </div>
-          <div class="closer-conv">Conv: 0%
-            <div class="conv-bar"><div class="conv-fill" style="width:0%;"></div></div>
-          </div>
-        </div>
-        <div class="closer-card">
-          <div class="closer-name">Verônica Merched</div>
-          <div class="closer-stats">
-            <div class="closer-stat">
-              <div class="closer-stat-val" style="color:var(--navy);">3</div>
-              <div class="closer-stat-lbl">Reuniões</div>
-            </div>
-            <div class="closer-stat">
-              <div class="closer-stat-val" style="color:var(--green);">0</div>
-              <div class="closer-stat-lbl">Vendas</div>
-            </div>
-            <div class="closer-stat">
-              <div class="closer-stat-val" style="color:var(--red);">0</div>
-              <div class="closer-stat-lbl">Lost</div>
-            </div>
-            <div class="closer-stat">
-              <div class="closer-stat-val" style="color:var(--gray);">3</div>
-              <div class="closer-stat-lbl">Aberto</div>
-            </div>
-          </div>
-          <div class="closer-conv">Conv: 0%
-            <div class="conv-bar"><div class="conv-fill" style="width:0%;"></div></div>
-          </div>
-        </div>
-        <div class="closer-card">
-          <div class="closer-name">Lucas Bonow Einhardt</div>
-          <div class="closer-stats">
-            <div class="closer-stat">
-              <div class="closer-stat-val" style="color:var(--navy);">4</div>
-              <div class="closer-stat-lbl">Reuniões</div>
-            </div>
-            <div class="closer-stat">
-              <div class="closer-stat-val" style="color:var(--green);">0</div>
-              <div class="closer-stat-lbl">Vendas</div>
-            </div>
-            <div class="closer-stat">
-              <div class="closer-stat-val" style="color:var(--red);">0</div>
-              <div class="closer-stat-lbl">Lost</div>
-            </div>
-            <div class="closer-stat">
-              <div class="closer-stat-val" style="color:var(--gray);">4</div>
-              <div class="closer-stat-lbl">Aberto</div>
-            </div>
-          </div>
-          <div class="closer-conv">Conv: 0%
-            <div class="conv-bar"><div class="conv-fill" style="width:0%;"></div></div>
-          </div>
-        </div>
-        <div class="closer-card">
-          <div class="closer-name">Roberto Branco</div>
-          <div class="closer-stats">
-            <div class="closer-stat">
-              <div class="closer-stat-val" style="color:var(--navy);">2</div>
-              <div class="closer-stat-lbl">Reuniões</div>
-            </div>
-            <div class="closer-stat">
-              <div class="closer-stat-val" style="color:var(--green);">0</div>
-              <div class="closer-stat-lbl">Vendas</div>
-            </div>
-            <div class="closer-stat">
-              <div class="closer-stat-val" style="color:var(--red);">0</div>
-              <div class="closer-stat-lbl">Lost</div>
-            </div>
-            <div class="closer-stat">
-              <div class="closer-stat-val" style="color:var(--gray);">2</div>
-              <div class="closer-stat-lbl">Aberto</div>
-            </div>
-          </div>
-          <div class="closer-conv">Conv: 0%
-            <div class="conv-bar"><div class="conv-fill" style="width:0%;"></div></div>
-          </div>
-        </div>
-        <div class="closer-card">
-          <div class="closer-name">Yanara Silva</div>
-          <div class="closer-stats">
-            <div class="closer-stat">
-              <div class="closer-stat-val" style="color:var(--navy);">2</div>
-              <div class="closer-stat-lbl">Reuniões</div>
-            </div>
-            <div class="closer-stat">
-              <div class="closer-stat-val" style="color:var(--green);">0</div>
-              <div class="closer-stat-lbl">Vendas</div>
-            </div>
-            <div class="closer-stat">
-              <div class="closer-stat-val" style="color:var(--red);">0</div>
-              <div class="closer-stat-lbl">Lost</div>
-            </div>
-            <div class="closer-stat">
-              <div class="closer-stat-val" style="color:var(--gray);">2</div>
-              <div class="closer-stat-lbl">Aberto</div>
-            </div>
-          </div>
-          <div class="closer-conv">Conv: 0%
-            <div class="conv-bar"><div class="conv-fill" style="width:0%;"></div></div>
-          </div>
-        </div>
-        <div class="closer-card">
-          <div class="closer-name">Natália Martins</div>
-          <div class="closer-stats">
-            <div class="closer-stat">
-              <div class="closer-stat-val" style="color:var(--navy);">1</div>
-              <div class="closer-stat-lbl">Reuniões</div>
-            </div>
-            <div class="closer-stat">
-              <div class="closer-stat-val" style="color:var(--green);">0</div>
-              <div class="closer-stat-lbl">Vendas</div>
-            </div>
-            <div class="closer-stat">
-              <div class="closer-stat-val" style="color:var(--red);">0</div>
-              <div class="closer-stat-lbl">Lost</div>
-            </div>
-            <div class="closer-stat">
-              <div class="closer-stat-val" style="color:var(--gray);">1</div>
-              <div class="closer-stat-lbl">Aberto</div>
-            </div>
-          </div>
-          <div class="closer-conv">Conv: 0%
-            <div class="conv-bar"><div class="conv-fill" style="width:0%;"></div></div>
-          </div>
-        </div>
-        <div class="closer-card">
-          <div class="closer-name">Erick Paiva</div>
-          <div class="closer-stats">
-            <div class="closer-stat">
-              <div class="closer-stat-val" style="color:var(--navy);">1</div>
-              <div class="closer-stat-lbl">Reuniões</div>
-            </div>
-            <div class="closer-stat">
-              <div class="closer-stat-val" style="color:var(--green);">0</div>
-              <div class="closer-stat-lbl">Vendas</div>
-            </div>
-            <div class="closer-stat">
-              <div class="closer-stat-val" style="color:var(--red);">0</div>
-              <div class="closer-stat-lbl">Lost</div>
-            </div>
-            <div class="closer-stat">
-              <div class="closer-stat-val" style="color:var(--gray);">1</div>
-              <div class="closer-stat-lbl">Aberto</div>
-            </div>
-          </div>
-          <div class="closer-conv">Conv: 0%
-            <div class="conv-bar"><div class="conv-fill" style="width:0%;"></div></div>
-          </div>
-        </div>
-        <div class="closer-card">
-          <div class="closer-name">Riane Chagas</div>
-          <div class="closer-stats">
-            <div class="closer-stat">
-              <div class="closer-stat-val" style="color:var(--navy);">2</div>
-              <div class="closer-stat-lbl">Reuniões</div>
-            </div>
-            <div class="closer-stat">
-              <div class="closer-stat-val" style="color:var(--green);">0</div>
-              <div class="closer-stat-lbl">Vendas</div>
-            </div>
-            <div class="closer-stat">
-              <div class="closer-stat-val" style="color:var(--red);">0</div>
-              <div class="closer-stat-lbl">Lost</div>
-            </div>
-            <div class="closer-stat">
-              <div class="closer-stat-val" style="color:var(--gray);">2</div>
-              <div class="closer-stat-lbl">Aberto</div>
-            </div>
-          </div>
-          <div class="closer-conv">Conv: 0%
-            <div class="conv-bar"><div class="conv-fill" style="width:0%;"></div></div>
-          </div>
-        </div>
-        <div class="closer-card">
-          <div class="closer-name">Bernardo Magalhães</div>
-          <div class="closer-stats">
-            <div class="closer-stat">
-              <div class="closer-stat-val" style="color:var(--navy);">1</div>
-              <div class="closer-stat-lbl">Reuniões</div>
-            </div>
-            <div class="closer-stat">
-              <div class="closer-stat-val" style="color:var(--green);">0</div>
-              <div class="closer-stat-lbl">Vendas</div>
-            </div>
-            <div class="closer-stat">
-              <div class="closer-stat-val" style="color:var(--red);">0</div>
-              <div class="closer-stat-lbl">Lost</div>
-            </div>
-            <div class="closer-stat">
-              <div class="closer-stat-val" style="color:var(--gray);">1</div>
-              <div class="closer-stat-lbl">Aberto</div>
-            </div>
-          </div>
-          <div class="closer-conv">Conv: 0%
-            <div class="conv-bar"><div class="conv-fill" style="width:0%;"></div></div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- RANKING POTENCIAL -->
-  <div class="section" style="margin-bottom:20px;">
-    <div class="section-header"><div class="section-title">🏆 Ranking de Potencial de Fechamento</div></div>
-    <div class="section-body">
-      <div class="potencial-rank">
-
-        <div class="rank-item A">
-          <span class="badge badge-A">A</span>
-          <div style="flex:1;">
-            <div class="rank-name">Alexsandro da Silva</div>
-            <div class="rank-details">Erick Paiva · QA · Score: 8 · Temp: Morno · Payable: Yes</div>
-          </div>
-          <div class="rank-action A">🔥 Contato imediato — fechar hoje</div>
-        </div>
-        <div class="rank-item B">
-          <span class="badge badge-B">B</span>
-          <div style="flex:1;">
-            <div class="rank-name">Rodrigo Azeredo</div>
-            <div class="rank-details">Roberto Branco · MBA DA · Score: 7 · Temp: Frio · Payable: No</div>
-          </div>
-          <div class="rank-action B">📞 Follow-up prioritário 24h</div>
-        </div>
-        <div class="rank-item B">
-          <span class="badge badge-B">B</span>
-          <div style="flex:1;">
-            <div class="rank-name">Fagner Lessa</div>
-            <div class="rank-details">João Oliveira · DA · Score: 5 · Temp: Morno · Payable: No</div>
-          </div>
-          <div class="rank-action B">📞 Follow-up prioritário 24h</div>
-        </div>
-        <div class="rank-item B">
-          <span class="badge badge-B">B</span>
-          <div style="flex:1;">
-            <div class="rank-name">Rafael Íkaro Lopes Ferreira</div>
-            <div class="rank-details">Jessica Silva · DA · Score: 5 · Temp: Morno · Payable: No</div>
-          </div>
-          <div class="rank-action B">📞 Follow-up prioritário 24h</div>
-        </div>
-        <div class="rank-item B">
-          <span class="badge badge-B">B</span>
-          <div style="flex:1;">
-            <div class="rank-name">Edson Fraga</div>
-            <div class="rank-details">Lucas Bonow Einhardt · MBA AI · Score: 5 · Temp: Morno · Payable: No</div>
-          </div>
-          <div class="rank-action B">📞 Follow-up prioritário 24h</div>
-        </div>
-        <div class="rank-item B">
-          <span class="badge badge-B">B</span>
-          <div style="flex:1;">
-            <div class="rank-name">Tiago Ramalho</div>
-            <div class="rank-details">João Oliveira · DS · Score: 4 · Temp: Morno · Payable: Yes</div>
-          </div>
-          <div class="rank-action B">📞 Follow-up prioritário 24h</div>
-        </div>
-        <div class="rank-item B">
-          <span class="badge badge-B">B</span>
-          <div style="flex:1;">
-            <div class="rank-name">André Teófilo</div>
-            <div class="rank-details">Gabriel Morial · QA · Score: 4 · Temp: — · Payable: —</div>
-          </div>
-          <div class="rank-action B">📞 Follow-up prioritário 24h</div>
-        </div>
-        <div class="rank-item B">
-          <span class="badge badge-B">B</span>
-          <div style="flex:1;">
-            <div class="rank-name">Lucas Dalmeida</div>
-            <div class="rank-details">Riane Chagas · MBA DA · Score: 4 · Temp: Morno · Payable: No</div>
-          </div>
-          <div class="rank-action B">📞 Follow-up prioritário 24h</div>
-        </div>
-        <div class="rank-item B">
-          <span class="badge badge-B">B</span>
-          <div style="flex:1;">
-            <div class="rank-name">Bruna Luiza</div>
-            <div class="rank-details">Daniel Augusto Ribeiro · DA · Score: 3 · Temp: Quente · Payable: Yes</div>
-          </div>
-          <div class="rank-action B">📞 Follow-up prioritário 24h</div>
-        </div>
-        <div class="rank-item B">
-          <span class="badge badge-B">B</span>
-          <div style="flex:1;">
-            <div class="rank-name">Pedro Ornellas</div>
-            <div class="rank-details">Larissa Ciuldim · MBA DS · Score: 3 · Temp: Frio · Payable: No</div>
-          </div>
-          <div class="rank-action B">📞 Follow-up prioritário 24h</div>
-        </div>
-        <div class="rank-item B">
-          <span class="badge badge-B">B</span>
-          <div style="flex:1;">
-            <div class="rank-name">Filipe Magnus Guedes</div>
-            <div class="rank-details">Yanara Silva · DA · Score: 3 · Temp: Morno · Payable: No</div>
-          </div>
-          <div class="rank-action B">📞 Follow-up prioritário 24h</div>
-        </div>
-        <div class="rank-item B">
-          <span class="badge badge-B">B</span>
-          <div style="flex:1;">
-            <div class="rank-name">Camila Jorge</div>
-            <div class="rank-details">Larissa Ciuldim · MBA AI · Score: 3 · Temp: Quente · Payable: Yes</div>
-          </div>
-          <div class="rank-action B">📞 Follow-up prioritário 24h</div>
-        </div>
-        <div class="rank-item B">
-          <span class="badge badge-B">B</span>
-          <div style="flex:1;">
-            <div class="rank-name">Mauricio Prudente</div>
-            <div class="rank-details">Verônica Merched · DA · Score: 3 · Temp: Quente · Payable: Yes</div>
-          </div>
-          <div class="rank-action B">📞 Follow-up prioritário 24h</div>
-        </div>
-        <div class="rank-item B">
-          <span class="badge badge-B">B</span>
-          <div style="flex:1;">
-            <div class="rank-name">Thereza Cristina Faccio</div>
-            <div class="rank-details">Verônica Merched · MBA AI · Score: 3 · Temp: Quente · Payable: No</div>
-          </div>
-          <div class="rank-action B">📞 Follow-up prioritário 24h</div>
-        </div>
-        <div class="rank-item B">
-          <span class="badge badge-B">B</span>
-          <div style="flex:1;">
-            <div class="rank-name">Thiago Fonseca</div>
-            <div class="rank-details">Raphael Soares · DS · Score: 2 · Temp: Morno · Payable: Yes</div>
-          </div>
-          <div class="rank-action B">📞 Follow-up prioritário 24h</div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ALERTAS CRÍTICOS -->
-  <div class="section" style="margin-bottom:20px;">
-    <div class="section-header"><div class="section-title">🚨 Alertas Críticos</div></div>
-    <div class="section-body">
-
-      <div class="alert">
-        <div class="alert-icon">🚫</div>
-        <div>
-          <div class="alert-title">No-Shows High Priority (6 leads)</div>
-          <div class="alert-body">Karoline Angelo, Anderson de Souza Pereira, Gabrielle Gonzalez, Larisse Cruz, Leopoldo Bengue, DANIEL DOMINGUES GOMES PAZ — reagendar com urgência nas próximas 2h</div>
-        </div>
-      </div>
-      <div class="alert">
-        <div class="alert-icon">⭐</div>
-        <div>
-          <div class="alert-title">Leads Score Alto Sem Fechamento</div>
-          <div class="alert-body">Rodrigo Azeredo, Alexsandro da Silva — score ≥ 7, prioridade máxima para follow-up hoje</div>
-        </div>
-      </div>
-      <div class="alert">
-        <div class="alert-icon">🥶</div>
-        <div>
-          <div class="alert-title">Leads Frios em Aberto (3)</div>
-          <div class="alert-body">Pedro Ornellas, Emerson Santiago, Rodrigo Azeredo — leads com temperatura negativa, avaliar abordagem diferenciada</div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- RECOMENDAÇÕES -->
-  <div class="section" style="margin-bottom:20px;">
-    <div class="section-header"><div class="section-title">💡 Recomendações</div></div>
-    <div class="section-body">
-
-      <div class="rec">
-        <div class="rec-title">📈 Canal com melhor desempenho: CPC (14 reuniões)</div>
-        <div class="rec-body">CPC trouxe o maior volume de reuniões (38% do total). Google Search e Facebook Reels/Feed são os formatos mais eficientes. Manter ou aumentar investimento nesses criativos.</div>
-      </div>
-      <div class="rec">
-        <div class="rec-title">🎯 Closer destaque: Raphael Soares (2 vendas em 4 reuniões — 50% de conversão)</div>
-        <div class="rec-body">Raphael teve a maior taxa de conversão do dia. Mapear abordagem e técnicas usadas para replicar em treinamentos de equipe.</div>
-      </div>
-      <div class="rec">
-        <div class="rec-title">⚡ 59.5% das reuniões foram do mesmo dia (22 de 37)</div>
-        <div class="rec-body">Alto volume de atendimentos no mesmo dia de criação indica boa velocidade de resposta. Focar no ciclo curto como vantagem competitiva, especialmente para leads de CPC.</div>
-      </div>
-      <div class="rec">
-        <div class="rec-title">🚨 No-shows de alto valor: Karoline Angelo (score 7), Leopoldo Bengue (score 8), Gabrielle Gonzalez (score 5)</div>
-        <div class="rec-body">3 leads com score ≥ 5 não compareceram. Esses são os mais prioritários para reagendamento — contato imediato nas próximas horas.</div>
-      </div>
-    </div>
-  </div>
-
-</div><!-- end tab-vendas -->
-
-<div style="text-align:center;padding:20px;font-size:11px;color:var(--gray);">
-  Gerado automaticamente em 2026-08-17 · TripleTen Brasil · Pipeline: Brazil / Sales (110797558)<br>
-  <a href="https://sabrinaichinose.github.io/t10dailyanalisys/" style="color:var(--blue);">🔗 sabrinaichinose.github.io/t10dailyanalisys</a>
+<div id="tab-mkt" class="pane active">
+<div class="kpi-grid">
+<div class="kpi"><div class="kpi-lbl">Leads Criados</div><div class="kpi-val" id="k-criados">272</div><div class="kpi-sub" id="k-criados-s">em 17/08/2026</div></div>
+<div class="kpi g"><div class="kpi-lbl">Reuniões Atendidas</div><div class="kpi-val" id="k-atend">37</div><div class="kpi-sub" id="k-atend-s">22 mesmo dia</div></div>
+<div class="kpi t"><div class="kpi-lbl">Meeting Scheduled</div><div class="kpi-val">12</div><div class="kpi-sub">aguardando</div></div>
+<div class="kpi r"><div class="kpi-lbl">No-Shows</div><div class="kpi-val" id="k-ns">10</div><div class="kpi-sub">do total agendado</div></div>
+<div class="kpi y"><div class="kpi-lbl">Vendas</div><div class="kpi-val" id="k-vend">3</div><div class="kpi-sub" id="k-vend-s">taxa: 8.1%</div></div>
+<div class="kpi p"><div class="kpi-lbl">Ciclo Médio</div><div class="kpi-val">1.3d</div><div class="kpi-sub">criação → reunião</div></div>
 </div>
-
+<div class="grid2">
+<div class="section"><div class="sh"><div class="st">🔽 Funil — Leads Criados 17/08</div><span style="font-size:11px;color:var(--gray);">272 total</span></div><div class="sb"><div class="funnel">
+<div class="frow"><div class="flbl">Responsible Appointed</div><div class="ftrack"><div class="ffill" style="width:22%;background:#1a56db;"><span>28</span></div></div></div>
+<div class="frow"><div class="flbl">Taken to Work</div><div class="ftrack"><div class="ffill" style="width:100%;background:#0e9f8e;"><span>125</span></div></div></div>
+<div class="frow"><div class="flbl">Contact Established</div><div class="ftrack"><div class="ffill" style="width:33%;background:#8b5cf6;"><span>41</span></div></div></div>
+<div class="frow"><div class="flbl">Call Booked</div><div class="ftrack"><div class="ffill" style="width:8%;background:#f59e0b;"><span>10</span></div></div></div>
+<div class="frow"><div class="flbl">Meeting Scheduled</div><div class="ftrack"><div class="ffill" style="width:10%;background:#f97316;"><span>12</span></div></div></div>
+<div class="frow"><div class="flbl">Meeting Attended</div><div class="ftrack"><div class="ffill" style="width:10%;background:#10b981;"><span>12</span></div></div></div>
+<div class="frow"><div class="flbl">High Score</div><div class="ftrack"><div class="ffill" style="width:2%;background:#0ea5e9;"><span>2</span></div></div></div>
+<div class="frow"><div class="flbl">Successful Payment</div><div class="ftrack"><div class="ffill" style="width:2%;background:#059669;"><span>2</span></div></div></div>
+<div class="frow"><div class="flbl">Closed-Lost</div><div class="ftrack"><div class="ffill" style="width:32%;background:#ef4444;"><span>40</span></div></div></div>
+</div></div></div>
+<div class="section"><div class="sh"><div class="st">📣 Canais e Criativos</div></div><div class="sb">
+<div style="font-size:12px;font-weight:700;color:var(--navy);margin-bottom:8px;">UTM Medium</div><div class="utm-bars">
+<div class="urow"><div class="unm">cpc</div><div class="utrack"><div class="ufill" style="width:100%;background:#8b5cf6;">14</div></div></div>
+<div class="urow"><div class="unm">bloggers</div><div class="utrack"><div class="ufill" style="width:64%;background:#ec4899;">9</div></div></div>
+<div class="urow"><div class="unm">direto</div><div class="utrack"><div class="ufill" style="width:50%;background:#64748b;">7</div></div></div>
+<div class="urow"><div class="unm">smm</div><div class="utrack"><div class="ufill" style="width:29%;background:#0ea5e9;">4</div></div></div>
+<div class="urow"><div class="unm">social</div><div class="utrack"><div class="ufill" style="width:21%;background:#06b6d4;">3</div></div></div>
+</div><div style="font-size:12px;font-weight:700;color:var(--navy);margin:12px 0 8px;">Top Bloggers/Criativos</div><div class="utm-bars">
+<div class="urow"><div class="unm">pabloepativlogs</div><div class="utrack"><div class="ufill" style="width:100%;background:#ec4899;">3</div></div></div>
+<div class="urow"><div class="unm">pablofakirr</div><div class="utrack"><div class="ufill" style="width:67%;background:#ec4899;">2</div></div></div>
+<div class="urow"><div class="unm">nerdsdenegocios</div><div class="utrack"><div class="ufill" style="width:67%;background:#ec4899;">2</div></div></div>
+<div class="urow"><div class="unm">attekitadev</div><div class="utrack"><div class="ufill" style="width:33%;background:#ec4899;">1</div></div></div>
+<div class="urow"><div class="unm">thenews</div><div class="utrack"><div class="ufill" style="width:33%;background:#ec4899;">1</div></div></div>
+</div></div></div>
+</div>
+<div class="section"><div class="sh"><div class="st">⏱️ Ciclo: Criação → Reunião</div></div><div class="sb"><div class="ciclo-grid"><div class="ccard" style="border-top:3px solid var(--green);"><div class="cval" id="c-dia">22</div><div class="clbl">Mesmo dia</div></div><div class="ccard" style="border-top:3px solid var(--teal);"><div class="cval" id="c-3">10</div><div class="clbl">1 a 3 dias</div></div><div class="ccard" style="border-top:3px solid var(--yellow);"><div class="cval" id="c-7">4</div><div class="clbl">4 a 7 dias</div></div><div class="ccard" style="border-top:3px solid var(--red);"><div class="cval" id="c-8">1</div><div class="clbl">8+ dias</div></div></div></div></div>
+<div class="section"><div class="sh"><div class="st">⚡ Atendidos no Mesmo Dia</div><span id="sd-cnt" style="font-size:11px;color:var(--gray);">22 registros</span></div><div class="sb"><div class="table-wrap"><table><thead><tr><th>Lead</th><th>Produto</th><th>Curso</th><th>Medium</th><th>Score</th><th>Priority</th><th>Temp.</th><th>Payable</th><th>Resultado</th><th>Pot.</th></tr></thead><tbody id="sd-tbody">
+<tr data-product="bootcamp"><td><b>Yuri Martins Barreto</b></td><td><span class="badge badge-boot">Boot</span></td><td>WD</td><td><span class="badge badge-cpc">cpc</span></td><td><b>6</b></td><td><span class="badge badge-high">high</span></td><td><span class="badge badge-morno">Morno</span></td><td>✅</td><td><span class="badge badge-sale">✅ Venda</span></td><td><span class="badge badge-A">A</span></td></tr>
+<tr data-product="bootcamp"><td><b>Carlos Leonardo</b></td><td><span class="badge badge-boot">Boot</span></td><td>Python</td><td><span class="badge badge-smm">smm</span></td><td><b>0</b></td><td><span class="badge badge-medium">medium</span></td><td><span class="badge badge-morno">Morno</span></td><td>✅</td><td><span class="badge badge-open">🔄 Aberto</span></td><td><span class="badge badge-B">B</span></td></tr>
+<tr data-product="bootcamp"><td><b>Shayuri Backes</b></td><td><span class="badge badge-boot">Boot</span></td><td>DA</td><td><span class="badge badge-social">social</span></td><td><b>0</b></td><td><span class="badge badge-medium">medium</span></td><td><span class="badge badge-morno">Morno</span></td><td>❌</td><td><span class="badge badge-open">🔄 Aberto</span></td><td><span class="badge badge-C">C</span></td></tr>
+<tr data-product="bootcamp"><td><b>Felipe Masayuki Yoza Flores</b></td><td><span class="badge badge-boot">Boot</span></td><td>WD</td><td><span class="badge badge-cpc">cpc</span></td><td><b>12</b></td><td><span class="badge badge-high">high</span></td><td><span class="badge badge-quente">Quente</span></td><td>❌</td><td><span class="badge badge-sale">✅ Venda</span></td><td><span class="badge badge-B">B</span></td></tr>
+<tr data-product="bootcamp"><td><b>Luiz Felipe Morais</b></td><td><span class="badge badge-boot">Boot</span></td><td>DA</td><td><span class="badge badge-cpc">cpc</span></td><td><b>1</b></td><td><span class="badge badge-high">high</span></td><td><span class="badge badge-morno">Morno</span></td><td>❌</td><td><span class="badge badge-open">🔄 Aberto</span></td><td><span class="badge badge-C">C</span></td></tr>
+<tr data-product="bootcamp"><td><b>Emerson Santiago</b></td><td><span class="badge badge-boot">Boot</span></td><td>WD</td><td><span class="badge badge-cpc">cpc</span></td><td><b>2</b></td><td><span class="badge badge-high">high</span></td><td><span class="badge badge-frio">Frio</span></td><td>❌</td><td><span class="badge badge-open">🔄 Aberto</span></td><td><span class="badge badge-C">C</span></td></tr>
+<tr data-product="mba"><td><b>Rodrigo Azeredo</b></td><td><span class="badge badge-mba">MBA</span></td><td>MBA DA</td><td><span class="badge badge-direto">direto</span></td><td><b>7</b></td><td><span class="badge badge-high">high</span></td><td><span class="badge badge-frio">Frio</span></td><td>❌</td><td><span class="badge badge-open">🔄 Aberto</span></td><td><span class="badge badge-B">B</span></td></tr>
+<tr data-product="bootcamp"><td><b>Tamara Danielle</b></td><td><span class="badge badge-boot">Boot</span></td><td>WD</td><td><span class="badge badge-bloggers">bloggers</span></td><td><b>0</b></td><td><span class="badge badge-medium">medium</span></td><td><span class="badge badge-morno">Morno</span></td><td>❌</td><td><span class="badge badge-open">🔄 Aberto</span></td><td><span class="badge badge-C">C</span></td></tr>
+<tr data-product="bootcamp"><td><b>André Teófilo</b></td><td><span class="badge badge-boot">Boot</span></td><td>QA</td><td><span class="badge badge-direto">direto</span></td><td><b>4</b></td><td><span class="badge badge-high">high</span></td><td><span class="badge badge-—">—</span></td><td>❌</td><td><span class="badge badge-open">🔄 Aberto</span></td><td><span class="badge badge-B">B</span></td></tr>
+<tr data-product="bootcamp"><td><b>Alexandre De Melo Oliveira</b></td><td><span class="badge badge-boot">Boot</span></td><td>WD</td><td><span class="badge badge-direto">direto</span></td><td><b>0</b></td><td><span class="badge badge-medium">medium</span></td><td><span class="badge badge-quente">Quente</span></td><td>✅</td><td><span class="badge badge-open">🔄 Aberto</span></td><td><span class="badge badge-B">B</span></td></tr>
+<tr data-product="bootcamp"><td><b>Cynthia Souza Dias</b></td><td><span class="badge badge-boot">Boot</span></td><td>QA</td><td><span class="badge badge-smm">smm</span></td><td><b>0</b></td><td><span class="badge badge-medium">medium</span></td><td><span class="badge badge-morno">Morno</span></td><td>✅</td><td><span class="badge badge-sale">✅ Venda</span></td><td><span class="badge badge-B">B</span></td></tr>
+<tr data-product="mba"><td><b>Peter Macedo</b></td><td><span class="badge badge-mba">MBA</span></td><td>MBA AI</td><td><span class="badge badge-bloggers">bloggers</span></td><td><b>2</b></td><td><span class="badge badge-medium">medium</span></td><td><span class="badge badge-morno">Morno</span></td><td>✅</td><td><span class="badge badge-open">🔄 Aberto</span></td><td><span class="badge badge-B">B</span></td></tr>
+<tr data-product="bootcamp"><td><b>ADRIANO MARTINS DE LIMA</b></td><td><span class="badge badge-boot">Boot</span></td><td>WD</td><td><span class="badge badge-bloggers">bloggers</span></td><td><b>1</b></td><td><span class="badge badge-medium">medium</span></td><td><span class="badge badge-morno">Morno</span></td><td>❌</td><td><span class="badge badge-open">🔄 Aberto</span></td><td><span class="badge badge-C">C</span></td></tr>
+<tr data-product="bootcamp"><td><b>Mauricio Prudente</b></td><td><span class="badge badge-boot">Boot</span></td><td>DA</td><td><span class="badge badge-direto">direto</span></td><td><b>3</b></td><td><span class="badge badge-high">high</span></td><td><span class="badge badge-quente">Quente</span></td><td>✅</td><td><span class="badge badge-open">🔄 Aberto</span></td><td><span class="badge badge-B">B</span></td></tr>
+<tr data-product="bootcamp"><td><b>Alexsandro da Silva</b></td><td><span class="badge badge-boot">Boot</span></td><td>QA</td><td><span class="badge badge-cpc">cpc</span></td><td><b>8</b></td><td><span class="badge badge-high">high</span></td><td><span class="badge badge-morno">Morno</span></td><td>✅</td><td><span class="badge badge-open">🔄 Aberto</span></td><td><span class="badge badge-A">A</span></td></tr>
+<tr data-product="bootcamp"><td><b>Fagner Lessa</b></td><td><span class="badge badge-boot">Boot</span></td><td>DA</td><td><span class="badge badge-bloggers">bloggers</span></td><td><b>5</b></td><td><span class="badge badge-high">high</span></td><td><span class="badge badge-morno">Morno</span></td><td>❌</td><td><span class="badge badge-open">🔄 Aberto</span></td><td><span class="badge badge-B">B</span></td></tr>
+<tr data-product="bootcamp"><td><b>Samuel de Oliveira Nogueira</b></td><td><span class="badge badge-boot">Boot</span></td><td>DA</td><td><span class="badge badge-cpc">cpc</span></td><td><b>2</b></td><td><span class="badge badge-high">high</span></td><td><span class="badge badge-morno">Morno</span></td><td>✅</td><td><span class="badge badge-open">🔄 Aberto</span></td><td><span class="badge badge-B">B</span></td></tr>
+<tr data-product="mba"><td><b>Lucas Dalmeida</b></td><td><span class="badge badge-mba">MBA</span></td><td>MBA DA</td><td><span class="badge badge-bloggers">bloggers</span></td><td><b>4</b></td><td><span class="badge badge-high">high</span></td><td><span class="badge badge-morno">Morno</span></td><td>❌</td><td><span class="badge badge-open">🔄 Aberto</span></td><td><span class="badge badge-B">B</span></td></tr>
+<tr data-product="bootcamp"><td><b>Larisse Cruz</b></td><td><span class="badge badge-boot">Boot</span></td><td>DS</td><td><span class="badge badge-direto">direto</span></td><td><b>2</b></td><td><span class="badge badge-high">high</span></td><td><span class="badge badge-morno">Morno</span></td><td>✅</td><td><span class="badge badge-open">🔄 Aberto</span></td><td><span class="badge badge-B">B</span></td></tr>
+<tr data-product="bootcamp"><td><b>Rafael Íkaro Lopes Ferreira</b></td><td><span class="badge badge-boot">Boot</span></td><td>DA</td><td><span class="badge badge-bloggers">bloggers</span></td><td><b>5</b></td><td><span class="badge badge-high">high</span></td><td><span class="badge badge-morno">Morno</span></td><td>❌</td><td><span class="badge badge-open">🔄 Aberto</span></td><td><span class="badge badge-B">B</span></td></tr>
+<tr data-product="mba"><td><b>Edson Fraga</b></td><td><span class="badge badge-mba">MBA</span></td><td>MBA AI</td><td><span class="badge badge-cpc">cpc</span></td><td><b>5</b></td><td><span class="badge badge-high">high</span></td><td><span class="badge badge-morno">Morno</span></td><td>❌</td><td><span class="badge badge-open">🔄 Aberto</span></td><td><span class="badge badge-B">B</span></td></tr>
+<tr data-product="bootcamp"><td><b>Mateus de Lima Leal</b></td><td><span class="badge badge-boot">Boot</span></td><td>DA</td><td><span class="badge badge-social">social</span></td><td><b>0</b></td><td><span class="badge badge-low">low</span></td><td><span class="badge badge-—">—</span></td><td>❌</td><td><span class="badge badge-lost">❌ Lost</span></td><td><span class="badge badge-C">C</span></td></tr>
+</tbody></table></div></div></div>
+<div class="section"><div class="sh"><div class="st">📋 Todas as Reuniões Atendidas</div><span id="at-cnt" style="font-size:11px;color:var(--gray);">37 registros</span></div><div class="sb">
+<div class="fbar" id="mfilt"><button class="fbtn active" onclick="filterMedium('all')">Todos</button><button class="fbtn" onclick="filterMedium('cpc')">CPC</button><button class="fbtn" onclick="filterMedium('bloggers')">Bloggers</button><button class="fbtn" onclick="filterMedium('smm')">SMM</button><button class="fbtn" onclick="filterMedium('social')">Social</button><button class="fbtn" onclick="filterMedium('direto')">Direto</button></div>
+<div class="table-wrap"><table><thead><tr><th>Lead</th><th>Produto</th><th>Closer</th><th>Curso</th><th>Medium</th><th>Score</th><th>Priority</th><th>Temp.</th><th>Payable</th><th>Ciclo</th><th>Resultado</th><th>Pot.</th></tr></thead><tbody id="at-tbody">
+<tr data-product="bootcamp" data-medium="bloggers"><td><b>Thales</b></td><td><span class="badge badge-boot">Boot</span></td><td>Bruno Marques</td><td>DS</td><td><span class="badge badge-bloggers">bloggers</span></td><td><b>1</b></td><td><span class="badge badge-high">high</span></td><td><span class="badge badge-morno">Morno</span></td><td>✅</td><td>1.0d</td><td><span class="badge badge-open">🔄 Aberto</span></td><td><span class="badge badge-B">B</span></td></tr>
+<tr data-product="bootcamp" data-medium="cpc"><td><b>Tiago Ramalho</b></td><td><span class="badge badge-boot">Boot</span></td><td>João Oliveira</td><td>DS</td><td><span class="badge badge-cpc">cpc</span></td><td><b>4</b></td><td><span class="badge badge-high">high</span></td><td><span class="badge badge-morno">Morno</span></td><td>✅</td><td>3.3d</td><td><span class="badge badge-open">🔄 Aberto</span></td><td><span class="badge badge-B">B</span></td></tr>
+<tr data-product="bootcamp" data-medium="cpc"><td><b>Yuri Martins Barreto</b></td><td><span class="badge badge-boot">Boot</span></td><td>Raphael Soares</td><td>WD</td><td><span class="badge badge-cpc">cpc</span></td><td><b>6</b></td><td><span class="badge badge-high">high</span></td><td><span class="badge badge-morno">Morno</span></td><td>✅</td><td>0.4d</td><td><span class="badge badge-sale">✅ Venda</span></td><td><span class="badge badge-A">A</span></td></tr>
+<tr data-product="bootcamp" data-medium="smm"><td><b>Carlos Leonardo</b></td><td><span class="badge badge-boot">Boot</span></td><td>Gabriel Morial</td><td>Python</td><td><span class="badge badge-smm">smm</span></td><td><b>0</b></td><td><span class="badge badge-medium">medium</span></td><td><span class="badge badge-morno">Morno</span></td><td>✅</td><td>0.5d</td><td><span class="badge badge-open">🔄 Aberto</span></td><td><span class="badge badge-B">B</span></td></tr>
+<tr data-product="bootcamp" data-medium="bloggers"><td><b>Bruna Luiza</b></td><td><span class="badge badge-boot">Boot</span></td><td>Daniel Augusto Ribeiro</td><td>DA</td><td><span class="badge badge-bloggers">bloggers</span></td><td><b>3</b></td><td><span class="badge badge-high">high</span></td><td><span class="badge badge-quente">Quente</span></td><td>✅</td><td>1.2d</td><td><span class="badge badge-open">🔄 Aberto</span></td><td><span class="badge badge-B">B</span></td></tr>
+<tr data-product="mba" data-medium="cpc"><td><b>Pedro Ornellas</b></td><td><span class="badge badge-mba">MBA</span></td><td>Larissa Ciuldim</td><td>MBA DS</td><td><span class="badge badge-cpc">cpc</span></td><td><b>3</b></td><td><span class="badge badge-medium">medium</span></td><td><span class="badge badge-frio">Frio</span></td><td>❌</td><td>2.2d</td><td><span class="badge badge-open">🔄 Aberto</span></td><td><span class="badge badge-B">B</span></td></tr>
+<tr data-product="bootcamp" data-medium="social"><td><b>Shayuri Backes</b></td><td><span class="badge badge-boot">Boot</span></td><td>Bruno Marques</td><td>DA</td><td><span class="badge badge-social">social</span></td><td><b>0</b></td><td><span class="badge badge-medium">medium</span></td><td><span class="badge badge-morno">Morno</span></td><td>❌</td><td>0.3d</td><td><span class="badge badge-open">🔄 Aberto</span></td><td><span class="badge badge-C">C</span></td></tr>
+<tr data-product="bootcamp" data-medium="cpc"><td><b>Felipe Masayuki Yoza Flores</b></td><td><span class="badge badge-boot">Boot</span></td><td>Vinícius Leão</td><td>WD</td><td><span class="badge badge-cpc">cpc</span></td><td><b>12</b></td><td><span class="badge badge-high">high</span></td><td><span class="badge badge-quente">Quente</span></td><td>❌</td><td>0.7d</td><td><span class="badge badge-sale">✅ Venda</span></td><td><span class="badge badge-B">B</span></td></tr>
+<tr data-product="bootcamp" data-medium="social"><td><b>Valdineia Albuquerque</b></td><td><span class="badge badge-boot">Boot</span></td><td>Vinícius Leão</td><td>DA</td><td><span class="badge badge-social">social</span></td><td><b>2</b></td><td><span class="badge badge-high">high</span></td><td><span class="badge badge-morno">Morno</span></td><td>❌</td><td>1.1d</td><td><span class="badge badge-open">🔄 Aberto</span></td><td><span class="badge badge-C">C</span></td></tr>
+<tr data-product="bootcamp" data-medium="cpc"><td><b>Luiz Felipe Morais</b></td><td><span class="badge badge-boot">Boot</span></td><td>Jessica Silva</td><td>DA</td><td><span class="badge badge-cpc">cpc</span></td><td><b>1</b></td><td><span class="badge badge-high">high</span></td><td><span class="badge badge-morno">Morno</span></td><td>❌</td><td>0.1d</td><td><span class="badge badge-open">🔄 Aberto</span></td><td><span class="badge badge-C">C</span></td></tr>
+<tr data-product="bootcamp" data-medium="cpc"><td><b>Emerson Santiago</b></td><td><span class="badge badge-boot">Boot</span></td><td>Verônica Merched</td><td>WD</td><td><span class="badge badge-cpc">cpc</span></td><td><b>2</b></td><td><span class="badge badge-high">high</span></td><td><span class="badge badge-frio">Frio</span></td><td>❌</td><td>0.8d</td><td><span class="badge badge-open">🔄 Aberto</span></td><td><span class="badge badge-C">C</span></td></tr>
+<tr data-product="bootcamp" data-medium="direto"><td><b>Thiago Fonseca</b></td><td><span class="badge badge-boot">Boot</span></td><td>Raphael Soares</td><td>DS</td><td><span class="badge badge-direto">direto</span></td><td><b>2</b></td><td><span class="badge badge-high">high</span></td><td><span class="badge badge-morno">Morno</span></td><td>✅</td><td>1.1d</td><td><span class="badge badge-open">🔄 Aberto</span></td><td><span class="badge badge-B">B</span></td></tr>
+<tr data-product="bootcamp" data-medium="cpc"><td><b>Isabella Santana</b></td><td><span class="badge badge-boot">Boot</span></td><td>Lucas Bonow Einhardt</td><td>DA</td><td><span class="badge badge-cpc">cpc</span></td><td><b>0</b></td><td><span class="badge badge-medium">medium</span></td><td><span class="badge badge-quente">Quente</span></td><td>❌</td><td>2.0d</td><td><span class="badge badge-open">🔄 Aberto</span></td><td><span class="badge badge-C">C</span></td></tr>
+<tr data-product="mba" data-medium="direto"><td><b>Rodrigo Azeredo</b></td><td><span class="badge badge-mba">MBA</span></td><td>Roberto Branco</td><td>MBA DA</td><td><span class="badge badge-direto">direto</span></td><td><b>7</b></td><td><span class="badge badge-high">high</span></td><td><span class="badge badge-frio">Frio</span></td><td>❌</td><td>0.1d</td><td><span class="badge badge-open">🔄 Aberto</span></td><td><span class="badge badge-B">B</span></td></tr>
+<tr data-product="bootcamp" data-medium="cpc"><td><b>Patrine Masi Fernandes</b></td><td><span class="badge badge-boot">Boot</span></td><td>Daniel Augusto Ribeiro</td><td>DS</td><td><span class="badge badge-cpc">cpc</span></td><td><b>2</b></td><td><span class="badge badge-high">high</span></td><td><span class="badge badge-morno">Morno</span></td><td>❌</td><td>2.7d</td><td><span class="badge badge-open">🔄 Aberto</span></td><td><span class="badge badge-C">C</span></td></tr>
+<tr data-product="bootcamp" data-medium="smm"><td><b>Filipe Magnus Guedes</b></td><td><span class="badge badge-boot">Boot</span></td><td>Yanara Silva</td><td>DA</td><td><span class="badge badge-smm">smm</span></td><td><b>3</b></td><td><span class="badge badge-medium">medium</span></td><td><span class="badge badge-morno">Morno</span></td><td>❌</td><td>3.0d</td><td><span class="badge badge-open">🔄 Aberto</span></td><td><span class="badge badge-B">B</span></td></tr>
+<tr data-product="bootcamp" data-medium="bloggers"><td><b>Tamara Danielle</b></td><td><span class="badge badge-boot">Boot</span></td><td>Yanara Silva</td><td>WD</td><td><span class="badge badge-bloggers">bloggers</span></td><td><b>0</b></td><td><span class="badge badge-medium">medium</span></td><td><span class="badge badge-morno">Morno</span></td><td>❌</td><td>0.2d</td><td><span class="badge badge-open">🔄 Aberto</span></td><td><span class="badge badge-C">C</span></td></tr>
+<tr data-product="bootcamp" data-medium="direto"><td><b>André Teófilo</b></td><td><span class="badge badge-boot">Boot</span></td><td>Gabriel Morial</td><td>QA</td><td><span class="badge badge-direto">direto</span></td><td><b>4</b></td><td><span class="badge badge-high">high</span></td><td><span class="badge badge-—">—</span></td><td>❌</td><td>0.7d</td><td><span class="badge badge-open">🔄 Aberto</span></td><td><span class="badge badge-B">B</span></td></tr>
+<tr data-product="bootcamp" data-medium="direto"><td><b>Alexandre De Melo Oliveira</b></td><td><span class="badge badge-boot">Boot</span></td><td>Lucas Bonow Einhardt</td><td>WD</td><td><span class="badge badge-direto">direto</span></td><td><b>0</b></td><td><span class="badge badge-medium">medium</span></td><td><span class="badge badge-quente">Quente</span></td><td>✅</td><td>0.1d</td><td><span class="badge badge-open">🔄 Aberto</span></td><td><span class="badge badge-B">B</span></td></tr>
+<tr data-product="bootcamp" data-medium="smm"><td><b>Cynthia Souza Dias</b></td><td><span class="badge badge-boot">Boot</span></td><td>Raphael Soares</td><td>QA</td><td><span class="badge badge-smm">smm</span></td><td><b>0</b></td><td><span class="badge badge-medium">medium</span></td><td><span class="badge badge-morno">Morno</span></td><td>✅</td><td>0.5d</td><td><span class="badge badge-sale">✅ Venda</span></td><td><span class="badge badge-B">B</span></td></tr>
+<tr data-product="bootcamp" data-medium="cpc"><td><b>Robert Miranda</b></td><td><span class="badge badge-boot">Boot</span></td><td>Raphael Soares</td><td>DS</td><td><span class="badge badge-cpc">cpc</span></td><td><b>0</b></td><td><span class="badge badge-medium">medium</span></td><td><span class="badge badge-morno">Morno</span></td><td>✅</td><td>3.8d</td><td><span class="badge badge-open">🔄 Aberto</span></td><td><span class="badge badge-B">B</span></td></tr>
+<tr data-product="bootcamp" data-medium="smm"><td><b>Diego Passos</b></td><td><span class="badge badge-boot">Boot</span></td><td>Lucas Bonow Einhardt</td><td>QA</td><td><span class="badge badge-smm">smm</span></td><td><b>0</b></td><td><span class="badge badge-medium">medium</span></td><td><span class="badge badge-morno">Morno</span></td><td>❌</td><td>8.1d</td><td><span class="badge badge-open">🔄 Aberto</span></td><td><span class="badge badge-C">C</span></td></tr>
+<tr data-product="mba" data-medium="bloggers"><td><b>Peter Macedo</b></td><td><span class="badge badge-mba">MBA</span></td><td>Natália Martins</td><td>MBA AI</td><td><span class="badge badge-bloggers">bloggers</span></td><td><b>2</b></td><td><span class="badge badge-medium">medium</span></td><td><span class="badge badge-morno">Morno</span></td><td>✅</td><td>0.2d</td><td><span class="badge badge-open">🔄 Aberto</span></td><td><span class="badge badge-B">B</span></td></tr>
+<tr data-product="mba" data-medium="cpc"><td><b>Camila Jorge</b></td><td><span class="badge badge-mba">MBA</span></td><td>Larissa Ciuldim</td><td>MBA AI</td><td><span class="badge badge-cpc">cpc</span></td><td><b>3</b></td><td><span class="badge badge-medium">medium</span></td><td><span class="badge badge-quente">Quente</span></td><td>✅</td><td>3.4d</td><td><span class="badge badge-open">🔄 Aberto</span></td><td><span class="badge badge-B">B</span></td></tr>
+<tr data-product="bootcamp" data-medium="bloggers"><td><b>ADRIANO MARTINS DE LIMA</b></td><td><span class="badge badge-boot">Boot</span></td><td>Bruno Marques</td><td>WD</td><td><span class="badge badge-bloggers">bloggers</span></td><td><b>1</b></td><td><span class="badge badge-medium">medium</span></td><td><span class="badge badge-morno">Morno</span></td><td>❌</td><td>0.1d</td><td><span class="badge badge-open">🔄 Aberto</span></td><td><span class="badge badge-C">C</span></td></tr>
+<tr data-product="bootcamp" data-medium="direto"><td><b>Mauricio Prudente</b></td><td><span class="badge badge-boot">Boot</span></td><td>Verônica Merched</td><td>DA</td><td><span class="badge badge-direto">direto</span></td><td><b>3</b></td><td><span class="badge badge-high">high</span></td><td><span class="badge badge-quente">Quente</span></td><td>✅</td><td>0.1d</td><td><span class="badge badge-open">🔄 Aberto</span></td><td><span class="badge badge-B">B</span></td></tr>
+<tr data-product="mba" data-medium="cpc"><td><b>Thereza Cristina Faccio</b></td><td><span class="badge badge-mba">MBA</span></td><td>Verônica Merched</td><td>MBA AI</td><td><span class="badge badge-cpc">cpc</span></td><td><b>3</b></td><td><span class="badge badge-high">high</span></td><td><span class="badge badge-quente">Quente</span></td><td>❌</td><td>1.0d</td><td><span class="badge badge-open">🔄 Aberto</span></td><td><span class="badge badge-B">B</span></td></tr>
+<tr data-product="bootcamp" data-medium="cpc"><td><b>Alexsandro da Silva</b></td><td><span class="badge badge-boot">Boot</span></td><td>Erick Paiva</td><td>QA</td><td><span class="badge badge-cpc">cpc</span></td><td><b>8</b></td><td><span class="badge badge-high">high</span></td><td><span class="badge badge-morno">Morno</span></td><td>✅</td><td>0.1d</td><td><span class="badge badge-open">🔄 Aberto</span></td><td><span class="badge badge-A">A</span></td></tr>
+<tr data-product="bootcamp" data-medium="bloggers"><td><b>Fagner Lessa</b></td><td><span class="badge badge-boot">Boot</span></td><td>João Oliveira</td><td>DA</td><td><span class="badge badge-bloggers">bloggers</span></td><td><b>5</b></td><td><span class="badge badge-high">high</span></td><td><span class="badge badge-morno">Morno</span></td><td>❌</td><td>0.9d</td><td><span class="badge badge-open">🔄 Aberto</span></td><td><span class="badge badge-B">B</span></td></tr>
+<tr data-product="bootcamp" data-medium="cpc"><td><b>Samuel de Oliveira Nogueira</b></td><td><span class="badge badge-boot">Boot</span></td><td>Daniel Augusto Ribeiro</td><td>DA</td><td><span class="badge badge-cpc">cpc</span></td><td><b>2</b></td><td><span class="badge badge-high">high</span></td><td><span class="badge badge-morno">Morno</span></td><td>✅</td><td>0.8d</td><td><span class="badge badge-open">🔄 Aberto</span></td><td><span class="badge badge-B">B</span></td></tr>
+<tr data-product="mba" data-medium="bloggers"><td><b>Lucas Dalmeida</b></td><td><span class="badge badge-mba">MBA</span></td><td>Riane Chagas</td><td>MBA DA</td><td><span class="badge badge-bloggers">bloggers</span></td><td><b>4</b></td><td><span class="badge badge-high">high</span></td><td><span class="badge badge-morno">Morno</span></td><td>❌</td><td>0.5d</td><td><span class="badge badge-open">🔄 Aberto</span></td><td><span class="badge badge-B">B</span></td></tr>
+<tr data-product="bootcamp" data-medium="direto"><td><b>Larisse Cruz</b></td><td><span class="badge badge-boot">Boot</span></td><td>Bernardo Magalhães</td><td>DS</td><td><span class="badge badge-direto">direto</span></td><td><b>2</b></td><td><span class="badge badge-high">high</span></td><td><span class="badge badge-morno">Morno</span></td><td>✅</td><td>0.8d</td><td><span class="badge badge-open">🔄 Aberto</span></td><td><span class="badge badge-B">B</span></td></tr>
+<tr data-product="bootcamp" data-medium="bloggers"><td><b>Vinicius Silva De Jesus</b></td><td><span class="badge badge-boot">Boot</span></td><td>Roberto Branco</td><td>DA</td><td><span class="badge badge-bloggers">bloggers</span></td><td><b>2</b></td><td><span class="badge badge-medium">medium</span></td><td><span class="badge badge-morno">Morno</span></td><td>❌</td><td>3.9d</td><td><span class="badge badge-open">🔄 Aberto</span></td><td><span class="badge badge-C">C</span></td></tr>
+<tr data-product="mba" data-medium="direto"><td><b>Paulo Pandin</b></td><td><span class="badge badge-mba">MBA</span></td><td>Riane Chagas</td><td>MBA AI</td><td><span class="badge badge-direto">direto</span></td><td><b>0</b></td><td><span class="badge badge-low">low</span></td><td><span class="badge badge-morno">Morno</span></td><td>✅</td><td>1.4d</td><td><span class="badge badge-open">🔄 Aberto</span></td><td><span class="badge badge-B">B</span></td></tr>
+<tr data-product="bootcamp" data-medium="bloggers"><td><b>Rafael Íkaro Lopes Ferreira</b></td><td><span class="badge badge-boot">Boot</span></td><td>Jessica Silva</td><td>DA</td><td><span class="badge badge-bloggers">bloggers</span></td><td><b>5</b></td><td><span class="badge badge-high">high</span></td><td><span class="badge badge-morno">Morno</span></td><td>❌</td><td>0.1d</td><td><span class="badge badge-open">🔄 Aberto</span></td><td><span class="badge badge-B">B</span></td></tr>
+<tr data-product="mba" data-medium="cpc"><td><b>Edson Fraga</b></td><td><span class="badge badge-mba">MBA</span></td><td>Lucas Bonow Einhardt</td><td>MBA AI</td><td><span class="badge badge-cpc">cpc</span></td><td><b>5</b></td><td><span class="badge badge-high">high</span></td><td><span class="badge badge-morno">Morno</span></td><td>❌</td><td>0.2d</td><td><span class="badge badge-open">🔄 Aberto</span></td><td><span class="badge badge-B">B</span></td></tr>
+<tr data-product="bootcamp" data-medium="social"><td><b>Mateus de Lima Leal</b></td><td><span class="badge badge-boot">Boot</span></td><td>Gabriel Morial</td><td>DA</td><td><span class="badge badge-social">social</span></td><td><b>0</b></td><td><span class="badge badge-low">low</span></td><td><span class="badge badge-—">—</span></td><td>❌</td><td>0.9d</td><td><span class="badge badge-lost">❌ Lost</span></td><td><span class="badge badge-C">C</span></td></tr>
+</tbody></table></div></div></div>
+<div class="section"><div class="sh"><div class="st">🚫 No-Shows</div><span id="ns-cnt" style="font-size:11px;color:var(--gray);">10 registros</span></div><div class="sb"><div class="table-wrap"><table><thead><tr><th>Lead</th><th>Produto</th><th>Curso</th><th>Medium</th><th>Score</th><th>Priority</th><th>Status</th><th>Ação</th></tr></thead><tbody id="ns-tbody">
+<tr data-product="bootcamp"><td><b>Marcos Lobo</b></td><td><span class="badge badge-boot">Boot</span></td><td></td><td><span class="badge badge-direto">direto</span></td><td><b>-3</b></td><td><span class="badge badge-medium">medium</span></td><td>❌ Closed-Lost</td><td style="color:var(--blue);font-weight:600;">📧 Email reativação</td></tr>
+<tr data-product="mba"><td><b>Matheus Aparecido da Silva</b></td><td><span class="badge badge-mba">MBA</span></td><td>MBA DS</td><td><span class="badge badge-cpc">cpc</span></td><td><b>1</b></td><td><span class="badge badge-medium">medium</span></td><td>❌ Closed-Lost</td><td style="color:var(--blue);font-weight:600;">📧 Email reativação</td></tr>
+<tr data-product="bootcamp"><td><b>Karoline Angelo</b></td><td><span class="badge badge-boot">Boot</span></td><td>DS</td><td><span class="badge badge-cpc">cpc</span></td><td><b>7</b></td><td><span class="badge badge-high">high</span></td><td>⭐ High Score</td><td style="color:var(--blue);font-weight:600;">🔁 Reagendar urgente</td></tr>
+<tr data-product="bootcamp"><td><b>Anderson de Souza Pereira</b></td><td><span class="badge badge-boot">Boot</span></td><td>DS</td><td><span class="badge badge-direto">direto</span></td><td><b>4</b></td><td><span class="badge badge-high">high</span></td><td>❌ Closed-Lost</td><td style="color:var(--blue);font-weight:600;">📞 Follow-up</td></tr>
+<tr data-product="bootcamp"><td><b>Gabrielle Gonzalez</b></td><td><span class="badge badge-boot">Boot</span></td><td>DS</td><td><span class="badge badge-cpc">cpc</span></td><td><b>5</b></td><td><span class="badge badge-high">high</span></td><td>⭐ High Score</td><td style="color:var(--blue);font-weight:600;">🔁 Reagendar urgente</td></tr>
+<tr data-product="bootcamp"><td><b>José Maria</b></td><td><span class="badge badge-boot">Boot</span></td><td>DS</td><td><span class="badge badge-bloggers">bloggers</span></td><td><b>1</b></td><td><span class="badge badge-medium">medium</span></td><td>❌ Closed-Lost</td><td style="color:var(--blue);font-weight:600;">📧 Email reativação</td></tr>
+<tr data-product="bootcamp"><td><b>Larisse Cruz</b></td><td><span class="badge badge-boot">Boot</span></td><td>DS</td><td><span class="badge badge-direto">direto</span></td><td><b>2</b></td><td><span class="badge badge-high">high</span></td><td>✅ Attended</td><td style="color:var(--blue);font-weight:600;">📞 Follow-up</td></tr>
+<tr data-product="bootcamp"><td><b>Leopoldo Bengue</b></td><td><span class="badge badge-boot">Boot</span></td><td>DS</td><td><span class="badge badge-crm">crm</span></td><td><b>8</b></td><td><span class="badge badge-high">high</span></td><td>⭐ High Score</td><td style="color:var(--blue);font-weight:600;">🔁 Reagendar urgente</td></tr>
+<tr data-product="bootcamp"><td><b>DANIEL DOMINGUES GOMES PAZ</b></td><td><span class="badge badge-boot">Boot</span></td><td>QA</td><td><span class="badge badge-smm">smm</span></td><td><b>5</b></td><td><span class="badge badge-high">high</span></td><td>❌ Closed-Lost</td><td style="color:var(--blue);font-weight:600;">🔁 Reagendar urgente</td></tr>
+<tr data-product="bootcamp"><td><b>Pablo Inocencio</b></td><td><span class="badge badge-boot">Boot</span></td><td>DA</td><td><span class="badge badge-bloggers">bloggers</span></td><td><b>2</b></td><td><span class="badge badge-medium">medium</span></td><td>❌ Closed-Lost</td><td style="color:var(--blue);font-weight:600;">📧 Email reativação</td></tr>
+</tbody></table></div></div></div>
+</div>
+<div id="tab-vnd" class="pane">
+<div class="kpi-grid">
+<div class="kpi g"><div class="kpi-lbl">Vendas</div><div class="kpi-val" id="v-vend">3</div><div class="kpi-sub" id="v-vend-s">taxa 8.1%</div></div>
+<div class="kpi"><div class="kpi-lbl">Em Aberto</div><div class="kpi-val" id="v-ab">33</div><div class="kpi-sub">aguardando fechamento</div></div>
+<div class="kpi r"><div class="kpi-lbl">Closed-Lost</div><div class="kpi-val" id="v-lost">1</div><div class="kpi-sub" id="v-lost-s">de 37 atendidas</div></div>
+<div class="kpi t"><div class="kpi-lbl">Potencial A</div><div class="kpi-val" id="v-pa">2</div><div class="kpi-sub">alta prioridade</div></div>
+<div class="kpi y"><div class="kpi-lbl">Potencial B</div><div class="kpi-val" id="v-pb">24</div><div class="kpi-sub">follow-up prioritário</div></div>
+<div class="kpi p"><div class="kpi-lbl">No-Shows Valiosos</div><div class="kpi-val">4</div><div class="kpi-sub">score ≥ 5, reagendar</div></div>
+</div>
+<div class="section"><div class="sh"><div class="st">👥 Performance por Closer</div></div><div class="sb"><div class="closer-grid">
+<div class="cc" data-mba="0" data-boot="4"><div class="cc-name">Raphael Soares</div><div class="cc-sub">MBA: 0 | Bootcamp: 4</div><div class="cc-stats"><div class="cs"><div class="cs-val" style="color:var(--navy);">4</div><div class="cs-lbl">Reuniões</div></div><div class="cs"><div class="cs-val" style="color:var(--green);">2</div><div class="cs-lbl">Vendas</div></div><div class="cs"><div class="cs-val" style="color:var(--red);">0</div><div class="cs-lbl">Lost</div></div><div class="cs"><div class="cs-val" style="color:var(--gray);">2</div><div class="cs-lbl">Aberto</div></div></div><div style="font-size:10px;color:var(--gray);margin-top:6px;">Conv: 50%<div class="conv-bar"><div class="conv-fill" style="width:50%;"></div></div></div></div>
+<div class="cc" data-mba="0" data-boot="2"><div class="cc-name">Vinícius Leão</div><div class="cc-sub">MBA: 0 | Bootcamp: 2</div><div class="cc-stats"><div class="cs"><div class="cs-val" style="color:var(--navy);">2</div><div class="cs-lbl">Reuniões</div></div><div class="cs"><div class="cs-val" style="color:var(--green);">1</div><div class="cs-lbl">Vendas</div></div><div class="cs"><div class="cs-val" style="color:var(--red);">0</div><div class="cs-lbl">Lost</div></div><div class="cs"><div class="cs-val" style="color:var(--gray);">1</div><div class="cs-lbl">Aberto</div></div></div><div style="font-size:10px;color:var(--gray);margin-top:6px;">Conv: 50%<div class="conv-bar"><div class="conv-fill" style="width:50%;"></div></div></div></div>
+<div class="cc" data-mba="0" data-boot="3"><div class="cc-name">Bruno Marques</div><div class="cc-sub">MBA: 0 | Bootcamp: 3</div><div class="cc-stats"><div class="cs"><div class="cs-val" style="color:var(--navy);">3</div><div class="cs-lbl">Reuniões</div></div><div class="cs"><div class="cs-val" style="color:var(--green);">0</div><div class="cs-lbl">Vendas</div></div><div class="cs"><div class="cs-val" style="color:var(--red);">0</div><div class="cs-lbl">Lost</div></div><div class="cs"><div class="cs-val" style="color:var(--gray);">3</div><div class="cs-lbl">Aberto</div></div></div><div style="font-size:10px;color:var(--gray);margin-top:6px;">Conv: 0%<div class="conv-bar"><div class="conv-fill" style="width:0%;"></div></div></div></div>
+<div class="cc" data-mba="0" data-boot="2"><div class="cc-name">João Oliveira</div><div class="cc-sub">MBA: 0 | Bootcamp: 2</div><div class="cc-stats"><div class="cs"><div class="cs-val" style="color:var(--navy);">2</div><div class="cs-lbl">Reuniões</div></div><div class="cs"><div class="cs-val" style="color:var(--green);">0</div><div class="cs-lbl">Vendas</div></div><div class="cs"><div class="cs-val" style="color:var(--red);">0</div><div class="cs-lbl">Lost</div></div><div class="cs"><div class="cs-val" style="color:var(--gray);">2</div><div class="cs-lbl">Aberto</div></div></div><div style="font-size:10px;color:var(--gray);margin-top:6px;">Conv: 0%<div class="conv-bar"><div class="conv-fill" style="width:0%;"></div></div></div></div>
+<div class="cc" data-mba="0" data-boot="3"><div class="cc-name">Gabriel Morial</div><div class="cc-sub">MBA: 0 | Bootcamp: 3</div><div class="cc-stats"><div class="cs"><div class="cs-val" style="color:var(--navy);">3</div><div class="cs-lbl">Reuniões</div></div><div class="cs"><div class="cs-val" style="color:var(--green);">0</div><div class="cs-lbl">Vendas</div></div><div class="cs"><div class="cs-val" style="color:var(--red);">1</div><div class="cs-lbl">Lost</div></div><div class="cs"><div class="cs-val" style="color:var(--gray);">2</div><div class="cs-lbl">Aberto</div></div></div><div style="font-size:10px;color:var(--gray);margin-top:6px;">Conv: 0%<div class="conv-bar"><div class="conv-fill" style="width:0%;"></div></div></div></div>
+<div class="cc" data-mba="0" data-boot="3"><div class="cc-name">Daniel Augusto Ribeiro</div><div class="cc-sub">MBA: 0 | Bootcamp: 3</div><div class="cc-stats"><div class="cs"><div class="cs-val" style="color:var(--navy);">3</div><div class="cs-lbl">Reuniões</div></div><div class="cs"><div class="cs-val" style="color:var(--green);">0</div><div class="cs-lbl">Vendas</div></div><div class="cs"><div class="cs-val" style="color:var(--red);">0</div><div class="cs-lbl">Lost</div></div><div class="cs"><div class="cs-val" style="color:var(--gray);">3</div><div class="cs-lbl">Aberto</div></div></div><div style="font-size:10px;color:var(--gray);margin-top:6px;">Conv: 0%<div class="conv-bar"><div class="conv-fill" style="width:0%;"></div></div></div></div>
+<div class="cc" data-mba="2" data-boot="0"><div class="cc-name">Larissa Ciuldim</div><div class="cc-sub">MBA: 2 | Bootcamp: 0</div><div class="cc-stats"><div class="cs"><div class="cs-val" style="color:var(--navy);">2</div><div class="cs-lbl">Reuniões</div></div><div class="cs"><div class="cs-val" style="color:var(--green);">0</div><div class="cs-lbl">Vendas</div></div><div class="cs"><div class="cs-val" style="color:var(--red);">0</div><div class="cs-lbl">Lost</div></div><div class="cs"><div class="cs-val" style="color:var(--gray);">2</div><div class="cs-lbl">Aberto</div></div></div><div style="font-size:10px;color:var(--gray);margin-top:6px;">Conv: 0%<div class="conv-bar"><div class="conv-fill" style="width:0%;"></div></div></div></div>
+<div class="cc" data-mba="0" data-boot="2"><div class="cc-name">Jessica Silva</div><div class="cc-sub">MBA: 0 | Bootcamp: 2</div><div class="cc-stats"><div class="cs"><div class="cs-val" style="color:var(--navy);">2</div><div class="cs-lbl">Reuniões</div></div><div class="cs"><div class="cs-val" style="color:var(--green);">0</div><div class="cs-lbl">Vendas</div></div><div class="cs"><div class="cs-val" style="color:var(--red);">0</div><div class="cs-lbl">Lost</div></div><div class="cs"><div class="cs-val" style="color:var(--gray);">2</div><div class="cs-lbl">Aberto</div></div></div><div style="font-size:10px;color:var(--gray);margin-top:6px;">Conv: 0%<div class="conv-bar"><div class="conv-fill" style="width:0%;"></div></div></div></div>
+<div class="cc" data-mba="1" data-boot="2"><div class="cc-name">Verônica Merched</div><div class="cc-sub">MBA: 1 | Bootcamp: 2</div><div class="cc-stats"><div class="cs"><div class="cs-val" style="color:var(--navy);">3</div><div class="cs-lbl">Reuniões</div></div><div class="cs"><div class="cs-val" style="color:var(--green);">0</div><div class="cs-lbl">Vendas</div></div><div class="cs"><div class="cs-val" style="color:var(--red);">0</div><div class="cs-lbl">Lost</div></div><div class="cs"><div class="cs-val" style="color:var(--gray);">3</div><div class="cs-lbl">Aberto</div></div></div><div style="font-size:10px;color:var(--gray);margin-top:6px;">Conv: 0%<div class="conv-bar"><div class="conv-fill" style="width:0%;"></div></div></div></div>
+<div class="cc" data-mba="1" data-boot="3"><div class="cc-name">Lucas Bonow Einhardt</div><div class="cc-sub">MBA: 1 | Bootcamp: 3</div><div class="cc-stats"><div class="cs"><div class="cs-val" style="color:var(--navy);">4</div><div class="cs-lbl">Reuniões</div></div><div class="cs"><div class="cs-val" style="color:var(--green);">0</div><div class="cs-lbl">Vendas</div></div><div class="cs"><div class="cs-val" style="color:var(--red);">0</div><div class="cs-lbl">Lost</div></div><div class="cs"><div class="cs-val" style="color:var(--gray);">4</div><div class="cs-lbl">Aberto</div></div></div><div style="font-size:10px;color:var(--gray);margin-top:6px;">Conv: 0%<div class="conv-bar"><div class="conv-fill" style="width:0%;"></div></div></div></div>
+<div class="cc" data-mba="1" data-boot="1"><div class="cc-name">Roberto Branco</div><div class="cc-sub">MBA: 1 | Bootcamp: 1</div><div class="cc-stats"><div class="cs"><div class="cs-val" style="color:var(--navy);">2</div><div class="cs-lbl">Reuniões</div></div><div class="cs"><div class="cs-val" style="color:var(--green);">0</div><div class="cs-lbl">Vendas</div></div><div class="cs"><div class="cs-val" style="color:var(--red);">0</div><div class="cs-lbl">Lost</div></div><div class="cs"><div class="cs-val" style="color:var(--gray);">2</div><div class="cs-lbl">Aberto</div></div></div><div style="font-size:10px;color:var(--gray);margin-top:6px;">Conv: 0%<div class="conv-bar"><div class="conv-fill" style="width:0%;"></div></div></div></div>
+<div class="cc" data-mba="0" data-boot="2"><div class="cc-name">Yanara Silva</div><div class="cc-sub">MBA: 0 | Bootcamp: 2</div><div class="cc-stats"><div class="cs"><div class="cs-val" style="color:var(--navy);">2</div><div class="cs-lbl">Reuniões</div></div><div class="cs"><div class="cs-val" style="color:var(--green);">0</div><div class="cs-lbl">Vendas</div></div><div class="cs"><div class="cs-val" style="color:var(--red);">0</div><div class="cs-lbl">Lost</div></div><div class="cs"><div class="cs-val" style="color:var(--gray);">2</div><div class="cs-lbl">Aberto</div></div></div><div style="font-size:10px;color:var(--gray);margin-top:6px;">Conv: 0%<div class="conv-bar"><div class="conv-fill" style="width:0%;"></div></div></div></div>
+<div class="cc" data-mba="1" data-boot="0"><div class="cc-name">Natália Martins</div><div class="cc-sub">MBA: 1 | Bootcamp: 0</div><div class="cc-stats"><div class="cs"><div class="cs-val" style="color:var(--navy);">1</div><div class="cs-lbl">Reuniões</div></div><div class="cs"><div class="cs-val" style="color:var(--green);">0</div><div class="cs-lbl">Vendas</div></div><div class="cs"><div class="cs-val" style="color:var(--red);">0</div><div class="cs-lbl">Lost</div></div><div class="cs"><div class="cs-val" style="color:var(--gray);">1</div><div class="cs-lbl">Aberto</div></div></div><div style="font-size:10px;color:var(--gray);margin-top:6px;">Conv: 0%<div class="conv-bar"><div class="conv-fill" style="width:0%;"></div></div></div></div>
+<div class="cc" data-mba="0" data-boot="1"><div class="cc-name">Erick Paiva</div><div class="cc-sub">MBA: 0 | Bootcamp: 1</div><div class="cc-stats"><div class="cs"><div class="cs-val" style="color:var(--navy);">1</div><div class="cs-lbl">Reuniões</div></div><div class="cs"><div class="cs-val" style="color:var(--green);">0</div><div class="cs-lbl">Vendas</div></div><div class="cs"><div class="cs-val" style="color:var(--red);">0</div><div class="cs-lbl">Lost</div></div><div class="cs"><div class="cs-val" style="color:var(--gray);">1</div><div class="cs-lbl">Aberto</div></div></div><div style="font-size:10px;color:var(--gray);margin-top:6px;">Conv: 0%<div class="conv-bar"><div class="conv-fill" style="width:0%;"></div></div></div></div>
+<div class="cc" data-mba="2" data-boot="0"><div class="cc-name">Riane Chagas</div><div class="cc-sub">MBA: 2 | Bootcamp: 0</div><div class="cc-stats"><div class="cs"><div class="cs-val" style="color:var(--navy);">2</div><div class="cs-lbl">Reuniões</div></div><div class="cs"><div class="cs-val" style="color:var(--green);">0</div><div class="cs-lbl">Vendas</div></div><div class="cs"><div class="cs-val" style="color:var(--red);">0</div><div class="cs-lbl">Lost</div></div><div class="cs"><div class="cs-val" style="color:var(--gray);">2</div><div class="cs-lbl">Aberto</div></div></div><div style="font-size:10px;color:var(--gray);margin-top:6px;">Conv: 0%<div class="conv-bar"><div class="conv-fill" style="width:0%;"></div></div></div></div>
+<div class="cc" data-mba="0" data-boot="1"><div class="cc-name">Bernardo Magalhães</div><div class="cc-sub">MBA: 0 | Bootcamp: 1</div><div class="cc-stats"><div class="cs"><div class="cs-val" style="color:var(--navy);">1</div><div class="cs-lbl">Reuniões</div></div><div class="cs"><div class="cs-val" style="color:var(--green);">0</div><div class="cs-lbl">Vendas</div></div><div class="cs"><div class="cs-val" style="color:var(--red);">0</div><div class="cs-lbl">Lost</div></div><div class="cs"><div class="cs-val" style="color:var(--gray);">1</div><div class="cs-lbl">Aberto</div></div></div><div style="font-size:10px;color:var(--gray);margin-top:6px;">Conv: 0%<div class="conv-bar"><div class="conv-fill" style="width:0%;"></div></div></div></div>
+</div></div></div>
+<div class="section"><div class="sh"><div class="st">🏆 Ranking de Potencial</div></div><div class="sb"><div class="rank-list">
+<div class="rank-item A" data-product="bootcamp"><span class="badge badge-A">A</span><span class="badge badge-boot">Boot</span><div style="flex:1;"><div class="rname">Alexsandro da Silva</div><div class="rdet">Erick Paiva · QA · Score:8 · Morno · Pay:Yes</div></div><div class="ract A">🔥 Fechar hoje</div></div>
+<div class="rank-item B" data-product="mba"><span class="badge badge-B">B</span><span class="badge badge-mba">MBA</span><div style="flex:1;"><div class="rname">Rodrigo Azeredo</div><div class="rdet">Roberto Branco · MBA DA · Score:7 · Frio · Pay:No</div></div><div class="ract B">📞 Follow-up 24h</div></div>
+<div class="rank-item B" data-product="bootcamp"><span class="badge badge-B">B</span><span class="badge badge-boot">Boot</span><div style="flex:1;"><div class="rname">Fagner Lessa</div><div class="rdet">João Oliveira · DA · Score:5 · Morno · Pay:No</div></div><div class="ract B">📞 Follow-up 24h</div></div>
+<div class="rank-item B" data-product="bootcamp"><span class="badge badge-B">B</span><span class="badge badge-boot">Boot</span><div style="flex:1;"><div class="rname">Rafael Íkaro Lopes Ferreira</div><div class="rdet">Jessica Silva · DA · Score:5 · Morno · Pay:No</div></div><div class="ract B">📞 Follow-up 24h</div></div>
+<div class="rank-item B" data-product="mba"><span class="badge badge-B">B</span><span class="badge badge-mba">MBA</span><div style="flex:1;"><div class="rname">Edson Fraga</div><div class="rdet">Lucas Bonow Einhardt · MBA AI · Score:5 · Morno · Pay:No</div></div><div class="ract B">📞 Follow-up 24h</div></div>
+<div class="rank-item B" data-product="bootcamp"><span class="badge badge-B">B</span><span class="badge badge-boot">Boot</span><div style="flex:1;"><div class="rname">Tiago Ramalho</div><div class="rdet">João Oliveira · DS · Score:4 · Morno · Pay:Yes</div></div><div class="ract B">📞 Follow-up 24h</div></div>
+<div class="rank-item B" data-product="bootcamp"><span class="badge badge-B">B</span><span class="badge badge-boot">Boot</span><div style="flex:1;"><div class="rname">André Teófilo</div><div class="rdet">Gabriel Morial · QA · Score:4 · — · Pay:—</div></div><div class="ract B">📞 Follow-up 24h</div></div>
+<div class="rank-item B" data-product="mba"><span class="badge badge-B">B</span><span class="badge badge-mba">MBA</span><div style="flex:1;"><div class="rname">Lucas Dalmeida</div><div class="rdet">Riane Chagas · MBA DA · Score:4 · Morno · Pay:No</div></div><div class="ract B">📞 Follow-up 24h</div></div>
+<div class="rank-item B" data-product="bootcamp"><span class="badge badge-B">B</span><span class="badge badge-boot">Boot</span><div style="flex:1;"><div class="rname">Bruna Luiza</div><div class="rdet">Daniel Augusto Ribeiro · DA · Score:3 · Quente · Pay:Yes</div></div><div class="ract B">📞 Follow-up 24h</div></div>
+<div class="rank-item B" data-product="mba"><span class="badge badge-B">B</span><span class="badge badge-mba">MBA</span><div style="flex:1;"><div class="rname">Pedro Ornellas</div><div class="rdet">Larissa Ciuldim · MBA DS · Score:3 · Frio · Pay:No</div></div><div class="ract B">📞 Follow-up 24h</div></div>
+<div class="rank-item B" data-product="bootcamp"><span class="badge badge-B">B</span><span class="badge badge-boot">Boot</span><div style="flex:1;"><div class="rname">Filipe Magnus Guedes</div><div class="rdet">Yanara Silva · DA · Score:3 · Morno · Pay:No</div></div><div class="ract B">📞 Follow-up 24h</div></div>
+<div class="rank-item B" data-product="mba"><span class="badge badge-B">B</span><span class="badge badge-mba">MBA</span><div style="flex:1;"><div class="rname">Camila Jorge</div><div class="rdet">Larissa Ciuldim · MBA AI · Score:3 · Quente · Pay:Yes</div></div><div class="ract B">📞 Follow-up 24h</div></div>
+<div class="rank-item B" data-product="bootcamp"><span class="badge badge-B">B</span><span class="badge badge-boot">Boot</span><div style="flex:1;"><div class="rname">Mauricio Prudente</div><div class="rdet">Verônica Merched · DA · Score:3 · Quente · Pay:Yes</div></div><div class="ract B">📞 Follow-up 24h</div></div>
+<div class="rank-item B" data-product="mba"><span class="badge badge-B">B</span><span class="badge badge-mba">MBA</span><div style="flex:1;"><div class="rname">Thereza Cristina Faccio</div><div class="rdet">Verônica Merched · MBA AI · Score:3 · Quente · Pay:No</div></div><div class="ract B">📞 Follow-up 24h</div></div>
+<div class="rank-item B" data-product="bootcamp"><span class="badge badge-B">B</span><span class="badge badge-boot">Boot</span><div style="flex:1;"><div class="rname">Thiago Fonseca</div><div class="rdet">Raphael Soares · DS · Score:2 · Morno · Pay:Yes</div></div><div class="ract B">📞 Follow-up 24h</div></div>
+</div></div></div>
+<div class="section"><div class="sh"><div class="st">🚨 Alertas Críticos</div></div><div class="sb">
+<div class="alert"><div class="ai">🚫</div><div><div class="at">No-Shows High Priority (6)</div><div class="ab">Karoline Angelo, Anderson de Souza Pereira, Gabrielle Gonzalez, Larisse Cruz, Leopoldo Bengue, DANIEL DOMINGUES GOMES PAZ</div></div></div>
+<div class="alert"><div class="ai">⭐</div><div><div class="at">Score Alto Sem Fechamento</div><div class="ab">Rodrigo Azeredo, Alexsandro da Silva</div></div></div>
+<div class="alert"><div class="ai">🥶</div><div><div class="at">Leads Frios em Aberto (3)</div><div class="ab">Pedro Ornellas, Emerson Santiago, Rodrigo Azeredo</div></div></div>
+</div></div>
+<div class="section"><div class="sh"><div class="st">💡 Recomendações</div></div><div class="sb">
+<div class="rec"><div class="rt">📈 CPC liderou volume (14 reuniões, 38% do total)</div><div class="rb">Google Search e Facebook Feed/Reels são os formatos mais eficientes. Manter ou aumentar investimento nesses criativos.</div></div>
+<div class="rec"><div class="rt">🎯 Raphael Soares: destaque do dia (2 vendas em 4 reuniões — 50%)</div><div class="rb">Mapear abordagem e técnicas para replicar em treinamentos.</div></div>
+<div class="rec"><div class="rt">⚡ 59.5% das reuniões aconteceram no mesmo dia de criação</div><div class="rb">Alta velocidade de resposta é vantagem competitiva, especialmente para CPC e Bootcamp.</div></div>
+<div class="rec"><div class="rt">🚨 No-shows de alto valor: Karoline Angelo (score 7), Leopoldo Bengue (score 8)</div><div class="rb">Reagendamento prioritário — contato imediato nas próximas horas.</div></div>
+</div></div>
+</div>
+<div style="text-align:center;padding:20px;font-size:11px;color:var(--gray);">Gerado automaticamente · 2026-08-17 · TripleTen Brasil<br><a href="https://sabrinaichinose.github.io/t10dailyanalisys/" style="color:var(--blue);">🔗 sabrinaichinose.github.io/t10dailyanalisys</a></div>
 <script>
-// ── DATE NAVIGATION ──────────────────────────────────────────
-const CURRENT_DATE = '2026-08-17';
-const TODAY = new Date().toISOString().split('T')[0];
-const GITHUB_BASE = 'https://sabrinaichinose.github.io/t10dailyanalisys/';
+const KPI={"all": {"atendidas": 37, "vendas": 3, "lost": 1, "aberto": 33, "pot_a": 2, "pot_b": 24, "mesmo_dia": 22, "noshows": 10}, "bootcamp": {"atendidas": 29, "vendas": 3, "lost": 1, "aberto": 25, "pot_a": 2, "pot_b": 16, "mesmo_dia": 18, "noshows": 9}, "mba": {"atendidas": 8, "vendas": 0, "lost": 0, "aberto": 8, "pot_a": 0, "pot_b": 8, "mesmo_dia": 4, "noshows": 1}};
+let curProd='all', curMed='all';
 
-const DAYS_PT = ['domingo','segunda-feira','terça-feira','quarta-feira','quinta-feira','sexta-feira','sábado'];
-
-function formatDateFilename(dateStr) {
-  return dateStr.replace(/-/g, '');
+function setFilter(f){
+  curProd=f;
+  ['all','boot','mba'].forEach(k=>document.getElementById('pbtn-'+k).classList.remove('active'));
+  document.getElementById('pbtn-'+(f==='all'?'all':f==='bootcamp'?'boot':'mba')).classList.add('active');
+  document.getElementById('finfo').textContent=f==='all'?'':f==='bootcamp'?'Exibindo: Bootcamp (DS, DA, WD, QA, Python)':'Exibindo: MBA (MBA DS, MBA DA, MBA AI)';
+  applyFilters();
+  updateKPIs(f);
 }
 
-function isWeekend(dateStr) {
-  const d = new Date(dateStr + 'T12:00:00');
-  const dow = d.getDay();
-  return dow === 0 || dow === 6;
-}
-
-function addBusinessDays(dateStr, delta) {
-  let d = new Date(dateStr + 'T12:00:00');
-  let count = 0;
-  const step = delta > 0 ? 1 : -1;
-  while (count < Math.abs(delta)) {
-    d.setDate(d.getDate() + step);
-    if (!isWeekend(d.toISOString().split('T')[0])) count++;
-  }
-  return d.toISOString().split('T')[0];
-}
-
-function updateNavState() {
-  const picker = document.getElementById('date-picker');
-  const current = picker.value;
-  const dayLabel = document.getElementById('day-label');
-  const btnNext = document.getElementById('btn-next');
-
-  const d = new Date(current + 'T12:00:00');
-  dayLabel.textContent = DAYS_PT[d.getDay()];
-
-  if (current >= TODAY) {
-    btnNext.classList.add('disabled');
-  } else {
-    btnNext.classList.remove('disabled');
-  }
-}
-
-function navigateDate(delta) {
-  const picker = document.getElementById('date-picker');
-  const current = picker.value;
-  let target = addBusinessDays(current, delta);
-  if (delta > 0 && target > TODAY) return;
-  navigateToDate(target);
-}
-
-function navigateToDate(dateStr) {
-  if (!dateStr) return;
-  if (isWeekend(dateStr)) {
-    alert('Sem dashboard nos fins de semana. Selecione um dia útil (segunda a sexta).');
-    document.getElementById('date-picker').value = CURRENT_DATE;
-    return;
-  }
-  const filename = 'dashboard_' + formatDateFilename(dateStr) + '.html';
-
-  // Se estamos no GitHub Pages, navegar lá mesmo
-  if (window.location.hostname === 'sabrinaichinose.github.io') {
-    window.location.href = GITHUB_BASE + filename;
-    return;
-  }
-
-  // Localmente: tentar abrir o arquivo na mesma pasta;
-  // se falhar (404 / file not found), redirecionar para GitHub Pages
-  const local = filename;
-  fetch(local, { method: 'HEAD' })
-    .then(res => {
-      if (res.ok) {
-        window.location.href = local;
-      } else {
-        openOnGitHub(filename, dateStr);
-      }
-    })
-    .catch(() => openOnGitHub(filename, dateStr));
-}
-
-function openOnGitHub(filename, dateStr) {
-  const ghUrl = GITHUB_BASE + filename;
-  const d = new Date(dateStr + 'T12:00:00');
-  const label = d.toLocaleDateString('pt-BR', { weekday:'long', day:'2-digit', month:'2-digit', year:'numeric' });
-  const div = document.getElementById('nav-message');
-  div.innerHTML = `<span style="color:#b45309;">⚠️ Dashboard de <b>${label}</b> não encontrado localmente.
-    <a href="${ghUrl}" target="_blank" style="color:var(--blue);font-weight:700;">Abrir no GitHub Pages →</a>
-    &nbsp;<button onclick="document.getElementById('nav-message').innerHTML=''" style="border:none;background:none;cursor:pointer;color:var(--gray);">✕</button>
-  </span>`;
-}
-
-// Init
-document.addEventListener('DOMContentLoaded', function() {
-  document.getElementById('date-picker').value = CURRENT_DATE;
-  updateNavState();
-});
-
-document.getElementById('date-picker').addEventListener('change', function() {
-  updateNavState();
-});
-// ─────────────────────────────────────────────────────────────
-
-function switchTab(name) {
-  document.querySelectorAll('.tab').forEach((t,i) => t.classList.remove('active'));
-  document.querySelectorAll('.content').forEach(c => c.classList.remove('active'));
-  document.getElementById('tab-' + name).classList.add('active');
-  const tabs = ['marketing','vendas'];
-  const idx = tabs.indexOf(name);
-  document.querySelectorAll('.tab')[idx].classList.add('active');
-}
-
-function filterMedium(medium) {
-  document.querySelectorAll('#medium-filters .filter-btn').forEach(b => b.classList.remove('active'));
-  event.target.classList.add('active');
-  document.querySelectorAll('#all-attended-tbody tr').forEach(row => {
-    if (medium === 'all' || row.dataset.medium === medium) {
-      row.style.display = '';
-    } else {
-      row.style.display = 'none';
-    }
+function applyFilters(){
+  // all rows with data-product attribute
+  document.querySelectorAll('tr[data-product]').forEach(row=>{
+    const medOk = curMed==='all'||row.dataset.medium===curMed;
+    const proOk = curProd==='all'||row.dataset.product===curProd;
+    row.style.display=(medOk&&proOk)?'':'none';
   });
+  // closer cards: filter by mba/boot count
+  document.querySelectorAll('.cc').forEach(card=>{
+    if(curProd==='all'){ card.style.display=''; return; }
+    const n=parseInt(curProd==='mba'?card.dataset.mba:card.dataset.boot)||0;
+    card.style.display=n>0?'':'none';
+  });
+  // rank items
+  document.querySelectorAll('.rank-item[data-product]').forEach(el=>{
+    el.style.display=(curProd==='all'||el.dataset.product===curProd)?'':'none';
+  });
+  updateCounts();
 }
-</script>
 
-</body>
-</html>
+function updateKPIs(f){
+  const k=KPI[f], tot=k.atendidas;
+  const conv=tot>0?(k.vendas/tot*100).toFixed(1):'0.0';
+  const md=tot>0?Math.round(k.mesmo_dia/tot*100):0;
+  set('k-atend',tot); set('k-atend-s',k.mesmo_dia+' mesmo dia ('+md+'%)');
+  set('k-ns',k.noshows); set('k-vend',k.vendas); set('k-vend-s','taxa: '+conv+'%');
+  set('v-vend',k.vendas); set('v-vend-s','taxa '+conv+'%');
+  set('v-ab',k.aberto); set('v-lost',k.lost); set('v-lost-s','de '+tot+' atendidas');
+  set('v-pa',k.pot_a); set('v-pb',k.pot_b);
+  // Leads Criados: só disponível para total; por produto mostra atendidas+noshows
+  if(f==='all'){set('k-criados',272);set('k-criados-s','em 17/08/2026');}
+  else if(f==='mba'){set('k-criados',40);set('k-criados-s','🎓 de 272 criados');}
+  else{set('k-criados',216);set('k-criados-s','⚡ de 272 criados');}
+}
+function set(id,v){const e=document.getElementById(id);if(e)e.textContent=v;}
+function countVis(id){const t=document.getElementById(id);return t?[...t.querySelectorAll('tr')].filter(r=>r.style.display!=='none').length:0;}
+function updateCounts(){
+  set('sd-cnt',countVis('sd-tbody')+' registros');
+  set('at-cnt',countVis('at-tbody')+' registros');
+  set('ns-cnt',countVis('ns-tbody')+' registros');
+}
+
+function filterMedium(m){
+  curMed=m;
+  document.querySelectorAll('#mfilt .fbtn').forEach(b=>b.classList.remove('active'));
+  event.target.classList.add('active');
+  applyFilters();
+}
+function switchTab(n){
+  document.querySelectorAll('.tab').forEach((t,i)=>t.classList.remove('active'));
+  document.querySelectorAll('.pane').forEach(c=>c.classList.remove('active'));
+  document.getElementById('tab-'+n).classList.add('active');
+  document.querySelectorAll('.tab')[['mkt','vnd'].indexOf(n)].classList.add('active');
+}
+// DATE NAV
+const CUR='2026-08-17', TODAY=new Date().toISOString().split('T')[0];
+const GH='https://sabrinaichinose.github.io/t10dailyanalisys/';
+const DAYS=['domingo','segunda-feira','terça-feira','quarta-feira','quinta-feira','sexta-feira','sábado'];
+function isWE(d){const day=new Date(d+'T12:00:00').getDay();return day===0||day===6;}
+function addBiz(ds,delta){let d=new Date(ds+'T12:00:00'),c=0,s=delta>0?1:-1;while(c<Math.abs(delta)){d.setDate(d.getDate()+s);if(!isWE(d.toISOString().split('T')[0]))c++;}return d.toISOString().split('T')[0];}
+function updateNav(){const v=document.getElementById('dpicker').value;document.getElementById('day-label').textContent=DAYS[new Date(v+'T12:00:00').getDay()];document.getElementById('btn-next').classList.toggle('disabled',v>=TODAY);}
+function navigateDate(delta){const t=addBiz(document.getElementById('dpicker').value,delta);if(delta>0&&t>TODAY)return;navigateToDate(t);}
+function navigateToDate(ds){if(!ds)return;if(isWE(ds)){alert('Sem dashboard nos fins de semana.');document.getElementById('dpicker').value=CUR;return;}const fn='dashboard_'+ds.replace(/-/g,'')+'.html';if(window.location.hostname==='sabrinaichinose.github.io'){window.location.href=GH+fn;return;}fetch(fn,{method:'HEAD'}).then(r=>{if(r.ok)window.location.href=fn;else showGH(fn,ds);}).catch(()=>showGH(fn,ds));}
+function showGH(fn,ds){const d=new Date(ds+'T12:00:00');document.getElementById('nav-message').innerHTML=`<span style="color:#b45309;">⚠️ Dashboard de <b>${d.toLocaleDateString('pt-BR',{weekday:'long',day:'2-digit',month:'2-digit',year:'numeric'})}</b> não disponível localmente. <a href="${GH+fn}" target="_blank" style="color:#1a56db;font-weight:700;">Abrir no GitHub Pages →</a> <button onclick="document.getElementById('nav-message').innerHTML=''" style="border:none;background:none;cursor:pointer;">✕</button></span>`;}
+document.addEventListener('DOMContentLoaded',()=>{document.getElementById('dpicker').value=CUR;updateNav();});
+</script></body></html>
