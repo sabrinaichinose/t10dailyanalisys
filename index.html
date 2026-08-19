@@ -102,6 +102,12 @@ tr:last-child td{border-bottom:none;}
 .rt{font-weight:700;font-size:13px;color:var(--navy);margin-bottom:4px;}
 .rb{font-size:12px;color:#374151;line-height:1.5;}
 #nav-message{background:#fffbeb;border-bottom:1px solid #fde68a;padding:6px 32px;font-size:12px;min-height:0;}
+
+.day-bar{background:#f0f4ff;border-bottom:2px solid var(--border);padding:8px 32px;display:flex;align-items:center;gap:10px;}
+.dbtn{padding:7px 20px;border-radius:20px;border:2px solid var(--border);background:var(--white);cursor:pointer;font-size:13px;font-weight:700;color:var(--gray);transition:all .15s;}
+.dbtn:hover{border-color:var(--navy);color:var(--navy);}
+.dbtn.active{border-color:var(--navy);background:var(--navy);color:white;}
+.day-pane{display:none;} .day-pane.active{display:block;}
 </style>
 </head>
 <body>
@@ -130,12 +136,18 @@ tr:last-child td{border-bottom:none;}
   <button class="pbtn mba"   id="pbtn-mba"  onclick="setFilter('mba')">🎓 MBA (8)</button>
   <span class="finfo" id="finfo"></span>
 </div>
+<div class="day-bar">
+  <span class="plbl">📅 Dia:</span>
+  <button class="dbtn active" id="dbtn-seg" onclick="setDay('seg')">Segunda 17/08</button>
+  <button class="dbtn"        id="dbtn-ter" onclick="setDay('ter')">Terça 18/08</button>
+</div>
 <div class="tabs">
   <div class="tab active" onclick="switchTab('mkt')">📈 Marketing</div>
   <div class="tab" onclick="switchTab('vnd')">🎯 Vendas</div>
 </div>
 
 <div id="tab-mkt" class="pane active">
+<div class="day-pane active" id="d-seg-mkt">
 <div class="kpi-grid">
 <div class="kpi"><div class="kpi-lbl">Leads Criados</div><div class="kpi-val" id="k-criados">272</div><div class="kpi-sub" id="k-criados-s">em 17/08/2026</div></div>
 <div class="kpi g"><div class="kpi-lbl">Reuniões Atendidas</div><div class="kpi-val" id="k-atend">37</div><div class="kpi-sub" id="k-atend-s">22 mesmo dia</div></div>
@@ -250,7 +262,89 @@ tr:last-child td{border-bottom:none;}
 <tr data-product="bootcamp"><td><b>Pablo Inocencio</b></td><td><span class="badge badge-boot">Boot</span></td><td>DA</td><td><span class="badge badge-bloggers">bloggers</span></td><td><b>2</b></td><td><span class="badge badge-medium">medium</span></td><td>❌ Closed-Lost</td><td style="color:var(--blue);font-weight:600;">📧 Email reativação</td></tr>
 </tbody></table></div></div></div>
 </div>
+<div class="day-pane" id="d-ter-mkt">
+<div class="kpi-grid">
+<div class="kpi"><div class="kpi-lbl">Leads Criados</div><div class="kpi-val" id="t-k-criados">290</div><div class="kpi-sub" id="t-k-criados-s">em 18/08/2026</div></div>
+<div class="kpi g"><div class="kpi-lbl">Reuniões Atendidas</div><div class="kpi-val" id="t-k-atend">23</div><div class="kpi-sub" id="t-k-atend-s">4 mesmo dia</div></div>
+<div class="kpi t"><div class="kpi-lbl">Meeting Scheduled</div><div class="kpi-val">—</div><div class="kpi-sub">aguardando</div></div>
+<div class="kpi r"><div class="kpi-lbl">No-Shows</div><div class="kpi-val" id="t-k-ns">33</div><div class="kpi-sub">do total agendado</div></div>
+<div class="kpi y"><div class="kpi-lbl">Vendas</div><div class="kpi-val" id="t-k-vend">2</div><div class="kpi-sub" id="t-k-vend-s">taxa: 8.7%</div></div>
+<div class="kpi p"><div class="kpi-lbl">Ciclo Médio</div><div class="kpi-val">2.2d</div><div class="kpi-sub">criação → reunião</div></div>
+</div>
+<div class="section"><div class="sh"><div class="st">📋 Reuniões Atendidas — 18/08</div><span id="t-at-cnt" style="font-size:11px;color:var(--gray);">23 registros</span></div><div class="sb"><div class="table-wrap"><table><thead><tr><th>Lead</th><th>Produto</th><th>Curso</th><th>UTM Medium</th><th>Score</th><th>Priority</th><th>Temperatura</th><th>Payable</th><th>Ciclo</th><th>Resultado</th></tr></thead>
+<tbody id="t-at-tbody">
+<tr data-product="mba"><td><b>FABRICIO LIMA</b></td><td><span class="badge badge-mba">MBA</span></td><td>MBA AI</td><td><span class="badge badge-bloggers">bloggers</span></td><td><b>1</b></td><td><span class="badge badge-medium">medium</span></td><td><span class="badge badge-morno">Morno</span></td><td>—</td><td>1d</td><td><span class="badge badge-open">Atendida</span></td></tr>
+<tr data-product="bootcamp"><td><b>Eliandro oliveira</b></td><td><span class="badge badge-boot">Boot</span></td><td>DS</td><td><span class="badge badge-cpc">cpc</span></td><td><b>-1</b></td><td><span class="badge badge-medium">medium</span></td><td><span class="badge badge-morno">Morno</span></td><td>—</td><td>2d</td><td><span class="badge badge-lost">❌ Closed-Lost</span></td></tr>
+<tr data-product="bootcamp"><td><b>Renan Pupo</b></td><td><span class="badge badge-boot">Boot</span></td><td>DS</td><td><span class="badge badge-cpc">cpc</span></td><td><b>4</b></td><td><span class="badge badge-high">high</span></td><td><span class="badge badge-frio">Frio</span></td><td>✅</td><td>0d</td><td><span class="badge badge-open">Atendida</span></td></tr>
+<tr data-product="mba"><td><b>Allyson Assunção da Silva</b></td><td><span class="badge badge-mba">MBA</span></td><td>MBA AI</td><td><span class="badge badge-cpc">cpc</span></td><td><b>4</b></td><td><span class="badge badge-high">high</span></td><td><span class="badge badge-morno">Morno</span></td><td>✅</td><td>0d</td><td><span class="badge badge-open">Atendida</span></td></tr>
+<tr data-product="mba"><td><b>Priscila Teixeira</b></td><td><span class="badge badge-mba">MBA</span></td><td>MBA DS</td><td><span class="badge badge-social">social</span></td><td><b>8</b></td><td><span class="badge badge-high">high</span></td><td><span class="badge badge-morno">Morno</span></td><td>—</td><td>2d</td><td><span class="badge badge-open">Atendida</span></td></tr>
+<tr data-product="bootcamp"><td><b>Alison Félix</b></td><td><span class="badge badge-boot">Boot</span></td><td>DA</td><td><span class="badge badge-direto">direto</span></td><td><b>—</b></td><td><span class="badge badge-medium">medium</span></td><td><span class="badge badge-quente">Quente</span></td><td>✅</td><td>0d</td><td><span class="badge badge-open">Atendida</span></td></tr>
+<tr data-product="mba"><td><b>GUILHERME AUGUSTO MOREIRA SILVA</b></td><td><span class="badge badge-mba">MBA</span></td><td>MBA DS</td><td><span class="badge badge-cpc">cpc</span></td><td><b>0</b></td><td><span class="badge badge-medium">medium</span></td><td><span class="badge badge-morno">Morno</span></td><td>—</td><td>2d</td><td><span class="badge badge-open">Atendida</span></td></tr>
+<tr data-product="bootcamp"><td><b>Ricardo Silveira</b></td><td><span class="badge badge-boot">Boot</span></td><td>QA</td><td><span class="badge badge-cpc">cpc</span></td><td><b>0</b></td><td><span class="badge badge-medium">medium</span></td><td><span class="badge badge-morno">Morno</span></td><td>✅</td><td>1d</td><td><span class="badge badge-open">Atendida</span></td></tr>
+<tr data-product="bootcamp"><td><b>Enzo Fernando Silva</b></td><td><span class="badge badge-boot">Boot</span></td><td>DA</td><td><span class="badge badge-cpc">cpc</span></td><td><b>—</b></td><td><span class="badge badge-medium">medium</span></td><td><span class="badge badge-quente">Quente</span></td><td>✅</td><td>2d</td><td><span class="badge badge-open">Atendida</span></td></tr>
+<tr data-product="bootcamp"><td><b>Carolaine Ferreira Conti</b></td><td><span class="badge badge-boot">Boot</span></td><td>DA</td><td><span class="badge badge-cpc">cpc</span></td><td><b>1</b></td><td><span class="badge badge-medium">medium</span></td><td><span class="badge badge-frio">Frio</span></td><td>✅</td><td>2d</td><td><span class="badge badge-open">Atendida</span></td></tr>
+<tr data-product="bootcamp"><td><b>GABRIEL MONTEIRO BANDEIRA</b></td><td><span class="badge badge-boot">Boot</span></td><td>QA</td><td><span class="badge badge-bloggers">bloggers</span></td><td><b>—</b></td><td><span class="badge badge-medium">medium</span></td><td><span class="badge badge-morno">Morno</span></td><td>—</td><td>0d</td><td><span class="badge badge-open">Atendida</span></td></tr>
+<tr data-product="bootcamp"><td><b>Heloisa Ribeiro dos Santos Caetano</b></td><td><span class="badge badge-boot">Boot</span></td><td>DA</td><td><span class="badge badge-social">social</span></td><td><b>5</b></td><td><span class="badge badge-high">high</span></td><td><span class="badge badge-quente">Quente</span></td><td>✅</td><td>2d</td><td><span class="badge badge-sale">✅ Venda</span></td></tr>
+<tr data-product="bootcamp"><td><b>Selma bencic zeidan</b></td><td><span class="badge badge-boot">Boot</span></td><td>DA</td><td><span class="badge badge-bloggers">bloggers</span></td><td><b>0</b></td><td><span class="badge badge-medium">medium</span></td><td><span class="badge badge-frio">Frio</span></td><td>—</td><td>5d</td><td><span class="badge badge-open">Atendida</span></td></tr>
+<tr data-product="bootcamp"><td><b>Camila Carolina Silva</b></td><td><span class="badge badge-boot">Boot</span></td><td>DA</td><td><span class="badge badge-smm">smm</span></td><td><b>3</b></td><td><span class="badge badge-medium">medium</span></td><td><span class="badge badge-frio">Frio</span></td><td>—</td><td>3d</td><td><span class="badge badge-open">Atendida</span></td></tr>
+<tr data-product="bootcamp"><td><b>Samara Isabel Prospero Gonçalves</b></td><td><span class="badge badge-boot">Boot</span></td><td>DA</td><td><span class="badge badge-cpc">cpc</span></td><td><b>1</b></td><td><span class="badge badge-high">high</span></td><td><span class="badge badge-morno">Morno</span></td><td>—</td><td>1d</td><td><span class="badge badge-open">Atendida</span></td></tr>
+<tr data-product="bootcamp"><td><b>Jorge Felipe Nóbrega de Aguilar</b></td><td><span class="badge badge-boot">Boot</span></td><td>DS</td><td><span class="badge badge-cpc">cpc</span></td><td><b>—</b></td><td><span class="badge badge-medium">medium</span></td><td><span class="badge badge-frio">Frio</span></td><td>—</td><td>15d</td><td><span class="badge badge-open">Atendida</span></td></tr>
+<tr data-product="bootcamp"><td><b>João Miguel Mendes Sousa</b></td><td><span class="badge badge-boot">Boot</span></td><td>WD</td><td><span class="badge badge-cpc">cpc</span></td><td><b>-1</b></td><td><span class="badge badge-medium">medium</span></td><td><span class="badge badge-frio">Frio</span></td><td>—</td><td>1d</td><td><span class="badge badge-open">Atendida</span></td></tr>
+<tr data-product="bootcamp"><td><b>Windslay Cardoso</b></td><td><span class="badge badge-boot">Boot</span></td><td>WD</td><td><span class="badge badge-cpc">cpc</span></td><td><b>-3</b></td><td><span class="badge badge-low">low</span></td><td><span class="badge badge-morno">Morno</span></td><td>—</td><td>5d</td><td><span class="badge badge-open">Atendida</span></td></tr>
+<tr data-product="bootcamp"><td><b>Juliana Torres Rodrigues</b></td><td><span class="badge badge-boot">Boot</span></td><td>DS</td><td><span class="badge badge-smm">smm</span></td><td><b>2</b></td><td><span class="badge badge-medium">medium</span></td><td><span class="badge badge-morno">Morno</span></td><td>—</td><td>6d</td><td><span class="badge badge-lost">❌ Closed-Lost</span></td></tr>
+<tr data-product="bootcamp"><td><b>Nelly Pereira</b></td><td><span class="badge badge-boot">Boot</span></td><td>WD</td><td><span class="badge badge-smm">smm</span></td><td><b>2</b></td><td><span class="badge badge-high">high</span></td><td><span class="badge badge-quente">Quente</span></td><td>✅</td><td>2d</td><td><span class="badge badge-sale">✅ Venda</span></td></tr>
+<tr data-product="bootcamp"><td><b>Gyovanna Ribeiro</b></td><td><span class="badge badge-boot">Boot</span></td><td>DA</td><td><span class="badge badge-cpc">cpc</span></td><td><b>0</b></td><td><span class="badge badge-medium">medium</span></td><td><span class="badge badge-morno">Morno</span></td><td>—</td><td>1d</td><td><span class="badge badge-open">Atendida</span></td></tr>
+<tr data-product="bootcamp"><td><b>Carolina Barros</b></td><td><span class="badge badge-boot">Boot</span></td><td>DA</td><td><span class="badge badge-cpc">cpc</span></td><td><b>1</b></td><td><span class="badge badge-medium">medium</span></td><td><span class="badge badge-quente">Quente</span></td><td>✅</td><td>2d</td><td><span class="badge badge-open">Atendida</span></td></tr>
+<tr data-product="bootcamp"><td><b>Lucas Andrade</b></td><td><span class="badge badge-boot">Boot</span></td><td>DS</td><td><span class="badge badge-social">social</span></td><td><b>2</b></td><td><span class="badge badge-medium">medium</span></td><td><span class="badge badge-morno">Morno</span></td><td>✅</td><td>1d</td><td><span class="badge badge-open">Atendida</span></td></tr>
+</tbody></table></div></div></div>
+<div class="section"><div class="sh"><div class="st">❌ No-Shows — 18/08</div><span id="t-ns-cnt" style="font-size:11px;color:var(--gray);">33 registros</span></div><div class="sb"><div class="table-wrap"><table><thead><tr><th>Lead</th><th>Produto</th><th>Curso</th><th>UTM Medium</th><th>Priority</th><th>Score</th><th>Criado em</th></tr></thead>
+<tbody id="t-ns-tbody">
+<tr data-product="bootcamp"><td><b>Lucas Bueno</b></td><td><span class="badge badge-boot">Boot</span></td><td>DS</td><td><span class="badge badge-cpc">cpc</span></td><td><span class="badge badge-high">high</span></td><td>4</td><td>2026-08-16</td></tr>
+<tr data-product="bootcamp"><td><b>André Camargo</b></td><td><span class="badge badge-boot">Boot</span></td><td>DS</td><td><span class="badge badge-cpc">cpc</span></td><td><span class="badge badge-high">high</span></td><td>7</td><td>2026-08-17</td></tr>
+<tr data-product="bootcamp"><td><b>Yuri Fernando Marcelino</b></td><td><span class="badge badge-boot">Boot</span></td><td>DS</td><td><span class="badge badge-cpc">cpc</span></td><td><span class="badge badge-high">high</span></td><td>3</td><td>2026-08-16</td></tr>
+<tr data-product="bootcamp"><td><b>Vitoria delfim</b></td><td><span class="badge badge-boot">Boot</span></td><td>—</td><td><span class="badge badge-smm">smm</span></td><td><span class="badge badge-high">high</span></td><td>5</td><td>2026-08-17</td></tr>
+<tr data-product="bootcamp"><td><b>MICHAEL DE SOUZA DA SILVA</b></td><td><span class="badge badge-boot">Boot</span></td><td>—</td><td><span class="badge badge-direto">direto</span></td><td><span class="badge badge-medium">medium</span></td><td>0</td><td>2026-08-18</td></tr>
+<tr data-product="bootcamp"><td><b>Marcus Camargo</b></td><td><span class="badge badge-boot">Boot</span></td><td>DS</td><td><span class="badge badge-bloggers">bloggers</span></td><td><span class="badge badge-high">high</span></td><td>5</td><td>2026-08-17</td></tr>
+<tr data-product="mba"><td><b>Khaled</b></td><td><span class="badge badge-mba">MBA</span></td><td>MBA DS</td><td><span class="badge badge-direto">direto</span></td><td><span class="badge badge-medium">medium</span></td><td>1</td><td>2026-08-17</td></tr>
+<tr data-product="bootcamp"><td><b>Solange Trindade</b></td><td><span class="badge badge-boot">Boot</span></td><td>DS</td><td><span class="badge badge-cpc">cpc</span></td><td><span class="badge badge-medium">medium</span></td><td>0</td><td>2026-08-14</td></tr>
+<tr data-product="mba"><td><b>Eduardo Macedo</b></td><td><span class="badge badge-mba">MBA</span></td><td>MBA DS</td><td><span class="badge badge-cpc">cpc</span></td><td><span class="badge badge-medium">medium</span></td><td>-1</td><td>2026-08-16</td></tr>
+<tr data-product="bootcamp"><td><b>João Vitor Guilherme de Souza</b></td><td><span class="badge badge-boot">Boot</span></td><td>DS</td><td><span class="badge badge-bloggers">bloggers</span></td><td><span class="badge badge-medium">medium</span></td><td>—</td><td>2026-08-14</td></tr>
+<tr data-product="bootcamp"><td><b>Murillo reis</b></td><td><span class="badge badge-boot">Boot</span></td><td>DS</td><td><span class="badge badge-bloggers">bloggers</span></td><td><span class="badge badge-high">high</span></td><td>6</td><td>2026-08-17</td></tr>
+<tr data-product="bootcamp"><td><b>Dullian</b></td><td><span class="badge badge-boot">Boot</span></td><td>—</td><td><span class="badge badge-cpc">cpc</span></td><td><span class="badge badge-high">high</span></td><td>4</td><td>2026-08-16</td></tr>
+<tr data-product="mba"><td><b>Maria Luíza A. Silva</b></td><td><span class="badge badge-mba">MBA</span></td><td>MBA DS</td><td><span class="badge badge-bloggers">bloggers</span></td><td><span class="badge badge-medium">medium</span></td><td>3</td><td>2026-08-18</td></tr>
+<tr data-product="mba"><td><b>Ane Castro Moreira</b></td><td><span class="badge badge-mba">MBA</span></td><td>MBA DS</td><td><span class="badge badge-bloggers">bloggers</span></td><td><span class="badge badge-medium">medium</span></td><td>3</td><td>2026-08-18</td></tr>
+<tr data-product="mba"><td><b>Joice Ferreira Passos Joice</b></td><td><span class="badge badge-mba">MBA</span></td><td>MBA DS</td><td><span class="badge badge-direto">direto</span></td><td><span class="badge badge-high">high</span></td><td>5</td><td>2026-08-18</td></tr>
+<tr data-product="bootcamp"><td><b>Raphael de Oliveira</b></td><td><span class="badge badge-boot">Boot</span></td><td>DS</td><td><span class="badge badge-cpc">cpc</span></td><td><span class="badge badge-high">high</span></td><td>3</td><td>2026-08-17</td></tr>
+<tr data-product="bootcamp"><td><b>Jessica Pereira de Andrade martins</b></td><td><span class="badge badge-boot">Boot</span></td><td>DS</td><td><span class="badge badge-bloggers">bloggers</span></td><td><span class="badge badge-high">high</span></td><td>0</td><td>2026-08-17</td></tr>
+<tr data-product="bootcamp"><td><b>Vinicius Duarte</b></td><td><span class="badge badge-boot">Boot</span></td><td>DS</td><td><span class="badge badge-social">social</span></td><td><span class="badge badge-high">high</span></td><td>2</td><td>2026-08-17</td></tr>
+<tr data-product="mba"><td><b>Gabriel Logrado</b></td><td><span class="badge badge-mba">MBA</span></td><td>MBA DS</td><td><span class="badge badge-cpc">cpc</span></td><td><span class="badge badge-high">high</span></td><td>4</td><td>2026-08-17</td></tr>
+<tr data-product="bootcamp"><td><b>Gabriel Neitzke</b></td><td><span class="badge badge-boot">Boot</span></td><td>DS</td><td><span class="badge badge-bloggers">bloggers</span></td><td><span class="badge badge-medium">medium</span></td><td>2</td><td>2026-08-17</td></tr>
+<tr data-product="bootcamp"><td><b>Rayane Heloine</b></td><td><span class="badge badge-boot">Boot</span></td><td>DS</td><td><span class="badge badge-smm">smm</span></td><td><span class="badge badge-high">high</span></td><td>3</td><td>2026-08-17</td></tr>
+<tr data-product="bootcamp"><td><b>Diana Berwaldt</b></td><td><span class="badge badge-boot">Boot</span></td><td>DS</td><td><span class="badge badge-bloggers">bloggers</span></td><td><span class="badge badge-medium">medium</span></td><td>2</td><td>2026-08-16</td></tr>
+<tr data-product="mba"><td><b>Johnny</b></td><td><span class="badge badge-mba">MBA</span></td><td>MBA DS</td><td><span class="badge badge-bloggers">bloggers</span></td><td><span class="badge badge-high">high</span></td><td>6</td><td>2026-08-14</td></tr>
+<tr data-product="bootcamp"><td><b>Ellen evangelista santos</b></td><td><span class="badge badge-boot">Boot</span></td><td>DS</td><td><span class="badge badge-cpc">cpc</span></td><td><span class="badge badge-high">high</span></td><td>3</td><td>2026-08-17</td></tr>
+<tr data-product="bootcamp"><td><b>VINICIUS LIMA DA SILVA</b></td><td><span class="badge badge-boot">Boot</span></td><td>—</td><td><span class="badge badge-bloggers">bloggers</span></td><td><span class="badge badge-medium">medium</span></td><td>-1</td><td>2026-08-17</td></tr>
+<tr data-product="bootcamp"><td><b>BRENA GOMES LIVINO</b></td><td><span class="badge badge-boot">Boot</span></td><td>—</td><td><span class="badge badge-cpc">cpc</span></td><td><span class="badge badge-high">high</span></td><td>4</td><td>2026-08-16</td></tr>
+<tr data-product="bootcamp"><td><b>Ingrid Luppo</b></td><td><span class="badge badge-boot">Boot</span></td><td>—</td><td><span class="badge badge-direto">direto</span></td><td><span class="badge badge-medium">medium</span></td><td>—</td><td>2026-08-17</td></tr>
+<tr data-product="mba"><td><b>Walter Teixeira</b></td><td><span class="badge badge-mba">MBA</span></td><td>MBA DS</td><td><span class="badge badge-direto">direto</span></td><td><span class="badge badge-high">high</span></td><td>7</td><td>2026-08-18</td></tr>
+<tr data-product="bootcamp"><td><b>Deyvid Carrascoza</b></td><td><span class="badge badge-boot">Boot</span></td><td>DS</td><td><span class="badge badge-cpc">cpc</span></td><td><span class="badge badge-high">high</span></td><td>2</td><td>2026-08-13</td></tr>
+<tr data-product="bootcamp"><td><b>Rodrigo Cezar</b></td><td><span class="badge badge-boot">Boot</span></td><td>DS</td><td><span class="badge badge-cpc">cpc</span></td><td><span class="badge badge-medium">medium</span></td><td>0</td><td>2026-08-17</td></tr>
+<tr data-product="bootcamp"><td><b>Luis Gleidison Rodrigues</b></td><td><span class="badge badge-boot">Boot</span></td><td>DS</td><td><span class="badge badge-bloggers">bloggers</span></td><td><span class="badge badge-medium">medium</span></td><td>0</td><td>2026-08-18</td></tr>
+<tr data-product="bootcamp"><td><b>MICHAEL DE SOUZA DA SILVA</b></td><td><span class="badge badge-boot">Boot</span></td><td>—</td><td><span class="badge badge-direto">direto</span></td><td><span class="badge badge-medium">medium</span></td><td>—</td><td>2026-08-18</td></tr>
+<tr data-product="mba"><td><b>Ane Castro Moreira 2</b></td><td><span class="badge badge-mba">MBA</span></td><td>MBA DS</td><td><span class="badge badge-bloggers">bloggers</span></td><td><span class="badge badge-medium">medium</span></td><td>3</td><td>2026-08-18</td></tr>
+</tbody></table></div></div></div>
+<div class="section"><div class="sh"><div class="st">📊 Breakdown UTM Medium — 18/08</div></div><div class="sb"><div class="utm-bars">
+<div class="urow"><div class="unm">cpc</div><div class="utrack"><div class="ufill" style="width:57%;background:#8b5cf6;">13 (57%)</div></div></div>
+<div class="urow"><div class="unm">bloggers</div><div class="utrack"><div class="ufill" style="width:13%;background:#ec4899;">3 (13%)</div></div></div>
+<div class="urow"><div class="unm">social</div><div class="utrack"><div class="ufill" style="width:13%;background:#3b82f6;">3 (13%)</div></div></div>
+<div class="urow"><div class="unm">smm</div><div class="utrack"><div class="ufill" style="width:13%;background:#0ea5e9;">3 (13%)</div></div></div>
+<div class="urow"><div class="unm">direto</div><div class="utrack"><div class="ufill" style="width:4%;background:#94a3b8;">1 (4%)</div></div></div>
+</div></div></div>
+</div>
+</div>
+
 <div id="tab-vnd" class="pane">
+<div class="day-pane active" id="d-seg-vnd">
 <div class="kpi-grid">
 <div class="kpi g"><div class="kpi-lbl">Vendas</div><div class="kpi-val" id="v-vend">3</div><div class="kpi-sub" id="v-vend-s">taxa 8.1%</div></div>
 <div class="kpi"><div class="kpi-lbl">Em Aberto</div><div class="kpi-val" id="v-ab">33</div><div class="kpi-sub">aguardando fechamento</div></div>
@@ -307,8 +401,73 @@ tr:last-child td{border-bottom:none;}
 </div></div>
 </div>
 <div style="text-align:center;padding:20px;font-size:11px;color:var(--gray);">Gerado automaticamente · 2026-08-17 · TripleTen Brasil<br><a href="https://sabrinaichinose.github.io/t10dailyanalisys/" style="color:var(--blue);">🔗 sabrinaichinose.github.io/t10dailyanalisys</a></div>
+<div class="day-pane" id="d-ter-vnd">
+<div class="kpi-grid">
+<div class="kpi g"><div class="kpi-lbl">Vendas</div><div class="kpi-val" id="t-v-vend">2</div><div class="kpi-sub" id="t-v-vend-s">taxa 8.7%</div></div>
+<div class="kpi"><div class="kpi-lbl">Em Aberto</div><div class="kpi-val" id="t-v-ab">19</div><div class="kpi-sub">aguardando fechamento</div></div>
+<div class="kpi r"><div class="kpi-lbl">Closed-Lost</div><div class="kpi-val" id="t-v-lost">2</div><div class="kpi-sub" id="t-v-lost-s">de 23 atendidas</div></div>
+<div class="kpi t"><div class="kpi-lbl">Potencial A</div><div class="kpi-val" id="t-v-pa">1</div><div class="kpi-sub">alta prioridade</div></div>
+<div class="kpi y"><div class="kpi-lbl">Potencial B</div><div class="kpi-val" id="t-v-pb">11</div><div class="kpi-sub">follow-up prioritário</div></div>
+<div class="kpi p"><div class="kpi-lbl">No-Shows Valiosos</div><div class="kpi-val">8</div><div class="kpi-sub">score ≥ 5, reagendar</div></div>
+</div>
+<div class="section"><div class="sh"><div class="st">👥 Performance por Closer — 18/08</div></div><div class="sb"><div class="closer-grid">
+<div class="cc" data-mba="2" data-boot="2"><div class="cc-name">Lucas Bonow Einhardt</div><div class="cc-sub">MBA: 2 | Bootcamp: 2</div><div class="cc-stats"><div class="cs"><div class="cs-val" style="color:var(--navy);">4</div><div class="cs-lbl">Reuniões</div></div><div class="cs"><div class="cs-val" style="color:var(--green);">0</div><div class="cs-lbl">Vendas</div></div><div class="cs"><div class="cs-val" style="color:var(--red);">1</div><div class="cs-lbl">Lost</div></div><div class="cs"><div class="cs-val" style="color:var(--gray);">3</div><div class="cs-lbl">Aberto</div></div></div><div style="font-size:10px;color:var(--gray);margin-top:6px;">Conv: 0%<div class="conv-bar"><div class="conv-fill" style="width:0%;"></div></div></div></div>
+<div class="cc" data-mba="0" data-boot="3"><div class="cc-name">Raisa Fernandes</div><div class="cc-sub">MBA: 0 | Bootcamp: 3</div><div class="cc-stats"><div class="cs"><div class="cs-val" style="color:var(--navy);">3</div><div class="cs-lbl">Reuniões</div></div><div class="cs"><div class="cs-val" style="color:var(--green);">1</div><div class="cs-lbl">Vendas</div></div><div class="cs"><div class="cs-val" style="color:var(--red);">0</div><div class="cs-lbl">Lost</div></div><div class="cs"><div class="cs-val" style="color:var(--gray);">2</div><div class="cs-lbl">Aberto</div></div></div><div style="font-size:10px;color:var(--gray);margin-top:6px;">Conv: 33%<div class="conv-bar"><div class="conv-fill" style="width:33%;"></div></div></div></div>
+<div class="cc" data-mba="0" data-boot="3"><div class="cc-name">Vinícius Leão</div><div class="cc-sub">MBA: 0 | Bootcamp: 3</div><div class="cc-stats"><div class="cs"><div class="cs-val" style="color:var(--navy);">3</div><div class="cs-lbl">Reuniões</div></div><div class="cs"><div class="cs-val" style="color:var(--green);">0</div><div class="cs-lbl">Vendas</div></div><div class="cs"><div class="cs-val" style="color:var(--red);">0</div><div class="cs-lbl">Lost</div></div><div class="cs"><div class="cs-val" style="color:var(--gray);">3</div><div class="cs-lbl">Aberto</div></div></div><div style="font-size:10px;color:var(--gray);margin-top:6px;">Conv: 0%<div class="conv-bar"><div class="conv-fill" style="width:0%;"></div></div></div></div>
+<div class="cc" data-mba="1" data-boot="1"><div class="cc-name">Bruno Marques</div><div class="cc-sub">MBA: 1 | Bootcamp: 1</div><div class="cc-stats"><div class="cs"><div class="cs-val" style="color:var(--navy);">2</div><div class="cs-lbl">Reuniões</div></div><div class="cs"><div class="cs-val" style="color:var(--green);">0</div><div class="cs-lbl">Vendas</div></div><div class="cs"><div class="cs-val" style="color:var(--red);">0</div><div class="cs-lbl">Lost</div></div><div class="cs"><div class="cs-val" style="color:var(--gray);">2</div><div class="cs-lbl">Aberto</div></div></div><div style="font-size:10px;color:var(--gray);margin-top:6px;">Conv: 0%<div class="conv-bar"><div class="conv-fill" style="width:0%;"></div></div></div></div>
+<div class="cc" data-mba="0" data-boot="2"><div class="cc-name">João Oliveira</div><div class="cc-sub">MBA: 0 | Bootcamp: 2</div><div class="cc-stats"><div class="cs"><div class="cs-val" style="color:var(--navy);">2</div><div class="cs-lbl">Reuniões</div></div><div class="cs"><div class="cs-val" style="color:var(--green);">1</div><div class="cs-lbl">Vendas</div></div><div class="cs"><div class="cs-val" style="color:var(--red);">0</div><div class="cs-lbl">Lost</div></div><div class="cs"><div class="cs-val" style="color:var(--gray);">1</div><div class="cs-lbl">Aberto</div></div></div><div style="font-size:10px;color:var(--gray);margin-top:6px;">Conv: 50%<div class="conv-bar"><div class="conv-fill" style="width:50%;"></div></div></div></div>
+<div class="cc" data-mba="0" data-boot="2"><div class="cc-name">Erick Paiva</div><div class="cc-sub">MBA: 0 | Bootcamp: 2</div><div class="cc-stats"><div class="cs"><div class="cs-val" style="color:var(--navy);">2</div><div class="cs-lbl">Reuniões</div></div><div class="cs"><div class="cs-val" style="color:var(--green);">0</div><div class="cs-lbl">Vendas</div></div><div class="cs"><div class="cs-val" style="color:var(--red);">0</div><div class="cs-lbl">Lost</div></div><div class="cs"><div class="cs-val" style="color:var(--gray);">2</div><div class="cs-lbl">Aberto</div></div></div><div style="font-size:10px;color:var(--gray);margin-top:6px;">Conv: 0%<div class="conv-bar"><div class="conv-fill" style="width:0%;"></div></div></div></div>
+<div class="cc" data-mba="1" data-boot="0"><div class="cc-name">Jessica Silva</div><div class="cc-sub">MBA: 1 | Bootcamp: 0</div><div class="cc-stats"><div class="cs"><div class="cs-val" style="color:var(--navy);">1</div><div class="cs-lbl">Reuniões</div></div><div class="cs"><div class="cs-val" style="color:var(--green);">0</div><div class="cs-lbl">Vendas</div></div><div class="cs"><div class="cs-val" style="color:var(--red);">0</div><div class="cs-lbl">Lost</div></div><div class="cs"><div class="cs-val" style="color:var(--gray);">1</div><div class="cs-lbl">Aberto</div></div></div><div style="font-size:10px;color:var(--gray);margin-top:6px;">Conv: 0%<div class="conv-bar"><div class="conv-fill" style="width:0%;"></div></div></div></div>
+<div class="cc" data-mba="0" data-boot="1"><div class="cc-name">Yanara Silva</div><div class="cc-sub">MBA: 0 | Bootcamp: 1</div><div class="cc-stats"><div class="cs"><div class="cs-val" style="color:var(--navy);">1</div><div class="cs-lbl">Reuniões</div></div><div class="cs"><div class="cs-val" style="color:var(--green);">0</div><div class="cs-lbl">Vendas</div></div><div class="cs"><div class="cs-val" style="color:var(--red);">0</div><div class="cs-lbl">Lost</div></div><div class="cs"><div class="cs-val" style="color:var(--gray);">1</div><div class="cs-lbl">Aberto</div></div></div><div style="font-size:10px;color:var(--gray);margin-top:6px;">Conv: 0%<div class="conv-bar"><div class="conv-fill" style="width:0%;"></div></div></div></div>
+<div class="cc" data-mba="0" data-boot="1"><div class="cc-name">Verônica Merched</div><div class="cc-sub">MBA: 0 | Bootcamp: 1</div><div class="cc-stats"><div class="cs"><div class="cs-val" style="color:var(--navy);">1</div><div class="cs-lbl">Reuniões</div></div><div class="cs"><div class="cs-val" style="color:var(--green);">0</div><div class="cs-lbl">Vendas</div></div><div class="cs"><div class="cs-val" style="color:var(--red);">0</div><div class="cs-lbl">Lost</div></div><div class="cs"><div class="cs-val" style="color:var(--gray);">1</div><div class="cs-lbl">Aberto</div></div></div><div style="font-size:10px;color:var(--gray);margin-top:6px;">Conv: 0%<div class="conv-bar"><div class="conv-fill" style="width:0%;"></div></div></div></div>
+<div class="cc" data-mba="0" data-boot="1"><div class="cc-name">Daniel Augusto Ribeiro</div><div class="cc-sub">MBA: 0 | Bootcamp: 1</div><div class="cc-stats"><div class="cs"><div class="cs-val" style="color:var(--navy);">1</div><div class="cs-lbl">Reuniões</div></div><div class="cs"><div class="cs-val" style="color:var(--green);">0</div><div class="cs-lbl">Vendas</div></div><div class="cs"><div class="cs-val" style="color:var(--red);">0</div><div class="cs-lbl">Lost</div></div><div class="cs"><div class="cs-val" style="color:var(--gray);">1</div><div class="cs-lbl">Aberto</div></div></div><div style="font-size:10px;color:var(--gray);margin-top:6px;">Conv: 0%<div class="conv-bar"><div class="conv-fill" style="width:0%;"></div></div></div></div>
+<div class="cc" data-mba="0" data-boot="1"><div class="cc-name">Natália Martins</div><div class="cc-sub">MBA: 0 | Bootcamp: 1</div><div class="cc-stats"><div class="cs"><div class="cs-val" style="color:var(--navy);">1</div><div class="cs-lbl">Reuniões</div></div><div class="cs"><div class="cs-val" style="color:var(--green);">0</div><div class="cs-lbl">Vendas</div></div><div class="cs"><div class="cs-val" style="color:var(--red);">0</div><div class="cs-lbl">Lost</div></div><div class="cs"><div class="cs-val" style="color:var(--gray);">1</div><div class="cs-lbl">Aberto</div></div></div><div style="font-size:10px;color:var(--gray);margin-top:6px;">Conv: 0%<div class="conv-bar"><div class="conv-fill" style="width:0%;"></div></div></div></div>
+<div class="cc" data-mba="0" data-boot="1"><div class="cc-name">Bernardo Magalhães</div><div class="cc-sub">MBA: 0 | Bootcamp: 1</div><div class="cc-stats"><div class="cs"><div class="cs-val" style="color:var(--navy);">1</div><div class="cs-lbl">Reuniões</div></div><div class="cs"><div class="cs-val" style="color:var(--green);">0</div><div class="cs-lbl">Vendas</div></div><div class="cs"><div class="cs-val" style="color:var(--red);">0</div><div class="cs-lbl">Lost</div></div><div class="cs"><div class="cs-val" style="color:var(--gray);">1</div><div class="cs-lbl">Aberto</div></div></div><div style="font-size:10px;color:var(--gray);margin-top:6px;">Conv: 0%<div class="conv-bar"><div class="conv-fill" style="width:0%;"></div></div></div></div>
+<div class="cc" data-mba="0" data-boot="1"><div class="cc-name">Gabriel Morial</div><div class="cc-sub">MBA: 0 | Bootcamp: 1</div><div class="cc-stats"><div class="cs"><div class="cs-val" style="color:var(--navy);">1</div><div class="cs-lbl">Reuniões</div></div><div class="cs"><div class="cs-val" style="color:var(--green);">0</div><div class="cs-lbl">Vendas</div></div><div class="cs"><div class="cs-val" style="color:var(--red);">1</div><div class="cs-lbl">Lost</div></div><div class="cs"><div class="cs-val" style="color:var(--gray);">0</div><div class="cs-lbl">Aberto</div></div></div><div style="font-size:10px;color:var(--gray);margin-top:6px;">Conv: 0%<div class="conv-bar"><div class="conv-fill" style="width:0%;"></div></div></div></div>
+</div></div></div>
+<div class="section"><div class="sh"><div class="st">🏆 Ranking de Potencial — 18/08</div></div><div class="sb"><div class="rank-list">
+<div class="rank-item B" data-product="bootcamp"><div><div class="rname">Renan Pupo <span class="badge badge-B">B</span></div><div class="rdet">Raisa Fernandes · DS · Score: 4</div></div><div class="ract B">📧 Email personalizado hoje</div></div>
+<div class="rank-item B" data-product="mba"><div><div class="rname">Allyson Assunção da Silva <span class="badge badge-B">B</span></div><div class="rdet">Lucas Bonow Einhardt · MBA AI · Score: 4</div></div><div class="ract B">📧 Email personalizado hoje</div></div>
+<div class="rank-item B" data-product="mba"><div><div class="rname">Priscila Teixeira <span class="badge badge-B">B</span></div><div class="rdet">Bruno Marques · MBA DS · Score: 8</div></div><div class="ract B">📧 Email personalizado hoje</div></div>
+<div class="rank-item B" data-product="bootcamp"><div><div class="rname">Alison Félix <span class="badge badge-B">B</span></div><div class="rdet">João Oliveira · DA · Score: —</div></div><div class="ract B">📧 Email personalizado hoje</div></div>
+<div class="rank-item B" data-product="bootcamp"><div><div class="rname">Ricardo Silveira <span class="badge badge-B">B</span></div><div class="rdet">Yanara Silva · QA · Score: 0</div></div><div class="ract B">📧 Email personalizado hoje</div></div>
+<div class="rank-item B" data-product="bootcamp"><div><div class="rname">Enzo Fernando Silva <span class="badge badge-B">B</span></div><div class="rdet">Erick Paiva · DA · Score: —</div></div><div class="ract B">📧 Email personalizado hoje</div></div>
+<div class="rank-item B" data-product="bootcamp"><div><div class="rname">Carolaine Ferreira Conti <span class="badge badge-B">B</span></div><div class="rdet">Raisa Fernandes · DA · Score: 1</div></div><div class="ract B">📧 Email personalizado hoje</div></div>
+<div class="rank-item B" data-product="bootcamp"><div><div class="rname">Camila Carolina Silva <span class="badge badge-B">B</span></div><div class="rdet">Daniel Augusto Ribeiro · DA · Score: 3</div></div><div class="ract B">📧 Email personalizado hoje</div></div>
+<div class="rank-item B" data-product="bootcamp"><div><div class="rname">Carolina Barros <span class="badge badge-B">B</span></div><div class="rdet">Vinícius Leão · DA · Score: 1</div></div><div class="ract B">📧 Email personalizado hoje</div></div>
+<div class="rank-item B" data-product="bootcamp"><div><div class="rname">Lucas Andrade <span class="badge badge-B">B</span></div><div class="rdet">Erick Paiva · DS · Score: 2</div></div><div class="ract B">📧 Email personalizado hoje</div></div>
+<div class="rank-item C" data-product="mba"><div><div class="rname">FABRICIO LIMA <span class="badge badge-C">C</span></div><div class="rdet">Jessica Silva · MBA AI · Score: 1</div></div><div class="ract C">📋 Nutrir — baixo potencial imediato</div></div>
+<div class="rank-item C" data-product="mba"><div><div class="rname">GUILHERME AUGUSTO MOREIRA SILVA <span class="badge badge-C">C</span></div><div class="rdet">Lucas Bonow Einhardt · MBA DS · Score: 0</div></div><div class="ract C">📋 Nutrir — baixo potencial imediato</div></div>
+<div class="rank-item C" data-product="bootcamp"><div><div class="rname">GABRIEL MONTEIRO BANDEIRA <span class="badge badge-C">C</span></div><div class="rdet">Bruno Marques · QA · Score: —</div></div><div class="ract C">📋 Nutrir — baixo potencial imediato</div></div>
+<div class="rank-item C" data-product="bootcamp"><div><div class="rname">Selma bencic zeidan <span class="badge badge-C">C</span></div><div class="rdet">Verônica Merched · DA · Score: 0</div></div><div class="ract C">📋 Nutrir — baixo potencial imediato</div></div>
+<div class="rank-item C" data-product="bootcamp"><div><div class="rname">Samara Isabel Prospero Gonçalves <span class="badge badge-C">C</span></div><div class="rdet">Vinícius Leão · DA · Score: 1</div></div><div class="ract C">📋 Nutrir — baixo potencial imediato</div></div>
+</div></div></div>
+</div>
+</div>
+
 <script>
 const KPI={"all": {"atendidas": 37, "vendas": 3, "lost": 1, "aberto": 33, "pot_a": 2, "pot_b": 24, "mesmo_dia": 22, "noshows": 10}, "bootcamp": {"atendidas": 29, "vendas": 3, "lost": 1, "aberto": 25, "pot_a": 2, "pot_b": 16, "mesmo_dia": 18, "noshows": 9}, "mba": {"atendidas": 8, "vendas": 0, "lost": 0, "aberto": 8, "pot_a": 0, "pot_b": 8, "mesmo_dia": 4, "noshows": 1}};
+
+const KPI_TER={"all":{"atendidas":23,"vendas":2,"lost":2,"aberto":19,"pot_a":1,"pot_b":11,"mesmo_dia":4,"noshows":33,"criados":290},"bootcamp":{"atendidas":19,"vendas":2,"lost":2,"aberto":15,"pot_a":1,"pot_b":9,"mesmo_dia":3,"noshows":25,"criados":215},"mba":{"atendidas":4,"vendas":0,"lost":0,"aberto":4,"pot_a":0,"pot_b":2,"mesmo_dia":1,"noshows":8,"criados":54}};
+let curDay='seg';
+function setDay(d){
+  curDay=d;
+  document.getElementById('dbtn-seg').classList.toggle('active',d==='seg');
+  document.getElementById('dbtn-ter').classList.toggle('active',d==='ter');
+  // show/hide mkt day panes
+  document.getElementById('d-seg-mkt').classList.toggle('active',d==='seg');
+  document.getElementById('d-ter-mkt').classList.toggle('active',d==='ter');
+  document.getElementById('d-seg-vnd').classList.toggle('active',d==='seg');
+  document.getElementById('d-ter-vnd').classList.toggle('active',d==='ter');
+  // update product filter buttons counts
+  const cur=d==='seg'?KPI:KPI_TER;
+  document.getElementById('pbtn-all').textContent='Todos ('+cur.all.atendidas+' reuniões)';
+  document.getElementById('pbtn-boot').textContent='⚡ Bootcamp ('+cur.bootcamp.atendidas+')';
+  document.getElementById('pbtn-mba').textContent='🎓 MBA ('+cur.mba.atendidas+')';
+  applyFilters();
+  updateKPIs(curProd);
+}
+
 let curProd='all', curMed='all';
 
 function setFilter(f){
@@ -341,18 +500,21 @@ function applyFilters(){
 }
 
 function updateKPIs(f){
-  const k=KPI[f], tot=k.atendidas;
+  const src=curDay==='seg'?KPI:KPI_TER;
+  const k=src[f], tot=k.atendidas;
   const conv=tot>0?(k.vendas/tot*100).toFixed(1):'0.0';
   const md=tot>0?Math.round(k.mesmo_dia/tot*100):0;
-  set('k-atend',tot); set('k-atend-s',k.mesmo_dia+' mesmo dia ('+md+'%)');
-  set('k-ns',k.noshows); set('k-vend',k.vendas); set('k-vend-s','taxa: '+conv+'%');
-  set('v-vend',k.vendas); set('v-vend-s','taxa '+conv+'%');
-  set('v-ab',k.aberto); set('v-lost',k.lost); set('v-lost-s','de '+tot+' atendidas');
-  set('v-pa',k.pot_a); set('v-pb',k.pot_b);
-  // Leads Criados: só disponível para total; por produto mostra atendidas+noshows
-  if(f==='all'){set('k-criados',272);set('k-criados-s','em 17/08/2026');}
-  else if(f==='mba'){set('k-criados',40);set('k-criados-s','🎓 de 272 criados');}
-  else{set('k-criados',216);set('k-criados-s','⚡ de 272 criados');}
+  const pfx=curDay==='seg'?'':'t-';
+  set(pfx+'k-atend',tot); set(pfx+'k-atend-s',k.mesmo_dia+' mesmo dia ('+md+'%)');
+  set(pfx+'k-ns',k.noshows); set(pfx+'k-vend',k.vendas); set(pfx+'k-vend-s','taxa: '+conv+'%');
+  set(pfx+'v-vend',k.vendas); set(pfx+'v-vend-s','taxa '+conv+'%');
+  set(pfx+'v-ab',k.aberto); set(pfx+'v-lost',k.lost); set(pfx+'v-lost-s','de '+tot+' atendidas');
+  set(pfx+'v-pa',k.pot_a); set(pfx+'v-pb',k.pot_b);
+  const criados_all=curDay==='seg'?272:290;
+  const lbl=curDay==='seg'?'17/08':'18/08';
+  if(f==='all'){set(pfx+'k-criados',criados_all);set(pfx+'k-criados-s','em '+lbl+'/2026');}
+  else if(f==='mba'){set(pfx+'k-criados',k.criados||0);set(pfx+'k-criados-s','🎓 de '+criados_all+' criados');}
+  else{set(pfx+'k-criados',k.criados||0);set(pfx+'k-criados-s','⚡ de '+criados_all+' criados');}
 }
 function set(id,v){const e=document.getElementById(id);if(e)e.textContent=v;}
 function countVis(id){const t=document.getElementById(id);return t?[...t.querySelectorAll('tr')].filter(r=>r.style.display!=='none').length:0;}
@@ -360,6 +522,8 @@ function updateCounts(){
   set('sd-cnt',countVis('sd-tbody')+' registros');
   set('at-cnt',countVis('at-tbody')+' registros');
   set('ns-cnt',countVis('ns-tbody')+' registros');
+  set('t-at-cnt',countVis('t-at-tbody')+' registros');
+  set('t-ns-cnt',countVis('t-ns-tbody')+' registros');
 }
 
 function filterMedium(m){
