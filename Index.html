@@ -554,7 +554,7 @@ tr:last-child td{border-bottom:none;}
 <script>
 const KPI={"all": {"atendidas": 37, "vendas": 3, "lost": 1, "aberto": 33, "pot_a": 2, "pot_b": 24, "mesmo_dia": 22, "noshows": 10}, "bootcamp": {"atendidas": 29, "vendas": 3, "lost": 1, "aberto": 25, "pot_a": 2, "pot_b": 16, "mesmo_dia": 18, "noshows": 9}, "mba": {"atendidas": 8, "vendas": 0, "lost": 0, "aberto": 8, "pot_a": 0, "pot_b": 8, "mesmo_dia": 4, "noshows": 1}};
 
-const KPI_QUA={"all": {"atendidas": 35, "vendas": 1, "lost": 3, "aberto": 31, "pot_a": 3, "pot_b": 21, "mesmo_dia": 10, "noshows": 12}, "mba": {"atendidas": 5, "vendas": 0, "lost": 0, "aberto": 5, "pot_a": 1, "pot_b": 1, "mesmo_dia": 1, "noshows": 4}, "bootcamp": {"atendidas": 30, "vendas": 1, "lost": 3, "aberto": 26, "pot_a": 2, "pot_b": 20, "mesmo_dia": 9, "noshows": 8}};
+const KPI_QUA={"all": {"atendidas": 35, "vendas": 1, "lost": 3, "aberto": 31, "pot_a": 3, "pot_b": 21, "mesmo_dia": 12, "noshows": 12, "criados": 278, "ms": 39}, "mba": {"atendidas": 5, "vendas": 0, "lost": 0, "aberto": 5, "pot_a": 1, "pot_b": 1, "mesmo_dia": 1, "noshows": 4}, "bootcamp": {"atendidas": 30, "vendas": 1, "lost": 3, "aberto": 26, "pot_a": 2, "pot_b": 20, "mesmo_dia": 11, "noshows": 8}};
 const KPI_TER={"all":{"atendidas":23,"vendas":2,"lost":2,"aberto":19,"pot_a":1,"pot_b":11,"mesmo_dia":4,"noshows":33,"criados":290,"ms":53},"bootcamp":{"atendidas":19,"vendas":2,"lost":2,"aberto":15,"pot_a":1,"pot_b":9,"mesmo_dia":3,"noshows":25,"criados":215,"ms":41},"mba":{"atendidas":4,"vendas":0,"lost":0,"aberto":4,"pot_a":0,"pot_b":2,"mesmo_dia":1,"noshows":8,"criados":54,"ms":12}};
 let curDay='seg';
 function setDay(d){
@@ -621,12 +621,13 @@ function updateKPIs(f){
   set(pfx+'v-vend',k.vendas); set(pfx+'v-vend-s','taxa '+conv+'%');
   set(pfx+'v-ab',k.aberto); set(pfx+'v-lost',k.lost); set(pfx+'v-lost-s','de '+tot+' atendidas');
   set(pfx+'v-pa',k.pot_a); set(pfx+'v-pb',k.pot_b);
-  const criados_all=curDay==='seg'?272:(curDay==='ter'?290:null);
+  const criados_all=curDay==='seg'?272:(curDay==='ter'?290:278);
   const lbl=curDay==='seg'?'17/08':(curDay==='ter'?'18/08':'19/08');
   if(f==='all'){set(pfx+'k-criados',criados_all||'—');set(pfx+'k-criados-s',criados_all?('em '+lbl+'/2026'):'em 19/08/2026');}
   else if(f==='mba'){set(pfx+'k-criados',k.criados||0);set(pfx+'k-criados-s','🎓 de '+criados_all+' criados');}
   else{set(pfx+'k-criados',k.criados||0);set(pfx+'k-criados-s','⚡ de '+criados_all+' criados');}
   if(curDay==='ter'&&k.ms!=null){set('t-k-ms',k.ms);set('t-k-ms-s',f==='all'?'agendadas em 18/08':(f==='mba'?'🎓 MBA':'⚡ Bootcamp'));}
+  if(curDay==='qua'&&k.ms!=null){set('q-k-ms',k.ms);set('q-k-ms-s',f==='all'?'agendadas em 19/08':(f==='mba'?'🎓 MBA':'⚡ Bootcamp'));}
 }
 function set(id,v){const e=document.getElementById(id);if(e)e.textContent=v;}
 function countVis(id){const t=document.getElementById(id);return t?[...t.querySelectorAll('tr')].filter(r=>r.style.display!=='none').length:0;}
