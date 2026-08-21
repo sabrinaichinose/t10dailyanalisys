@@ -404,6 +404,20 @@ tr:last-child td{border-bottom:none;}
 <div class="urow"><div class="unm">direto</div><div class="utrack"><div class="ufill" style="width:6%;background:#94a3b8;">2 (6%)</div></div></div>
 <div class="urow"><div class="unm">social</div><div class="utrack"><div class="ufill" style="width:3%;background:#3b82f6;">1 (3%)</div></div></div>
 </div></div></div></div>
+<div class="day-pane" id="d-qui-mkt">
+<div class="kpi-grid">
+<div class="kpi"><div class="kpi-lbl">Leads Criados</div><div class="kpi-val" id="qi-k-criados">292</div><div class="kpi-sub" id="qi-k-criados-s">em 20/08/2026</div></div>
+<div class="kpi g"><div class="kpi-lbl">Reuniões Atendidas</div><div class="kpi-val" id="qi-k-atend">30</div><div class="kpi-sub" id="qi-k-atend-s">14 mesmo dia (47%)</div></div>
+<div class="kpi t"><div class="kpi-lbl">Meeting Scheduled</div><div class="kpi-val" id="qi-k-ms">—</div><div class="kpi-sub" id="qi-k-ms-s">em 20/08</div></div>
+<div class="kpi r"><div class="kpi-lbl">No-Shows</div><div class="kpi-val" id="qi-k-ns">—</div><div class="kpi-sub">do total agendado</div></div>
+<div class="kpi y"><div class="kpi-lbl">Vendas</div><div class="kpi-val" id="qi-k-vend">6</div><div class="kpi-sub" id="qi-k-vend-s">taxa: 20.0%</div></div>
+<div class="kpi p"><div class="kpi-lbl">Closed-Lost Mesmo Dia</div><div class="kpi-val">16</div><div class="kpi-sub">leads criados e perdidos 20/08</div></div>
+</div>
+<div class="section"><div class="sh"><div class="st">📋 Resumo do Dia — 20/08</div></div><div class="sb">
+<p style="color:var(--gray);font-size:13px;padding:8px 0;">30 reuniões atendidas · 14 de leads criados no mesmo dia · 16 de leads de outros dias · 6 vendas (todas de leads antigos) · 16 closed-lost de leads criados em 20/08 · 292 leads criados</p>
+<div id="qi-at-cnt" style="display:none;"></div><table style="display:none"><tbody id="qi-at-tbody"></tbody></table>
+<div id="qi-ns-cnt" style="display:none;"></div><table style="display:none"><tbody id="qi-ns-tbody"></tbody></table>
+</div></div></div>
 </div>
 
 <div id="tab-vnd" class="pane">
@@ -549,16 +563,33 @@ tr:last-child td{border-bottom:none;}
 <div class="rank-item B" data-product="bootcamp"><div><div class="rname">Lindssen lenniny Pires xavier <span class="badge badge-B">B</span></div><div class="rdet">Yanara Silva · WD · Score: 2</div></div><div class="ract B">📧 Email personalizado hoje</div></div>
 <div class="rank-item B" data-product="bootcamp"><div><div class="rname">Cynthia Nakashima <span class="badge badge-B">B</span></div><div class="rdet">Larissa Ciuldim · DS · Score: 2</div></div><div class="ract B">📧 Email personalizado hoje</div></div>
 </div></div></div></div>
+<div class="day-pane" id="d-qui-vnd">
+<div class="kpi-grid">
+<div class="kpi g"><div class="kpi-lbl">Vendas</div><div class="kpi-val" id="qi-v-vend">6</div><div class="kpi-sub" id="qi-v-vend-s">taxa 20.0%</div></div>
+<div class="kpi"><div class="kpi-lbl">Em Aberto</div><div class="kpi-val" id="qi-v-ab">22</div><div class="kpi-sub">aguardando fechamento</div></div>
+<div class="kpi r"><div class="kpi-lbl">Closed-Lost</div><div class="kpi-val" id="qi-v-lost">2</div><div class="kpi-sub" id="qi-v-lost-s">de 30 atendidas</div></div>
+<div class="kpi t"><div class="kpi-lbl">Potencial A</div><div class="kpi-val" id="qi-v-pa">3</div><div class="kpi-sub">alta prioridade</div></div>
+<div class="kpi y"><div class="kpi-lbl">Potencial B</div><div class="kpi-val" id="qi-v-pb">14</div><div class="kpi-sub">follow-up prioritário</div></div>
+<div class="kpi p"><div class="kpi-lbl">Vendas de Leads Antigos</div><div class="kpi-val">6</div><div class="kpi-sub">0 de leads criados em 20/08</div></div>
+</div>
+<div class="section"><div class="sh"><div class="st">✅ Vendas do Dia — 20/08</div></div><div class="sb"><div class="table-wrap"><table><thead><tr><th>Lead</th><th>Curso</th><th>Closer</th><th>Score</th><th>Pay</th></tr></thead><tbody>
+<tr><td><b>Pedro Raposo</b></td><td>DA</td><td>—</td><td>7</td><td>✅</td></tr>
+<tr><td><b>Fernando Soares Armelin</b></td><td>MBA AI</td><td>Bernardo Magalhães</td><td>1</td><td>✅</td></tr>
+<tr><td><b>Jacson Daniel Garcia</b></td><td>DS</td><td>Raphael Soares</td><td>4</td><td>✅</td></tr>
+<tr><td><b>Gabriel Barbosa Ferreira</b></td><td>QA</td><td>Yanara Silva</td><td>0</td><td>✅</td></tr>
+<tr><td colspan="5" style="color:var(--gray);font-size:11px;">+ 2 vendas adicionais (dados não disponíveis)</td></tr>
+</tbody></table></div></div></div></div>
 </div>
 
 <script>
 const KPI={"all": {"atendidas": 37, "vendas": 3, "lost": 1, "aberto": 33, "pot_a": 2, "pot_b": 24, "mesmo_dia": 22, "noshows": 10}, "bootcamp": {"atendidas": 29, "vendas": 3, "lost": 1, "aberto": 25, "pot_a": 2, "pot_b": 16, "mesmo_dia": 18, "noshows": 9}, "mba": {"atendidas": 8, "vendas": 0, "lost": 0, "aberto": 8, "pot_a": 0, "pot_b": 8, "mesmo_dia": 4, "noshows": 1}};
 
+const KPI_QUI={"all": {"atendidas": 30, "vendas": 6, "lost": 2, "aberto": 22, "pot_a": 3, "pot_b": 14, "mesmo_dia": 14, "noshows": 0, "criados": 292, "ms": 0}, "mba": {"atendidas": 4, "vendas": 1, "lost": 0, "aberto": 3, "pot_a": 0, "pot_b": 1, "mesmo_dia": 1, "noshows": 0, "criados": 0, "ms": 0}, "bootcamp": {"atendidas": 26, "vendas": 5, "lost": 2, "aberto": 19, "pot_a": 3, "pot_b": 13, "mesmo_dia": 13, "noshows": 0, "criados": 0, "ms": 0}};
 const KPI_QUA={"all": {"atendidas": 35, "vendas": 1, "lost": 3, "aberto": 31, "pot_a": 3, "pot_b": 21, "mesmo_dia": 12, "noshows": 12, "criados": 278, "ms": 39}, "mba": {"atendidas": 5, "vendas": 0, "lost": 0, "aberto": 5, "pot_a": 1, "pot_b": 1, "mesmo_dia": 1, "noshows": 4}, "bootcamp": {"atendidas": 30, "vendas": 1, "lost": 3, "aberto": 26, "pot_a": 2, "pot_b": 20, "mesmo_dia": 11, "noshows": 8}};
 const KPI_TER={"all":{"atendidas":23,"vendas":2,"lost":2,"aberto":19,"pot_a":1,"pot_b":11,"mesmo_dia":4,"noshows":33,"criados":290,"ms":53},"bootcamp":{"atendidas":19,"vendas":2,"lost":2,"aberto":15,"pot_a":1,"pot_b":9,"mesmo_dia":3,"noshows":25,"criados":215,"ms":41},"mba":{"atendidas":4,"vendas":0,"lost":0,"aberto":4,"pot_a":0,"pot_b":2,"mesmo_dia":1,"noshows":8,"criados":54,"ms":12}};
 let curDay='seg';
 function setDay(d){
-  const dateMap={'seg':'2026-08-17','ter':'2026-08-18','qua':'2026-08-19'};
+  const dateMap={'seg':'2026-08-17','ter':'2026-08-18','qua':'2026-08-19','qui':'2026-08-20'};
   if(dateMap[d]){document.getElementById('dpicker').value=dateMap[d];updateNav();}
   curDay=d;
   const bs=document.getElementById('dbtn-seg');if(bs)bs.classList.toggle('active',d==='seg');
@@ -567,11 +598,13 @@ function setDay(d){
   document.getElementById('d-seg-mkt').classList.toggle('active',d==='seg');
   document.getElementById('d-ter-mkt').classList.toggle('active',d==='ter');
   const qm=document.getElementById('d-qua-mkt');if(qm)qm.classList.toggle('active',d==='qua');
+  const qim=document.getElementById('d-qui-mkt');if(qim)qim.classList.toggle('active',d==='qui');
   document.getElementById('d-seg-vnd').classList.toggle('active',d==='seg');
   document.getElementById('d-ter-vnd').classList.toggle('active',d==='ter');
   const qv=document.getElementById('d-qua-vnd');if(qv)qv.classList.toggle('active',d==='qua');
+  const qiv=document.getElementById('d-qui-vnd');if(qiv)qiv.classList.toggle('active',d==='qui');
   // update product filter buttons counts
-  const cur=d==='seg'?KPI:(d==='ter'?KPI_TER:KPI_QUA);
+  const cur=d==='seg'?KPI:(d==='ter'?KPI_TER:(d==='qua'?KPI_QUA:KPI_QUI));
   document.getElementById('pbtn-all').textContent='Todos ('+cur.all.atendidas+' reuniões)';
   document.getElementById('pbtn-boot').textContent='⚡ Bootcamp ('+cur.bootcamp.atendidas+')';
   document.getElementById('pbtn-mba').textContent='🎓 MBA ('+cur.mba.atendidas+')';
@@ -611,23 +644,24 @@ function applyFilters(){
 }
 
 function updateKPIs(f){
-  const src=curDay==='seg'?KPI:(curDay==='ter'?KPI_TER:KPI_QUA);
+  const src=curDay==='seg'?KPI:(curDay==='ter'?KPI_TER:(curDay==='qua'?KPI_QUA:KPI_QUI));
   const k=src[f], tot=k.atendidas;
   const conv=tot>0?(k.vendas/tot*100).toFixed(1):'0.0';
   const md=tot>0?Math.round(k.mesmo_dia/tot*100):0;
-  const pfx=curDay==='seg'?'':(curDay==='ter'?'t-':'q-');
+  const pfx=curDay==='seg'?'':(curDay==='ter'?'t-':(curDay==='qua'?'q-':'qi-'));
   set(pfx+'k-atend',tot); set(pfx+'k-atend-s',k.mesmo_dia+' mesmo dia ('+md+'%)');
   set(pfx+'k-ns',k.noshows); set(pfx+'k-vend',k.vendas); set(pfx+'k-vend-s','taxa: '+conv+'%');
   set(pfx+'v-vend',k.vendas); set(pfx+'v-vend-s','taxa '+conv+'%');
   set(pfx+'v-ab',k.aberto); set(pfx+'v-lost',k.lost); set(pfx+'v-lost-s','de '+tot+' atendidas');
   set(pfx+'v-pa',k.pot_a); set(pfx+'v-pb',k.pot_b);
-  const criados_all=curDay==='seg'?272:(curDay==='ter'?290:278);
-  const lbl=curDay==='seg'?'17/08':(curDay==='ter'?'18/08':'19/08');
+  const criados_all=curDay==='seg'?272:(curDay==='ter'?290:(curDay==='qua'?278:292));
+  const lbl=curDay==='seg'?'17/08':(curDay==='ter'?'18/08':(curDay==='qua'?'19/08':'20/08'));
   if(f==='all'){set(pfx+'k-criados',criados_all||'—');set(pfx+'k-criados-s',criados_all?('em '+lbl+'/2026'):'em 19/08/2026');}
   else if(f==='mba'){set(pfx+'k-criados',k.criados||0);set(pfx+'k-criados-s','🎓 de '+criados_all+' criados');}
   else{set(pfx+'k-criados',k.criados||0);set(pfx+'k-criados-s','⚡ de '+criados_all+' criados');}
   if(curDay==='ter'&&k.ms!=null){set('t-k-ms',k.ms);set('t-k-ms-s',f==='all'?'agendadas em 18/08':(f==='mba'?'🎓 MBA':'⚡ Bootcamp'));}
   if(curDay==='qua'&&k.ms!=null){set('q-k-ms',k.ms);set('q-k-ms-s',f==='all'?'agendadas em 19/08':(f==='mba'?'🎓 MBA':'⚡ Bootcamp'));}
+  if(curDay==='qui'&&k.ms!=null){set('qi-k-ms',k.ms);set('qi-k-ms-s',f==='all'?'agendadas em 20/08':(f==='mba'?'🎓 MBA':'⚡ Bootcamp'));}
 }
 function set(id,v){const e=document.getElementById(id);if(e)e.textContent=v;}
 function countVis(id){const t=document.getElementById(id);return t?[...t.querySelectorAll('tr')].filter(r=>r.style.display!=='none').length:0;}
@@ -639,6 +673,8 @@ function updateCounts(){
   set('t-ns-cnt',countVis('t-ns-tbody')+' registros');
   set('q-at-cnt',countVis('q-at-tbody')+' registros');
   set('q-ns-cnt',countVis('q-ns-tbody')+' registros');
+  set('qi-at-cnt',countVis('qi-at-tbody')+' registros');
+  set('qi-ns-cnt',countVis('qi-ns-tbody')+' registros');
 }
 
 function filterMedium(m){
@@ -667,14 +703,15 @@ function navigateToDate(ds){
   if(ds==='2026-08-17'){setDay('seg');document.getElementById('dpicker').value=ds;updateNav();return;}
   if(ds==='2026-08-18'){setDay('ter');document.getElementById('dpicker').value=ds;updateNav();return;}
   if(ds==='2026-08-19'){setDay('qua');document.getElementById('dpicker').value=ds;updateNav();return;}
+  if(ds==='2026-08-20'){setDay('qui');document.getElementById('dpicker').value=ds;updateNav();return;}
   const fn='dashboard_'+ds.replace(/-/g,'')+'.html';
   if(window.location.hostname==='sabrinaichinose.github.io'){window.location.href=GH+fn;return;}
   fetch(fn,{method:'HEAD'}).then(r=>{if(r.ok)window.location.href=fn;else showGH(fn,ds);}).catch(()=>showGH(fn,ds));
 }
 function showGH(fn,ds){const d=new Date(ds+'T12:00:00');document.getElementById('nav-message').innerHTML=`<span style="color:#b45309;">⚠️ Dashboard de <b>${d.toLocaleDateString('pt-BR',{weekday:'long',day:'2-digit',month:'2-digit',year:'numeric'})}</b> não disponível localmente. <a href="${GH+fn}" target="_blank" style="color:#1a56db;font-weight:700;">Abrir no GitHub Pages →</a> <button onclick="document.getElementById('nav-message').innerHTML=''" style="border:none;background:none;cursor:pointer;">✕</button></span>`;}
 document.addEventListener('DOMContentLoaded',()=>{
-  document.getElementById('dpicker').value='2026-08-19';
+  document.getElementById('dpicker').value='2026-08-20';
   updateNav();
-  setDay('qua');
+  setDay('qui');
 });
 </script></body></html>
