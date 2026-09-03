@@ -2,34 +2,28 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Dashboard TripleTen Brasil — 02/09/2026</title>
+<title>Dashboard TripleTen — 02/09/2026</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Segoe UI',system-ui,sans-serif;background:#f0f4f8;color:#1e293b;font-size:13.5px}
 header{background:linear-gradient(135deg,#0f2952,#1d4ed8);color:#fff;padding:14px 22px;display:flex;justify-content:space-between;align-items:center}
 header h1{font-size:1.2rem;font-weight:800}
 .sub{font-size:.75rem;opacity:.8;margin-top:2px}
-.tabs{display:flex;background:#fff;border-bottom:2px solid #e2e8f0;padding:0 18px;gap:2px}
+.tabs{display:flex;background:#fff;border-bottom:2px solid #e2e8f0;padding:0 18px}
 .tab{padding:10px 16px;cursor:pointer;font-weight:600;color:#64748b;border-bottom:3px solid transparent;font-size:.85rem;transition:.15s;white-space:nowrap}
 .tab.active,.tab:hover{color:#1d4ed8;border-bottom-color:#1d4ed8}
-.content{display:none;padding:16px 18px}
-.content.active{display:block}
-
-/* KPIs */
-.section-label{font-size:.7rem;text-transform:uppercase;letter-spacing:.6px;color:#94a3b8;font-weight:700;margin:14px 0 8px;display:flex;align-items:center;gap:6px}
-.section-label::after{content:'';flex:1;height:1px;background:#e2e8f0}
-.kpi-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(125px,1fr));gap:9px;margin-bottom:12px}
-.kpi{background:#fff;border-radius:9px;padding:11px 13px;box-shadow:0 1px 3px rgba(0,0,0,.07);border-left:4px solid #1d4ed8;position:relative}
+.content{display:none;padding:16px 18px}.content.active{display:block}
+.sec{font-size:.68rem;text-transform:uppercase;letter-spacing:.6px;color:#94a3b8;font-weight:700;margin:14px 0 8px;display:flex;align-items:center;gap:6px}
+.sec::after{content:'';flex:1;height:1px;background:#e2e8f0}
+.kpi-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:9px;margin-bottom:12px}
+.kpi{background:#fff;border-radius:9px;padding:11px 13px;box-shadow:0 1px 3px rgba(0,0,0,.07);border-left:4px solid #1d4ed8}
 .kpi.g{border-color:#10b981}.kpi.r{border-color:#ef4444}.kpi.o{border-color:#f59e0b}
 .kpi.p{border-color:#8b5cf6}.kpi.t{border-color:#14b8a6}.kpi.s{border-color:#64748b}
 .kpi-val{font-size:1.55rem;font-weight:800;line-height:1.1}
 .kpi-lbl{font-size:.65rem;text-transform:uppercase;letter-spacing:.4px;color:#64748b;margin-top:2px}
 .kpi-sub{font-size:.68rem;color:#94a3b8;margin-top:1px}
-.kpi-split{font-size:.67rem;color:#64748b;margin-top:3px;border-top:1px dashed #e2e8f0;padding-top:3px}
-.kpi-split span{display:inline-block;margin-right:6px}
-.kpi-split .ontem{color:#1d4ed8}.kpi-split .outros{color:#64748b}
-
-/* Tables */
+.kpi-split{font-size:.67rem;color:#64748b;margin-top:3px;border-top:1px dashed #e2e8f0;padding-top:3px;line-height:1.5}
+.kpi-split .bl{color:#1d4ed8}.kpi-split .gr{color:#94a3b8}
 h2{font-size:.9rem;font-weight:700;color:#0f2952;margin:16px 0 8px;display:flex;align-items:center;gap:6px}
 h3{font-size:.75rem;font-weight:700;color:#475569;margin:12px 0 6px;text-transform:uppercase;letter-spacing:.4px}
 table{width:100%;border-collapse:collapse;background:#fff;border-radius:9px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.07);margin-bottom:14px;font-size:12px}
@@ -37,60 +31,44 @@ th{background:#0f2952;color:#fff;padding:7px 9px;text-align:left;font-weight:600
 td{padding:6px 9px;border-bottom:1px solid #f1f5f9;vertical-align:middle}
 tr:nth-child(even) td{background:#f8fafc}
 tr:hover td{background:#eff6ff}
-.ontem-row td{background:#eff6ff!important}
-.ontem-row:hover td{background:#dbeafe!important}
-
-/* Badges */
+.row-ontem td{background:#eff6ff!important}.row-ontem:hover td{background:#dbeafe!important}
 .badge{display:inline-block;padding:2px 6px;border-radius:9px;font-size:10.5px;font-weight:600}
 .badge.high{background:#fee2e2;color:#dc2626}.badge.medium{background:#fef9c3;color:#b45309}.badge.low{background:#f1f5f9;color:#64748b}
 .badge.Morno{background:#fef3c7;color:#d97706}.badge.Quente{background:#fee2e2;color:#dc2626}.badge.Frio{background:#dbeafe;color:#1d4ed8}
 .badge.A{background:#d1fae5;color:#059669}.badge.B{background:#dbeafe;color:#1d4ed8}.badge.C{background:#f1f5f9;color:#64748b}
 .badge.venda{background:#d1fae5;color:#059669}.badge.lost{background:#fee2e2;color:#dc2626}
 .badge.open{background:#fef3c7;color:#b45309}.badge.converted{background:#ede9fe;color:#7c3aed}
-.badge.ontem-tag{background:#dbeafe;color:#1d4ed8;font-size:9.5px}
-
-/* Sentiment bars */
+.badge.tag-ontem{background:#dbeafe;color:#1d4ed8;font-size:9.5px}
+.badge.MBA{background:#ede9fe;color:#7c3aed}.badge.Bootcamp{background:#d1fae5;color:#059669}
 .sbars{display:flex;height:12px;border-radius:3px;overflow:hidden;min-width:70px;background:#f1f5f9}
 .spos{background:#10b981}.sneu{background:#cbd5e1}.sneg{background:#ef4444}
 .slbls{font-size:9.5px;color:#64748b;margin-top:1px}
 .sem{color:#cbd5e1;font-size:11px;font-style:italic}
-
-/* Bars */
 .bar-wrap{display:flex;align-items:center;gap:7px;margin-bottom:6px}
 .bar-bg{flex:1;background:#e2e8f0;border-radius:3px;height:9px;overflow:hidden}
 .bar-fill{height:100%;border-radius:3px}
 .bar-lbl{font-size:11.5px;color:#475569;min-width:95px}
 .bar-val{font-size:11.5px;color:#1e293b;font-weight:600;min-width:55px;text-align:right}
-
-/* Funnel */
-.funnel-row{display:flex;align-items:center;gap:9px;margin-bottom:4px}
-.funnel-lbl{font-size:11px;color:#475569;min-width:180px}
-.funnel-bar{flex:1;background:#e2e8f0;border-radius:3px;height:19px;overflow:hidden}
-.funnel-fill{height:100%;border-radius:3px;display:flex;align-items:center;padding-left:7px;font-size:10px;color:#fff;font-weight:700}
-
-/* Layout */
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px}
 .card{background:#fff;border-radius:9px;padding:13px 15px;box-shadow:0 1px 3px rgba(0,0,0,.07)}
 .alert{border-radius:7px;padding:9px 13px;margin-bottom:7px;font-size:12px;border-left:4px solid}
 .alert.critical{background:#fef2f2;border-color:#ef4444}
 .alert.warning{background:#fffbeb;border-color:#f59e0b}
 .alert.info{background:#eff6ff;border-color:#3b82f6}
-.filter-row{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:9px;align-items:center;font-size:11.5px}
+.filter-row{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:9px;align-items:center;font-size:11.5px;background:#f8fafc;padding:8px 10px;border-radius:7px;border:1px solid #e2e8f0}
 .filter-row label{color:#475569;font-weight:600}
-.filter-row select{font-size:11.5px;padding:3px 6px;border:1px solid #e2e8f0;border-radius:5px}
-.legend{display:flex;gap:12px;font-size:11px;color:#64748b;margin-bottom:8px;align-items:center}
-.leg-dot{width:10px;height:10px;border-radius:2px;display:inline-block;margin-right:3px}
+.filter-row select{font-size:11.5px;padding:3px 6px;border:1px solid #e2e8f0;border-radius:5px;background:#fff;color:#1e293b}
+.legend{display:flex;gap:12px;font-size:11px;color:#64748b;margin-bottom:8px;flex-wrap:wrap}
+.leg{display:flex;align-items:center;gap:4px}
+.leg-dot{width:12px;height:12px;border-radius:2px}
 </style>
 </head>
 <body>
 <header>
-  <div>
-    <div class="sub">TripleTen Brasil · Pipeline Brazil / Sales</div>
-    <h1>📊 Dashboard Diário de Reuniões — 02/09/2026</h1>
-  </div>
-  <div style="text-align:right;font-size:11px;opacity:.85">HubSpot + Elephan<br>03/09/2026 10:01</div>
+  <div><div class="sub">TripleTen Brasil · Pipeline Brazil / Sales</div>
+  <h1>📊 Dashboard Diário de Reuniões — 02/09/2026</h1></div>
+  <div style="text-align:right;font-size:11px;opacity:.85">HubSpot + Elephan<br>03/09/2026 10:08</div>
 </header>
-
 <div class="tabs">
   <div class="tab active" onclick="showTab('mkt',this)">📈 Marketing</div>
   <div class="tab" onclick="showTab('vendas',this)">🎯 Vendas</div>
@@ -99,524 +77,545 @@ tr:hover td{background:#eff6ff}
 
 <!-- ═══ MARKETING ═══ -->
 <div class="content active" id="tab-mkt">
-
-<div class="section-label">🟦 Leads criados em 02/09/2026 (visão do novo dia)</div>
+<div class="sec">🟦 Leads criados em 02/09/2026</div>
 <div class="kpi-grid">
   <div class="kpi"><div class="kpi-val">184</div><div class="kpi-lbl">Leads Criados</div></div>
-  <div class="kpi o"><div class="kpi-val">22</div><div class="kpi-lbl">Meeting Scheduled</div><div class="kpi-sub">de leads de ontem</div></div>
-  <div class="kpi g"><div class="kpi-val">9</div><div class="kpi-lbl">Atendidas</div><div class="kpi-sub">de leads de ontem</div></div>
-  <div class="kpi s"><div class="kpi-val">0</div><div class="kpi-lbl">No-Shows</div><div class="kpi-sub">de leads de ontem</div></div>
-  <div class="kpi g"><div class="kpi-val">1</div><div class="kpi-lbl">Pagamentos</div><div class="kpi-sub">de leads de ontem</div></div>
-  <div class="kpi r"><div class="kpi-val">5</div><div class="kpi-lbl">Closed-Lost</div><div class="kpi-sub">de leads de ontem</div></div>
+  <div class="kpi o"><div class="kpi-val">22</div><div class="kpi-lbl">Meeting Scheduled</div></div>
+  <div class="kpi g"><div class="kpi-val">9</div><div class="kpi-lbl">Reuniões Atendidas</div></div>
+  <div class="kpi s"><div class="kpi-val">0</div><div class="kpi-lbl">No-Shows</div></div>
+  <div class="kpi g"><div class="kpi-val">1</div><div class="kpi-lbl">Pagamentos</div></div>
+  <div class="kpi r"><div class="kpi-val">5</div><div class="kpi-lbl">Closed-Lost</div></div>
 </div>
-
-<div class="section-label">🟧 Total de ações ocorridas em 02/09/2026 (todos os leads)</div>
+<div class="sec">🟧 Total de ações em 02/09/2026 — todos os leads</div>
 <div class="kpi-grid">
-  <div class="kpi g">
-    <div class="kpi-val">48</div><div class="kpi-lbl">Reuniões Atendidas</div>
-    <div class="kpi-split"><span class="ontem">🔵 9 de ontem</span><span class="outros">⬜ 39 de outros dias</span></div>
-  </div>
-  <div class="kpi o">
-    <div class="kpi-val">57</div><div class="kpi-lbl">No-Shows</div>
-    <div class="kpi-sub">Taxa: 54%</div>
-    <div class="kpi-split"><span class="ontem">🔵 0 de ontem</span><span class="outros">⬜ 57 de outros dias</span></div>
-  </div>
-  <div class="kpi p">
-    <div class="kpi-val">115</div><div class="kpi-lbl">Meeting Scheduled</div>
-    <div class="kpi-split"><span class="ontem">🔵 22 ontem</span><span class="outros">⬜ 93 outros</span></div>
-  </div>
-  <div class="kpi g">
-    <div class="kpi-val">6</div><div class="kpi-lbl">Pagamentos</div>
-    <div class="kpi-sub">Conv.: 12% das atendidas</div>
-    <div class="kpi-split"><span class="ontem">🔵 1 ontem</span><span class="outros">⬜ 5 outros</span></div>
-  </div>
-  <div class="kpi r">
-    <div class="kpi-val">327</div><div class="kpi-lbl">Closed-Lost</div>
-    <div class="kpi-split"><span class="ontem">🔵 5 ontem</span><span class="outros">⬜ 322 outros</span></div>
-  </div>
-  <div class="kpi t">
-    <div class="kpi-val">1.6d</div><div class="kpi-lbl">Ciclo Médio</div>
-    <div class="kpi-sub">17 mesmo dia (35%)</div>
-  </div>
+  <div class="kpi g"><div class="kpi-val">48</div><div class="kpi-lbl">Reuniões Atendidas</div><div class="kpi-split"><span class="bl">🔵 9 de ontem</span><br><span class="gr">⬜ 39 de dias anteriores</span></div></div>
+  <div class="kpi o"><div class="kpi-val">57</div><div class="kpi-lbl">No-Shows</div><div class="kpi-sub">Taxa: 54%</div><div class="kpi-split"><span class="bl">🔵 0 ontem</span><br><span class="gr">⬜ 57 anteriores</span></div></div>
+  <div class="kpi p"><div class="kpi-val">115</div><div class="kpi-lbl">Meeting Scheduled</div><div class="kpi-split"><span class="bl">🔵 22 ontem</span><br><span class="gr">⬜ 93 anteriores</span></div></div>
+  <div class="kpi g"><div class="kpi-val">6</div><div class="kpi-lbl">Pagamentos</div><div class="kpi-sub">Conv.: 12%</div><div class="kpi-split"><span class="bl">🔵 1 ontem</span><br><span class="gr">⬜ 5 anteriores</span></div></div>
+  <div class="kpi r"><div class="kpi-val">327</div><div class="kpi-lbl">Closed-Lost</div><div class="kpi-split"><span class="bl">🔵 5 ontem</span><br><span class="gr">⬜ 322 anteriores</span></div></div>
+  <div class="kpi t"><div class="kpi-val">1.9d</div><div class="kpi-lbl">Ciclo Médio</div><div class="kpi-sub">10 mesmo dia</div></div>
 </div>
 
 <div class="legend">
-  <div><span class="leg-dot" style="background:#dbeafe"></span>Linha azul = lead criado em 02/09/2026</div>
-  <div><span class="leg-dot" style="background:#f1f5f9;border:1px solid #cbd5e1"></span>Sem destaque = lead de dia anterior</div>
+  <div class="leg"><div class="leg-dot" style="background:#dbeafe;border:1px solid #93c5fd"></div>Linha azul = lead criado em 02/09/2026</div>
+  <div class="leg"><div class="leg-dot" style="background:#f8fafc;border:1px solid #e2e8f0"></div>Lead de dia anterior</div>
+  <div class="leg"><div class="leg-dot" style="background:#ede9fe"></div>MBA</div>
+  <div class="leg"><div class="leg-dot" style="background:#d1fae5"></div>Bootcamp</div>
 </div>
-
-<h2>⚡ Conversões Mesmo Dia (17 leads criados e atendidos em 02/09/2026)</h2>
-<table>
-<tr><th>Lead</th><th>Closer</th><th>Curso</th><th>Medium</th><th>Score</th><th>Priority</th><th>Temp</th><th>Resultado</th></tr>
-<tr class='ontem-row'><td><span class='badge ontem-tag'>ONTEM</span> <b>Artur de Jesus Leal</b></td><td style='font-size:11px'>Bernardo Magalhaes</td><td>DA</td><td>crm</td><td><b>2</b></td><td><span class='badge high'>HIG</span></td><td><span class='badge Morno'>Morno</span></td><td><span class='badge open'>⏳ Em aberto</span></td></tr>
-<tr><td><b>Thiago</b></td><td style='font-size:11px'>Vinicius Leao</td><td>DS</td><td>cpc</td><td><b>5</b></td><td><span class='badge high'>HIG</span></td><td><span class='badge Morno'>Morno</span></td><td><span class='badge open'>⏳ Em aberto</span></td></tr>
-<tr class='ontem-row'><td><span class='badge ontem-tag'>ONTEM</span> <b>Fábio de Toledo Pierri Ribeiro Sampaio</b></td><td style='font-size:11px'>ID 1201941990</td><td>MBA AI</td><td>cpc</td><td><b>6</b></td><td><span class='badge high'>HIG</span></td><td><span class='badge Morno'>Morno</span></td><td><span class='badge open'>⏳ Em aberto</span></td></tr>
-<tr class='ontem-row'><td><span class='badge ontem-tag'>ONTEM</span> <b>GIL ANDERSON OLIVEIRA DEIRO</b></td><td style='font-size:11px'>Bernardo Magalhaes</td><td>DS</td><td>bloggers</td><td><b>2</b></td><td><span class='badge high'>HIG</span></td><td><span class='badge Morno'>Morno</span></td><td><span class='badge lost'>❌ LOST</span></td></tr>
-<tr><td><b>Renata Costa</b></td><td style='font-size:11px'>Yanara Silva</td><td>DA</td><td>cpc</td><td><b>4</b></td><td><span class='badge high'>HIG</span></td><td><span class='badge Morno'>Morno</span></td><td><span class='badge open'>⏳ Em aberto</span></td></tr>
-<tr class='ontem-row'><td><span class='badge ontem-tag'>ONTEM</span> <b>Dieyson Merquides</b></td><td style='font-size:11px'>Lucas Bonow</td><td>MBA DS</td><td>cpc</td><td><b>3</b></td><td><span class='badge medium'>MED</span></td><td><span class='badge Morno'>Morno</span></td><td><span class='badge open'>⏳ Em aberto</span></td></tr>
-<tr class='ontem-row'><td><span class='badge ontem-tag'>ONTEM</span> <b>PEDRO HENRIQUE FIGUEIREDO BONFIM</b></td><td style='font-size:11px'>Erick Paiva</td><td>DA</td><td>bloggers</td><td><b>0</b></td><td><span class='badge medium'>MED</span></td><td><span class='badge Quente'>Quente</span></td><td><span class='badge open'>⏳ Em aberto</span></td></tr>
-<tr class='ontem-row'><td><span class='badge ontem-tag'>ONTEM</span> <b>Phablo Ramires</b></td><td style='font-size:11px'>Lucas Bonow</td><td>QA</td><td>cpc</td><td><b>6</b></td><td><span class='badge high'>HIG</span></td><td><span class='badge Morno'>Morno</span></td><td><span class='badge open'>⏳ Em aberto</span></td></tr>
-<tr><td><b>Catarina Sarmiento</b></td><td style='font-size:11px'>Erick Paiva</td><td>QA</td><td>crm</td><td><b>5</b></td><td><span class='badge high'>HIG</span></td><td><span class='badge Morno'>Morno</span></td><td><span class='badge open'>⏳ Em aberto</span></td></tr>
-<tr><td><b>Paula de</b></td><td style='font-size:11px'>Yanara Silva</td><td>DA</td><td>smm</td><td><b>2</b></td><td><span class='badge medium'>MED</span></td><td><span class='badge Morno'>Morno</span></td><td><span class='badge lost'>❌ LOST</span></td></tr>
-<tr class='ontem-row'><td><span class='badge ontem-tag'>ONTEM</span> <b>Jose Carlos Ferreira Junior</b></td><td style='font-size:11px'>Yanara Silva</td><td>MBA AI</td><td>bloggers</td><td><b>7</b></td><td><span class='badge high'>HIG</span></td><td><span class='badge Morno'>Morno</span></td><td><span class='badge open'>⏳ Em aberto</span></td></tr>
-<tr><td><b>Cristiano Eugenio</b></td><td style='font-size:11px'>Vinicius Leao</td><td>WD</td><td>cpc</td><td><b>1</b></td><td><span class='badge medium'>MED</span></td><td><span class='badge Morno'>Morno</span></td><td><span class='badge open'>⏳ Em aberto</span></td></tr>
-<tr class='ontem-row'><td><span class='badge ontem-tag'>ONTEM</span> <b>Juliana Vieira</b></td><td style='font-size:11px'>Daniel Augusto  Macedo Ribeiro</td><td>DS</td><td>crm</td><td><b>4</b></td><td><span class='badge high'>HIG</span></td><td><span class='badge Frio'>Frio</span></td><td><span class='badge open'>⏳ Em aberto</span></td></tr>
-<tr class='ontem-row'><td><span class='badge ontem-tag'>ONTEM</span> <b>Gabriela Jobim da Silva</b></td><td style='font-size:11px'>Jessica Silva</td><td>DA</td><td>crm</td><td><b>-2</b></td><td><span class='badge high'>HIG</span></td><td><span class='badge Morno'>Morno</span></td><td><span class='badge open'>⏳ Em aberto</span></td></tr>
-<tr class='ontem-row'><td><span class='badge ontem-tag'>ONTEM</span> <b>Juan Emerson Silva Rocha</b></td><td style='font-size:11px'>ID 34045065</td><td>DS</td><td>cpc</td><td><b>4</b></td><td><span class='badge high'>HIG</span></td><td><span class='badge Quente'>Quente</span></td><td><span class='badge open'>⏳ Em aberto</span></td></tr>
-<tr class='ontem-row'><td><span class='badge ontem-tag'>ONTEM</span> <b>Joao Victor</b></td><td style='font-size:11px'>Jessica Silva</td><td>DA</td><td>smm</td><td><b>0</b></td><td><span class='badge low'>LOW</span></td><td><span class='badge Quente'>Quente</span></td><td><span class='badge open'>⏳ Em aberto</span></td></tr>
-<tr><td><b>Katiuscia Keller</b></td><td style='font-size:11px'>Bruno Marques</td><td>DA</td><td></td><td><b>9</b></td><td><span class='badge high'>HIG</span></td><td><span class='badge Quente'>Quente</span></td><td><span class='badge converted'>✅ CONVERTIDO</span></td></tr>
-</table>
 
 <h2>📋 Todas as 48 Reuniões Atendidas em 02/09/2026</h2>
 <div class="filter-row">
+  <label>Dia do Lead:</label>
+  <select data-tbl="tbl-ma" data-field="ontem" onchange="applyFilters('tbl-ma')">
+    <option value="">Todos os dias</option>
+    <option value="true">📅 Criado em 02/09/2026 (ontem)</option>
+    <option value="false">📆 Criados em dias anteriores</option>
+  </select>
+  <label>Tipo Curso:</label>
+  <select data-tbl="tbl-ma" data-field="curso_tipo" onchange="applyFilters('tbl-ma')">
+    <option value="">MBA + Bootcamp</option>
+    <option value="MBA">🎓 MBA</option>
+    <option value="Bootcamp">💻 Bootcamp</option>
+  </select>
   <label>Medium:</label>
-  <select onchange="filterRows('ma','medium',this.value)"><option value="">Todos</option><option>cpc</option><option>crm</option><option>bloggers</option><option>smm</option></select>
+  <select data-tbl="tbl-ma" data-field="medium" onchange="applyFilters('tbl-ma')">
+    <option value="">Todos</option><option>cpc</option><option>crm</option><option>bloggers</option><option>smm</option>
+  </select>
   <label>Priority:</label>
-  <select onchange="filterRows('ma','priority',this.value)"><option value="">Todos</option><option>high</option><option>medium</option><option>low</option></select>
-  <label>Temp:</label>
-  <select onchange="filterRows('ma','temp',this.value)"><option value="">Todos</option><option>Quente</option><option>Morno</option><option>Frio</option></select>
-  <label>Lead de ontem:</label>
-  <select onchange="filterRows('ma','ontem',this.value)"><option value="">Todos</option><option value="true">Sim</option><option value="false">Não</option></select>
+  <select data-tbl="tbl-ma" data-field="priority" onchange="applyFilters('tbl-ma')">
+    <option value="">Todos</option><option>high</option><option>medium</option><option>low</option>
+  </select>
+  <label>Temperatura:</label>
+  <select data-tbl="tbl-ma" data-field="temp" onchange="applyFilters('tbl-ma')">
+    <option value="">Todos</option><option>Quente</option><option>Morno</option><option>Frio</option>
+  </select>
+  <button onclick="clearFilters('tbl-ma')" style="font-size:11px;padding:3px 8px;border:1px solid #e2e8f0;border-radius:5px;background:#fff;cursor:pointer;color:#64748b">✕ Limpar</button>
 </div>
 <table id="tbl-ma">
-<tr><th>Lead</th><th>Closer</th><th>Curso</th><th>Medium</th><th>Pri.</th><th>Score</th><th>Temp</th><th>Payable</th><th>Ciclo</th><th>Pot.</th><th>Sentimento</th><th>Resultado</th></tr>
-<tr class='ontem-row' data-medium="crm" data-priority="high" data-temp="Morno" data-ontem="true">
-<td><span class='badge ontem-tag'>ONTEM</span> Artur de Jesus Leal</td><td style="font-size:11px">Bernardo Magalhaes</td><td>DA</td>
-<td>crm</td><td><span class="badge high">HIG</span></td>
+<tr><th>Lead</th><th>Dia Lead</th><th>Closer</th><th>Curso</th><th>Tipo</th><th>Med.</th><th>Pri.</th><th>Score</th><th>Temp</th><th>Pay.</th><th>Ciclo</th><th>Pot.</th><th>Sentimento</th><th>Resultado</th></tr>
+<tr class='row-ontem' data-medium="crm" data-priority="high" data-temp="Morno" data-ontem="true" data-curso_tipo="Bootcamp">
+<td><b>Artur de Jesus Leal</b></td><td><span class='badge tag-ontem'>02/09</span></td><td style="font-size:11px">Bernardo Magalhaes</td>
+<td>DA</td><td><span class='badge Bootcamp'>Bootcamp</span></td><td>crm</td>
+<td><span class="badge high">HIG</span></td>
 <td><b>2</b></td><td><span class="badge Morno">Morno</span></td>
 <td>—</td><td>0d</td>
 <td><span class="badge C">C</span></td>
-<td><div class="sbars"><div class="spos" style="width:26%" title="+26%"></div><div class="sneu" style="width:66%"></div><div class="sneg" style="width:8%" title="-8%"></div></div><div class="slbls">+26% / -8%</div></td>
+<td><div class="sbars"><div class="spos" style="width:26%"></div><div class="sneu" style="width:66%"></div><div class="sneg" style="width:8%"></div></div><div class="slbls">+26% / -8%</div></td>
 <td><span class='badge open'>⏳ Em aberto</span></td>
 </tr>
-<tr data-medium="cpc" data-priority="high" data-temp="Morno" data-ontem="false">
-<td>Thiago</td><td style="font-size:11px">Vinicius Leao</td><td>DS</td>
-<td>cpc</td><td><span class="badge high">HIG</span></td>
+<tr data-medium="cpc" data-priority="high" data-temp="Morno" data-ontem="false" data-curso_tipo="Bootcamp">
+<td><b>Thiago</b></td><td><span style='color:#94a3b8;font-size:11px'>anterior</span></td><td style="font-size:11px">Vinicius Leao</td>
+<td>DS</td><td><span class='badge Bootcamp'>Bootcamp</span></td><td>cpc</td>
+<td><span class="badge high">HIG</span></td>
 <td><b>5</b></td><td><span class="badge Morno">Morno</span></td>
-<td>—</td><td>0d</td>
+<td>—</td><td>1d</td>
 <td><span class="badge B">B</span></td>
-<td><div class="sbars"><div class="spos" style="width:54%" title="+54%"></div><div class="sneu" style="width:44%"></div><div class="sneg" style="width:3%" title="-3%"></div></div><div class="slbls">+54% / -3%</div></td>
+<td><div class="sbars"><div class="spos" style="width:54%"></div><div class="sneu" style="width:44%"></div><div class="sneg" style="width:3%"></div></div><div class="slbls">+54% / -3%</div></td>
 <td><span class='badge open'>⏳ Em aberto</span></td>
 </tr>
-<tr data-medium="cpc" data-priority="high" data-temp="Frio" data-ontem="false">
-<td>João Lucas Matteucci César</td><td style="font-size:11px">Daniel Augusto  Macedo Ribeiro</td><td>DS</td>
-<td>cpc</td><td><span class="badge high">HIG</span></td>
+<tr data-medium="cpc" data-priority="high" data-temp="Frio" data-ontem="false" data-curso_tipo="Bootcamp">
+<td><b>João Lucas Matteucci César</b></td><td><span style='color:#94a3b8;font-size:11px'>anterior</span></td><td style="font-size:11px">Daniel Augusto  Macedo Ribeiro</td>
+<td>DS</td><td><span class='badge Bootcamp'>Bootcamp</span></td><td>cpc</td>
+<td><span class="badge high">HIG</span></td>
 <td><b>6</b></td><td><span class="badge Frio">Frio</span></td>
 <td>✅</td><td>1d</td>
 <td><span class="badge A">A</span></td>
-<td><div class="sbars"><div class="spos" style="width:35%" title="+35%"></div><div class="sneu" style="width:63%"></div><div class="sneg" style="width:3%" title="-3%"></div></div><div class="slbls">+35% / -3%</div></td>
+<td><div class="sbars"><div class="spos" style="width:35%"></div><div class="sneu" style="width:63%"></div><div class="sneg" style="width:3%"></div></div><div class="slbls">+35% / -3%</div></td>
 <td><span class='badge open'>⏳ Em aberto</span></td>
 </tr>
-<tr class='ontem-row' data-medium="cpc" data-priority="high" data-temp="Morno" data-ontem="true">
-<td><span class='badge ontem-tag'>ONTEM</span> Fábio de Toledo Pierri Ribeiro Sampaio</td><td style="font-size:11px">ID 1201941990</td><td>MBA AI</td>
-<td>cpc</td><td><span class="badge high">HIG</span></td>
+<tr class='row-ontem' data-medium="cpc" data-priority="high" data-temp="Morno" data-ontem="true" data-curso_tipo="MBA">
+<td><b>Fábio de Toledo Pierri Ribeiro Sampaio</b></td><td><span class='badge tag-ontem'>02/09</span></td><td style="font-size:11px">ID 1201941990</td>
+<td>MBA AI</td><td><span class='badge MBA'>MBA</span></td><td>cpc</td>
+<td><span class="badge high">HIG</span></td>
 <td><b>6</b></td><td><span class="badge Morno">Morno</span></td>
 <td>—</td><td>0d</td>
 <td><span class="badge B">B</span></td>
 <td><span class="sem">sem dados</span></td>
 <td><span class='badge open'>⏳ Em aberto</span></td>
 </tr>
-<tr class='ontem-row' data-medium="bloggers" data-priority="high" data-temp="Morno" data-ontem="true">
-<td><span class='badge ontem-tag'>ONTEM</span> GIL ANDERSON OLIVEIRA DEIRO</td><td style="font-size:11px">Bernardo Magalhaes</td><td>DS</td>
-<td>bloggers</td><td><span class="badge high">HIG</span></td>
+<tr class='row-ontem' data-medium="bloggers" data-priority="high" data-temp="Morno" data-ontem="true" data-curso_tipo="Bootcamp">
+<td><b>GIL ANDERSON OLIVEIRA DEIRO</b></td><td><span class='badge tag-ontem'>02/09</span></td><td style="font-size:11px">Bernardo Magalhaes</td>
+<td>DS</td><td><span class='badge Bootcamp'>Bootcamp</span></td><td>bloggers</td>
+<td><span class="badge high">HIG</span></td>
 <td><b>2</b></td><td><span class="badge Morno">Morno</span></td>
 <td>—</td><td>0d</td>
 <td><span class="badge C">C</span></td>
-<td><div class="sbars"><div class="spos" style="width:29%" title="+29%"></div><div class="sneu" style="width:63%"></div><div class="sneg" style="width:8%" title="-8%"></div></div><div class="slbls">+29% / -8%</div></td>
+<td><div class="sbars"><div class="spos" style="width:29%"></div><div class="sneu" style="width:63%"></div><div class="sneg" style="width:8%"></div></div><div class="slbls">+29% / -8%</div></td>
 <td><span class='badge lost'>❌ LOST</span></td>
 </tr>
-<tr data-medium="cpc" data-priority="high" data-temp="Morno" data-ontem="false">
-<td>Renata Costa</td><td style="font-size:11px">Yanara Silva</td><td>DA</td>
-<td>cpc</td><td><span class="badge high">HIG</span></td>
+<tr data-medium="cpc" data-priority="high" data-temp="Morno" data-ontem="false" data-curso_tipo="Bootcamp">
+<td><b>Renata Costa</b></td><td><span style='color:#94a3b8;font-size:11px'>anterior</span></td><td style="font-size:11px">Yanara Silva</td>
+<td>DA</td><td><span class='badge Bootcamp'>Bootcamp</span></td><td>cpc</td>
+<td><span class="badge high">HIG</span></td>
 <td><b>4</b></td><td><span class="badge Morno">Morno</span></td>
-<td>—</td><td>0d</td>
+<td>—</td><td>1d</td>
 <td><span class="badge B">B</span></td>
-<td><div class="sbars"><div class="spos" style="width:35%" title="+35%"></div><div class="sneu" style="width:49%"></div><div class="sneg" style="width:16%" title="-16%"></div></div><div class="slbls">+35% / -16%</div></td>
+<td><div class="sbars"><div class="spos" style="width:35%"></div><div class="sneu" style="width:49%"></div><div class="sneg" style="width:16%"></div></div><div class="slbls">+35% / -16%</div></td>
 <td><span class='badge open'>⏳ Em aberto</span></td>
 </tr>
-<tr class='ontem-row' data-medium="cpc" data-priority="medium" data-temp="Morno" data-ontem="true">
-<td><span class='badge ontem-tag'>ONTEM</span> Dieyson Merquides</td><td style="font-size:11px">Lucas Bonow</td><td>MBA DS</td>
-<td>cpc</td><td><span class="badge medium">MED</span></td>
+<tr class='row-ontem' data-medium="cpc" data-priority="medium" data-temp="Morno" data-ontem="true" data-curso_tipo="MBA">
+<td><b>Dieyson Merquides</b></td><td><span class='badge tag-ontem'>02/09</span></td><td style="font-size:11px">Lucas Bonow</td>
+<td>MBA DS</td><td><span class='badge MBA'>MBA</span></td><td>cpc</td>
+<td><span class="badge medium">MED</span></td>
 <td><b>3</b></td><td><span class="badge Morno">Morno</span></td>
 <td>✅</td><td>0d</td>
 <td><span class="badge B">B</span></td>
-<td><div class="sbars"><div class="spos" style="width:30%" title="+30%"></div><div class="sneu" style="width:47%"></div><div class="sneg" style="width:23%" title="-23%"></div></div><div class="slbls">+30% / -23%</div></td>
+<td><div class="sbars"><div class="spos" style="width:30%"></div><div class="sneu" style="width:47%"></div><div class="sneg" style="width:23%"></div></div><div class="slbls">+30% / -23%</div></td>
 <td><span class='badge open'>⏳ Em aberto</span></td>
 </tr>
-<tr class='ontem-row' data-medium="bloggers" data-priority="medium" data-temp="Quente" data-ontem="true">
-<td><span class='badge ontem-tag'>ONTEM</span> PEDRO HENRIQUE FIGUEIREDO BONFIM</td><td style="font-size:11px">Erick Paiva</td><td>DA</td>
-<td>bloggers</td><td><span class="badge medium">MED</span></td>
+<tr class='row-ontem' data-medium="bloggers" data-priority="medium" data-temp="Quente" data-ontem="true" data-curso_tipo="Bootcamp">
+<td><b>PEDRO HENRIQUE FIGUEIREDO BONFIM</b></td><td><span class='badge tag-ontem'>02/09</span></td><td style="font-size:11px">Erick Paiva</td>
+<td>DA</td><td><span class='badge Bootcamp'>Bootcamp</span></td><td>bloggers</td>
+<td><span class="badge medium">MED</span></td>
 <td><b>0</b></td><td><span class="badge Quente">Quente</span></td>
-<td>✅</td><td>0d</td>
+<td>✅</td><td>1d</td>
 <td><span class="badge B">B</span></td>
-<td><div class="sbars"><div class="spos" style="width:33%" title="+33%"></div><div class="sneu" style="width:58%"></div><div class="sneg" style="width:9%" title="-9%"></div></div><div class="slbls">+33% / -9%</div></td>
+<td><div class="sbars"><div class="spos" style="width:33%"></div><div class="sneu" style="width:58%"></div><div class="sneg" style="width:9%"></div></div><div class="slbls">+33% / -9%</div></td>
 <td><span class='badge open'>⏳ Em aberto</span></td>
 </tr>
-<tr data-medium="cpc" data-priority="high" data-temp="Frio" data-ontem="false">
-<td>Célio Rogério Lourenco</td><td style="font-size:11px">ID 34045065</td><td>DS</td>
-<td>cpc</td><td><span class="badge high">HIG</span></td>
+<tr data-medium="cpc" data-priority="high" data-temp="Frio" data-ontem="false" data-curso_tipo="Bootcamp">
+<td><b>Célio Rogério Lourenco</b></td><td><span style='color:#94a3b8;font-size:11px'>anterior</span></td><td style="font-size:11px">ID 34045065</td>
+<td>DS</td><td><span class='badge Bootcamp'>Bootcamp</span></td><td>cpc</td>
+<td><span class="badge high">HIG</span></td>
 <td><b>2</b></td><td><span class="badge Frio">Frio</span></td>
-<td>✅</td><td>4d</td>
+<td>✅</td><td>5d</td>
 <td><span class="badge B">B</span></td>
 <td><span class="sem">sem dados</span></td>
 <td><span class='badge open'>⏳ Em aberto</span></td>
 </tr>
-<tr data-medium="cpc" data-priority="high" data-temp="Morno" data-ontem="false">
-<td>Gisella</td><td style="font-size:11px">Lucas Bonow</td><td>MBA DA</td>
-<td>cpc</td><td><span class="badge high">HIG</span></td>
+<tr data-medium="cpc" data-priority="high" data-temp="Morno" data-ontem="false" data-curso_tipo="MBA">
+<td><b>Gisella</b></td><td><span style='color:#94a3b8;font-size:11px'>anterior</span></td><td style="font-size:11px">Lucas Bonow</td>
+<td>MBA DA</td><td><span class='badge MBA'>MBA</span></td><td>cpc</td>
+<td><span class="badge high">HIG</span></td>
 <td><b>6</b></td><td><span class="badge Morno">Morno</span></td>
-<td>—</td><td>8d</td>
+<td>—</td><td>9d</td>
 <td><span class="badge B">B</span></td>
-<td><div class="sbars"><div class="spos" style="width:49%" title="+49%"></div><div class="sneu" style="width:45%"></div><div class="sneg" style="width:6%" title="-6%"></div></div><div class="slbls">+49% / -6%</div></td>
+<td><div class="sbars"><div class="spos" style="width:49%"></div><div class="sneu" style="width:45%"></div><div class="sneg" style="width:6%"></div></div><div class="slbls">+49% / -6%</div></td>
 <td><span class='badge open'>⏳ Em aberto</span></td>
 </tr>
-<tr data-medium="" data-priority="high" data-temp="Morno" data-ontem="false">
-<td>Hiago Henriques</td><td style="font-size:11px">Natalia Martins</td><td>DA</td>
-<td></td><td><span class="badge high">HIG</span></td>
+<tr data-medium="" data-priority="high" data-temp="Morno" data-ontem="false" data-curso_tipo="Bootcamp">
+<td><b>Hiago Henriques</b></td><td><span style='color:#94a3b8;font-size:11px'>anterior</span></td><td style="font-size:11px">Natalia Martins</td>
+<td>DA</td><td><span class='badge Bootcamp'>Bootcamp</span></td><td></td>
+<td><span class="badge high">HIG</span></td>
 <td><b>6</b></td><td><span class="badge Morno">Morno</span></td>
 <td>—</td><td>2d</td>
 <td><span class="badge B">B</span></td>
-<td><div class="sbars"><div class="spos" style="width:35%" title="+35%"></div><div class="sneu" style="width:52%"></div><div class="sneg" style="width:13%" title="-13%"></div></div><div class="slbls">+35% / -13%</div></td>
+<td><div class="sbars"><div class="spos" style="width:35%"></div><div class="sneu" style="width:52%"></div><div class="sneg" style="width:13%"></div></div><div class="slbls">+35% / -13%</div></td>
 <td><span class='badge open'>⏳ Em aberto</span></td>
 </tr>
-<tr data-medium="cpc" data-priority="medium" data-temp="Morno" data-ontem="false">
-<td>Lucas Arashiro</td><td style="font-size:11px">Vinicius Leao</td><td>DS</td>
-<td>cpc</td><td><span class="badge medium">MED</span></td>
+<tr data-medium="cpc" data-priority="medium" data-temp="Morno" data-ontem="false" data-curso_tipo="Bootcamp">
+<td><b>Lucas Arashiro</b></td><td><span style='color:#94a3b8;font-size:11px'>anterior</span></td><td style="font-size:11px">Vinicius Leao</td>
+<td>DS</td><td><span class='badge Bootcamp'>Bootcamp</span></td><td>cpc</td>
+<td><span class="badge medium">MED</span></td>
 <td><b>0</b></td><td><span class="badge Morno">Morno</span></td>
-<td>—</td><td>1d</td>
+<td>—</td><td>2d</td>
 <td><span class="badge C">C</span></td>
-<td><div class="sbars"><div class="spos" style="width:49%" title="+49%"></div><div class="sneu" style="width:46%"></div><div class="sneg" style="width:5%" title="-5%"></div></div><div class="slbls">+49% / -5%</div></td>
+<td><div class="sbars"><div class="spos" style="width:49%"></div><div class="sneu" style="width:46%"></div><div class="sneg" style="width:5%"></div></div><div class="slbls">+49% / -5%</div></td>
 <td><span class='badge open'>⏳ Em aberto</span></td>
 </tr>
-<tr data-medium="cpc" data-priority="high" data-temp="Morno" data-ontem="false">
-<td>William Lima</td><td style="font-size:11px">Jessica Silva</td><td>WD</td>
-<td>cpc</td><td><span class="badge high">HIG</span></td>
+<tr data-medium="cpc" data-priority="high" data-temp="Morno" data-ontem="false" data-curso_tipo="Bootcamp">
+<td><b>William Lima</b></td><td><span style='color:#94a3b8;font-size:11px'>anterior</span></td><td style="font-size:11px">Jessica Silva</td>
+<td>WD</td><td><span class='badge Bootcamp'>Bootcamp</span></td><td>cpc</td>
+<td><span class="badge high">HIG</span></td>
 <td><b>4</b></td><td><span class="badge Morno">Morno</span></td>
-<td>—</td><td>1d</td>
+<td>—</td><td>2d</td>
 <td><span class="badge B">B</span></td>
-<td><div class="sbars"><div class="spos" style="width:49%" title="+49%"></div><div class="sneu" style="width:36%"></div><div class="sneg" style="width:15%" title="-15%"></div></div><div class="slbls">+49% / -15%</div></td>
+<td><div class="sbars"><div class="spos" style="width:49%"></div><div class="sneu" style="width:36%"></div><div class="sneg" style="width:15%"></div></div><div class="slbls">+49% / -15%</div></td>
 <td><span class='badge open'>⏳ Em aberto</span></td>
 </tr>
-<tr data-medium="cpc" data-priority="medium" data-temp="Morno" data-ontem="false">
-<td>Juliana Aguerra</td><td style="font-size:11px">ID 1201941994</td><td>QA</td>
-<td>cpc</td><td><span class="badge medium">MED</span></td>
+<tr data-medium="cpc" data-priority="medium" data-temp="Morno" data-ontem="false" data-curso_tipo="Bootcamp">
+<td><b>Juliana Aguerra</b></td><td><span style='color:#94a3b8;font-size:11px'>anterior</span></td><td style="font-size:11px">ID 1201941994</td>
+<td>QA</td><td><span class='badge Bootcamp'>Bootcamp</span></td><td>cpc</td>
+<td><span class="badge medium">MED</span></td>
 <td><b>1</b></td><td><span class="badge Morno">Morno</span></td>
-<td>✅</td><td>1d</td>
+<td>✅</td><td>2d</td>
 <td><span class="badge B">B</span></td>
 <td><span class="sem">sem dados</span></td>
 <td><span class='badge open'>⏳ Em aberto</span></td>
 </tr>
-<tr data-medium="cpc" data-priority="high" data-temp="Morno" data-ontem="false">
-<td>Euler Alcino</td><td style="font-size:11px">Vinicius Leao</td><td>DS</td>
-<td>cpc</td><td><span class="badge high">HIG</span></td>
+<tr data-medium="cpc" data-priority="high" data-temp="Morno" data-ontem="false" data-curso_tipo="Bootcamp">
+<td><b>Euler Alcino</b></td><td><span style='color:#94a3b8;font-size:11px'>anterior</span></td><td style="font-size:11px">Vinicius Leao</td>
+<td>DS</td><td><span class='badge Bootcamp'>Bootcamp</span></td><td>cpc</td>
+<td><span class="badge high">HIG</span></td>
 <td><b>5</b></td><td><span class="badge Morno">Morno</span></td>
-<td>—</td><td>3d</td>
+<td>—</td><td>4d</td>
 <td><span class="badge B">B</span></td>
-<td><div class="sbars"><div class="spos" style="width:8%" title="+8%"></div><div class="sneu" style="width:33%"></div><div class="sneg" style="width:59%" title="-59%"></div></div><div class="slbls">+8% / -59%</div></td>
+<td><div class="sbars"><div class="spos" style="width:8%"></div><div class="sneu" style="width:33%"></div><div class="sneg" style="width:59%"></div></div><div class="slbls">+8% / -59%</div></td>
 <td><span class='badge open'>⏳ Em aberto</span></td>
 </tr>
-<tr data-medium="cpc" data-priority="high" data-temp="Morno" data-ontem="false">
-<td>Lais Barreto</td><td style="font-size:11px">Lucas Bonow</td><td>DA</td>
-<td>cpc</td><td><span class="badge high">HIG</span></td>
+<tr data-medium="cpc" data-priority="high" data-temp="Morno" data-ontem="false" data-curso_tipo="Bootcamp">
+<td><b>Lais Barreto</b></td><td><span style='color:#94a3b8;font-size:11px'>anterior</span></td><td style="font-size:11px">Lucas Bonow</td>
+<td>DA</td><td><span class='badge Bootcamp'>Bootcamp</span></td><td>cpc</td>
+<td><span class="badge high">HIG</span></td>
 <td><b>3</b></td><td><span class="badge Morno">Morno</span></td>
 <td>—</td><td>1d</td>
 <td><span class="badge B">B</span></td>
-<td><div class="sbars"><div class="spos" style="width:56%" title="+56%"></div><div class="sneu" style="width:41%"></div><div class="sneg" style="width:3%" title="-3%"></div></div><div class="slbls">+56% / -3%</div></td>
+<td><div class="sbars"><div class="spos" style="width:56%"></div><div class="sneu" style="width:41%"></div><div class="sneg" style="width:3%"></div></div><div class="slbls">+56% / -3%</div></td>
 <td><span class='badge open'>⏳ Em aberto</span></td>
 </tr>
-<tr data-medium="bloggers" data-priority="high" data-temp="Morno" data-ontem="false">
-<td>Julia Lopes</td><td style="font-size:11px">Ana Viana</td><td>MBA AI</td>
-<td>bloggers</td><td><span class="badge high">HIG</span></td>
+<tr data-medium="bloggers" data-priority="high" data-temp="Morno" data-ontem="false" data-curso_tipo="MBA">
+<td><b>Julia Lopes</b></td><td><span style='color:#94a3b8;font-size:11px'>anterior</span></td><td style="font-size:11px">Ana Viana</td>
+<td>MBA AI</td><td><span class='badge MBA'>MBA</span></td><td>bloggers</td>
+<td><span class="badge high">HIG</span></td>
 <td><b>9</b></td><td><span class="badge Morno">Morno</span></td>
 <td>—</td><td>1d</td>
 <td><span class="badge B">B</span></td>
-<td><div class="sbars"><div class="spos" style="width:64%" title="+64%"></div><div class="sneu" style="width:32%"></div><div class="sneg" style="width:3%" title="-3%"></div></div><div class="slbls">+64% / -3%</div></td>
+<td><div class="sbars"><div class="spos" style="width:64%"></div><div class="sneu" style="width:32%"></div><div class="sneg" style="width:3%"></div></div><div class="slbls">+64% / -3%</div></td>
 <td><span class='badge open'>⏳ Em aberto</span></td>
 </tr>
-<tr data-medium="cpc" data-priority="medium" data-temp="Morno" data-ontem="false">
-<td>Gabriel Mendes</td><td style="font-size:11px">Erick Paiva</td><td>DA</td>
-<td>cpc</td><td><span class="badge medium">MED</span></td>
+<tr data-medium="cpc" data-priority="medium" data-temp="Morno" data-ontem="false" data-curso_tipo="Bootcamp">
+<td><b>Gabriel Mendes</b></td><td><span style='color:#94a3b8;font-size:11px'>anterior</span></td><td style="font-size:11px">Erick Paiva</td>
+<td>DA</td><td><span class='badge Bootcamp'>Bootcamp</span></td><td>cpc</td>
+<td><span class="badge medium">MED</span></td>
 <td><b>1</b></td><td><span class="badge Morno">Morno</span></td>
 <td>—</td><td>2d</td>
 <td><span class="badge C">C</span></td>
-<td><div class="sbars"><div class="spos" style="width:25%" title="+25%"></div><div class="sneu" style="width:66%"></div><div class="sneg" style="width:8%" title="-8%"></div></div><div class="slbls">+25% / -8%</div></td>
+<td><div class="sbars"><div class="spos" style="width:25%"></div><div class="sneu" style="width:66%"></div><div class="sneg" style="width:8%"></div></div><div class="slbls">+25% / -8%</div></td>
 <td><span class='badge open'>⏳ Em aberto</span></td>
 </tr>
-<tr data-medium="cpc" data-priority="high" data-temp="Frio" data-ontem="false">
-<td>Clayton Alves</td><td style="font-size:11px">Daniel Augusto  Macedo Ribeiro</td><td>QA</td>
-<td>cpc</td><td><span class="badge high">HIG</span></td>
+<tr data-medium="cpc" data-priority="high" data-temp="Frio" data-ontem="false" data-curso_tipo="Bootcamp">
+<td><b>Clayton Alves</b></td><td><span style='color:#94a3b8;font-size:11px'>anterior</span></td><td style="font-size:11px">Daniel Augusto  Macedo Ribeiro</td>
+<td>QA</td><td><span class='badge Bootcamp'>Bootcamp</span></td><td>cpc</td>
+<td><span class="badge high">HIG</span></td>
 <td><b>2</b></td><td><span class="badge Frio">Frio</span></td>
 <td>—</td><td>3d</td>
 <td><span class="badge C">C</span></td>
-<td><div class="sbars"><div class="spos" style="width:49%" title="+49%"></div><div class="sneu" style="width:32%"></div><div class="sneg" style="width:20%" title="-20%"></div></div><div class="slbls">+49% / -20%</div></td>
+<td><div class="sbars"><div class="spos" style="width:49%"></div><div class="sneu" style="width:32%"></div><div class="sneg" style="width:20%"></div></div><div class="slbls">+49% / -20%</div></td>
 <td><span class='badge lost'>❌ LOST</span></td>
 </tr>
-<tr data-medium="cpc" data-priority="medium" data-temp="Morno" data-ontem="false">
-<td>Júlio André Santos</td><td style="font-size:11px">Lucas Bonow</td><td>DA</td>
-<td>cpc</td><td><span class="badge medium">MED</span></td>
+<tr data-medium="cpc" data-priority="medium" data-temp="Morno" data-ontem="false" data-curso_tipo="Bootcamp">
+<td><b>Júlio André Santos</b></td><td><span style='color:#94a3b8;font-size:11px'>anterior</span></td><td style="font-size:11px">Lucas Bonow</td>
+<td>DA</td><td><span class='badge Bootcamp'>Bootcamp</span></td><td>cpc</td>
+<td><span class="badge medium">MED</span></td>
 <td><b>2</b></td><td><span class="badge Morno">Morno</span></td>
 <td>—</td><td>13d</td>
 <td><span class="badge C">C</span></td>
-<td><div class="sbars"><div class="spos" style="width:48%" title="+48%"></div><div class="sneu" style="width:45%"></div><div class="sneg" style="width:7%" title="-7%"></div></div><div class="slbls">+48% / -7%</div></td>
+<td><div class="sbars"><div class="spos" style="width:48%"></div><div class="sneu" style="width:45%"></div><div class="sneg" style="width:7%"></div></div><div class="slbls">+48% / -7%</div></td>
 <td><span class='badge open'>⏳ Em aberto</span></td>
 </tr>
-<tr class='ontem-row' data-medium="cpc" data-priority="high" data-temp="Morno" data-ontem="true">
-<td><span class='badge ontem-tag'>ONTEM</span> Phablo Ramires</td><td style="font-size:11px">Lucas Bonow</td><td>QA</td>
-<td>cpc</td><td><span class="badge high">HIG</span></td>
+<tr class='row-ontem' data-medium="cpc" data-priority="high" data-temp="Morno" data-ontem="true" data-curso_tipo="Bootcamp">
+<td><b>Phablo Ramires</b></td><td><span class='badge tag-ontem'>02/09</span></td><td style="font-size:11px">Lucas Bonow</td>
+<td>QA</td><td><span class='badge Bootcamp'>Bootcamp</span></td><td>cpc</td>
+<td><span class="badge high">HIG</span></td>
 <td><b>6</b></td><td><span class="badge Morno">Morno</span></td>
 <td>—</td><td>0d</td>
 <td><span class="badge B">B</span></td>
-<td><div class="sbars"><div class="spos" style="width:51%" title="+51%"></div><div class="sneu" style="width:33%"></div><div class="sneg" style="width:15%" title="-15%"></div></div><div class="slbls">+51% / -15%</div></td>
+<td><div class="sbars"><div class="spos" style="width:51%"></div><div class="sneu" style="width:33%"></div><div class="sneg" style="width:15%"></div></div><div class="slbls">+51% / -15%</div></td>
 <td><span class='badge open'>⏳ Em aberto</span></td>
 </tr>
-<tr data-medium="crm" data-priority="high" data-temp="Morno" data-ontem="false">
-<td>Catarina Sarmiento</td><td style="font-size:11px">Erick Paiva</td><td>QA</td>
-<td>crm</td><td><span class="badge high">HIG</span></td>
+<tr data-medium="crm" data-priority="high" data-temp="Morno" data-ontem="false" data-curso_tipo="Bootcamp">
+<td><b>Catarina Sarmiento</b></td><td><span style='color:#94a3b8;font-size:11px'>anterior</span></td><td style="font-size:11px">Erick Paiva</td>
+<td>QA</td><td><span class='badge Bootcamp'>Bootcamp</span></td><td>crm</td>
+<td><span class="badge high">HIG</span></td>
 <td><b>5</b></td><td><span class="badge Morno">Morno</span></td>
-<td>—</td><td>0d</td>
+<td>—</td><td>1d</td>
 <td><span class="badge B">B</span></td>
-<td><div class="sbars"><div class="spos" style="width:21%" title="+21%"></div><div class="sneu" style="width:76%"></div><div class="sneg" style="width:2%" title="-2%"></div></div><div class="slbls">+21% / -2%</div></td>
+<td><div class="sbars"><div class="spos" style="width:21%"></div><div class="sneu" style="width:76%"></div><div class="sneg" style="width:2%"></div></div><div class="slbls">+21% / -2%</div></td>
 <td><span class='badge open'>⏳ Em aberto</span></td>
 </tr>
-<tr data-medium="cpc" data-priority="high" data-temp="Morno" data-ontem="false">
-<td>Eduardo Leao</td><td style="font-size:11px">Erick Paiva</td><td>MBA DA</td>
-<td>cpc</td><td><span class="badge high">HIG</span></td>
+<tr data-medium="cpc" data-priority="high" data-temp="Morno" data-ontem="false" data-curso_tipo="MBA">
+<td><b>Eduardo Leao</b></td><td><span style='color:#94a3b8;font-size:11px'>anterior</span></td><td style="font-size:11px">Erick Paiva</td>
+<td>MBA DA</td><td><span class='badge MBA'>MBA</span></td><td>cpc</td>
+<td><span class="badge high">HIG</span></td>
 <td><b>3</b></td><td><span class="badge Morno">Morno</span></td>
 <td>✅</td><td>1d</td>
 <td><span class="badge B">B</span></td>
-<td><div class="sbars"><div class="spos" style="width:21%" title="+21%"></div><div class="sneu" style="width:63%"></div><div class="sneg" style="width:15%" title="-15%"></div></div><div class="slbls">+21% / -15%</div></td>
+<td><div class="sbars"><div class="spos" style="width:21%"></div><div class="sneu" style="width:63%"></div><div class="sneg" style="width:15%"></div></div><div class="slbls">+21% / -15%</div></td>
 <td><span class='badge open'>⏳ Em aberto</span></td>
 </tr>
-<tr data-medium="cpc" data-priority="high" data-temp="Morno" data-ontem="false">
-<td>Julia Galvão</td><td style="font-size:11px">Bruno Marques</td><td>QA</td>
-<td>cpc</td><td><span class="badge high">HIG</span></td>
+<tr data-medium="cpc" data-priority="high" data-temp="Morno" data-ontem="false" data-curso_tipo="Bootcamp">
+<td><b>Julia Galvão</b></td><td><span style='color:#94a3b8;font-size:11px'>anterior</span></td><td style="font-size:11px">Bruno Marques</td>
+<td>QA</td><td><span class='badge Bootcamp'>Bootcamp</span></td><td>cpc</td>
+<td><span class="badge high">HIG</span></td>
 <td><b>4</b></td><td><span class="badge Morno">Morno</span></td>
 <td>—</td><td>7d</td>
 <td><span class="badge B">B</span></td>
-<td><div class="sbars"><div class="spos" style="width:30%" title="+30%"></div><div class="sneu" style="width:62%"></div><div class="sneg" style="width:8%" title="-8%"></div></div><div class="slbls">+30% / -8%</div></td>
+<td><div class="sbars"><div class="spos" style="width:30%"></div><div class="sneu" style="width:62%"></div><div class="sneg" style="width:8%"></div></div><div class="slbls">+30% / -8%</div></td>
 <td><span class='badge open'>⏳ Em aberto</span></td>
 </tr>
-<tr data-medium="cpc" data-priority="high" data-temp="Morno" data-ontem="false">
-<td>Daiane Duarte</td><td style="font-size:11px">Bruno Marques</td><td>DA</td>
-<td>cpc</td><td><span class="badge high">HIG</span></td>
+<tr data-medium="cpc" data-priority="high" data-temp="Morno" data-ontem="false" data-curso_tipo="Bootcamp">
+<td><b>Daiane Duarte</b></td><td><span style='color:#94a3b8;font-size:11px'>anterior</span></td><td style="font-size:11px">Bruno Marques</td>
+<td>DA</td><td><span class='badge Bootcamp'>Bootcamp</span></td><td>cpc</td>
+<td><span class="badge high">HIG</span></td>
 <td><b>1</b></td><td><span class="badge Morno">Morno</span></td>
 <td>✅</td><td>4d</td>
 <td><span class="badge B">B</span></td>
-<td><div class="sbars"><div class="spos" style="width:33%" title="+33%"></div><div class="sneu" style="width:61%"></div><div class="sneg" style="width:7%" title="-7%"></div></div><div class="slbls">+33% / -7%</div></td>
+<td><div class="sbars"><div class="spos" style="width:33%"></div><div class="sneu" style="width:61%"></div><div class="sneg" style="width:7%"></div></div><div class="slbls">+33% / -7%</div></td>
 <td><span class='badge open'>⏳ Em aberto</span></td>
 </tr>
-<tr data-medium="smm" data-priority="high" data-temp="Morno" data-ontem="false">
-<td>Antônio Rafael</td><td style="font-size:11px">ID 34045065</td><td>WD</td>
-<td>smm</td><td><span class="badge high">HIG</span></td>
+<tr data-medium="smm" data-priority="high" data-temp="Morno" data-ontem="false" data-curso_tipo="Bootcamp">
+<td><b>Antônio Rafael</b></td><td><span style='color:#94a3b8;font-size:11px'>anterior</span></td><td style="font-size:11px">ID 34045065</td>
+<td>WD</td><td><span class='badge Bootcamp'>Bootcamp</span></td><td>smm</td>
+<td><span class="badge high">HIG</span></td>
 <td><b>2</b></td><td><span class="badge Morno">Morno</span></td>
 <td>✅</td><td>2d</td>
 <td><span class="badge B">B</span></td>
 <td><span class="sem">sem dados</span></td>
 <td><span class='badge open'>⏳ Em aberto</span></td>
 </tr>
-<tr data-medium="" data-priority="medium" data-temp="Quente" data-ontem="false">
-<td>Gabriel SIDA</td><td style="font-size:11px">Lucas Bonow</td><td>MBA DS</td>
-<td></td><td><span class="badge medium">MED</span></td>
+<tr data-medium="" data-priority="medium" data-temp="Quente" data-ontem="false" data-curso_tipo="MBA">
+<td><b>Gabriel SIDA</b></td><td><span style='color:#94a3b8;font-size:11px'>anterior</span></td><td style="font-size:11px">Lucas Bonow</td>
+<td>MBA DS</td><td><span class='badge MBA'>MBA</span></td><td></td>
+<td><span class="badge medium">MED</span></td>
 <td><b>3</b></td><td><span class="badge Quente">Quente</span></td>
 <td>✅</td><td>2d</td>
 <td><span class="badge B">B</span></td>
-<td><div class="sbars"><div class="spos" style="width:27%" title="+27%"></div><div class="sneu" style="width:64%"></div><div class="sneg" style="width:9%" title="-9%"></div></div><div class="slbls">+27% / -9%</div></td>
+<td><div class="sbars"><div class="spos" style="width:27%"></div><div class="sneu" style="width:64%"></div><div class="sneg" style="width:9%"></div></div><div class="slbls">+27% / -9%</div></td>
 <td><span class='badge open'>⏳ Em aberto</span></td>
 </tr>
-<tr data-medium="smm" data-priority="medium" data-temp="Morno" data-ontem="false">
-<td>Paula de</td><td style="font-size:11px">Yanara Silva</td><td>DA</td>
-<td>smm</td><td><span class="badge medium">MED</span></td>
+<tr data-medium="smm" data-priority="medium" data-temp="Morno" data-ontem="false" data-curso_tipo="Bootcamp">
+<td><b>Paula de</b></td><td><span style='color:#94a3b8;font-size:11px'>anterior</span></td><td style="font-size:11px">Yanara Silva</td>
+<td>DA</td><td><span class='badge Bootcamp'>Bootcamp</span></td><td>smm</td>
+<td><span class="badge medium">MED</span></td>
 <td><b>2</b></td><td><span class="badge Morno">Morno</span></td>
-<td>—</td><td>0d</td>
+<td>—</td><td>1d</td>
 <td><span class="badge C">C</span></td>
-<td><div class="sbars"><div class="spos" style="width:25%" title="+25%"></div><div class="sneu" style="width:69%"></div><div class="sneg" style="width:5%" title="-5%"></div></div><div class="slbls">+25% / -5%</div></td>
+<td><div class="sbars"><div class="spos" style="width:25%"></div><div class="sneu" style="width:69%"></div><div class="sneg" style="width:5%"></div></div><div class="slbls">+25% / -5%</div></td>
 <td><span class='badge lost'>❌ LOST</span></td>
 </tr>
-<tr class='ontem-row' data-medium="bloggers" data-priority="high" data-temp="Morno" data-ontem="true">
-<td><span class='badge ontem-tag'>ONTEM</span> Jose Carlos Ferreira Junior</td><td style="font-size:11px">Yanara Silva</td><td>MBA AI</td>
-<td>bloggers</td><td><span class="badge high">HIG</span></td>
+<tr class='row-ontem' data-medium="bloggers" data-priority="high" data-temp="Morno" data-ontem="true" data-curso_tipo="MBA">
+<td><b>Jose Carlos Ferreira Junior</b></td><td><span class='badge tag-ontem'>02/09</span></td><td style="font-size:11px">Yanara Silva</td>
+<td>MBA AI</td><td><span class='badge MBA'>MBA</span></td><td>bloggers</td>
+<td><span class="badge high">HIG</span></td>
 <td><b>7</b></td><td><span class="badge Morno">Morno</span></td>
 <td>—</td><td>0d</td>
 <td><span class="badge B">B</span></td>
-<td><div class="sbars"><div class="spos" style="width:54%" title="+54%"></div><div class="sneu" style="width:43%"></div><div class="sneg" style="width:3%" title="-3%"></div></div><div class="slbls">+54% / -3%</div></td>
+<td><div class="sbars"><div class="spos" style="width:54%"></div><div class="sneu" style="width:43%"></div><div class="sneg" style="width:3%"></div></div><div class="slbls">+54% / -3%</div></td>
 <td><span class='badge open'>⏳ Em aberto</span></td>
 </tr>
-<tr data-medium="cpc" data-priority="medium" data-temp="Morno" data-ontem="false">
-<td>Cristiano Eugenio</td><td style="font-size:11px">Vinicius Leao</td><td>WD</td>
-<td>cpc</td><td><span class="badge medium">MED</span></td>
+<tr data-medium="cpc" data-priority="medium" data-temp="Morno" data-ontem="false" data-curso_tipo="Bootcamp">
+<td><b>Cristiano Eugenio</b></td><td><span style='color:#94a3b8;font-size:11px'>anterior</span></td><td style="font-size:11px">Vinicius Leao</td>
+<td>WD</td><td><span class='badge Bootcamp'>Bootcamp</span></td><td>cpc</td>
+<td><span class="badge medium">MED</span></td>
 <td><b>1</b></td><td><span class="badge Morno">Morno</span></td>
-<td>—</td><td>0d</td>
+<td>—</td><td>1d</td>
 <td><span class="badge C">C</span></td>
-<td><div class="sbars"><div class="spos" style="width:18%" title="+18%"></div><div class="sneu" style="width:70%"></div><div class="sneg" style="width:12%" title="-12%"></div></div><div class="slbls">+18% / -12%</div></td>
+<td><div class="sbars"><div class="spos" style="width:18%"></div><div class="sneu" style="width:70%"></div><div class="sneg" style="width:12%"></div></div><div class="slbls">+18% / -12%</div></td>
 <td><span class='badge open'>⏳ Em aberto</span></td>
 </tr>
-<tr data-medium="cpc" data-priority="high" data-temp="Morno" data-ontem="false">
-<td>Felipe Pena</td><td style="font-size:11px">Natalia Martins</td><td>MBA AI</td>
-<td>cpc</td><td><span class="badge high">HIG</span></td>
+<tr data-medium="cpc" data-priority="high" data-temp="Morno" data-ontem="false" data-curso_tipo="MBA">
+<td><b>Felipe Pena</b></td><td><span style='color:#94a3b8;font-size:11px'>anterior</span></td><td style="font-size:11px">Natalia Martins</td>
+<td>MBA AI</td><td><span class='badge MBA'>MBA</span></td><td>cpc</td>
+<td><span class="badge high">HIG</span></td>
 <td><b>5</b></td><td><span class="badge Morno">Morno</span></td>
 <td>✅</td><td>5d</td>
 <td><span class="badge A">A</span></td>
-<td><div class="sbars"><div class="spos" style="width:61%" title="+61%"></div><div class="sneu" style="width:38%"></div><div class="sneg" style="width:1%" title="-1%"></div></div><div class="slbls">+61% / -1%</div></td>
+<td><div class="sbars"><div class="spos" style="width:61%"></div><div class="sneu" style="width:38%"></div><div class="sneg" style="width:1%"></div></div><div class="slbls">+61% / -1%</div></td>
 <td><span class='badge open'>⏳ Em aberto</span></td>
 </tr>
-<tr class='ontem-row' data-medium="crm" data-priority="high" data-temp="Frio" data-ontem="true">
-<td><span class='badge ontem-tag'>ONTEM</span> Juliana Vieira</td><td style="font-size:11px">Daniel Augusto  Macedo Ribeiro</td><td>DS</td>
-<td>crm</td><td><span class="badge high">HIG</span></td>
+<tr class='row-ontem' data-medium="crm" data-priority="high" data-temp="Frio" data-ontem="true" data-curso_tipo="Bootcamp">
+<td><b>Juliana Vieira</b></td><td><span class='badge tag-ontem'>02/09</span></td><td style="font-size:11px">Daniel Augusto  Macedo Ribeiro</td>
+<td>DS</td><td><span class='badge Bootcamp'>Bootcamp</span></td><td>crm</td>
+<td><span class="badge high">HIG</span></td>
 <td><b>4</b></td><td><span class="badge Frio">Frio</span></td>
 <td>—</td><td>0d</td>
 <td><span class="badge B">B</span></td>
-<td><div class="sbars"><div class="spos" style="width:38%" title="+38%"></div><div class="sneu" style="width:56%"></div><div class="sneg" style="width:6%" title="-6%"></div></div><div class="slbls">+38% / -6%</div></td>
+<td><div class="sbars"><div class="spos" style="width:38%"></div><div class="sneu" style="width:56%"></div><div class="sneg" style="width:6%"></div></div><div class="slbls">+38% / -6%</div></td>
 <td><span class='badge open'>⏳ Em aberto</span></td>
 </tr>
-<tr data-medium="cpc" data-priority="high" data-temp="Frio" data-ontem="false">
-<td>Eduardo Ryuji</td><td style="font-size:11px">Vinicius Leao</td><td>QA</td>
-<td>cpc</td><td><span class="badge high">HIG</span></td>
+<tr data-medium="cpc" data-priority="high" data-temp="Frio" data-ontem="false" data-curso_tipo="Bootcamp">
+<td><b>Eduardo Ryuji</b></td><td><span style='color:#94a3b8;font-size:11px'>anterior</span></td><td style="font-size:11px">Vinicius Leao</td>
+<td>QA</td><td><span class='badge Bootcamp'>Bootcamp</span></td><td>cpc</td>
+<td><span class="badge high">HIG</span></td>
 <td><b>5</b></td><td><span class="badge Frio">Frio</span></td>
 <td>—</td><td>1d</td>
 <td><span class="badge B">B</span></td>
-<td><div class="sbars"><div class="spos" style="width:64%" title="+64%"></div><div class="sneu" style="width:32%"></div><div class="sneg" style="width:4%" title="-4%"></div></div><div class="slbls">+64% / -4%</div></td>
+<td><div class="sbars"><div class="spos" style="width:64%"></div><div class="sneu" style="width:32%"></div><div class="sneg" style="width:4%"></div></div><div class="slbls">+64% / -4%</div></td>
 <td><span class='badge lost'>❌ LOST</span></td>
 </tr>
-<tr data-medium="cpc" data-priority="high" data-temp="Morno" data-ontem="false">
-<td>Gabriel Antoniette</td><td style="font-size:11px">Natalia Martins</td><td>MBA DS</td>
-<td>cpc</td><td><span class="badge high">HIG</span></td>
+<tr data-medium="cpc" data-priority="high" data-temp="Morno" data-ontem="false" data-curso_tipo="MBA">
+<td><b>Gabriel Antoniette</b></td><td><span style='color:#94a3b8;font-size:11px'>anterior</span></td><td style="font-size:11px">Natalia Martins</td>
+<td>MBA DS</td><td><span class='badge MBA'>MBA</span></td><td>cpc</td>
+<td><span class="badge high">HIG</span></td>
 <td><b>4</b></td><td><span class="badge Morno">Morno</span></td>
 <td>—</td><td>1d</td>
 <td><span class="badge B">B</span></td>
-<td><div class="sbars"><div class="spos" style="width:45%" title="+45%"></div><div class="sneu" style="width:50%"></div><div class="sneg" style="width:4%" title="-4%"></div></div><div class="slbls">+45% / -4%</div></td>
+<td><div class="sbars"><div class="spos" style="width:45%"></div><div class="sneu" style="width:50%"></div><div class="sneg" style="width:4%"></div></div><div class="slbls">+45% / -4%</div></td>
 <td><span class='badge open'>⏳ Em aberto</span></td>
 </tr>
-<tr data-medium="cpc" data-priority="high" data-temp="Morno" data-ontem="false">
-<td>WALLACY SUED DE SOUZA BRAGA</td><td style="font-size:11px">ID 837235423</td><td>WD</td>
-<td>cpc</td><td><span class="badge high">HIG</span></td>
+<tr data-medium="cpc" data-priority="high" data-temp="Morno" data-ontem="false" data-curso_tipo="Bootcamp">
+<td><b>WALLACY SUED DE SOUZA BRAGA</b></td><td><span style='color:#94a3b8;font-size:11px'>anterior</span></td><td style="font-size:11px">ID 837235423</td>
+<td>WD</td><td><span class='badge Bootcamp'>Bootcamp</span></td><td>cpc</td>
+<td><span class="badge high">HIG</span></td>
 <td><b>3</b></td><td><span class="badge Morno">Morno</span></td>
-<td>—</td><td>6d</td>
+<td>—</td><td>7d</td>
 <td><span class="badge B">B</span></td>
 <td><span class="sem">sem dados</span></td>
 <td><span class='badge open'>⏳ Em aberto</span></td>
 </tr>
-<tr data-medium="cpc" data-priority="medium" data-temp="Morno" data-ontem="false">
-<td>Wilton Carvalho da Silva</td><td style="font-size:11px">Bruno Marques</td><td>DA</td>
-<td>cpc</td><td><span class="badge medium">MED</span></td>
+<tr data-medium="cpc" data-priority="medium" data-temp="Morno" data-ontem="false" data-curso_tipo="Bootcamp">
+<td><b>Wilton Carvalho da Silva</b></td><td><span style='color:#94a3b8;font-size:11px'>anterior</span></td><td style="font-size:11px">Bruno Marques</td>
+<td>DA</td><td><span class='badge Bootcamp'>Bootcamp</span></td><td>cpc</td>
+<td><span class="badge medium">MED</span></td>
 <td><b>0</b></td><td><span class="badge Morno">Morno</span></td>
 <td>—</td><td>1d</td>
 <td><span class="badge C">C</span></td>
-<td><div class="sbars"><div class="spos" style="width:24%" title="+24%"></div><div class="sneu" style="width:62%"></div><div class="sneg" style="width:15%" title="-15%"></div></div><div class="slbls">+24% / -15%</div></td>
+<td><div class="sbars"><div class="spos" style="width:24%"></div><div class="sneu" style="width:62%"></div><div class="sneg" style="width:15%"></div></div><div class="slbls">+24% / -15%</div></td>
 <td><span class='badge lost'>❌ LOST</span></td>
 </tr>
-<tr data-medium="cpc" data-priority="medium" data-temp="Frio" data-ontem="false">
-<td>Conceicao Lessa</td><td style="font-size:11px">ID 34045065</td><td>DA</td>
-<td>cpc</td><td><span class="badge medium">MED</span></td>
+<tr data-medium="cpc" data-priority="medium" data-temp="Frio" data-ontem="false" data-curso_tipo="Bootcamp">
+<td><b>Conceicao Lessa</b></td><td><span style='color:#94a3b8;font-size:11px'>anterior</span></td><td style="font-size:11px">ID 34045065</td>
+<td>DA</td><td><span class='badge Bootcamp'>Bootcamp</span></td><td>cpc</td>
+<td><span class="badge medium">MED</span></td>
 <td><b>3</b></td><td><span class="badge Frio">Frio</span></td>
 <td>—</td><td>1d</td>
 <td><span class="badge B">B</span></td>
 <td><span class="sem">sem dados</span></td>
 <td><span class='badge open'>⏳ Em aberto</span></td>
 </tr>
-<tr data-medium="" data-priority="high" data-temp="Morno" data-ontem="false">
-<td>David de Andrade</td><td style="font-size:11px">Bruno Marques</td><td>DA</td>
-<td></td><td><span class="badge high">HIG</span></td>
+<tr data-medium="" data-priority="high" data-temp="Morno" data-ontem="false" data-curso_tipo="Bootcamp">
+<td><b>David de Andrade</b></td><td><span style='color:#94a3b8;font-size:11px'>anterior</span></td><td style="font-size:11px">Bruno Marques</td>
+<td>DA</td><td><span class='badge Bootcamp'>Bootcamp</span></td><td></td>
+<td><span class="badge high">HIG</span></td>
 <td><b>4</b></td><td><span class="badge Morno">Morno</span></td>
 <td>—</td><td>1d</td>
 <td><span class="badge B">B</span></td>
-<td><div class="sbars"><div class="spos" style="width:33%" title="+33%"></div><div class="sneu" style="width:45%"></div><div class="sneg" style="width:22%" title="-22%"></div></div><div class="slbls">+33% / -22%</div></td>
+<td><div class="sbars"><div class="spos" style="width:33%"></div><div class="sneu" style="width:45%"></div><div class="sneg" style="width:22%"></div></div><div class="slbls">+33% / -22%</div></td>
 <td><span class='badge venda'>✅ VENDA</span></td>
 </tr>
-<tr class='ontem-row' data-medium="crm" data-priority="high" data-temp="Morno" data-ontem="true">
-<td><span class='badge ontem-tag'>ONTEM</span> Gabriela Jobim da Silva</td><td style="font-size:11px">Jessica Silva</td><td>DA</td>
-<td>crm</td><td><span class="badge high">HIG</span></td>
+<tr class='row-ontem' data-medium="crm" data-priority="high" data-temp="Morno" data-ontem="true" data-curso_tipo="Bootcamp">
+<td><b>Gabriela Jobim da Silva</b></td><td><span class='badge tag-ontem'>02/09</span></td><td style="font-size:11px">Jessica Silva</td>
+<td>DA</td><td><span class='badge Bootcamp'>Bootcamp</span></td><td>crm</td>
+<td><span class="badge high">HIG</span></td>
 <td><b>-2</b></td><td><span class="badge Morno">Morno</span></td>
 <td>—</td><td>0d</td>
 <td><span class="badge C">C</span></td>
-<td><div class="sbars"><div class="spos" style="width:44%" title="+44%"></div><div class="sneu" style="width:47%"></div><div class="sneg" style="width:9%" title="-9%"></div></div><div class="slbls">+44% / -9%</div></td>
+<td><div class="sbars"><div class="spos" style="width:44%"></div><div class="sneu" style="width:47%"></div><div class="sneg" style="width:9%"></div></div><div class="slbls">+44% / -9%</div></td>
 <td><span class='badge open'>⏳ Em aberto</span></td>
 </tr>
-<tr class='ontem-row' data-medium="cpc" data-priority="high" data-temp="Quente" data-ontem="true">
-<td><span class='badge ontem-tag'>ONTEM</span> Juan Emerson Silva Rocha</td><td style="font-size:11px">ID 34045065</td><td>DS</td>
-<td>cpc</td><td><span class="badge high">HIG</span></td>
+<tr class='row-ontem' data-medium="cpc" data-priority="high" data-temp="Quente" data-ontem="true" data-curso_tipo="Bootcamp">
+<td><b>Juan Emerson Silva Rocha</b></td><td><span class='badge tag-ontem'>02/09</span></td><td style="font-size:11px">ID 34045065</td>
+<td>DS</td><td><span class='badge Bootcamp'>Bootcamp</span></td><td>cpc</td>
+<td><span class="badge high">HIG</span></td>
 <td><b>4</b></td><td><span class="badge Quente">Quente</span></td>
 <td>✅</td><td>0d</td>
 <td><span class="badge B">B</span></td>
 <td><span class="sem">sem dados</span></td>
 <td><span class='badge open'>⏳ Em aberto</span></td>
 </tr>
-<tr data-medium="cpc" data-priority="high" data-temp="Morno" data-ontem="false">
-<td>Felipe Hanada</td><td style="font-size:11px">ID 35852628</td><td>MBA DS</td>
-<td>cpc</td><td><span class="badge high">HIG</span></td>
+<tr data-medium="cpc" data-priority="high" data-temp="Morno" data-ontem="false" data-curso_tipo="MBA">
+<td><b>Felipe Hanada</b></td><td><span style='color:#94a3b8;font-size:11px'>anterior</span></td><td style="font-size:11px">ID 35852628</td>
+<td>MBA DS</td><td><span class='badge MBA'>MBA</span></td><td>cpc</td>
+<td><span class="badge high">HIG</span></td>
 <td><b>4</b></td><td><span class="badge Morno">Morno</span></td>
 <td>✅</td><td>1d</td>
 <td><span class="badge B">B</span></td>
 <td><span class="sem">sem dados</span></td>
 <td><span class='badge open'>⏳ Em aberto</span></td>
 </tr>
-<tr class='ontem-row' data-medium="smm" data-priority="low" data-temp="Quente" data-ontem="true">
-<td><span class='badge ontem-tag'>ONTEM</span> Joao Victor</td><td style="font-size:11px">Jessica Silva</td><td>DA</td>
-<td>smm</td><td><span class="badge low">LOW</span></td>
+<tr class='row-ontem' data-medium="smm" data-priority="low" data-temp="Quente" data-ontem="true" data-curso_tipo="Bootcamp">
+<td><b>Joao Victor</b></td><td><span class='badge tag-ontem'>02/09</span></td><td style="font-size:11px">Jessica Silva</td>
+<td>DA</td><td><span class='badge Bootcamp'>Bootcamp</span></td><td>smm</td>
+<td><span class="badge low">LOW</span></td>
 <td><b>0</b></td><td><span class="badge Quente">Quente</span></td>
 <td>✅</td><td>0d</td>
 <td><span class="badge B">B</span></td>
-<td><div class="sbars"><div class="spos" style="width:46%" title="+46%"></div><div class="sneu" style="width:44%"></div><div class="sneg" style="width:10%" title="-10%"></div></div><div class="slbls">+46% / -10%</div></td>
+<td><div class="sbars"><div class="spos" style="width:46%"></div><div class="sneu" style="width:44%"></div><div class="sneg" style="width:10%"></div></div><div class="slbls">+46% / -10%</div></td>
 <td><span class='badge open'>⏳ Em aberto</span></td>
 </tr>
-<tr data-medium="cpc" data-priority="medium" data-temp="Morno" data-ontem="false">
-<td>Arthur Attili</td><td style="font-size:11px">Bernardo Magalhaes</td><td>WD</td>
-<td>cpc</td><td><span class="badge medium">MED</span></td>
+<tr data-medium="cpc" data-priority="medium" data-temp="Morno" data-ontem="false" data-curso_tipo="Bootcamp">
+<td><b>Arthur Attili</b></td><td><span style='color:#94a3b8;font-size:11px'>anterior</span></td><td style="font-size:11px">Bernardo Magalhaes</td>
+<td>WD</td><td><span class='badge Bootcamp'>Bootcamp</span></td><td>cpc</td>
+<td><span class="badge medium">MED</span></td>
 <td><b>2</b></td><td><span class="badge Morno">Morno</span></td>
 <td>✅</td><td>1d</td>
 <td><span class="badge B">B</span></td>
-<td><div class="sbars"><div class="spos" style="width:56%" title="+56%"></div><div class="sneu" style="width:37%"></div><div class="sneg" style="width:6%" title="-6%"></div></div><div class="slbls">+56% / -6%</div></td>
+<td><div class="sbars"><div class="spos" style="width:56%"></div><div class="sneu" style="width:37%"></div><div class="sneg" style="width:6%"></div></div><div class="slbls">+56% / -6%</div></td>
 <td><span class='badge open'>⏳ Em aberto</span></td>
 </tr>
-<tr data-medium="" data-priority="high" data-temp="Quente" data-ontem="false">
-<td>Katiuscia Keller</td><td style="font-size:11px">Bruno Marques</td><td>DA</td>
-<td></td><td><span class="badge high">HIG</span></td>
+<tr data-medium="" data-priority="high" data-temp="Quente" data-ontem="false" data-curso_tipo="Bootcamp">
+<td><b>Katiuscia Keller</b></td><td><span style='color:#94a3b8;font-size:11px'>anterior</span></td><td style="font-size:11px">Bruno Marques</td>
+<td>DA</td><td><span class='badge Bootcamp'>Bootcamp</span></td><td></td>
+<td><span class="badge high">HIG</span></td>
 <td><b>9</b></td><td><span class="badge Quente">Quente</span></td>
-<td>✅</td><td>0d</td>
+<td>✅</td><td>1d</td>
 <td><span class="badge A">A</span></td>
-<td><div class="sbars"><div class="spos" style="width:39%" title="+39%"></div><div class="sneu" style="width:58%"></div><div class="sneg" style="width:4%" title="-4%"></div></div><div class="slbls">+39% / -4%</div></td>
+<td><div class="sbars"><div class="spos" style="width:39%"></div><div class="sneu" style="width:58%"></div><div class="sneg" style="width:4%"></div></div><div class="slbls">+39% / -4%</div></td>
 <td><span class='badge converted'>✅ CONVERTIDO</span></td>
 </tr>
-<tr data-medium="crm" data-priority="high" data-temp="Morno" data-ontem="false">
-<td>Guilherme Garcia de Oliveira</td><td style="font-size:11px">Bernardo Magalhaes</td><td>DA</td>
-<td>crm</td><td><span class="badge high">HIG</span></td>
+<tr data-medium="crm" data-priority="high" data-temp="Morno" data-ontem="false" data-curso_tipo="Bootcamp">
+<td><b>Guilherme Garcia de Oliveira</b></td><td><span style='color:#94a3b8;font-size:11px'>anterior</span></td><td style="font-size:11px">Bernardo Magalhaes</td>
+<td>DA</td><td><span class='badge Bootcamp'>Bootcamp</span></td><td>crm</td>
+<td><span class="badge high">HIG</span></td>
 <td><b>3</b></td><td><span class="badge Morno">Morno</span></td>
 <td>—</td><td>1d</td>
 <td><span class="badge B">B</span></td>
-<td><div class="sbars"><div class="spos" style="width:42%" title="+42%"></div><div class="sneu" style="width:47%"></div><div class="sneg" style="width:11%" title="-11%"></div></div><div class="slbls">+42% / -11%</div></td>
+<td><div class="sbars"><div class="spos" style="width:42%"></div><div class="sneu" style="width:47%"></div><div class="sneg" style="width:11%"></div></div><div class="slbls">+42% / -11%</div></td>
 <td><span class='badge lost'>❌ LOST</span></td>
 </tr>
-<tr data-medium="cpc" data-priority="high" data-temp="Morno" data-ontem="false">
-<td>Matheus Sarchiolo</td><td style="font-size:11px">Erick Paiva</td><td>DA</td>
-<td>cpc</td><td><span class="badge high">HIG</span></td>
+<tr data-medium="cpc" data-priority="high" data-temp="Morno" data-ontem="false" data-curso_tipo="Bootcamp">
+<td><b>Matheus Sarchiolo</b></td><td><span style='color:#94a3b8;font-size:11px'>anterior</span></td><td style="font-size:11px">Erick Paiva</td>
+<td>DA</td><td><span class='badge Bootcamp'>Bootcamp</span></td><td>cpc</td>
+<td><span class="badge high">HIG</span></td>
 <td><b>10</b></td><td><span class="badge Morno">Morno</span></td>
 <td>✅</td><td>1d</td>
 <td><span class="badge A">A</span></td>
-<td><div class="sbars"><div class="spos" style="width:36%" title="+36%"></div><div class="sneu" style="width:51%"></div><div class="sneg" style="width:13%" title="-13%"></div></div><div class="slbls">+36% / -13%</div></td>
+<td><div class="sbars"><div class="spos" style="width:36%"></div><div class="sneu" style="width:51%"></div><div class="sneg" style="width:13%"></div></div><div class="slbls">+36% / -13%</div></td>
 <td><span class='badge venda'>✅ VENDA</span></td>
 </tr>
-<tr data-medium="cpc" data-priority="high" data-temp="Morno" data-ontem="false">
-<td>Patrick Silveira</td><td style="font-size:11px">Bernardo Magalhaes</td><td>QA</td>
-<td>cpc</td><td><span class="badge high">HIG</span></td>
+<tr data-medium="cpc" data-priority="high" data-temp="Morno" data-ontem="false" data-curso_tipo="Bootcamp">
+<td><b>Patrick Silveira</b></td><td><span style='color:#94a3b8;font-size:11px'>anterior</span></td><td style="font-size:11px">Bernardo Magalhaes</td>
+<td>QA</td><td><span class='badge Bootcamp'>Bootcamp</span></td><td>cpc</td>
+<td><span class="badge high">HIG</span></td>
 <td><b>2</b></td><td><span class="badge Morno">Morno</span></td>
 <td>✅</td><td>1d</td>
 <td><span class="badge B">B</span></td>
-<td><div class="sbars"><div class="spos" style="width:27%" title="+27%"></div><div class="sneu" style="width:69%"></div><div class="sneg" style="width:4%" title="-4%"></div></div><div class="slbls">+27% / -4%</div></td>
+<td><div class="sbars"><div class="spos" style="width:27%"></div><div class="sneu" style="width:69%"></div><div class="sneg" style="width:4%"></div></div><div class="slbls">+27% / -4%</div></td>
 <td><span class='badge open'>⏳ Em aberto</span></td>
 </tr>
-<tr data-medium="" data-priority="high" data-temp="Morno" data-ontem="false">
-<td>Kathelin Fonseca</td><td style="font-size:11px">Jessica Silva</td><td>DA</td>
-<td></td><td><span class="badge high">HIG</span></td>
+<tr data-medium="" data-priority="high" data-temp="Morno" data-ontem="false" data-curso_tipo="Bootcamp">
+<td><b>Kathelin Fonseca</b></td><td><span style='color:#94a3b8;font-size:11px'>anterior</span></td><td style="font-size:11px">Jessica Silva</td>
+<td>DA</td><td><span class='badge Bootcamp'>Bootcamp</span></td><td></td>
+<td><span class="badge high">HIG</span></td>
 <td><b>4</b></td><td><span class="badge Morno">Morno</span></td>
 <td>—</td><td>1d</td>
 <td><span class="badge B">B</span></td>
-<td><div class="sbars"><div class="spos" style="width:49%" title="+49%"></div><div class="sneu" style="width:41%"></div><div class="sneg" style="width:10%" title="-10%"></div></div><div class="slbls">+49% / -10%</div></td>
+<td><div class="sbars"><div class="spos" style="width:49%"></div><div class="sneu" style="width:41%"></div><div class="sneg" style="width:10%"></div></div><div class="slbls">+49% / -10%</div></td>
 <td><span class='badge open'>⏳ Em aberto</span></td>
 </tr>
 </table>
-
 <div class="grid2">
-<div class="card">
-<h3>📡 UTM Medium — Leads Criados em 02/09</h3>
+<div class="card"><h3>📡 UTM Medium — Leads Criados</h3>
 <div class="bar-wrap"><div class="bar-lbl">cpc</div><div class="bar-bg"><div class="bar-fill" style="width:100%;background:#1d4ed8"></div></div><div class="bar-val">95 (51%)</div></div>
 <div class="bar-wrap"><div class="bar-lbl">crm</div><div class="bar-bg"><div class="bar-fill" style="width:23%;background:#7c3aed"></div></div><div class="bar-val">22 (11%)</div></div>
 <div class="bar-wrap"><div class="bar-lbl">bloggers</div><div class="bar-bg"><div class="bar-fill" style="width:22%;background:#dc2626"></div></div><div class="bar-val">21 (11%)</div></div>
@@ -625,50 +624,42 @@ tr:hover td{background:#eff6ff}
 <div class="bar-wrap"><div class="bar-lbl">social</div><div class="bar-bg"><div class="bar-fill" style="width:5%;background:#10b981"></div></div><div class="bar-val">5 (2%)</div></div>
 <div class="bar-wrap"><div class="bar-lbl">recommend</div><div class="bar-bg"><div class="bar-fill" style="width:2%;background:#64748b"></div></div><div class="bar-val">2 (1%)</div></div>
 <div class="bar-wrap"><div class="bar-lbl">outros</div><div class="bar-bg"><div class="bar-fill" style="width:5%;background:#94a3b8"></div></div><div class="bar-val">5 (2%)</div></div>
-</div>
-<div class="card">
-<h3>⏱️ Ciclo de Atendimento (reuniões atendidas)</h3>
-<div class="bar-wrap"><div class="bar-lbl">Mesmo dia</div><div class="bar-bg"><div class="bar-fill" style="width:35%;background:#10b981"></div></div><div class="bar-val">17 (35%)</div></div>
-<div class="bar-wrap"><div class="bar-lbl">1-3d</div><div class="bar-bg"><div class="bar-fill" style="width:50%;background:#10b981"></div></div><div class="bar-val">24 (50%)</div></div>
-<div class="bar-wrap"><div class="bar-lbl">4-7d</div><div class="bar-bg"><div class="bar-fill" style="width:10%;background:#10b981"></div></div><div class="bar-val">5 (10%)</div></div>
-<div class="bar-wrap"><div class="bar-lbl">8+d</div><div class="bar-bg"><div class="bar-fill" style="width:4%;background:#10b981"></div></div><div class="bar-val">2 (4%)</div></div>
-</div>
-</div>
-
-<div class="card" style="margin-bottom:14px">
-<h3>🎨 Top UTM Content (Bloggers) — Reuniões Atendidas</h3>
+</div><div class="card"><h3>⏱️ Ciclo de Atendimento</h3>
+<div class="bar-wrap"><div class="bar-lbl">Mesmo dia</div><div class="bar-bg"><div class="bar-fill" style="width:20%;background:#10b981"></div></div><div class="bar-val">10 (20%)</div></div>
+<div class="bar-wrap"><div class="bar-lbl">1-3 dias</div><div class="bar-bg"><div class="bar-fill" style="width:62%;background:#10b981"></div></div><div class="bar-val">30 (62%)</div></div>
+<div class="bar-wrap"><div class="bar-lbl">4-7 dias</div><div class="bar-bg"><div class="bar-fill" style="width:12%;background:#10b981"></div></div><div class="bar-val">6 (12%)</div></div>
+<div class="bar-wrap"><div class="bar-lbl">8+ dias</div><div class="bar-bg"><div class="bar-fill" style="width:4%;background:#10b981"></div></div><div class="bar-val">2 (4%)</div></div>
+</div></div>
+<div class="card" style="margin-bottom:14px"><h3>🎨 Top Influencers / UTM Content</h3>
 <div style="display:flex;gap:9px;flex-wrap:wrap;margin-top:7px">
-  <div style="background:#dbeafe;border-radius:7px;padding:7px 13px;font-weight:700;color:#1d4ed8">curryjoao — 🥇 8 reuniões</div>
-  <div style="background:#ede9fe;border-radius:7px;padding:7px 13px;font-weight:700;color:#7c3aed">thenews — 3 reuniões</div>
-  <div style="background:#d1fae5;border-radius:7px;padding:7px 13px;font-weight:700;color:#059669">nerdsdenegocios — 3 reuniões</div>
-  <div style="background:#fef3c7;border-radius:7px;padding:7px 13px;font-weight:700;color:#d97706">link_in_bio (SMM) — 4</div>
-</div>
-</div>
+  <div style="background:#dbeafe;border-radius:7px;padding:7px 13px;font-weight:700;color:#1d4ed8">curryjoao 🥇 8</div>
+  <div style="background:#ede9fe;border-radius:7px;padding:7px 13px;font-weight:700;color:#7c3aed">thenews 3</div>
+  <div style="background:#d1fae5;border-radius:7px;padding:7px 13px;font-weight:700;color:#059669">nerdsdenegocios 3</div>
+  <div style="background:#fef3c7;border-radius:7px;padding:7px 13px;font-weight:700;color:#d97706">link_in_bio (SMM) 4</div>
+</div></div>
 </div>
 
 <!-- ═══ VENDAS ═══ -->
 <div class="content" id="tab-vendas">
-<div class="section-label">Total ações em 02/09/2026</div>
 <div class="kpi-grid">
-  <div class="kpi g"><div class="kpi-val">6</div><div class="kpi-lbl">Pagamentos</div><div class="kpi-sub">12% de conv.</div></div>
+  <div class="kpi g"><div class="kpi-val">6</div><div class="kpi-lbl">Pagamentos</div><div class="kpi-sub">12% conv.</div></div>
   <div class="kpi o"><div class="kpi-val">36</div><div class="kpi-lbl">Em Aberto</div></div>
-  <div class="kpi r"><div class="kpi-val">327</div><div class="kpi-lbl">Closed-Lost</div><div class="kpi-split"><span class="ontem">🔵 5 ontem</span><span class="outros">⬜ 322 outros</span></div></div>
+  <div class="kpi r"><div class="kpi-val">327</div><div class="kpi-lbl">Closed-Lost</div></div>
   <div class="kpi p"><div class="kpi-val">4</div><div class="kpi-lbl">Potencial A</div></div>
   <div class="kpi"><div class="kpi-val">34</div><div class="kpi-lbl">Potencial B</div></div>
   <div class="kpi s"><div class="kpi-val">10</div><div class="kpi-lbl">Potencial C</div></div>
 </div>
-
 <h2>👥 Performance por Closer</h2>
 <table>
-<tr><th>Closer</th><th>Reuniões</th><th>Vendas</th><th>Lost</th><th>Em Aberto</th><th>Conv.%</th><th>Dur. Média</th><th>Sent. Médio</th></tr>
-<tr><td><b>Lucas Bonow</b></td><td>6</td><td>—</td><td>—</td><td>6</td><td><b>0%</b></td><td>45min</td><td><b style='color:#059669'>43%</b><span style="color:#ef4444;font-weight:700">1⚠️</span></td></tr>
+<tr><th>Closer</th><th>Reuniões</th><th>Vendas</th><th>Lost</th><th>Em Aberto</th><th>Conv.%</th><th>Dur. Média</th><th>Sent.+</th></tr>
+<tr><td><b>Lucas Bonow</b></td><td>6</td><td>—</td><td>—</td><td>6</td><td><b>0%</b></td><td>45min</td><td><b style='color:#059669'>43%</b> <span style="color:#ef4444">⚠️1</span></td></tr>
 <tr><td><b>Bernardo Magalhaes</b></td><td>5</td><td>—</td><td><b style="color:#ef4444">❌ 2</b></td><td>3</td><td><b>0%</b></td><td>47min</td><td><b style='color:#059669'>36%</b></td></tr>
-<tr><td><b>Vinicius Leao</b></td><td>5</td><td>—</td><td><b style="color:#ef4444">❌ 1</b></td><td>4</td><td><b>0%</b></td><td>24min</td><td><b style='color:#059669'>38%</b><span style="color:#ef4444;font-weight:700">1⚠️</span></td></tr>
+<tr><td><b>Vinicius Leao</b></td><td>5</td><td>—</td><td><b style="color:#ef4444">❌ 1</b></td><td>4</td><td><b>0%</b></td><td>24min</td><td><b style='color:#059669'>38%</b> <span style="color:#ef4444">⚠️1</span></td></tr>
 <tr><td><b>Erick Paiva</b></td><td>5</td><td><b style="color:#059669">✅ 1</b></td><td>—</td><td>4</td><td><b>20%</b></td><td>49min</td><td><b style='color:#059669'>27%</b></td></tr>
-<tr><td><b>Bruno Marques</b></td><td>5</td><td><b style="color:#059669">✅ 2</b></td><td><b style="color:#ef4444">❌ 1</b></td><td>2</td><td><b>40%</b></td><td>54min</td><td><b style='color:#059669'>31%</b><span style="color:#ef4444;font-weight:700">1⚠️</span></td></tr>
+<tr><td><b>Bruno Marques</b></td><td>5</td><td><b style="color:#059669">✅ 2</b></td><td><b style="color:#ef4444">❌ 1</b></td><td>2</td><td><b>40%</b></td><td>54min</td><td><b style='color:#059669'>31%</b> <span style="color:#ef4444">⚠️1</span></td></tr>
 <tr><td><b>ID 34045065</b></td><td>4</td><td>—</td><td>—</td><td>4</td><td><b>0%</b></td><td>—</td><td><b style='color:#059669'>0%</b></td></tr>
 <tr><td><b>Jessica Silva</b></td><td>4</td><td>—</td><td>—</td><td>4</td><td><b>0%</b></td><td>40min</td><td><b style='color:#059669'>47%</b></td></tr>
-<tr><td><b>Daniel Augusto  Macedo Ribeiro</b></td><td>3</td><td>—</td><td><b style="color:#ef4444">❌ 1</b></td><td>2</td><td><b>0%</b></td><td>29min</td><td><b style='color:#059669'>40%</b><span style="color:#ef4444;font-weight:700">1⚠️</span></td></tr>
+<tr><td><b>Daniel Augusto  Macedo Ribeiro</b></td><td>3</td><td>—</td><td><b style="color:#ef4444">❌ 1</b></td><td>2</td><td><b>0%</b></td><td>29min</td><td><b style='color:#059669'>40%</b> <span style="color:#ef4444">⚠️1</span></td></tr>
 <tr><td><b>Yanara Silva</b></td><td>3</td><td>—</td><td><b style="color:#ef4444">❌ 1</b></td><td>2</td><td><b>0%</b></td><td>47min</td><td><b style='color:#059669'>38%</b></td></tr>
 <tr><td><b>Natalia Martins</b></td><td>3</td><td>—</td><td>—</td><td>3</td><td><b>0%</b></td><td>36min</td><td><b style='color:#059669'>47%</b></td></tr>
 <tr><td><b>ID 1201941990</b></td><td>1</td><td>—</td><td>—</td><td>1</td><td><b>0%</b></td><td>—</td><td><b style='color:#059669'>0%</b></td></tr>
@@ -677,123 +668,210 @@ tr:hover td{background:#eff6ff}
 <tr><td><b>ID 837235423</b></td><td>1</td><td>—</td><td>—</td><td>1</td><td><b>0%</b></td><td>—</td><td><b style='color:#059669'>0%</b></td></tr>
 <tr><td><b>ID 35852628</b></td><td>1</td><td>—</td><td>—</td><td>1</td><td><b>0%</b></td><td>—</td><td><b style='color:#059669'>0%</b></td></tr>
 </table>
-
-<h2>🏆 Potencial A — Prioridade Máxima (4 leads)</h2>
-<table>
-<tr><th>Lead</th><th>Ontem?</th><th>Closer</th><th>Curso</th><th>Score</th><th>Temp</th><th>Sentimento</th><th>Resultado</th><th>Ação</th></tr>
-<tr><td><b>Matheus Sarchiolo</b></td><td>—</td><td style='font-size:11px'>Erick Paiva</td><td>DA</td><td><b style='color:#059669'>10</b></td><td><span class='badge Morno'>Morno</span></td><td><div class="sbars"><div class="spos" style="width:36%" title="+36%"></div><div class="sneu" style="width:51%"></div><div class="sneg" style="width:13%" title="-13%"></div></div><div class="slbls">+36% / -13%</div></td><td><span class='badge venda'>✅ VENDA</span></td><td style='font-size:11px'>✅ Venda concretizada!</td></tr>
-<tr><td><b>Katiuscia Keller</b></td><td>—</td><td style='font-size:11px'>Bruno Marques</td><td>DA</td><td><b style='color:#059669'>9</b></td><td><span class='badge Quente'>Quente</span></td><td><div class="sbars"><div class="spos" style="width:39%" title="+39%"></div><div class="sneu" style="width:58%"></div><div class="sneg" style="width:4%" title="-4%"></div></div><div class="slbls">+39% / -4%</div></td><td><span class='badge converted'>✅ CONVERTIDO</span></td><td style='font-size:11px'>✅ Venda concretizada!</td></tr>
-<tr><td><b>João Lucas Matteucci César</b></td><td>—</td><td style='font-size:11px'>Daniel Augusto  Macedo Ribeiro</td><td>DS</td><td><b style='color:#059669'>6</b></td><td><span class='badge Frio'>Frio</span></td><td><div class="sbars"><div class="spos" style="width:35%" title="+35%"></div><div class="sneu" style="width:63%"></div><div class="sneg" style="width:3%" title="-3%"></div></div><div class="slbls">+35% / -3%</div></td><td><span class='badge open'>⏳ Em aberto</span></td><td style='font-size:11px'>📞 Follow-up URGENTE hoje</td></tr>
-<tr><td><b>Felipe Pena</b></td><td>—</td><td style='font-size:11px'>Natalia Martins</td><td>MBA AI</td><td><b style='color:#059669'>5</b></td><td><span class='badge Morno'>Morno</span></td><td><div class="sbars"><div class="spos" style="width:61%" title="+61%"></div><div class="sneu" style="width:38%"></div><div class="sneg" style="width:1%" title="-1%"></div></div><div class="slbls">+61% / -1%</div></td><td><span class='badge open'>⏳ Em aberto</span></td><td style='font-size:11px'>📞 Follow-up URGENTE hoje</td></tr>
+<h2>🏆 Ranking Potencial A (4 leads)</h2>
+<div class="filter-row">
+  <label>Dia do Lead:</label>
+  <select data-tbl="tbl-pa" data-field="ontem" onchange="applyFilters('tbl-pa')">
+    <option value="">Todos os dias</option>
+    <option value="true">📅 Criado em 02/09/2026 (ontem)</option>
+    <option value="false">📆 Criados em dias anteriores</option>
+  </select>
+  <label>Tipo Curso:</label>
+  <select data-tbl="tbl-pa" data-field="curso_tipo" onchange="applyFilters('tbl-pa')">
+    <option value="">MBA + Bootcamp</option>
+    <option value="MBA">🎓 MBA</option>
+    <option value="Bootcamp">💻 Bootcamp</option>
+  </select>
+  <label>Medium:</label>
+  <select data-tbl="tbl-pa" data-field="medium" onchange="applyFilters('tbl-pa')">
+    <option value="">Todos</option><option>cpc</option><option>crm</option><option>bloggers</option><option>smm</option>
+  </select>
+  <label>Priority:</label>
+  <select data-tbl="tbl-pa" data-field="priority" onchange="applyFilters('tbl-pa')">
+    <option value="">Todos</option><option>high</option><option>medium</option><option>low</option>
+  </select>
+  <label>Temperatura:</label>
+  <select data-tbl="tbl-pa" data-field="temp" onchange="applyFilters('tbl-pa')">
+    <option value="">Todos</option><option>Quente</option><option>Morno</option><option>Frio</option>
+  </select>
+  <button onclick="clearFilters('tbl-pa')" style="font-size:11px;padding:3px 8px;border:1px solid #e2e8f0;border-radius:5px;background:#fff;cursor:pointer;color:#64748b">✕ Limpar</button>
+</div>
+<table id="tbl-pa">
+<tr><th>Lead</th><th>Dia Lead</th><th>Closer</th><th>Curso</th><th>Tipo</th><th>Score</th><th>Temp</th><th>Sentimento</th><th>Resultado</th><th>Ação</th></tr>
+<tr data-medium='cpc' data-priority='high' data-temp='Morno' data-ontem='false' data-curso_tipo='Bootcamp'><td><b>Matheus Sarchiolo</b></td><td><span style='color:#94a3b8;font-size:11px'>anterior</span></td><td style='font-size:11px'>Erick Paiva</td><td>DA</td><td><span class='badge Bootcamp'>Bootcamp</span></td><td><b style='color:#059669'>10</b></td><td><span class='badge Morno'>Morno</span></td><td><div class="sbars"><div class="spos" style="width:36%"></div><div class="sneu" style="width:51%"></div><div class="sneg" style="width:13%"></div></div><div class="slbls">+36% / -13%</div></td><td><span class='badge venda'>✅ VENDA</span></td><td style='font-size:11px'>✅ Fechado!</td></tr>
+<tr data-medium='' data-priority='high' data-temp='Quente' data-ontem='false' data-curso_tipo='Bootcamp'><td><b>Katiuscia Keller</b></td><td><span style='color:#94a3b8;font-size:11px'>anterior</span></td><td style='font-size:11px'>Bruno Marques</td><td>DA</td><td><span class='badge Bootcamp'>Bootcamp</span></td><td><b style='color:#059669'>9</b></td><td><span class='badge Quente'>Quente</span></td><td><div class="sbars"><div class="spos" style="width:39%"></div><div class="sneu" style="width:58%"></div><div class="sneg" style="width:4%"></div></div><div class="slbls">+39% / -4%</div></td><td><span class='badge converted'>✅ CONVERTIDO</span></td><td style='font-size:11px'>✅ Fechado!</td></tr>
+<tr data-medium='cpc' data-priority='high' data-temp='Frio' data-ontem='false' data-curso_tipo='Bootcamp'><td><b>João Lucas Matteucci César</b></td><td><span style='color:#94a3b8;font-size:11px'>anterior</span></td><td style='font-size:11px'>Daniel Augusto  Macedo Ribeiro</td><td>DS</td><td><span class='badge Bootcamp'>Bootcamp</span></td><td><b style='color:#059669'>6</b></td><td><span class='badge Frio'>Frio</span></td><td><div class="sbars"><div class="spos" style="width:35%"></div><div class="sneu" style="width:63%"></div><div class="sneg" style="width:3%"></div></div><div class="slbls">+35% / -3%</div></td><td><span class='badge open'>⏳ Em aberto</span></td><td style='font-size:11px'>📞 Follow-up URGENTE</td></tr>
+<tr data-medium='cpc' data-priority='high' data-temp='Morno' data-ontem='false' data-curso_tipo='MBA'><td><b>Felipe Pena</b></td><td><span style='color:#94a3b8;font-size:11px'>anterior</span></td><td style='font-size:11px'>Natalia Martins</td><td>MBA AI</td><td><span class='badge MBA'>MBA</span></td><td><b style='color:#059669'>5</b></td><td><span class='badge Morno'>Morno</span></td><td><div class="sbars"><div class="spos" style="width:61%"></div><div class="sneu" style="width:38%"></div><div class="sneg" style="width:1%"></div></div><div class="slbls">+61% / -1%</div></td><td><span class='badge open'>⏳ Em aberto</span></td><td style='font-size:11px'>📞 Follow-up URGENTE</td></tr>
 </table>
-
-<h2>🔵 Potencial B (34 leads) — top 20</h2>
-<table>
-<tr><th>Lead</th><th>Ontem?</th><th>Closer</th><th>Curso</th><th>Score</th><th>Payable</th><th>Temp</th><th>Sentimento</th><th>Resultado</th></tr>
-<tr><td>Julia Lopes</td><td>—</td><td style='font-size:11px'>Ana Viana</td><td>MBA AI</td><td><b>9</b></td><td>—</td><td><span class='badge Morno'>Morno</span></td><td><div class="sbars"><div class="spos" style="width:64%" title="+64%"></div><div class="sneu" style="width:32%"></div><div class="sneg" style="width:3%" title="-3%"></div></div><div class="slbls">+64% / -3%</div></td><td><span class='badge open'>⏳ Em aberto</span></td></tr>
-<tr class='ontem-row'><td>Jose Carlos Ferreira Junior</td><td><span class='badge ontem-tag'>ONTEM</span></td><td style='font-size:11px'>Yanara Silva</td><td>MBA AI</td><td><b>7</b></td><td>—</td><td><span class='badge Morno'>Morno</span></td><td><div class="sbars"><div class="spos" style="width:54%" title="+54%"></div><div class="sneu" style="width:43%"></div><div class="sneg" style="width:3%" title="-3%"></div></div><div class="slbls">+54% / -3%</div></td><td><span class='badge open'>⏳ Em aberto</span></td></tr>
-<tr class='ontem-row'><td>Fábio de Toledo Pierri Ribeiro Sampaio</td><td><span class='badge ontem-tag'>ONTEM</span></td><td style='font-size:11px'>ID 1201941990</td><td>MBA AI</td><td><b>6</b></td><td>—</td><td><span class='badge Morno'>Morno</span></td><td><span class="sem">sem dados</span></td><td><span class='badge open'>⏳ Em aberto</span></td></tr>
-<tr><td>Gisella</td><td>—</td><td style='font-size:11px'>Lucas Bonow</td><td>MBA DA</td><td><b>6</b></td><td>—</td><td><span class='badge Morno'>Morno</span></td><td><div class="sbars"><div class="spos" style="width:49%" title="+49%"></div><div class="sneu" style="width:45%"></div><div class="sneg" style="width:6%" title="-6%"></div></div><div class="slbls">+49% / -6%</div></td><td><span class='badge open'>⏳ Em aberto</span></td></tr>
-<tr><td>Hiago Henriques</td><td>—</td><td style='font-size:11px'>Natalia Martins</td><td>DA</td><td><b>6</b></td><td>—</td><td><span class='badge Morno'>Morno</span></td><td><div class="sbars"><div class="spos" style="width:35%" title="+35%"></div><div class="sneu" style="width:52%"></div><div class="sneg" style="width:13%" title="-13%"></div></div><div class="slbls">+35% / -13%</div></td><td><span class='badge open'>⏳ Em aberto</span></td></tr>
-<tr class='ontem-row'><td>Phablo Ramires</td><td><span class='badge ontem-tag'>ONTEM</span></td><td style='font-size:11px'>Lucas Bonow</td><td>QA</td><td><b>6</b></td><td>—</td><td><span class='badge Morno'>Morno</span></td><td><div class="sbars"><div class="spos" style="width:51%" title="+51%"></div><div class="sneu" style="width:33%"></div><div class="sneg" style="width:15%" title="-15%"></div></div><div class="slbls">+51% / -15%</div></td><td><span class='badge open'>⏳ Em aberto</span></td></tr>
-<tr><td>Thiago</td><td>—</td><td style='font-size:11px'>Vinicius Leao</td><td>DS</td><td><b>5</b></td><td>—</td><td><span class='badge Morno'>Morno</span></td><td><div class="sbars"><div class="spos" style="width:54%" title="+54%"></div><div class="sneu" style="width:44%"></div><div class="sneg" style="width:3%" title="-3%"></div></div><div class="slbls">+54% / -3%</div></td><td><span class='badge open'>⏳ Em aberto</span></td></tr>
-<tr><td>Euler Alcino</td><td>—</td><td style='font-size:11px'>Vinicius Leao</td><td>DS</td><td><b>5</b></td><td>—</td><td><span class='badge Morno'>Morno</span></td><td><div class="sbars"><div class="spos" style="width:8%" title="+8%"></div><div class="sneu" style="width:33%"></div><div class="sneg" style="width:59%" title="-59%"></div></div><div class="slbls">+8% / -59%</div></td><td><span class='badge open'>⏳ Em aberto</span></td></tr>
-<tr><td>Catarina Sarmiento</td><td>—</td><td style='font-size:11px'>Erick Paiva</td><td>QA</td><td><b>5</b></td><td>—</td><td><span class='badge Morno'>Morno</span></td><td><div class="sbars"><div class="spos" style="width:21%" title="+21%"></div><div class="sneu" style="width:76%"></div><div class="sneg" style="width:2%" title="-2%"></div></div><div class="slbls">+21% / -2%</div></td><td><span class='badge open'>⏳ Em aberto</span></td></tr>
-<tr><td>Eduardo Ryuji</td><td>—</td><td style='font-size:11px'>Vinicius Leao</td><td>QA</td><td><b>5</b></td><td>—</td><td><span class='badge Frio'>Frio</span></td><td><div class="sbars"><div class="spos" style="width:64%" title="+64%"></div><div class="sneu" style="width:32%"></div><div class="sneg" style="width:4%" title="-4%"></div></div><div class="slbls">+64% / -4%</div></td><td><span class='badge lost'>❌ LOST</span></td></tr>
-<tr><td>Renata Costa</td><td>—</td><td style='font-size:11px'>Yanara Silva</td><td>DA</td><td><b>4</b></td><td>—</td><td><span class='badge Morno'>Morno</span></td><td><div class="sbars"><div class="spos" style="width:35%" title="+35%"></div><div class="sneu" style="width:49%"></div><div class="sneg" style="width:16%" title="-16%"></div></div><div class="slbls">+35% / -16%</div></td><td><span class='badge open'>⏳ Em aberto</span></td></tr>
-<tr><td>William Lima</td><td>—</td><td style='font-size:11px'>Jessica Silva</td><td>WD</td><td><b>4</b></td><td>—</td><td><span class='badge Morno'>Morno</span></td><td><div class="sbars"><div class="spos" style="width:49%" title="+49%"></div><div class="sneu" style="width:36%"></div><div class="sneg" style="width:15%" title="-15%"></div></div><div class="slbls">+49% / -15%</div></td><td><span class='badge open'>⏳ Em aberto</span></td></tr>
-<tr><td>Julia Galvão</td><td>—</td><td style='font-size:11px'>Bruno Marques</td><td>QA</td><td><b>4</b></td><td>—</td><td><span class='badge Morno'>Morno</span></td><td><div class="sbars"><div class="spos" style="width:30%" title="+30%"></div><div class="sneu" style="width:62%"></div><div class="sneg" style="width:8%" title="-8%"></div></div><div class="slbls">+30% / -8%</div></td><td><span class='badge open'>⏳ Em aberto</span></td></tr>
-<tr class='ontem-row'><td>Juliana Vieira</td><td><span class='badge ontem-tag'>ONTEM</span></td><td style='font-size:11px'>Daniel Augusto  Macedo Ribeiro</td><td>DS</td><td><b>4</b></td><td>—</td><td><span class='badge Frio'>Frio</span></td><td><div class="sbars"><div class="spos" style="width:38%" title="+38%"></div><div class="sneu" style="width:56%"></div><div class="sneg" style="width:6%" title="-6%"></div></div><div class="slbls">+38% / -6%</div></td><td><span class='badge open'>⏳ Em aberto</span></td></tr>
-<tr><td>Gabriel Antoniette</td><td>—</td><td style='font-size:11px'>Natalia Martins</td><td>MBA DS</td><td><b>4</b></td><td>—</td><td><span class='badge Morno'>Morno</span></td><td><div class="sbars"><div class="spos" style="width:45%" title="+45%"></div><div class="sneu" style="width:50%"></div><div class="sneg" style="width:4%" title="-4%"></div></div><div class="slbls">+45% / -4%</div></td><td><span class='badge open'>⏳ Em aberto</span></td></tr>
-<tr><td>David de Andrade</td><td>—</td><td style='font-size:11px'>Bruno Marques</td><td>DA</td><td><b>4</b></td><td>—</td><td><span class='badge Morno'>Morno</span></td><td><div class="sbars"><div class="spos" style="width:33%" title="+33%"></div><div class="sneu" style="width:45%"></div><div class="sneg" style="width:22%" title="-22%"></div></div><div class="slbls">+33% / -22%</div></td><td><span class='badge venda'>✅ VENDA</span></td></tr>
-<tr class='ontem-row'><td>Juan Emerson Silva Rocha</td><td><span class='badge ontem-tag'>ONTEM</span></td><td style='font-size:11px'>ID 34045065</td><td>DS</td><td><b>4</b></td><td>✅</td><td><span class='badge Quente'>Quente</span></td><td><span class="sem">sem dados</span></td><td><span class='badge open'>⏳ Em aberto</span></td></tr>
-<tr><td>Felipe Hanada</td><td>—</td><td style='font-size:11px'>ID 35852628</td><td>MBA DS</td><td><b>4</b></td><td>✅</td><td><span class='badge Morno'>Morno</span></td><td><span class="sem">sem dados</span></td><td><span class='badge open'>⏳ Em aberto</span></td></tr>
-<tr><td>Kathelin Fonseca</td><td>—</td><td style='font-size:11px'>Jessica Silva</td><td>DA</td><td><b>4</b></td><td>—</td><td><span class='badge Morno'>Morno</span></td><td><div class="sbars"><div class="spos" style="width:49%" title="+49%"></div><div class="sneu" style="width:41%"></div><div class="sneg" style="width:10%" title="-10%"></div></div><div class="slbls">+49% / -10%</div></td><td><span class='badge open'>⏳ Em aberto</span></td></tr>
-<tr class='ontem-row'><td>Dieyson Merquides</td><td><span class='badge ontem-tag'>ONTEM</span></td><td style='font-size:11px'>Lucas Bonow</td><td>MBA DS</td><td><b>3</b></td><td>✅</td><td><span class='badge Morno'>Morno</span></td><td><div class="sbars"><div class="spos" style="width:30%" title="+30%"></div><div class="sneu" style="width:47%"></div><div class="sneg" style="width:23%" title="-23%"></div></div><div class="slbls">+30% / -23%</div></td><td><span class='badge open'>⏳ Em aberto</span></td></tr>
+<h2>🔵 Potencial B (34 leads)</h2>
+<div class="filter-row">
+  <label>Dia do Lead:</label>
+  <select data-tbl="tbl-pb" data-field="ontem" onchange="applyFilters('tbl-pb')">
+    <option value="">Todos os dias</option>
+    <option value="true">📅 Criado em 02/09/2026 (ontem)</option>
+    <option value="false">📆 Criados em dias anteriores</option>
+  </select>
+  <label>Tipo Curso:</label>
+  <select data-tbl="tbl-pb" data-field="curso_tipo" onchange="applyFilters('tbl-pb')">
+    <option value="">MBA + Bootcamp</option>
+    <option value="MBA">🎓 MBA</option>
+    <option value="Bootcamp">💻 Bootcamp</option>
+  </select>
+  <label>Medium:</label>
+  <select data-tbl="tbl-pb" data-field="medium" onchange="applyFilters('tbl-pb')">
+    <option value="">Todos</option><option>cpc</option><option>crm</option><option>bloggers</option><option>smm</option>
+  </select>
+  <label>Priority:</label>
+  <select data-tbl="tbl-pb" data-field="priority" onchange="applyFilters('tbl-pb')">
+    <option value="">Todos</option><option>high</option><option>medium</option><option>low</option>
+  </select>
+  <label>Temperatura:</label>
+  <select data-tbl="tbl-pb" data-field="temp" onchange="applyFilters('tbl-pb')">
+    <option value="">Todos</option><option>Quente</option><option>Morno</option><option>Frio</option>
+  </select>
+  <button onclick="clearFilters('tbl-pb')" style="font-size:11px;padding:3px 8px;border:1px solid #e2e8f0;border-radius:5px;background:#fff;cursor:pointer;color:#64748b">✕ Limpar</button>
+</div>
+<table id="tbl-pb">
+<tr><th>Lead</th><th>Dia Lead</th><th>Closer</th><th>Curso</th><th>Tipo</th><th>Score</th><th>Pay.</th><th>Temp</th><th>Sentimento</th><th>Resultado</th></tr>
+<tr data-medium='bloggers' data-priority='high' data-temp='Morno' data-ontem='false' data-curso_tipo='MBA'><td>Julia Lopes</td><td><span style='color:#94a3b8;font-size:11px'>anterior</span></td><td style='font-size:11px'>Ana Viana</td><td>MBA AI</td><td><span class='badge MBA'>MBA</span></td><td><b>9</b></td><td>—</td><td><span class='badge Morno'>Morno</span></td><td><div class="sbars"><div class="spos" style="width:64%"></div><div class="sneu" style="width:32%"></div><div class="sneg" style="width:3%"></div></div><div class="slbls">+64% / -3%</div></td><td><span class='badge open'>⏳ Em aberto</span></td></tr>
+<tr class='row-ontem' data-medium='bloggers' data-priority='high' data-temp='Morno' data-ontem='true' data-curso_tipo='MBA'><td>Jose Carlos Ferreira Junior</td><td><span class='badge tag-ontem'>02/09</span></td><td style='font-size:11px'>Yanara Silva</td><td>MBA AI</td><td><span class='badge MBA'>MBA</span></td><td><b>7</b></td><td>—</td><td><span class='badge Morno'>Morno</span></td><td><div class="sbars"><div class="spos" style="width:54%"></div><div class="sneu" style="width:43%"></div><div class="sneg" style="width:3%"></div></div><div class="slbls">+54% / -3%</div></td><td><span class='badge open'>⏳ Em aberto</span></td></tr>
+<tr class='row-ontem' data-medium='cpc' data-priority='high' data-temp='Morno' data-ontem='true' data-curso_tipo='MBA'><td>Fábio de Toledo Pierri Ribeiro Sampaio</td><td><span class='badge tag-ontem'>02/09</span></td><td style='font-size:11px'>ID 1201941990</td><td>MBA AI</td><td><span class='badge MBA'>MBA</span></td><td><b>6</b></td><td>—</td><td><span class='badge Morno'>Morno</span></td><td><span class="sem">sem dados</span></td><td><span class='badge open'>⏳ Em aberto</span></td></tr>
+<tr data-medium='cpc' data-priority='high' data-temp='Morno' data-ontem='false' data-curso_tipo='MBA'><td>Gisella</td><td><span style='color:#94a3b8;font-size:11px'>anterior</span></td><td style='font-size:11px'>Lucas Bonow</td><td>MBA DA</td><td><span class='badge MBA'>MBA</span></td><td><b>6</b></td><td>—</td><td><span class='badge Morno'>Morno</span></td><td><div class="sbars"><div class="spos" style="width:49%"></div><div class="sneu" style="width:45%"></div><div class="sneg" style="width:6%"></div></div><div class="slbls">+49% / -6%</div></td><td><span class='badge open'>⏳ Em aberto</span></td></tr>
+<tr data-medium='' data-priority='high' data-temp='Morno' data-ontem='false' data-curso_tipo='Bootcamp'><td>Hiago Henriques</td><td><span style='color:#94a3b8;font-size:11px'>anterior</span></td><td style='font-size:11px'>Natalia Martins</td><td>DA</td><td><span class='badge Bootcamp'>Bootcamp</span></td><td><b>6</b></td><td>—</td><td><span class='badge Morno'>Morno</span></td><td><div class="sbars"><div class="spos" style="width:35%"></div><div class="sneu" style="width:52%"></div><div class="sneg" style="width:13%"></div></div><div class="slbls">+35% / -13%</div></td><td><span class='badge open'>⏳ Em aberto</span></td></tr>
+<tr class='row-ontem' data-medium='cpc' data-priority='high' data-temp='Morno' data-ontem='true' data-curso_tipo='Bootcamp'><td>Phablo Ramires</td><td><span class='badge tag-ontem'>02/09</span></td><td style='font-size:11px'>Lucas Bonow</td><td>QA</td><td><span class='badge Bootcamp'>Bootcamp</span></td><td><b>6</b></td><td>—</td><td><span class='badge Morno'>Morno</span></td><td><div class="sbars"><div class="spos" style="width:51%"></div><div class="sneu" style="width:33%"></div><div class="sneg" style="width:15%"></div></div><div class="slbls">+51% / -15%</div></td><td><span class='badge open'>⏳ Em aberto</span></td></tr>
+<tr data-medium='cpc' data-priority='high' data-temp='Morno' data-ontem='false' data-curso_tipo='Bootcamp'><td>Thiago</td><td><span style='color:#94a3b8;font-size:11px'>anterior</span></td><td style='font-size:11px'>Vinicius Leao</td><td>DS</td><td><span class='badge Bootcamp'>Bootcamp</span></td><td><b>5</b></td><td>—</td><td><span class='badge Morno'>Morno</span></td><td><div class="sbars"><div class="spos" style="width:54%"></div><div class="sneu" style="width:44%"></div><div class="sneg" style="width:3%"></div></div><div class="slbls">+54% / -3%</div></td><td><span class='badge open'>⏳ Em aberto</span></td></tr>
+<tr data-medium='cpc' data-priority='high' data-temp='Morno' data-ontem='false' data-curso_tipo='Bootcamp'><td>Euler Alcino</td><td><span style='color:#94a3b8;font-size:11px'>anterior</span></td><td style='font-size:11px'>Vinicius Leao</td><td>DS</td><td><span class='badge Bootcamp'>Bootcamp</span></td><td><b>5</b></td><td>—</td><td><span class='badge Morno'>Morno</span></td><td><div class="sbars"><div class="spos" style="width:8%"></div><div class="sneu" style="width:33%"></div><div class="sneg" style="width:59%"></div></div><div class="slbls">+8% / -59%</div></td><td><span class='badge open'>⏳ Em aberto</span></td></tr>
+<tr data-medium='crm' data-priority='high' data-temp='Morno' data-ontem='false' data-curso_tipo='Bootcamp'><td>Catarina Sarmiento</td><td><span style='color:#94a3b8;font-size:11px'>anterior</span></td><td style='font-size:11px'>Erick Paiva</td><td>QA</td><td><span class='badge Bootcamp'>Bootcamp</span></td><td><b>5</b></td><td>—</td><td><span class='badge Morno'>Morno</span></td><td><div class="sbars"><div class="spos" style="width:21%"></div><div class="sneu" style="width:76%"></div><div class="sneg" style="width:2%"></div></div><div class="slbls">+21% / -2%</div></td><td><span class='badge open'>⏳ Em aberto</span></td></tr>
+<tr data-medium='cpc' data-priority='high' data-temp='Frio' data-ontem='false' data-curso_tipo='Bootcamp'><td>Eduardo Ryuji</td><td><span style='color:#94a3b8;font-size:11px'>anterior</span></td><td style='font-size:11px'>Vinicius Leao</td><td>QA</td><td><span class='badge Bootcamp'>Bootcamp</span></td><td><b>5</b></td><td>—</td><td><span class='badge Frio'>Frio</span></td><td><div class="sbars"><div class="spos" style="width:64%"></div><div class="sneu" style="width:32%"></div><div class="sneg" style="width:4%"></div></div><div class="slbls">+64% / -4%</div></td><td><span class='badge lost'>❌ LOST</span></td></tr>
+<tr data-medium='cpc' data-priority='high' data-temp='Morno' data-ontem='false' data-curso_tipo='Bootcamp'><td>Renata Costa</td><td><span style='color:#94a3b8;font-size:11px'>anterior</span></td><td style='font-size:11px'>Yanara Silva</td><td>DA</td><td><span class='badge Bootcamp'>Bootcamp</span></td><td><b>4</b></td><td>—</td><td><span class='badge Morno'>Morno</span></td><td><div class="sbars"><div class="spos" style="width:35%"></div><div class="sneu" style="width:49%"></div><div class="sneg" style="width:16%"></div></div><div class="slbls">+35% / -16%</div></td><td><span class='badge open'>⏳ Em aberto</span></td></tr>
+<tr data-medium='cpc' data-priority='high' data-temp='Morno' data-ontem='false' data-curso_tipo='Bootcamp'><td>William Lima</td><td><span style='color:#94a3b8;font-size:11px'>anterior</span></td><td style='font-size:11px'>Jessica Silva</td><td>WD</td><td><span class='badge Bootcamp'>Bootcamp</span></td><td><b>4</b></td><td>—</td><td><span class='badge Morno'>Morno</span></td><td><div class="sbars"><div class="spos" style="width:49%"></div><div class="sneu" style="width:36%"></div><div class="sneg" style="width:15%"></div></div><div class="slbls">+49% / -15%</div></td><td><span class='badge open'>⏳ Em aberto</span></td></tr>
+<tr data-medium='cpc' data-priority='high' data-temp='Morno' data-ontem='false' data-curso_tipo='Bootcamp'><td>Julia Galvão</td><td><span style='color:#94a3b8;font-size:11px'>anterior</span></td><td style='font-size:11px'>Bruno Marques</td><td>QA</td><td><span class='badge Bootcamp'>Bootcamp</span></td><td><b>4</b></td><td>—</td><td><span class='badge Morno'>Morno</span></td><td><div class="sbars"><div class="spos" style="width:30%"></div><div class="sneu" style="width:62%"></div><div class="sneg" style="width:8%"></div></div><div class="slbls">+30% / -8%</div></td><td><span class='badge open'>⏳ Em aberto</span></td></tr>
+<tr class='row-ontem' data-medium='crm' data-priority='high' data-temp='Frio' data-ontem='true' data-curso_tipo='Bootcamp'><td>Juliana Vieira</td><td><span class='badge tag-ontem'>02/09</span></td><td style='font-size:11px'>Daniel Augusto  Macedo Ribeiro</td><td>DS</td><td><span class='badge Bootcamp'>Bootcamp</span></td><td><b>4</b></td><td>—</td><td><span class='badge Frio'>Frio</span></td><td><div class="sbars"><div class="spos" style="width:38%"></div><div class="sneu" style="width:56%"></div><div class="sneg" style="width:6%"></div></div><div class="slbls">+38% / -6%</div></td><td><span class='badge open'>⏳ Em aberto</span></td></tr>
+<tr data-medium='cpc' data-priority='high' data-temp='Morno' data-ontem='false' data-curso_tipo='MBA'><td>Gabriel Antoniette</td><td><span style='color:#94a3b8;font-size:11px'>anterior</span></td><td style='font-size:11px'>Natalia Martins</td><td>MBA DS</td><td><span class='badge MBA'>MBA</span></td><td><b>4</b></td><td>—</td><td><span class='badge Morno'>Morno</span></td><td><div class="sbars"><div class="spos" style="width:45%"></div><div class="sneu" style="width:50%"></div><div class="sneg" style="width:4%"></div></div><div class="slbls">+45% / -4%</div></td><td><span class='badge open'>⏳ Em aberto</span></td></tr>
+<tr data-medium='' data-priority='high' data-temp='Morno' data-ontem='false' data-curso_tipo='Bootcamp'><td>David de Andrade</td><td><span style='color:#94a3b8;font-size:11px'>anterior</span></td><td style='font-size:11px'>Bruno Marques</td><td>DA</td><td><span class='badge Bootcamp'>Bootcamp</span></td><td><b>4</b></td><td>—</td><td><span class='badge Morno'>Morno</span></td><td><div class="sbars"><div class="spos" style="width:33%"></div><div class="sneu" style="width:45%"></div><div class="sneg" style="width:22%"></div></div><div class="slbls">+33% / -22%</div></td><td><span class='badge venda'>✅ VENDA</span></td></tr>
+<tr class='row-ontem' data-medium='cpc' data-priority='high' data-temp='Quente' data-ontem='true' data-curso_tipo='Bootcamp'><td>Juan Emerson Silva Rocha</td><td><span class='badge tag-ontem'>02/09</span></td><td style='font-size:11px'>ID 34045065</td><td>DS</td><td><span class='badge Bootcamp'>Bootcamp</span></td><td><b>4</b></td><td>✅</td><td><span class='badge Quente'>Quente</span></td><td><span class="sem">sem dados</span></td><td><span class='badge open'>⏳ Em aberto</span></td></tr>
+<tr data-medium='cpc' data-priority='high' data-temp='Morno' data-ontem='false' data-curso_tipo='MBA'><td>Felipe Hanada</td><td><span style='color:#94a3b8;font-size:11px'>anterior</span></td><td style='font-size:11px'>ID 35852628</td><td>MBA DS</td><td><span class='badge MBA'>MBA</span></td><td><b>4</b></td><td>✅</td><td><span class='badge Morno'>Morno</span></td><td><span class="sem">sem dados</span></td><td><span class='badge open'>⏳ Em aberto</span></td></tr>
+<tr data-medium='' data-priority='high' data-temp='Morno' data-ontem='false' data-curso_tipo='Bootcamp'><td>Kathelin Fonseca</td><td><span style='color:#94a3b8;font-size:11px'>anterior</span></td><td style='font-size:11px'>Jessica Silva</td><td>DA</td><td><span class='badge Bootcamp'>Bootcamp</span></td><td><b>4</b></td><td>—</td><td><span class='badge Morno'>Morno</span></td><td><div class="sbars"><div class="spos" style="width:49%"></div><div class="sneu" style="width:41%"></div><div class="sneg" style="width:10%"></div></div><div class="slbls">+49% / -10%</div></td><td><span class='badge open'>⏳ Em aberto</span></td></tr>
+<tr class='row-ontem' data-medium='cpc' data-priority='medium' data-temp='Morno' data-ontem='true' data-curso_tipo='MBA'><td>Dieyson Merquides</td><td><span class='badge tag-ontem'>02/09</span></td><td style='font-size:11px'>Lucas Bonow</td><td>MBA DS</td><td><span class='badge MBA'>MBA</span></td><td><b>3</b></td><td>✅</td><td><span class='badge Morno'>Morno</span></td><td><div class="sbars"><div class="spos" style="width:30%"></div><div class="sneu" style="width:47%"></div><div class="sneg" style="width:23%"></div></div><div class="slbls">+30% / -23%</div></td><td><span class='badge open'>⏳ Em aberto</span></td></tr>
+<tr data-medium='cpc' data-priority='high' data-temp='Morno' data-ontem='false' data-curso_tipo='Bootcamp'><td>Lais Barreto</td><td><span style='color:#94a3b8;font-size:11px'>anterior</span></td><td style='font-size:11px'>Lucas Bonow</td><td>DA</td><td><span class='badge Bootcamp'>Bootcamp</span></td><td><b>3</b></td><td>—</td><td><span class='badge Morno'>Morno</span></td><td><div class="sbars"><div class="spos" style="width:56%"></div><div class="sneu" style="width:41%"></div><div class="sneg" style="width:3%"></div></div><div class="slbls">+56% / -3%</div></td><td><span class='badge open'>⏳ Em aberto</span></td></tr>
+<tr data-medium='cpc' data-priority='high' data-temp='Morno' data-ontem='false' data-curso_tipo='MBA'><td>Eduardo Leao</td><td><span style='color:#94a3b8;font-size:11px'>anterior</span></td><td style='font-size:11px'>Erick Paiva</td><td>MBA DA</td><td><span class='badge MBA'>MBA</span></td><td><b>3</b></td><td>✅</td><td><span class='badge Morno'>Morno</span></td><td><div class="sbars"><div class="spos" style="width:21%"></div><div class="sneu" style="width:63%"></div><div class="sneg" style="width:15%"></div></div><div class="slbls">+21% / -15%</div></td><td><span class='badge open'>⏳ Em aberto</span></td></tr>
+<tr data-medium='' data-priority='medium' data-temp='Quente' data-ontem='false' data-curso_tipo='MBA'><td>Gabriel SIDA</td><td><span style='color:#94a3b8;font-size:11px'>anterior</span></td><td style='font-size:11px'>Lucas Bonow</td><td>MBA DS</td><td><span class='badge MBA'>MBA</span></td><td><b>3</b></td><td>✅</td><td><span class='badge Quente'>Quente</span></td><td><div class="sbars"><div class="spos" style="width:27%"></div><div class="sneu" style="width:64%"></div><div class="sneg" style="width:9%"></div></div><div class="slbls">+27% / -9%</div></td><td><span class='badge open'>⏳ Em aberto</span></td></tr>
+<tr data-medium='cpc' data-priority='high' data-temp='Morno' data-ontem='false' data-curso_tipo='Bootcamp'><td>WALLACY SUED DE SOUZA BRAGA</td><td><span style='color:#94a3b8;font-size:11px'>anterior</span></td><td style='font-size:11px'>ID 837235423</td><td>WD</td><td><span class='badge Bootcamp'>Bootcamp</span></td><td><b>3</b></td><td>—</td><td><span class='badge Morno'>Morno</span></td><td><span class="sem">sem dados</span></td><td><span class='badge open'>⏳ Em aberto</span></td></tr>
+<tr data-medium='cpc' data-priority='medium' data-temp='Frio' data-ontem='false' data-curso_tipo='Bootcamp'><td>Conceicao Lessa</td><td><span style='color:#94a3b8;font-size:11px'>anterior</span></td><td style='font-size:11px'>ID 34045065</td><td>DA</td><td><span class='badge Bootcamp'>Bootcamp</span></td><td><b>3</b></td><td>—</td><td><span class='badge Frio'>Frio</span></td><td><span class="sem">sem dados</span></td><td><span class='badge open'>⏳ Em aberto</span></td></tr>
+<tr data-medium='crm' data-priority='high' data-temp='Morno' data-ontem='false' data-curso_tipo='Bootcamp'><td>Guilherme Garcia de Oliveira</td><td><span style='color:#94a3b8;font-size:11px'>anterior</span></td><td style='font-size:11px'>Bernardo Magalhaes</td><td>DA</td><td><span class='badge Bootcamp'>Bootcamp</span></td><td><b>3</b></td><td>—</td><td><span class='badge Morno'>Morno</span></td><td><div class="sbars"><div class="spos" style="width:42%"></div><div class="sneu" style="width:47%"></div><div class="sneg" style="width:11%"></div></div><div class="slbls">+42% / -11%</div></td><td><span class='badge lost'>❌ LOST</span></td></tr>
+<tr data-medium='cpc' data-priority='high' data-temp='Frio' data-ontem='false' data-curso_tipo='Bootcamp'><td>Célio Rogério Lourenco</td><td><span style='color:#94a3b8;font-size:11px'>anterior</span></td><td style='font-size:11px'>ID 34045065</td><td>DS</td><td><span class='badge Bootcamp'>Bootcamp</span></td><td><b>2</b></td><td>✅</td><td><span class='badge Frio'>Frio</span></td><td><span class="sem">sem dados</span></td><td><span class='badge open'>⏳ Em aberto</span></td></tr>
+<tr data-medium='smm' data-priority='high' data-temp='Morno' data-ontem='false' data-curso_tipo='Bootcamp'><td>Antônio Rafael</td><td><span style='color:#94a3b8;font-size:11px'>anterior</span></td><td style='font-size:11px'>ID 34045065</td><td>WD</td><td><span class='badge Bootcamp'>Bootcamp</span></td><td><b>2</b></td><td>✅</td><td><span class='badge Morno'>Morno</span></td><td><span class="sem">sem dados</span></td><td><span class='badge open'>⏳ Em aberto</span></td></tr>
+<tr data-medium='cpc' data-priority='medium' data-temp='Morno' data-ontem='false' data-curso_tipo='Bootcamp'><td>Arthur Attili</td><td><span style='color:#94a3b8;font-size:11px'>anterior</span></td><td style='font-size:11px'>Bernardo Magalhaes</td><td>WD</td><td><span class='badge Bootcamp'>Bootcamp</span></td><td><b>2</b></td><td>✅</td><td><span class='badge Morno'>Morno</span></td><td><div class="sbars"><div class="spos" style="width:56%"></div><div class="sneu" style="width:37%"></div><div class="sneg" style="width:6%"></div></div><div class="slbls">+56% / -6%</div></td><td><span class='badge open'>⏳ Em aberto</span></td></tr>
+<tr data-medium='cpc' data-priority='high' data-temp='Morno' data-ontem='false' data-curso_tipo='Bootcamp'><td>Patrick Silveira</td><td><span style='color:#94a3b8;font-size:11px'>anterior</span></td><td style='font-size:11px'>Bernardo Magalhaes</td><td>QA</td><td><span class='badge Bootcamp'>Bootcamp</span></td><td><b>2</b></td><td>✅</td><td><span class='badge Morno'>Morno</span></td><td><div class="sbars"><div class="spos" style="width:27%"></div><div class="sneu" style="width:69%"></div><div class="sneg" style="width:4%"></div></div><div class="slbls">+27% / -4%</div></td><td><span class='badge open'>⏳ Em aberto</span></td></tr>
+<tr data-medium='cpc' data-priority='medium' data-temp='Morno' data-ontem='false' data-curso_tipo='Bootcamp'><td>Juliana Aguerra</td><td><span style='color:#94a3b8;font-size:11px'>anterior</span></td><td style='font-size:11px'>ID 1201941994</td><td>QA</td><td><span class='badge Bootcamp'>Bootcamp</span></td><td><b>1</b></td><td>✅</td><td><span class='badge Morno'>Morno</span></td><td><span class="sem">sem dados</span></td><td><span class='badge open'>⏳ Em aberto</span></td></tr>
+<tr data-medium='cpc' data-priority='high' data-temp='Morno' data-ontem='false' data-curso_tipo='Bootcamp'><td>Daiane Duarte</td><td><span style='color:#94a3b8;font-size:11px'>anterior</span></td><td style='font-size:11px'>Bruno Marques</td><td>DA</td><td><span class='badge Bootcamp'>Bootcamp</span></td><td><b>1</b></td><td>✅</td><td><span class='badge Morno'>Morno</span></td><td><div class="sbars"><div class="spos" style="width:33%"></div><div class="sneu" style="width:61%"></div><div class="sneg" style="width:7%"></div></div><div class="slbls">+33% / -7%</div></td><td><span class='badge open'>⏳ Em aberto</span></td></tr>
+<tr class='row-ontem' data-medium='bloggers' data-priority='medium' data-temp='Quente' data-ontem='true' data-curso_tipo='Bootcamp'><td>PEDRO HENRIQUE FIGUEIREDO BONFIM</td><td><span class='badge tag-ontem'>02/09</span></td><td style='font-size:11px'>Erick Paiva</td><td>DA</td><td><span class='badge Bootcamp'>Bootcamp</span></td><td><b>0</b></td><td>✅</td><td><span class='badge Quente'>Quente</span></td><td><div class="sbars"><div class="spos" style="width:33%"></div><div class="sneu" style="width:58%"></div><div class="sneg" style="width:9%"></div></div><div class="slbls">+33% / -9%</div></td><td><span class='badge open'>⏳ Em aberto</span></td></tr>
+<tr class='row-ontem' data-medium='smm' data-priority='low' data-temp='Quente' data-ontem='true' data-curso_tipo='Bootcamp'><td>Joao Victor</td><td><span class='badge tag-ontem'>02/09</span></td><td style='font-size:11px'>Jessica Silva</td><td>DA</td><td><span class='badge Bootcamp'>Bootcamp</span></td><td><b>0</b></td><td>✅</td><td><span class='badge Quente'>Quente</span></td><td><div class="sbars"><div class="spos" style="width:46%"></div><div class="sneu" style="width:44%"></div><div class="sneg" style="width:10%"></div></div><div class="slbls">+46% / -10%</div></td><td><span class='badge open'>⏳ Em aberto</span></td></tr>
 </table>
-
-<h2>⚠️ Alertas Críticos</h2>
-<div class="alert critical">🔥 <b>Potencial A em aberto:</b> João Lucas Matteucci César (score 6, Payable, DS) — Daniel Augusto  Macedo Ribeiro — follow-up urgente hoje</div>
-<div class="alert critical">🔥 <b>Potencial A em aberto:</b> Felipe Pena (score 5, Payable, MBA AI) — Natalia Martins — follow-up urgente hoje</div>
-<div class="alert critical">😤 <b>Alta resistência:</b> Dieyson Merquides (23% negativo, 52min) — Lucas Bonow</div>
-<div class="alert critical">😤 <b>Alta resistência:</b> Euler Alcino (59% negativo, 4min) — Vinicius Leao</div>
-<div class="alert critical">😤 <b>Alta resistência:</b> Clayton Alves (20% negativo, 23min) — Daniel Augusto  Macedo Ribeiro</div>
-<div class="alert critical">😤 <b>Alta resistência:</b> David de Andrade (22% negativo, 70min) — Bruno Marques</div>
-<div class="alert warning">⏱️ <b>Call longa sem fechamento:</b> Gisella (63min) — Lucas Bonow — MBA DA</div>
-<div class="alert warning">⏱️ <b>Call longa sem fechamento:</b> Gabriel Mendes (62min) — Erick Paiva — DA</div>
-<div class="alert warning">⏱️ <b>Call longa sem fechamento:</b> Eduardo Leao (61min) — Erick Paiva — MBA DA</div>
-
-<h2>📚 Recomendações</h2>
-<div class="alert info">📌 <b>No-shows:</b> 57 no-shows (54% da base). Todos de leads de outros dias. Confirmar agendamentos por WhatsApp 2h antes.</div>
-<div class="alert info">📌 <b>Conversão de ontem:</b> Apenas 1 pagamento dos 9 atendidos (11%). Pipeline de leads novos ainda em amadurecimento — normal para D+1.</div>
-<div class="alert info">📌 <b>curryjoao:</b> Melhor influencer com 8 reuniões atendidas. Aumentar alocação no próximo ciclo.</div>
+<h2>⚠️ Alertas</h2>
+<div class="alert critical">🔥 Potencial A em aberto: <b>João Lucas Matteucci César</b> (score 6, DS) — Daniel Augusto  Macedo Ribeiro</div>
+<div class="alert critical">🔥 Potencial A em aberto: <b>Felipe Pena</b> (score 5, MBA AI) — Natalia Martins</div>
+<div class="alert critical">😤 Alta resistência: <b>Dieyson Merquides</b> (23% neg, 52min) — Lucas Bonow</div>
+<div class="alert critical">😤 Alta resistência: <b>Euler Alcino</b> (59% neg, 4min) — Vinicius Leao</div>
+<div class="alert critical">😤 Alta resistência: <b>Clayton Alves</b> (20% neg, 23min) — Daniel Augusto  Macedo Ribeiro</div>
+<div class="alert critical">😤 Alta resistência: <b>David de Andrade</b> (22% neg, 70min) — Bruno Marques</div>
+<div class="alert warning">⏱️ Call longa sem fechamento: <b>Gisella</b> (63min) — Lucas Bonow — MBA DA</div>
+<div class="alert warning">⏱️ Call longa sem fechamento: <b>Gabriel Mendes</b> (62min) — Erick Paiva — DA</div>
+<div class="alert warning">⏱️ Call longa sem fechamento: <b>Eduardo Leao</b> (61min) — Erick Paiva — MBA DA</div>
+<div class="alert info">📌 57 no-shows no dia (54% da base). Todos de leads de dias anteriores. Recontato imediato via CRM.</div>
+<div class="alert info">📌 curryjoao gerou 8 reuniões atendidas — melhor influencer do dia. Aumentar alocação.</div>
 </div>
 
 <!-- ═══ ELEPHAN ═══ -->
 <div class="content" id="tab-elephan">
 <div class="kpi-grid">
   <div class="kpi"><div class="kpi-val">48</div><div class="kpi-lbl">Transcrições</div></div>
-  <div class="kpi g"><div class="kpi-val">8</div><div class="kpi-lbl">Sentim. ≥50% positivo</div></div>
-  <div class="kpi r"><div class="kpi-val">4</div><div class="kpi-lbl">Alta resistência (≥20% neg)</div></div>
-  <div class="kpi o"><div class="kpi-val">3</div><div class="kpi-lbl">Calls ≥60min s/ fechamento</div></div>
+  <div class="kpi g"><div class="kpi-val">8</div><div class="kpi-lbl">Sentim. ≥50% pos</div></div>
+  <div class="kpi r"><div class="kpi-val">4</div><div class="kpi-lbl">Alta Resistência</div></div>
+  <div class="kpi o"><div class="kpi-val">3</div><div class="kpi-lbl">≥60min s/ fechamento</div></div>
 </div>
-
-<h2>🎙️ Análise de Transcrições — 02/09/2026</h2>
-<table>
-<tr><th>Lead</th><th>Ontem?</th><th>Closer</th><th>Curso</th><th>Duração</th><th>Pot.</th><th>Sentimento</th><th>Resultado</th><th>Resumo</th></tr>
-<tr class='ontem-row'><td><b>Artur de Jesus Leal</b></td><td><span class='badge ontem-tag'>ONTEM</span></td><td style='font-size:11px'>Bernardo Magalhaes</td><td>DA</td><td>47min</td><td><span class='badge C'>C</span></td><td><div class="sbars"><div class="spos" style="width:26%" title="+26%"></div><div class="sneu" style="width:66%"></div><div class="sneg" style="width:8%" title="-8%"></div></div><div class="slbls">+26% / -8%</div></td><td><span class='badge open'>⏳ Em aberto</span></td><td style='font-size:11px;color:#475569'>1. Introdução e Contextualização  <br>   - O consultor, Bernardo, inicia a conversa apresentando-se como consu…</td></tr>
-<tr><td><b>Thiago</b></td><td>—</td><td style='font-size:11px'>Vinicius Leao</td><td>DS</td><td>26min</td><td><span class='badge B'>B</span></td><td><div class="sbars"><div class="spos" style="width:54%" title="+54%"></div><div class="sneu" style="width:44%"></div><div class="sneg" style="width:3%" title="-3%"></div></div><div class="slbls">+54% / -3%</div></td><td><span class='badge open'>⏳ Em aberto</span></td><td style='font-size:11px;color:#475569'>1. Rapport e quebra-gelo: O consultor, Vinícius, iniciou a conversa de forma descontraída, mencionando experiê…</td></tr>
-<tr><td><b>João Lucas Matteucci César</b></td><td>—</td><td style='font-size:11px'>Daniel Augusto  Macedo Ribeiro</td><td>DS</td><td>28min</td><td><span class='badge A'>A</span></td><td><div class="sbars"><div class="spos" style="width:35%" title="+35%"></div><div class="sneu" style="width:63%"></div><div class="sneg" style="width:3%" title="-3%"></div></div><div class="slbls">+35% / -3%</div></td><td><span class='badge open'>⏳ Em aberto</span></td><td style='font-size:11px;color:#475569'>1. Introdução e Criação de Rapport  <br>   - Daniel iniciou a conversa de forma amigável e profissional.  <br>…</td></tr>
-<tr class='ontem-row'><td>Fábio de Toledo Pierri Ribeiro Sampaio</td><td><span class='badge ontem-tag'>ONTEM</span></td><td style='font-size:11px'>ID 1201941990</td><td>MBA AI</td><td>—</td><td><span class='badge B'>B</span></td><td><span class='sem'>sem dados</span></td><td><span class='badge open'>⏳ Em aberto</span></td><td>—</td></tr>
-<tr class='ontem-row'><td><b>GIL ANDERSON OLIVEIRA DEIRO</b></td><td><span class='badge ontem-tag'>ONTEM</span></td><td style='font-size:11px'>Bernardo Magalhaes</td><td>DS</td><td>49min</td><td><span class='badge C'>C</span></td><td><div class="sbars"><div class="spos" style="width:29%" title="+29%"></div><div class="sneu" style="width:63%"></div><div class="sneg" style="width:8%" title="-8%"></div></div><div class="slbls">+29% / -8%</div></td><td><span class='badge lost'>❌ LOST</span></td><td style='font-size:11px;color:#475569'>1. Introdução e Contexto Inicial<br>   - O consultor de carreira, Bernardo, inicia a ligação com Gil para ente…</td></tr>
-<tr><td><b>Renata Costa</b></td><td>—</td><td style='font-size:11px'>Yanara Silva</td><td>DA</td><td>40min</td><td><span class='badge B'>B</span></td><td><div class="sbars"><div class="spos" style="width:35%" title="+35%"></div><div class="sneu" style="width:49%"></div><div class="sneg" style="width:16%" title="-16%"></div></div><div class="slbls">+35% / -16%</div></td><td><span class='badge open'>⏳ Em aberto</span></td><td style='font-size:11px;color:#475569'>1. Criação de Rapport e Estratégias de Quebra-Gelo  <br>   - Quebra-gelo inicial: A consultora utilizou uma ab…</td></tr>
-<tr class='ontem-row'><td><b>Dieyson Merquides</b></td><td><span class='badge ontem-tag'>ONTEM</span></td><td style='font-size:11px'>Lucas Bonow</td><td>MBA DS</td><td>52min</td><td><span class='badge B'>B</span></td><td><div class="sbars"><div class="spos" style="width:30%" title="+30%"></div><div class="sneu" style="width:47%"></div><div class="sneg" style="width:23%" title="-23%"></div></div><div class="slbls">+30% / -23%</div></td><td><span class='badge open'>⏳ Em aberto</span></td><td style='font-size:11px;color:#475569'>1. Criação de rapport<br>   - A conversa começou de maneira amistosa, com o consultor rapidamente estabelecend…</td></tr>
-<tr class='ontem-row'><td><b>PEDRO HENRIQUE FIGUEIREDO BONFIM</b></td><td><span class='badge ontem-tag'>ONTEM</span></td><td style='font-size:11px'>Erick Paiva</td><td>DA</td><td>26min</td><td><span class='badge B'>B</span></td><td><div class="sbars"><div class="spos" style="width:33%" title="+33%"></div><div class="sneu" style="width:58%"></div><div class="sneg" style="width:9%" title="-9%"></div></div><div class="slbls">+33% / -9%</div></td><td><span class='badge open'>⏳ Em aberto</span></td><td style='font-size:11px;color:#475569'>1. Saudação Inicial e Criação de Rapport<br>   - O consultor, Eric, iniciou a chamada de forma bem receptiva e…</td></tr>
-<tr><td>Célio Rogério Lourenco</td><td>—</td><td style='font-size:11px'>ID 34045065</td><td>DS</td><td>—</td><td><span class='badge B'>B</span></td><td><span class='sem'>sem dados</span></td><td><span class='badge open'>⏳ Em aberto</span></td><td>—</td></tr>
-<tr><td><b>Gisella</b></td><td>—</td><td style='font-size:11px'>Lucas Bonow</td><td>MBA DA</td><td>63min</td><td><span class='badge B'>B</span></td><td><div class="sbars"><div class="spos" style="width:49%" title="+49%"></div><div class="sneu" style="width:45%"></div><div class="sneg" style="width:6%" title="-6%"></div></div><div class="slbls">+49% / -6%</div></td><td><span class='badge open'>⏳ Em aberto</span></td><td style='font-size:11px;color:#475569'>1. Criação de Rapport:<br>   - O consultor utilizou o clima e as diferenças regionais (Rio de Janeiro x Rio Gr…</td></tr>
-<tr><td><b>Hiago Henriques</b></td><td>—</td><td style='font-size:11px'>Natalia Martins</td><td>DA</td><td>30min</td><td><span class='badge B'>B</span></td><td><div class="sbars"><div class="spos" style="width:35%" title="+35%"></div><div class="sneu" style="width:52%"></div><div class="sneg" style="width:13%" title="-13%"></div></div><div class="slbls">+35% / -13%</div></td><td><span class='badge open'>⏳ Em aberto</span></td><td style='font-size:11px;color:#475569'>1. Rapport e Abertura da Conversa:  <br>   - A responsável pela conversa foi a Nath, que se apresentou como Ge…</td></tr>
-<tr><td><b>Lucas Arashiro</b></td><td>—</td><td style='font-size:11px'>Vinicius Leao</td><td>DS</td><td>28min</td><td><span class='badge C'>C</span></td><td><div class="sbars"><div class="spos" style="width:49%" title="+49%"></div><div class="sneu" style="width:46%"></div><div class="sneg" style="width:5%" title="-5%"></div></div><div class="slbls">+49% / -5%</div></td><td><span class='badge open'>⏳ Em aberto</span></td><td style='font-size:11px;color:#475569'>1. Criação de Rapport e Quebra-Gelo  <br>   - O consultor iniciou a conversa com tom amigável e descontraído, …</td></tr>
-<tr><td><b>William Lima</b></td><td>—</td><td style='font-size:11px'>Jessica Silva</td><td>WD</td><td>30min</td><td><span class='badge B'>B</span></td><td><div class="sbars"><div class="spos" style="width:49%" title="+49%"></div><div class="sneu" style="width:36%"></div><div class="sneg" style="width:15%" title="-15%"></div></div><div class="slbls">+49% / -15%</div></td><td><span class='badge open'>⏳ Em aberto</span></td><td style='font-size:11px;color:#475569'>1. Criação de Rapport:<br>   - A consultora iniciou agradecendo a disponibilidade do prospect, reconhecendo su…</td></tr>
-<tr><td>Juliana Aguerra</td><td>—</td><td style='font-size:11px'>ID 1201941994</td><td>QA</td><td>—</td><td><span class='badge B'>B</span></td><td><span class='sem'>sem dados</span></td><td><span class='badge open'>⏳ Em aberto</span></td><td>—</td></tr>
-<tr><td><b>Euler Alcino</b></td><td>—</td><td style='font-size:11px'>Vinicius Leao</td><td>DS</td><td>4min</td><td><span class='badge B'>B</span></td><td><div class="sbars"><div class="spos" style="width:8%" title="+8%"></div><div class="sneu" style="width:33%"></div><div class="sneg" style="width:59%" title="-59%"></div></div><div class="slbls">+8% / -59%</div></td><td><span class='badge open'>⏳ Em aberto</span></td><td style='font-size:11px;color:#475569'>Parece que o conteúdo enviado não é uma transcrição de uma conversa de consultoria de carreira, mas sim um tre…</td></tr>
-<tr><td><b>Lais Barreto</b></td><td>—</td><td style='font-size:11px'>Lucas Bonow</td><td>DA</td><td>44min</td><td><span class='badge B'>B</span></td><td><div class="sbars"><div class="spos" style="width:56%" title="+56%"></div><div class="sneu" style="width:41%"></div><div class="sneg" style="width:3%" title="-3%"></div></div><div class="slbls">+56% / -3%</div></td><td><span class='badge open'>⏳ Em aberto</span></td><td style='font-size:11px;color:#475569'>1. Rapport e abordagem inicial:<br>   - O consultor iniciou a conversa apresentando-se como o responsável pelo…</td></tr>
-<tr><td><b>Julia Lopes</b></td><td>—</td><td style='font-size:11px'>Ana Viana</td><td>MBA AI</td><td>57min</td><td><span class='badge B'>B</span></td><td><div class="sbars"><div class="spos" style="width:64%" title="+64%"></div><div class="sneu" style="width:32%"></div><div class="sneg" style="width:3%" title="-3%"></div></div><div class="slbls">+64% / -3%</div></td><td><span class='badge open'>⏳ Em aberto</span></td><td style='font-size:11px;color:#475569'>1. Criação de Rapport:<br>   - O tom da saudação inicial foi amigável e profissional, permitindo estabelecer u…</td></tr>
-<tr><td><b>Gabriel Mendes</b></td><td>—</td><td style='font-size:11px'>Erick Paiva</td><td>DA</td><td>62min</td><td><span class='badge C'>C</span></td><td><div class="sbars"><div class="spos" style="width:25%" title="+25%"></div><div class="sneu" style="width:66%"></div><div class="sneg" style="width:8%" title="-8%"></div></div><div class="slbls">+25% / -8%</div></td><td><span class='badge open'>⏳ Em aberto</span></td><td style='font-size:11px;color:#475569'>1. Criação de Rapport e Contexto Inicial<br>   - Desde o início, o consultor demonstrou um tom profissional, m…</td></tr>
-<tr><td><b>Clayton Alves</b></td><td>—</td><td style='font-size:11px'>Daniel Augusto  Macedo Ribeiro</td><td>QA</td><td>23min</td><td><span class='badge C'>C</span></td><td><div class="sbars"><div class="spos" style="width:49%" title="+49%"></div><div class="sneu" style="width:32%"></div><div class="sneg" style="width:20%" title="-20%"></div></div><div class="slbls">+49% / -20%</div></td><td><span class='badge lost'>❌ LOST</span></td><td style='font-size:11px;color:#475569'>1. Início da Conversa e Criação de Rapport  <br>   - O prospect, Clayton, foi abordado por Daniel, que começou…</td></tr>
-<tr><td><b>Júlio André Santos</b></td><td>—</td><td style='font-size:11px'>Lucas Bonow</td><td>DA</td><td>53min</td><td><span class='badge C'>C</span></td><td><div class="sbars"><div class="spos" style="width:48%" title="+48%"></div><div class="sneu" style="width:45%"></div><div class="sneg" style="width:7%" title="-7%"></div></div><div class="slbls">+48% / -7%</div></td><td><span class='badge open'>⏳ Em aberto</span></td><td style='font-size:11px;color:#475569'>1. Criação de Rapport e Estratégias de Quebra-gelo:  <br>   - O consultor demonstrou empatia e interesse genuí…</td></tr>
-<tr class='ontem-row'><td><b>Phablo Ramires</b></td><td><span class='badge ontem-tag'>ONTEM</span></td><td style='font-size:11px'>Lucas Bonow</td><td>QA</td><td>36min</td><td><span class='badge B'>B</span></td><td><div class="sbars"><div class="spos" style="width:51%" title="+51%"></div><div class="sneu" style="width:33%"></div><div class="sneg" style="width:15%" title="-15%"></div></div><div class="slbls">+51% / -15%</div></td><td><span class='badge open'>⏳ Em aberto</span></td><td style='font-size:11px;color:#475569'>1. Criação de Rapport e Quebra-Gelo: <br>   - O consultor começou a conversa de forma leve e descontraída, per…</td></tr>
-<tr><td><b>Catarina Sarmiento</b></td><td>—</td><td style='font-size:11px'>Erick Paiva</td><td>QA</td><td>31min</td><td><span class='badge B'>B</span></td><td><div class="sbars"><div class="spos" style="width:21%" title="+21%"></div><div class="sneu" style="width:76%"></div><div class="sneg" style="width:2%" title="-2%"></div></div><div class="slbls">+21% / -2%</div></td><td><span class='badge open'>⏳ Em aberto</span></td><td style='font-size:11px;color:#475569'>1. Criação de Rapport e Primeiro Contato<br>   - A saudação inicial foi feita de maneira cordata e profissiona…</td></tr>
-<tr><td><b>Eduardo Leao</b></td><td>—</td><td style='font-size:11px'>Erick Paiva</td><td>MBA DA</td><td>61min</td><td><span class='badge B'>B</span></td><td><div class="sbars"><div class="spos" style="width:21%" title="+21%"></div><div class="sneu" style="width:63%"></div><div class="sneg" style="width:15%" title="-15%"></div></div><div class="slbls">+21% / -15%</div></td><td><span class='badge open'>⏳ Em aberto</span></td><td style='font-size:11px;color:#475569'>1. Criação de Rapport:<br>   - O consultor iniciou com uma conversa casual sobre o clima no Rio de Janeiro e a…</td></tr>
-<tr><td><b>Julia Galvão</b></td><td>—</td><td style='font-size:11px'>Bruno Marques</td><td>QA</td><td>53min</td><td><span class='badge B'>B</span></td><td><div class="sbars"><div class="spos" style="width:30%" title="+30%"></div><div class="sneu" style="width:62%"></div><div class="sneg" style="width:8%" title="-8%"></div></div><div class="slbls">+30% / -8%</div></td><td><span class='badge open'>⏳ Em aberto</span></td><td style='font-size:11px;color:#475569'>1. Criação de Rapport: A abertura da conversa foi bastante acolhedora e informal, com um tom amigável e cordia…</td></tr>
-<tr><td><b>Daiane Duarte</b></td><td>—</td><td style='font-size:11px'>Bruno Marques</td><td>DA</td><td>53min</td><td><span class='badge B'>B</span></td><td><div class="sbars"><div class="spos" style="width:33%" title="+33%"></div><div class="sneu" style="width:61%"></div><div class="sneg" style="width:7%" title="-7%"></div></div><div class="slbls">+33% / -7%</div></td><td><span class='badge open'>⏳ Em aberto</span></td><td style='font-size:11px;color:#475569'>1. Introdução e criação de rapport:<br>   - O consultor, identificado como Bruno, iniciou a conversa de forma …</td></tr>
-<tr><td>Antônio Rafael</td><td>—</td><td style='font-size:11px'>ID 34045065</td><td>WD</td><td>—</td><td><span class='badge B'>B</span></td><td><span class='sem'>sem dados</span></td><td><span class='badge open'>⏳ Em aberto</span></td><td>—</td></tr>
-<tr><td><b>Gabriel SIDA</b></td><td>—</td><td style='font-size:11px'>Lucas Bonow</td><td>MBA DS</td><td>25min</td><td><span class='badge B'>B</span></td><td><div class="sbars"><div class="spos" style="width:27%" title="+27%"></div><div class="sneu" style="width:64%"></div><div class="sneg" style="width:9%" title="-9%"></div></div><div class="slbls">+27% / -9%</div></td><td><span class='badge open'>⏳ Em aberto</span></td><td style='font-size:11px;color:#475569'>Resumo Analítico e Aprofundado da Reunião<br>---<br><br>#1. Criação de rapport e ambientação<br>- Estratégias …</td></tr>
-<tr><td><b>Paula de</b></td><td>—</td><td style='font-size:11px'>Yanara Silva</td><td>DA</td><td>54min</td><td><span class='badge C'>C</span></td><td><div class="sbars"><div class="spos" style="width:25%" title="+25%"></div><div class="sneu" style="width:69%"></div><div class="sneg" style="width:5%" title="-5%"></div></div><div class="slbls">+25% / -5%</div></td><td><span class='badge lost'>❌ LOST</span></td><td style='font-size:11px;color:#475569'>1. Criação de Rapport e Nível de Receptividade do Lead: <br>   - Yanara iniciou a conversa de forma amigável, …</td></tr>
-<tr class='ontem-row'><td><b>Jose Carlos Ferreira Junior</b></td><td><span class='badge ontem-tag'>ONTEM</span></td><td style='font-size:11px'>Yanara Silva</td><td>MBA AI</td><td>46min</td><td><span class='badge B'>B</span></td><td><div class="sbars"><div class="spos" style="width:54%" title="+54%"></div><div class="sneu" style="width:43%"></div><div class="sneg" style="width:3%" title="-3%"></div></div><div class="slbls">+54% / -3%</div></td><td><span class='badge open'>⏳ Em aberto</span></td><td style='font-size:11px;color:#475569'>1. Criação de Rapport e Quebra de Gelo:<br>   - O consultor se apresentou de forma calorosa e educada. Demonst…</td></tr>
-<tr><td><b>Cristiano Eugenio</b></td><td>—</td><td style='font-size:11px'>Vinicius Leao</td><td>WD</td><td>33min</td><td><span class='badge C'>C</span></td><td><div class="sbars"><div class="spos" style="width:18%" title="+18%"></div><div class="sneu" style="width:70%"></div><div class="sneg" style="width:12%" title="-12%"></div></div><div class="slbls">+18% / -12%</div></td><td><span class='badge open'>⏳ Em aberto</span></td><td style='font-size:11px;color:#475569'>1. Quebra-gelo e criação de rapport:  <br>   - O consultor, Vinícius, iniciou a conversa com um tom amigável e…</td></tr>
-<tr><td><b>Felipe Pena</b></td><td>—</td><td style='font-size:11px'>Natalia Martins</td><td>MBA AI</td><td>40min</td><td><span class='badge A'>A</span></td><td><div class="sbars"><div class="spos" style="width:61%" title="+61%"></div><div class="sneu" style="width:38%"></div><div class="sneg" style="width:1%" title="-1%"></div></div><div class="slbls">+61% / -1%</div></td><td><span class='badge open'>⏳ Em aberto</span></td><td style='font-size:11px;color:#475569'>1. Criação de Rapport<br>   - A conversa foi iniciada com um tom leve e descontraído, abordando um tema cotidi…</td></tr>
-<tr class='ontem-row'><td><b>Juliana Vieira</b></td><td><span class='badge ontem-tag'>ONTEM</span></td><td style='font-size:11px'>Daniel Augusto  Macedo Ribeiro</td><td>DS</td><td>35min</td><td><span class='badge B'>B</span></td><td><div class="sbars"><div class="spos" style="width:38%" title="+38%"></div><div class="sneu" style="width:56%"></div><div class="sneg" style="width:6%" title="-6%"></div></div><div class="slbls">+38% / -6%</div></td><td><span class='badge open'>⏳ Em aberto</span></td><td style='font-size:11px;color:#475569'>1. Criação de Rapport:  <br>   O consultor iniciou a conversa de maneira amigável, com um tom acolhedor, pergu…</td></tr>
-<tr><td><b>Eduardo Ryuji</b></td><td>—</td><td style='font-size:11px'>Vinicius Leao</td><td>QA</td><td>29min</td><td><span class='badge B'>B</span></td><td><div class="sbars"><div class="spos" style="width:64%" title="+64%"></div><div class="sneu" style="width:32%"></div><div class="sneg" style="width:4%" title="-4%"></div></div><div class="slbls">+64% / -4%</div></td><td><span class='badge lost'>❌ LOST</span></td><td style='font-size:11px;color:#475569'>1. Criação de Rapport e Contextualização Inicial<br>    - O consultor Vinícius iniciou a reunião de maneira de…</td></tr>
-<tr><td><b>Gabriel Antoniette</b></td><td>—</td><td style='font-size:11px'>Natalia Martins</td><td>MBA DS</td><td>38min</td><td><span class='badge B'>B</span></td><td><div class="sbars"><div class="spos" style="width:45%" title="+45%"></div><div class="sneu" style="width:50%"></div><div class="sneg" style="width:4%" title="-4%"></div></div><div class="slbls">+45% / -4%</div></td><td><span class='badge open'>⏳ Em aberto</span></td><td style='font-size:11px;color:#475569'>1. Criação de rapport e condução inicial da conversa:<br>   - A consultora expressou empatia e reconhecimento …</td></tr>
-<tr><td>WALLACY SUED DE SOUZA BRAGA</td><td>—</td><td style='font-size:11px'>ID 837235423</td><td>WD</td><td>—</td><td><span class='badge B'>B</span></td><td><span class='sem'>sem dados</span></td><td><span class='badge open'>⏳ Em aberto</span></td><td>—</td></tr>
-<tr><td><b>Wilton Carvalho da Silva</b></td><td>—</td><td style='font-size:11px'>Bruno Marques</td><td>DA</td><td>56min</td><td><span class='badge C'>C</span></td><td><div class="sbars"><div class="spos" style="width:24%" title="+24%"></div><div class="sneu" style="width:62%"></div><div class="sneg" style="width:15%" title="-15%"></div></div><div class="slbls">+24% / -15%</div></td><td><span class='badge lost'>❌ LOST</span></td><td style='font-size:11px;color:#475569'>1. Criação de Rapport  <br>   - O consultor Bruno iniciou a conversa de forma descontraída, elogiando o lead e…</td></tr>
-<tr><td>Conceicao Lessa</td><td>—</td><td style='font-size:11px'>ID 34045065</td><td>DA</td><td>—</td><td><span class='badge B'>B</span></td><td><span class='sem'>sem dados</span></td><td><span class='badge open'>⏳ Em aberto</span></td><td>—</td></tr>
-<tr><td><b>David de Andrade</b></td><td>—</td><td style='font-size:11px'>Bruno Marques</td><td>DA</td><td>70min</td><td><span class='badge B'>B</span></td><td><div class="sbars"><div class="spos" style="width:33%" title="+33%"></div><div class="sneu" style="width:45%"></div><div class="sneg" style="width:22%" title="-22%"></div></div><div class="slbls">+33% / -22%</div></td><td><span class='badge venda'>✅ VENDA</span></td><td style='font-size:11px;color:#475569'>1. Criação de Rapport e quebra-gelo:<br>   - O consultor iniciou a conversa de forma descontraída, pedindo des…</td></tr>
-<tr class='ontem-row'><td><b>Gabriela Jobim da Silva</b></td><td><span class='badge ontem-tag'>ONTEM</span></td><td style='font-size:11px'>Jessica Silva</td><td>DA</td><td>43min</td><td><span class='badge C'>C</span></td><td><div class="sbars"><div class="spos" style="width:44%" title="+44%"></div><div class="sneu" style="width:47%"></div><div class="sneg" style="width:9%" title="-9%"></div></div><div class="slbls">+44% / -9%</div></td><td><span class='badge open'>⏳ Em aberto</span></td><td style='font-size:11px;color:#475569'>1. Criação de Rapport e Apresentação Inicial: A consultora Jéssica abriu a conversa de maneira calorosa e amig…</td></tr>
-<tr class='ontem-row'><td>Juan Emerson Silva Rocha</td><td><span class='badge ontem-tag'>ONTEM</span></td><td style='font-size:11px'>ID 34045065</td><td>DS</td><td>—</td><td><span class='badge B'>B</span></td><td><span class='sem'>sem dados</span></td><td><span class='badge open'>⏳ Em aberto</span></td><td>—</td></tr>
-<tr><td>Felipe Hanada</td><td>—</td><td style='font-size:11px'>ID 35852628</td><td>MBA DS</td><td>—</td><td><span class='badge B'>B</span></td><td><span class='sem'>sem dados</span></td><td><span class='badge open'>⏳ Em aberto</span></td><td>—</td></tr>
-<tr class='ontem-row'><td><b>Joao Victor</b></td><td><span class='badge ontem-tag'>ONTEM</span></td><td style='font-size:11px'>Jessica Silva</td><td>DA</td><td>50min</td><td><span class='badge B'>B</span></td><td><div class="sbars"><div class="spos" style="width:46%" title="+46%"></div><div class="sneu" style="width:44%"></div><div class="sneg" style="width:10%" title="-10%"></div></div><div class="slbls">+46% / -10%</div></td><td><span class='badge open'>⏳ Em aberto</span></td><td style='font-size:11px;color:#475569'>1. Criação de Rapport e Quebra-Gelo:<br>    - A conversa começou de maneira informal e calorosa; o consultor f…</td></tr>
-<tr><td><b>Arthur Attili</b></td><td>—</td><td style='font-size:11px'>Bernardo Magalhaes</td><td>WD</td><td>40min</td><td><span class='badge B'>B</span></td><td><div class="sbars"><div class="spos" style="width:56%" title="+56%"></div><div class="sneu" style="width:37%"></div><div class="sneg" style="width:6%" title="-6%"></div></div><div class="slbls">+56% / -6%</div></td><td><span class='badge open'>⏳ Em aberto</span></td><td style='font-size:11px;color:#475569'>1. Criação de Rapport e Quebra-Gelo:<br>   - O consultor Bernardo iniciu a ligação de maneira descontraída e s…</td></tr>
-<tr><td><b>Katiuscia Keller</b></td><td>—</td><td style='font-size:11px'>Bruno Marques</td><td>DA</td><td>41min</td><td><span class='badge A'>A</span></td><td><div class="sbars"><div class="spos" style="width:39%" title="+39%"></div><div class="sneu" style="width:58%"></div><div class="sneg" style="width:4%" title="-4%"></div></div><div class="slbls">+39% / -4%</div></td><td><span class='badge converted'>✅ CONVERTIDO</span></td><td style='font-size:11px;color:#475569'>1. Criação de Rapport & Início da Conversa:  <br>   - A Call começa com o consultor confirmando a pronúncia do…</td></tr>
-<tr><td><b>Guilherme Garcia de Oliveira</b></td><td>—</td><td style='font-size:11px'>Bernardo Magalhaes</td><td>DA</td><td>48min</td><td><span class='badge B'>B</span></td><td><div class="sbars"><div class="spos" style="width:42%" title="+42%"></div><div class="sneu" style="width:47%"></div><div class="sneg" style="width:11%" title="-11%"></div></div><div class="slbls">+42% / -11%</div></td><td><span class='badge lost'>❌ LOST</span></td><td style='font-size:11px;color:#475569'>1. Introdução e Apresentação<br>   - O consultor Bernardo se apresentou e explicou os objetivos da ligação, de…</td></tr>
-<tr><td><b>Matheus Sarchiolo</b></td><td>—</td><td style='font-size:11px'>Erick Paiva</td><td>DA</td><td>65min</td><td><span class='badge A'>A</span></td><td><div class="sbars"><div class="spos" style="width:36%" title="+36%"></div><div class="sneu" style="width:51%"></div><div class="sneg" style="width:13%" title="-13%"></div></div><div class="slbls">+36% / -13%</div></td><td><span class='badge venda'>✅ VENDA</span></td><td style='font-size:11px;color:#475569'>1. Criação de rapport inicial: O consultor começou com uma abordagem amigável, explicou o objetivo da conversa…</td></tr>
-<tr><td><b>Patrick Silveira</b></td><td>—</td><td style='font-size:11px'>Bernardo Magalhaes</td><td>QA</td><td>51min</td><td><span class='badge B'>B</span></td><td><div class="sbars"><div class="spos" style="width:27%" title="+27%"></div><div class="sneu" style="width:69%"></div><div class="sneg" style="width:4%" title="-4%"></div></div><div class="slbls">+27% / -4%</div></td><td><span class='badge open'>⏳ Em aberto</span></td><td style='font-size:11px;color:#475569'>1. Contexto Inicial e Situação Profissional Atual:<br>    - Patrick foi abordado pela consultora para alinhar …</td></tr>
-<tr><td><b>Kathelin Fonseca</b></td><td>—</td><td style='font-size:11px'>Jessica Silva</td><td>DA</td><td>38min</td><td><span class='badge B'>B</span></td><td><div class="sbars"><div class="spos" style="width:49%" title="+49%"></div><div class="sneu" style="width:41%"></div><div class="sneg" style="width:10%" title="-10%"></div></div><div class="slbls">+49% / -10%</div></td><td><span class='badge open'>⏳ Em aberto</span></td><td style='font-size:11px;color:#475569'>1. Início da Conversa e Criação de Rapport<br>   - A consultora Jéssica inicia a conversa de maneira calorosa,…</td></tr>
+<h2>🎙️ Transcrições — 02/09/2026</h2>
+<div class="filter-row">
+  <label>Dia do Lead:</label>
+  <select data-tbl="tbl-el" data-field="ontem" onchange="applyFilters('tbl-el')">
+    <option value="">Todos os dias</option>
+    <option value="true">📅 Criado em 02/09/2026 (ontem)</option>
+    <option value="false">📆 Criados em dias anteriores</option>
+  </select>
+  <label>Tipo Curso:</label>
+  <select data-tbl="tbl-el" data-field="curso_tipo" onchange="applyFilters('tbl-el')">
+    <option value="">MBA + Bootcamp</option>
+    <option value="MBA">🎓 MBA</option>
+    <option value="Bootcamp">💻 Bootcamp</option>
+  </select>
+  <label>Medium:</label>
+  <select data-tbl="tbl-el" data-field="medium" onchange="applyFilters('tbl-el')">
+    <option value="">Todos</option><option>cpc</option><option>crm</option><option>bloggers</option><option>smm</option>
+  </select>
+  <label>Priority:</label>
+  <select data-tbl="tbl-el" data-field="priority" onchange="applyFilters('tbl-el')">
+    <option value="">Todos</option><option>high</option><option>medium</option><option>low</option>
+  </select>
+  <label>Temperatura:</label>
+  <select data-tbl="tbl-el" data-field="temp" onchange="applyFilters('tbl-el')">
+    <option value="">Todos</option><option>Quente</option><option>Morno</option><option>Frio</option>
+  </select>
+  <button onclick="clearFilters('tbl-el')" style="font-size:11px;padding:3px 8px;border:1px solid #e2e8f0;border-radius:5px;background:#fff;cursor:pointer;color:#64748b">✕ Limpar</button>
+</div>
+<table id="tbl-el">
+<tr><th>Lead</th><th>Dia Lead</th><th>Closer</th><th>Curso</th><th>Tipo</th><th>Pri.</th><th>Duração</th><th>Pot.</th><th>Sentimento</th><th>Resultado</th><th>Resumo</th></tr>
+<tr class='row-ontem' data-medium='crm' data-priority='high' data-temp='Morno' data-ontem='true' data-curso_tipo='Bootcamp'><td><b>Artur de Jesus Leal</b></td><td><span class='badge tag-ontem'>02/09</span></td><td style='font-size:11px'>Bernardo Magalhaes</td><td>DA</td><td><span class='badge Bootcamp'>Bootcamp</span></td><td><span class='badge high'>HIG</span></td><td>47min</td><td><span class='badge C'>C</span></td><td><div class="sbars"><div class="spos" style="width:26%"></div><div class="sneu" style="width:66%"></div><div class="sneg" style="width:8%"></div></div><div class="slbls">+26% / -8%</div></td><td><span class='badge open'>⏳ Em aberto</span></td><td style='font-size:11px;color:#475569'>1. Introdução e Contextualização  <br>   - O consultor, Bernardo, inicia a conversa apresentando-se …</td></tr>
+<tr data-medium='cpc' data-priority='high' data-temp='Morno' data-ontem='false' data-curso_tipo='Bootcamp'><td><b>Thiago</b></td><td><span style='color:#94a3b8;font-size:11px'>anterior</span></td><td style='font-size:11px'>Vinicius Leao</td><td>DS</td><td><span class='badge Bootcamp'>Bootcamp</span></td><td><span class='badge high'>HIG</span></td><td>26min</td><td><span class='badge B'>B</span></td><td><div class="sbars"><div class="spos" style="width:54%"></div><div class="sneu" style="width:44%"></div><div class="sneg" style="width:3%"></div></div><div class="slbls">+54% / -3%</div></td><td><span class='badge open'>⏳ Em aberto</span></td><td style='font-size:11px;color:#475569'>1. Rapport e quebra-gelo: O consultor, Vinícius, iniciou a conversa de forma descontraída, mencionan…</td></tr>
+<tr data-medium='cpc' data-priority='high' data-temp='Frio' data-ontem='false' data-curso_tipo='Bootcamp'><td><b>João Lucas Matteucci César</b></td><td><span style='color:#94a3b8;font-size:11px'>anterior</span></td><td style='font-size:11px'>Daniel Augusto  Macedo Ribeiro</td><td>DS</td><td><span class='badge Bootcamp'>Bootcamp</span></td><td><span class='badge high'>HIG</span></td><td>28min</td><td><span class='badge A'>A</span></td><td><div class="sbars"><div class="spos" style="width:35%"></div><div class="sneu" style="width:63%"></div><div class="sneg" style="width:3%"></div></div><div class="slbls">+35% / -3%</div></td><td><span class='badge open'>⏳ Em aberto</span></td><td style='font-size:11px;color:#475569'>1. Introdução e Criação de Rapport  <br>   - Daniel iniciou a conversa de forma amigável e profissio…</td></tr>
+<tr class='row-ontem' data-medium='cpc' data-priority='high' data-temp='Morno' data-ontem='true' data-curso_tipo='MBA'><td><b>Fábio de Toledo Pierri Ribeiro Sampaio</b></td><td><span class='badge tag-ontem'>02/09</span></td><td style='font-size:11px'>ID 1201941990</td><td>MBA AI</td><td><span class='badge MBA'>MBA</span></td><td><span class='badge high'>HIG</span></td><td>—</td><td><span class='badge B'>B</span></td><td><span class="sem">sem dados</span></td><td><span class='badge open'>⏳ Em aberto</span></td><td style='font-size:11px;color:#475569'>—</td></tr>
+<tr class='row-ontem' data-medium='bloggers' data-priority='high' data-temp='Morno' data-ontem='true' data-curso_tipo='Bootcamp'><td><b>GIL ANDERSON OLIVEIRA DEIRO</b></td><td><span class='badge tag-ontem'>02/09</span></td><td style='font-size:11px'>Bernardo Magalhaes</td><td>DS</td><td><span class='badge Bootcamp'>Bootcamp</span></td><td><span class='badge high'>HIG</span></td><td>49min</td><td><span class='badge C'>C</span></td><td><div class="sbars"><div class="spos" style="width:29%"></div><div class="sneu" style="width:63%"></div><div class="sneg" style="width:8%"></div></div><div class="slbls">+29% / -8%</div></td><td><span class='badge lost'>❌ LOST</span></td><td style='font-size:11px;color:#475569'>1. Introdução e Contexto Inicial<br>   - O consultor de carreira, Bernardo, inicia a ligação com Gil…</td></tr>
+<tr data-medium='cpc' data-priority='high' data-temp='Morno' data-ontem='false' data-curso_tipo='Bootcamp'><td><b>Renata Costa</b></td><td><span style='color:#94a3b8;font-size:11px'>anterior</span></td><td style='font-size:11px'>Yanara Silva</td><td>DA</td><td><span class='badge Bootcamp'>Bootcamp</span></td><td><span class='badge high'>HIG</span></td><td>40min</td><td><span class='badge B'>B</span></td><td><div class="sbars"><div class="spos" style="width:35%"></div><div class="sneu" style="width:49%"></div><div class="sneg" style="width:16%"></div></div><div class="slbls">+35% / -16%</div></td><td><span class='badge open'>⏳ Em aberto</span></td><td style='font-size:11px;color:#475569'>1. Criação de Rapport e Estratégias de Quebra-Gelo  <br>   - Quebra-gelo inicial: A consultora utili…</td></tr>
+<tr class='row-ontem' data-medium='cpc' data-priority='medium' data-temp='Morno' data-ontem='true' data-curso_tipo='MBA'><td><b>Dieyson Merquides</b></td><td><span class='badge tag-ontem'>02/09</span></td><td style='font-size:11px'>Lucas Bonow</td><td>MBA DS</td><td><span class='badge MBA'>MBA</span></td><td><span class='badge medium'>MED</span></td><td>52min</td><td><span class='badge B'>B</span></td><td><div class="sbars"><div class="spos" style="width:30%"></div><div class="sneu" style="width:47%"></div><div class="sneg" style="width:23%"></div></div><div class="slbls">+30% / -23%</div></td><td><span class='badge open'>⏳ Em aberto</span></td><td style='font-size:11px;color:#475569'>1. Criação de rapport<br>   - A conversa começou de maneira amistosa, com o consultor rapidamente es…</td></tr>
+<tr class='row-ontem' data-medium='bloggers' data-priority='medium' data-temp='Quente' data-ontem='true' data-curso_tipo='Bootcamp'><td><b>PEDRO HENRIQUE FIGUEIREDO BONFIM</b></td><td><span class='badge tag-ontem'>02/09</span></td><td style='font-size:11px'>Erick Paiva</td><td>DA</td><td><span class='badge Bootcamp'>Bootcamp</span></td><td><span class='badge medium'>MED</span></td><td>26min</td><td><span class='badge B'>B</span></td><td><div class="sbars"><div class="spos" style="width:33%"></div><div class="sneu" style="width:58%"></div><div class="sneg" style="width:9%"></div></div><div class="slbls">+33% / -9%</div></td><td><span class='badge open'>⏳ Em aberto</span></td><td style='font-size:11px;color:#475569'>1. Saudação Inicial e Criação de Rapport<br>   - O consultor, Eric, iniciou a chamada de forma bem r…</td></tr>
+<tr data-medium='cpc' data-priority='high' data-temp='Frio' data-ontem='false' data-curso_tipo='Bootcamp'><td><b>Célio Rogério Lourenco</b></td><td><span style='color:#94a3b8;font-size:11px'>anterior</span></td><td style='font-size:11px'>ID 34045065</td><td>DS</td><td><span class='badge Bootcamp'>Bootcamp</span></td><td><span class='badge high'>HIG</span></td><td>—</td><td><span class='badge B'>B</span></td><td><span class="sem">sem dados</span></td><td><span class='badge open'>⏳ Em aberto</span></td><td style='font-size:11px;color:#475569'>—</td></tr>
+<tr data-medium='cpc' data-priority='high' data-temp='Morno' data-ontem='false' data-curso_tipo='MBA'><td><b>Gisella</b></td><td><span style='color:#94a3b8;font-size:11px'>anterior</span></td><td style='font-size:11px'>Lucas Bonow</td><td>MBA DA</td><td><span class='badge MBA'>MBA</span></td><td><span class='badge high'>HIG</span></td><td>63min</td><td><span class='badge B'>B</span></td><td><div class="sbars"><div class="spos" style="width:49%"></div><div class="sneu" style="width:45%"></div><div class="sneg" style="width:6%"></div></div><div class="slbls">+49% / -6%</div></td><td><span class='badge open'>⏳ Em aberto</span></td><td style='font-size:11px;color:#475569'>1. Criação de Rapport:<br>   - O consultor utilizou o clima e as diferenças regionais (Rio de Janeir…</td></tr>
+<tr data-medium='' data-priority='high' data-temp='Morno' data-ontem='false' data-curso_tipo='Bootcamp'><td><b>Hiago Henriques</b></td><td><span style='color:#94a3b8;font-size:11px'>anterior</span></td><td style='font-size:11px'>Natalia Martins</td><td>DA</td><td><span class='badge Bootcamp'>Bootcamp</span></td><td><span class='badge high'>HIG</span></td><td>30min</td><td><span class='badge B'>B</span></td><td><div class="sbars"><div class="spos" style="width:35%"></div><div class="sneu" style="width:52%"></div><div class="sneg" style="width:13%"></div></div><div class="slbls">+35% / -13%</div></td><td><span class='badge open'>⏳ Em aberto</span></td><td style='font-size:11px;color:#475569'>1. Rapport e Abertura da Conversa:  <br>   - A responsável pela conversa foi a Nath, que se apresent…</td></tr>
+<tr data-medium='cpc' data-priority='medium' data-temp='Morno' data-ontem='false' data-curso_tipo='Bootcamp'><td><b>Lucas Arashiro</b></td><td><span style='color:#94a3b8;font-size:11px'>anterior</span></td><td style='font-size:11px'>Vinicius Leao</td><td>DS</td><td><span class='badge Bootcamp'>Bootcamp</span></td><td><span class='badge medium'>MED</span></td><td>28min</td><td><span class='badge C'>C</span></td><td><div class="sbars"><div class="spos" style="width:49%"></div><div class="sneu" style="width:46%"></div><div class="sneg" style="width:5%"></div></div><div class="slbls">+49% / -5%</div></td><td><span class='badge open'>⏳ Em aberto</span></td><td style='font-size:11px;color:#475569'>1. Criação de Rapport e Quebra-Gelo  <br>   - O consultor iniciou a conversa com tom amigável e desc…</td></tr>
+<tr data-medium='cpc' data-priority='high' data-temp='Morno' data-ontem='false' data-curso_tipo='Bootcamp'><td><b>William Lima</b></td><td><span style='color:#94a3b8;font-size:11px'>anterior</span></td><td style='font-size:11px'>Jessica Silva</td><td>WD</td><td><span class='badge Bootcamp'>Bootcamp</span></td><td><span class='badge high'>HIG</span></td><td>30min</td><td><span class='badge B'>B</span></td><td><div class="sbars"><div class="spos" style="width:49%"></div><div class="sneu" style="width:36%"></div><div class="sneg" style="width:15%"></div></div><div class="slbls">+49% / -15%</div></td><td><span class='badge open'>⏳ Em aberto</span></td><td style='font-size:11px;color:#475569'>1. Criação de Rapport:<br>   - A consultora iniciou agradecendo a disponibilidade do prospect, recon…</td></tr>
+<tr data-medium='cpc' data-priority='medium' data-temp='Morno' data-ontem='false' data-curso_tipo='Bootcamp'><td><b>Juliana Aguerra</b></td><td><span style='color:#94a3b8;font-size:11px'>anterior</span></td><td style='font-size:11px'>ID 1201941994</td><td>QA</td><td><span class='badge Bootcamp'>Bootcamp</span></td><td><span class='badge medium'>MED</span></td><td>—</td><td><span class='badge B'>B</span></td><td><span class="sem">sem dados</span></td><td><span class='badge open'>⏳ Em aberto</span></td><td style='font-size:11px;color:#475569'>—</td></tr>
+<tr data-medium='cpc' data-priority='high' data-temp='Morno' data-ontem='false' data-curso_tipo='Bootcamp'><td><b>Euler Alcino</b></td><td><span style='color:#94a3b8;font-size:11px'>anterior</span></td><td style='font-size:11px'>Vinicius Leao</td><td>DS</td><td><span class='badge Bootcamp'>Bootcamp</span></td><td><span class='badge high'>HIG</span></td><td>4min</td><td><span class='badge B'>B</span></td><td><div class="sbars"><div class="spos" style="width:8%"></div><div class="sneu" style="width:33%"></div><div class="sneg" style="width:59%"></div></div><div class="slbls">+8% / -59%</div></td><td><span class='badge open'>⏳ Em aberto</span></td><td style='font-size:11px;color:#475569'>Parece que o conteúdo enviado não é uma transcrição de uma conversa de consultoria de carreira, mas …</td></tr>
+<tr data-medium='cpc' data-priority='high' data-temp='Morno' data-ontem='false' data-curso_tipo='Bootcamp'><td><b>Lais Barreto</b></td><td><span style='color:#94a3b8;font-size:11px'>anterior</span></td><td style='font-size:11px'>Lucas Bonow</td><td>DA</td><td><span class='badge Bootcamp'>Bootcamp</span></td><td><span class='badge high'>HIG</span></td><td>44min</td><td><span class='badge B'>B</span></td><td><div class="sbars"><div class="spos" style="width:56%"></div><div class="sneu" style="width:41%"></div><div class="sneg" style="width:3%"></div></div><div class="slbls">+56% / -3%</div></td><td><span class='badge open'>⏳ Em aberto</span></td><td style='font-size:11px;color:#475569'>1. Rapport e abordagem inicial:<br>   - O consultor iniciou a conversa apresentando-se como o respon…</td></tr>
+<tr data-medium='bloggers' data-priority='high' data-temp='Morno' data-ontem='false' data-curso_tipo='MBA'><td><b>Julia Lopes</b></td><td><span style='color:#94a3b8;font-size:11px'>anterior</span></td><td style='font-size:11px'>Ana Viana</td><td>MBA AI</td><td><span class='badge MBA'>MBA</span></td><td><span class='badge high'>HIG</span></td><td>57min</td><td><span class='badge B'>B</span></td><td><div class="sbars"><div class="spos" style="width:64%"></div><div class="sneu" style="width:32%"></div><div class="sneg" style="width:3%"></div></div><div class="slbls">+64% / -3%</div></td><td><span class='badge open'>⏳ Em aberto</span></td><td style='font-size:11px;color:#475569'>1. Criação de Rapport:<br>   - O tom da saudação inicial foi amigável e profissional, permitindo est…</td></tr>
+<tr data-medium='cpc' data-priority='medium' data-temp='Morno' data-ontem='false' data-curso_tipo='Bootcamp'><td><b>Gabriel Mendes</b></td><td><span style='color:#94a3b8;font-size:11px'>anterior</span></td><td style='font-size:11px'>Erick Paiva</td><td>DA</td><td><span class='badge Bootcamp'>Bootcamp</span></td><td><span class='badge medium'>MED</span></td><td>62min</td><td><span class='badge C'>C</span></td><td><div class="sbars"><div class="spos" style="width:25%"></div><div class="sneu" style="width:66%"></div><div class="sneg" style="width:8%"></div></div><div class="slbls">+25% / -8%</div></td><td><span class='badge open'>⏳ Em aberto</span></td><td style='font-size:11px;color:#475569'>1. Criação de Rapport e Contexto Inicial<br>   - Desde o início, o consultor demonstrou um tom profi…</td></tr>
+<tr data-medium='cpc' data-priority='high' data-temp='Frio' data-ontem='false' data-curso_tipo='Bootcamp'><td><b>Clayton Alves</b></td><td><span style='color:#94a3b8;font-size:11px'>anterior</span></td><td style='font-size:11px'>Daniel Augusto  Macedo Ribeiro</td><td>QA</td><td><span class='badge Bootcamp'>Bootcamp</span></td><td><span class='badge high'>HIG</span></td><td>23min</td><td><span class='badge C'>C</span></td><td><div class="sbars"><div class="spos" style="width:49%"></div><div class="sneu" style="width:32%"></div><div class="sneg" style="width:20%"></div></div><div class="slbls">+49% / -20%</div></td><td><span class='badge lost'>❌ LOST</span></td><td style='font-size:11px;color:#475569'>1. Início da Conversa e Criação de Rapport  <br>   - O prospect, Clayton, foi abordado por Daniel, q…</td></tr>
+<tr data-medium='cpc' data-priority='medium' data-temp='Morno' data-ontem='false' data-curso_tipo='Bootcamp'><td><b>Júlio André Santos</b></td><td><span style='color:#94a3b8;font-size:11px'>anterior</span></td><td style='font-size:11px'>Lucas Bonow</td><td>DA</td><td><span class='badge Bootcamp'>Bootcamp</span></td><td><span class='badge medium'>MED</span></td><td>53min</td><td><span class='badge C'>C</span></td><td><div class="sbars"><div class="spos" style="width:48%"></div><div class="sneu" style="width:45%"></div><div class="sneg" style="width:7%"></div></div><div class="slbls">+48% / -7%</div></td><td><span class='badge open'>⏳ Em aberto</span></td><td style='font-size:11px;color:#475569'>1. Criação de Rapport e Estratégias de Quebra-gelo:  <br>   - O consultor demonstrou empatia e inter…</td></tr>
+<tr class='row-ontem' data-medium='cpc' data-priority='high' data-temp='Morno' data-ontem='true' data-curso_tipo='Bootcamp'><td><b>Phablo Ramires</b></td><td><span class='badge tag-ontem'>02/09</span></td><td style='font-size:11px'>Lucas Bonow</td><td>QA</td><td><span class='badge Bootcamp'>Bootcamp</span></td><td><span class='badge high'>HIG</span></td><td>36min</td><td><span class='badge B'>B</span></td><td><div class="sbars"><div class="spos" style="width:51%"></div><div class="sneu" style="width:33%"></div><div class="sneg" style="width:15%"></div></div><div class="slbls">+51% / -15%</div></td><td><span class='badge open'>⏳ Em aberto</span></td><td style='font-size:11px;color:#475569'>1. Criação de Rapport e Quebra-Gelo: <br>   - O consultor começou a conversa de forma leve e descont…</td></tr>
+<tr data-medium='crm' data-priority='high' data-temp='Morno' data-ontem='false' data-curso_tipo='Bootcamp'><td><b>Catarina Sarmiento</b></td><td><span style='color:#94a3b8;font-size:11px'>anterior</span></td><td style='font-size:11px'>Erick Paiva</td><td>QA</td><td><span class='badge Bootcamp'>Bootcamp</span></td><td><span class='badge high'>HIG</span></td><td>31min</td><td><span class='badge B'>B</span></td><td><div class="sbars"><div class="spos" style="width:21%"></div><div class="sneu" style="width:76%"></div><div class="sneg" style="width:2%"></div></div><div class="slbls">+21% / -2%</div></td><td><span class='badge open'>⏳ Em aberto</span></td><td style='font-size:11px;color:#475569'>1. Criação de Rapport e Primeiro Contato<br>   - A saudação inicial foi feita de maneira cordata e p…</td></tr>
+<tr data-medium='cpc' data-priority='high' data-temp='Morno' data-ontem='false' data-curso_tipo='MBA'><td><b>Eduardo Leao</b></td><td><span style='color:#94a3b8;font-size:11px'>anterior</span></td><td style='font-size:11px'>Erick Paiva</td><td>MBA DA</td><td><span class='badge MBA'>MBA</span></td><td><span class='badge high'>HIG</span></td><td>61min</td><td><span class='badge B'>B</span></td><td><div class="sbars"><div class="spos" style="width:21%"></div><div class="sneu" style="width:63%"></div><div class="sneg" style="width:15%"></div></div><div class="slbls">+21% / -15%</div></td><td><span class='badge open'>⏳ Em aberto</span></td><td style='font-size:11px;color:#475569'>1. Criação de Rapport:<br>   - O consultor iniciou com uma conversa casual sobre o clima no Rio de J…</td></tr>
+<tr data-medium='cpc' data-priority='high' data-temp='Morno' data-ontem='false' data-curso_tipo='Bootcamp'><td><b>Julia Galvão</b></td><td><span style='color:#94a3b8;font-size:11px'>anterior</span></td><td style='font-size:11px'>Bruno Marques</td><td>QA</td><td><span class='badge Bootcamp'>Bootcamp</span></td><td><span class='badge high'>HIG</span></td><td>53min</td><td><span class='badge B'>B</span></td><td><div class="sbars"><div class="spos" style="width:30%"></div><div class="sneu" style="width:62%"></div><div class="sneg" style="width:8%"></div></div><div class="slbls">+30% / -8%</div></td><td><span class='badge open'>⏳ Em aberto</span></td><td style='font-size:11px;color:#475569'>1. Criação de Rapport: A abertura da conversa foi bastante acolhedora e informal, com um tom amigáve…</td></tr>
+<tr data-medium='cpc' data-priority='high' data-temp='Morno' data-ontem='false' data-curso_tipo='Bootcamp'><td><b>Daiane Duarte</b></td><td><span style='color:#94a3b8;font-size:11px'>anterior</span></td><td style='font-size:11px'>Bruno Marques</td><td>DA</td><td><span class='badge Bootcamp'>Bootcamp</span></td><td><span class='badge high'>HIG</span></td><td>53min</td><td><span class='badge B'>B</span></td><td><div class="sbars"><div class="spos" style="width:33%"></div><div class="sneu" style="width:61%"></div><div class="sneg" style="width:7%"></div></div><div class="slbls">+33% / -7%</div></td><td><span class='badge open'>⏳ Em aberto</span></td><td style='font-size:11px;color:#475569'>1. Introdução e criação de rapport:<br>   - O consultor, identificado como Bruno, iniciou a conversa…</td></tr>
+<tr data-medium='smm' data-priority='high' data-temp='Morno' data-ontem='false' data-curso_tipo='Bootcamp'><td><b>Antônio Rafael</b></td><td><span style='color:#94a3b8;font-size:11px'>anterior</span></td><td style='font-size:11px'>ID 34045065</td><td>WD</td><td><span class='badge Bootcamp'>Bootcamp</span></td><td><span class='badge high'>HIG</span></td><td>—</td><td><span class='badge B'>B</span></td><td><span class="sem">sem dados</span></td><td><span class='badge open'>⏳ Em aberto</span></td><td style='font-size:11px;color:#475569'>—</td></tr>
+<tr data-medium='' data-priority='medium' data-temp='Quente' data-ontem='false' data-curso_tipo='MBA'><td><b>Gabriel SIDA</b></td><td><span style='color:#94a3b8;font-size:11px'>anterior</span></td><td style='font-size:11px'>Lucas Bonow</td><td>MBA DS</td><td><span class='badge MBA'>MBA</span></td><td><span class='badge medium'>MED</span></td><td>25min</td><td><span class='badge B'>B</span></td><td><div class="sbars"><div class="spos" style="width:27%"></div><div class="sneu" style="width:64%"></div><div class="sneg" style="width:9%"></div></div><div class="slbls">+27% / -9%</div></td><td><span class='badge open'>⏳ Em aberto</span></td><td style='font-size:11px;color:#475569'>Resumo Analítico e Aprofundado da Reunião<br>---<br><br>#1. Criação de rapport e ambientação<br>- Es…</td></tr>
+<tr data-medium='smm' data-priority='medium' data-temp='Morno' data-ontem='false' data-curso_tipo='Bootcamp'><td><b>Paula de</b></td><td><span style='color:#94a3b8;font-size:11px'>anterior</span></td><td style='font-size:11px'>Yanara Silva</td><td>DA</td><td><span class='badge Bootcamp'>Bootcamp</span></td><td><span class='badge medium'>MED</span></td><td>54min</td><td><span class='badge C'>C</span></td><td><div class="sbars"><div class="spos" style="width:25%"></div><div class="sneu" style="width:69%"></div><div class="sneg" style="width:5%"></div></div><div class="slbls">+25% / -5%</div></td><td><span class='badge lost'>❌ LOST</span></td><td style='font-size:11px;color:#475569'>1. Criação de Rapport e Nível de Receptividade do Lead: <br>   - Yanara iniciou a conversa de forma …</td></tr>
+<tr class='row-ontem' data-medium='bloggers' data-priority='high' data-temp='Morno' data-ontem='true' data-curso_tipo='MBA'><td><b>Jose Carlos Ferreira Junior</b></td><td><span class='badge tag-ontem'>02/09</span></td><td style='font-size:11px'>Yanara Silva</td><td>MBA AI</td><td><span class='badge MBA'>MBA</span></td><td><span class='badge high'>HIG</span></td><td>46min</td><td><span class='badge B'>B</span></td><td><div class="sbars"><div class="spos" style="width:54%"></div><div class="sneu" style="width:43%"></div><div class="sneg" style="width:3%"></div></div><div class="slbls">+54% / -3%</div></td><td><span class='badge open'>⏳ Em aberto</span></td><td style='font-size:11px;color:#475569'>1. Criação de Rapport e Quebra de Gelo:<br>   - O consultor se apresentou de forma calorosa e educad…</td></tr>
+<tr data-medium='cpc' data-priority='medium' data-temp='Morno' data-ontem='false' data-curso_tipo='Bootcamp'><td><b>Cristiano Eugenio</b></td><td><span style='color:#94a3b8;font-size:11px'>anterior</span></td><td style='font-size:11px'>Vinicius Leao</td><td>WD</td><td><span class='badge Bootcamp'>Bootcamp</span></td><td><span class='badge medium'>MED</span></td><td>33min</td><td><span class='badge C'>C</span></td><td><div class="sbars"><div class="spos" style="width:18%"></div><div class="sneu" style="width:70%"></div><div class="sneg" style="width:12%"></div></div><div class="slbls">+18% / -12%</div></td><td><span class='badge open'>⏳ Em aberto</span></td><td style='font-size:11px;color:#475569'>1. Quebra-gelo e criação de rapport:  <br>   - O consultor, Vinícius, iniciou a conversa com um tom …</td></tr>
+<tr data-medium='cpc' data-priority='high' data-temp='Morno' data-ontem='false' data-curso_tipo='MBA'><td><b>Felipe Pena</b></td><td><span style='color:#94a3b8;font-size:11px'>anterior</span></td><td style='font-size:11px'>Natalia Martins</td><td>MBA AI</td><td><span class='badge MBA'>MBA</span></td><td><span class='badge high'>HIG</span></td><td>40min</td><td><span class='badge A'>A</span></td><td><div class="sbars"><div class="spos" style="width:61%"></div><div class="sneu" style="width:38%"></div><div class="sneg" style="width:1%"></div></div><div class="slbls">+61% / -1%</div></td><td><span class='badge open'>⏳ Em aberto</span></td><td style='font-size:11px;color:#475569'>1. Criação de Rapport<br>   - A conversa foi iniciada com um tom leve e descontraído, abordando um t…</td></tr>
+<tr class='row-ontem' data-medium='crm' data-priority='high' data-temp='Frio' data-ontem='true' data-curso_tipo='Bootcamp'><td><b>Juliana Vieira</b></td><td><span class='badge tag-ontem'>02/09</span></td><td style='font-size:11px'>Daniel Augusto  Macedo Ribeiro</td><td>DS</td><td><span class='badge Bootcamp'>Bootcamp</span></td><td><span class='badge high'>HIG</span></td><td>35min</td><td><span class='badge B'>B</span></td><td><div class="sbars"><div class="spos" style="width:38%"></div><div class="sneu" style="width:56%"></div><div class="sneg" style="width:6%"></div></div><div class="slbls">+38% / -6%</div></td><td><span class='badge open'>⏳ Em aberto</span></td><td style='font-size:11px;color:#475569'>1. Criação de Rapport:  <br>   O consultor iniciou a conversa de maneira amigável, com um tom acolhe…</td></tr>
+<tr data-medium='cpc' data-priority='high' data-temp='Frio' data-ontem='false' data-curso_tipo='Bootcamp'><td><b>Eduardo Ryuji</b></td><td><span style='color:#94a3b8;font-size:11px'>anterior</span></td><td style='font-size:11px'>Vinicius Leao</td><td>QA</td><td><span class='badge Bootcamp'>Bootcamp</span></td><td><span class='badge high'>HIG</span></td><td>29min</td><td><span class='badge B'>B</span></td><td><div class="sbars"><div class="spos" style="width:64%"></div><div class="sneu" style="width:32%"></div><div class="sneg" style="width:4%"></div></div><div class="slbls">+64% / -4%</div></td><td><span class='badge lost'>❌ LOST</span></td><td style='font-size:11px;color:#475569'>1. Criação de Rapport e Contextualização Inicial<br>    - O consultor Vinícius iniciou a reunião de …</td></tr>
+<tr data-medium='cpc' data-priority='high' data-temp='Morno' data-ontem='false' data-curso_tipo='MBA'><td><b>Gabriel Antoniette</b></td><td><span style='color:#94a3b8;font-size:11px'>anterior</span></td><td style='font-size:11px'>Natalia Martins</td><td>MBA DS</td><td><span class='badge MBA'>MBA</span></td><td><span class='badge high'>HIG</span></td><td>38min</td><td><span class='badge B'>B</span></td><td><div class="sbars"><div class="spos" style="width:45%"></div><div class="sneu" style="width:50%"></div><div class="sneg" style="width:4%"></div></div><div class="slbls">+45% / -4%</div></td><td><span class='badge open'>⏳ Em aberto</span></td><td style='font-size:11px;color:#475569'>1. Criação de rapport e condução inicial da conversa:<br>   - A consultora expressou empatia e recon…</td></tr>
+<tr data-medium='cpc' data-priority='high' data-temp='Morno' data-ontem='false' data-curso_tipo='Bootcamp'><td><b>WALLACY SUED DE SOUZA BRAGA</b></td><td><span style='color:#94a3b8;font-size:11px'>anterior</span></td><td style='font-size:11px'>ID 837235423</td><td>WD</td><td><span class='badge Bootcamp'>Bootcamp</span></td><td><span class='badge high'>HIG</span></td><td>—</td><td><span class='badge B'>B</span></td><td><span class="sem">sem dados</span></td><td><span class='badge open'>⏳ Em aberto</span></td><td style='font-size:11px;color:#475569'>—</td></tr>
+<tr data-medium='cpc' data-priority='medium' data-temp='Morno' data-ontem='false' data-curso_tipo='Bootcamp'><td><b>Wilton Carvalho da Silva</b></td><td><span style='color:#94a3b8;font-size:11px'>anterior</span></td><td style='font-size:11px'>Bruno Marques</td><td>DA</td><td><span class='badge Bootcamp'>Bootcamp</span></td><td><span class='badge medium'>MED</span></td><td>56min</td><td><span class='badge C'>C</span></td><td><div class="sbars"><div class="spos" style="width:24%"></div><div class="sneu" style="width:62%"></div><div class="sneg" style="width:15%"></div></div><div class="slbls">+24% / -15%</div></td><td><span class='badge lost'>❌ LOST</span></td><td style='font-size:11px;color:#475569'>1. Criação de Rapport  <br>   - O consultor Bruno iniciou a conversa de forma descontraída, elogiand…</td></tr>
+<tr data-medium='cpc' data-priority='medium' data-temp='Frio' data-ontem='false' data-curso_tipo='Bootcamp'><td><b>Conceicao Lessa</b></td><td><span style='color:#94a3b8;font-size:11px'>anterior</span></td><td style='font-size:11px'>ID 34045065</td><td>DA</td><td><span class='badge Bootcamp'>Bootcamp</span></td><td><span class='badge medium'>MED</span></td><td>—</td><td><span class='badge B'>B</span></td><td><span class="sem">sem dados</span></td><td><span class='badge open'>⏳ Em aberto</span></td><td style='font-size:11px;color:#475569'>—</td></tr>
+<tr data-medium='' data-priority='high' data-temp='Morno' data-ontem='false' data-curso_tipo='Bootcamp'><td><b>David de Andrade</b></td><td><span style='color:#94a3b8;font-size:11px'>anterior</span></td><td style='font-size:11px'>Bruno Marques</td><td>DA</td><td><span class='badge Bootcamp'>Bootcamp</span></td><td><span class='badge high'>HIG</span></td><td>70min</td><td><span class='badge B'>B</span></td><td><div class="sbars"><div class="spos" style="width:33%"></div><div class="sneu" style="width:45%"></div><div class="sneg" style="width:22%"></div></div><div class="slbls">+33% / -22%</div></td><td><span class='badge venda'>✅ VENDA</span></td><td style='font-size:11px;color:#475569'>1. Criação de Rapport e quebra-gelo:<br>   - O consultor iniciou a conversa de forma descontraída, p…</td></tr>
+<tr class='row-ontem' data-medium='crm' data-priority='high' data-temp='Morno' data-ontem='true' data-curso_tipo='Bootcamp'><td><b>Gabriela Jobim da Silva</b></td><td><span class='badge tag-ontem'>02/09</span></td><td style='font-size:11px'>Jessica Silva</td><td>DA</td><td><span class='badge Bootcamp'>Bootcamp</span></td><td><span class='badge high'>HIG</span></td><td>43min</td><td><span class='badge C'>C</span></td><td><div class="sbars"><div class="spos" style="width:44%"></div><div class="sneu" style="width:47%"></div><div class="sneg" style="width:9%"></div></div><div class="slbls">+44% / -9%</div></td><td><span class='badge open'>⏳ Em aberto</span></td><td style='font-size:11px;color:#475569'>1. Criação de Rapport e Apresentação Inicial: A consultora Jéssica abriu a conversa de maneira calor…</td></tr>
+<tr class='row-ontem' data-medium='cpc' data-priority='high' data-temp='Quente' data-ontem='true' data-curso_tipo='Bootcamp'><td><b>Juan Emerson Silva Rocha</b></td><td><span class='badge tag-ontem'>02/09</span></td><td style='font-size:11px'>ID 34045065</td><td>DS</td><td><span class='badge Bootcamp'>Bootcamp</span></td><td><span class='badge high'>HIG</span></td><td>—</td><td><span class='badge B'>B</span></td><td><span class="sem">sem dados</span></td><td><span class='badge open'>⏳ Em aberto</span></td><td style='font-size:11px;color:#475569'>—</td></tr>
+<tr data-medium='cpc' data-priority='high' data-temp='Morno' data-ontem='false' data-curso_tipo='MBA'><td><b>Felipe Hanada</b></td><td><span style='color:#94a3b8;font-size:11px'>anterior</span></td><td style='font-size:11px'>ID 35852628</td><td>MBA DS</td><td><span class='badge MBA'>MBA</span></td><td><span class='badge high'>HIG</span></td><td>—</td><td><span class='badge B'>B</span></td><td><span class="sem">sem dados</span></td><td><span class='badge open'>⏳ Em aberto</span></td><td style='font-size:11px;color:#475569'>—</td></tr>
+<tr class='row-ontem' data-medium='smm' data-priority='low' data-temp='Quente' data-ontem='true' data-curso_tipo='Bootcamp'><td><b>Joao Victor</b></td><td><span class='badge tag-ontem'>02/09</span></td><td style='font-size:11px'>Jessica Silva</td><td>DA</td><td><span class='badge Bootcamp'>Bootcamp</span></td><td><span class='badge low'>LOW</span></td><td>50min</td><td><span class='badge B'>B</span></td><td><div class="sbars"><div class="spos" style="width:46%"></div><div class="sneu" style="width:44%"></div><div class="sneg" style="width:10%"></div></div><div class="slbls">+46% / -10%</div></td><td><span class='badge open'>⏳ Em aberto</span></td><td style='font-size:11px;color:#475569'>1. Criação de Rapport e Quebra-Gelo:<br>    - A conversa começou de maneira informal e calorosa; o c…</td></tr>
+<tr data-medium='cpc' data-priority='medium' data-temp='Morno' data-ontem='false' data-curso_tipo='Bootcamp'><td><b>Arthur Attili</b></td><td><span style='color:#94a3b8;font-size:11px'>anterior</span></td><td style='font-size:11px'>Bernardo Magalhaes</td><td>WD</td><td><span class='badge Bootcamp'>Bootcamp</span></td><td><span class='badge medium'>MED</span></td><td>40min</td><td><span class='badge B'>B</span></td><td><div class="sbars"><div class="spos" style="width:56%"></div><div class="sneu" style="width:37%"></div><div class="sneg" style="width:6%"></div></div><div class="slbls">+56% / -6%</div></td><td><span class='badge open'>⏳ Em aberto</span></td><td style='font-size:11px;color:#475569'>1. Criação de Rapport e Quebra-Gelo:<br>   - O consultor Bernardo iniciu a ligação de maneira descon…</td></tr>
+<tr data-medium='' data-priority='high' data-temp='Quente' data-ontem='false' data-curso_tipo='Bootcamp'><td><b>Katiuscia Keller</b></td><td><span style='color:#94a3b8;font-size:11px'>anterior</span></td><td style='font-size:11px'>Bruno Marques</td><td>DA</td><td><span class='badge Bootcamp'>Bootcamp</span></td><td><span class='badge high'>HIG</span></td><td>41min</td><td><span class='badge A'>A</span></td><td><div class="sbars"><div class="spos" style="width:39%"></div><div class="sneu" style="width:58%"></div><div class="sneg" style="width:4%"></div></div><div class="slbls">+39% / -4%</div></td><td><span class='badge converted'>✅ CONVERTIDO</span></td><td style='font-size:11px;color:#475569'>1. Criação de Rapport & Início da Conversa:  <br>   - A Call começa com o consultor confirmando a pr…</td></tr>
+<tr data-medium='crm' data-priority='high' data-temp='Morno' data-ontem='false' data-curso_tipo='Bootcamp'><td><b>Guilherme Garcia de Oliveira</b></td><td><span style='color:#94a3b8;font-size:11px'>anterior</span></td><td style='font-size:11px'>Bernardo Magalhaes</td><td>DA</td><td><span class='badge Bootcamp'>Bootcamp</span></td><td><span class='badge high'>HIG</span></td><td>48min</td><td><span class='badge B'>B</span></td><td><div class="sbars"><div class="spos" style="width:42%"></div><div class="sneu" style="width:47%"></div><div class="sneg" style="width:11%"></div></div><div class="slbls">+42% / -11%</div></td><td><span class='badge lost'>❌ LOST</span></td><td style='font-size:11px;color:#475569'>1. Introdução e Apresentação<br>   - O consultor Bernardo se apresentou e explicou os objetivos da l…</td></tr>
+<tr data-medium='cpc' data-priority='high' data-temp='Morno' data-ontem='false' data-curso_tipo='Bootcamp'><td><b>Matheus Sarchiolo</b></td><td><span style='color:#94a3b8;font-size:11px'>anterior</span></td><td style='font-size:11px'>Erick Paiva</td><td>DA</td><td><span class='badge Bootcamp'>Bootcamp</span></td><td><span class='badge high'>HIG</span></td><td>65min</td><td><span class='badge A'>A</span></td><td><div class="sbars"><div class="spos" style="width:36%"></div><div class="sneu" style="width:51%"></div><div class="sneg" style="width:13%"></div></div><div class="slbls">+36% / -13%</div></td><td><span class='badge venda'>✅ VENDA</span></td><td style='font-size:11px;color:#475569'>1. Criação de rapport inicial: O consultor começou com uma abordagem amigável, explicou o objetivo d…</td></tr>
+<tr data-medium='cpc' data-priority='high' data-temp='Morno' data-ontem='false' data-curso_tipo='Bootcamp'><td><b>Patrick Silveira</b></td><td><span style='color:#94a3b8;font-size:11px'>anterior</span></td><td style='font-size:11px'>Bernardo Magalhaes</td><td>QA</td><td><span class='badge Bootcamp'>Bootcamp</span></td><td><span class='badge high'>HIG</span></td><td>51min</td><td><span class='badge B'>B</span></td><td><div class="sbars"><div class="spos" style="width:27%"></div><div class="sneu" style="width:69%"></div><div class="sneg" style="width:4%"></div></div><div class="slbls">+27% / -4%</div></td><td><span class='badge open'>⏳ Em aberto</span></td><td style='font-size:11px;color:#475569'>1. Contexto Inicial e Situação Profissional Atual:<br>    - Patrick foi abordado pela consultora par…</td></tr>
+<tr data-medium='' data-priority='high' data-temp='Morno' data-ontem='false' data-curso_tipo='Bootcamp'><td><b>Kathelin Fonseca</b></td><td><span style='color:#94a3b8;font-size:11px'>anterior</span></td><td style='font-size:11px'>Jessica Silva</td><td>DA</td><td><span class='badge Bootcamp'>Bootcamp</span></td><td><span class='badge high'>HIG</span></td><td>38min</td><td><span class='badge B'>B</span></td><td><div class="sbars"><div class="spos" style="width:49%"></div><div class="sneu" style="width:41%"></div><div class="sneg" style="width:10%"></div></div><div class="slbls">+49% / -10%</div></td><td><span class='badge open'>⏳ Em aberto</span></td><td style='font-size:11px;color:#475569'>1. Início da Conversa e Criação de Rapport<br>   - A consultora Jéssica inicia a conversa de maneira…</td></tr>
 </table>
-
-<h2>🎯 Scorecard por Closer (Elephan)</h2>
+<h2>🎯 Scorecard Closers (Elephan)</h2>
 <table>
-<tr><th>Closer</th><th>Calls</th><th>Dur. Média</th><th>Sentim. Positivo Médio</th><th>Alta Resistência</th></tr>
+<tr><th>Closer</th><th>Calls</th><th>Dur. Média</th><th>Sent. Positivo Médio</th><th>Alta Resistência</th></tr>
 <tr><td><b>Lucas Bonow</b></td><td>6</td><td>45min</td><td><b style='color:#059669'>43%</b></td><td><span style="color:#ef4444;font-weight:700">1 ⚠️</span></td></tr>
 <tr><td><b>Bernardo Magalhaes</b></td><td>5</td><td>47min</td><td><b style='color:#059669'>36%</b></td><td>—</td></tr>
 <tr><td><b>Vinicius Leao</b></td><td>5</td><td>24min</td><td><b style='color:#059669'>38%</b></td><td><span style="color:#ef4444;font-weight:700">1 ⚠️</span></td></tr>
@@ -808,19 +886,33 @@ tr:hover td{background:#eff6ff}
 </div>
 
 <script>
+
+function applyFilters(tblId){
+  var filters={};
+  document.querySelectorAll('[data-tbl="'+tblId+'"]').forEach(function(sel){
+    filters[sel.dataset.field]=sel.value;
+  });
+  document.querySelectorAll('#'+tblId+' tr[data-medium]').forEach(function(row){
+    var show=true;
+    Object.entries(filters).forEach(function([f,v]){
+      if(v && row.dataset[f]!==v) show=false;
+    });
+    row.style.display=show?'':'none';
+  });
+}
 function showTab(id,el){
-  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
-  document.querySelectorAll('.content').forEach(c=>c.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(function(t){t.classList.remove('active')});
+  document.querySelectorAll('.content').forEach(function(c){c.classList.remove('active')});
   document.getElementById('tab-'+id).classList.add('active');
   el.classList.add('active');
 }
-function filterRows(tbl,field,value){
-  document.querySelectorAll('#tbl-'+tbl+' tr[data-medium]').forEach(row=>{
-    row.style.display=(!value||row.dataset[field]===value)?'':'none';
-  });
+
+function clearFilters(tblId){
+  document.querySelectorAll('[data-tbl="'+tblId+'"]').forEach(function(s){s.value=''});
+  applyFilters(tblId);
 }
 </script>
 <footer style="text-align:center;padding:12px;color:#94a3b8;font-size:10.5px;margin-top:8px">
-  TripleTen Brasil · HubSpot Pipeline 110797558 · Elephan · 03/09/2026 10:01
+  TripleTen Brasil · HubSpot Pipeline 110797558 · Elephan · 03/09/2026 10:08
 </footer>
 </body></html>
