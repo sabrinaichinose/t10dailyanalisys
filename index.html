@@ -2,356 +2,611 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dashboard Diário TripleTen — 21/09/2026</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>TripleTen Brasil — Dashboard 21/09/2026</title>
 <style>
-  :root{
-    --navy:#0b1f3a; --navy2:#12294d; --blue:#1f5fb8; --blue2:#2f7ee0; --teal:#0fa3a3;
-    --bg:#f4f7fb; --card:#ffffff; --border:#e1e8f0; --text:#1a2536; --muted:#5d6b81;
-    --green:#1f9d55; --red:#d64545; --amber:#e0a020; --gray:#8896a6;
-  }
-  *{box-sizing:border-box;}
-  body{margin:0;font-family:'Segoe UI',Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--text);}
-  header{background:linear-gradient(120deg,var(--navy),var(--navy2));color:#fff;padding:24px 32px;}
-  header h1{margin:0 0 4px;font-size:22px;font-weight:600;}
-  header .sub{color:#c9d6ea;font-size:14px;}
-  .badge-warn{display:inline-block;margin-top:10px;background:#3a2410;color:#ffcf8a;border:1px solid #6b4a1c;padding:6px 12px;border-radius:6px;font-size:12.5px;max-width:900px;line-height:1.4;}
-  nav.tabs{display:flex;gap:4px;background:var(--navy2);padding:0 32px;}
-  nav.tabs button{background:transparent;border:none;color:#c9d6ea;padding:12px 18px;font-size:14.5px;font-weight:600;cursor:pointer;border-bottom:3px solid transparent;}
-  nav.tabs button.active{color:#fff;border-bottom-color:var(--teal);}
-  main{padding:24px 32px 60px;max-width:1400px;margin:0 auto;}
-  .tabpanel{display:none;}
-  .tabpanel.active{display:block;}
-  .kpi-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px;margin-bottom:24px;}
-  .kpi{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:16px;box-shadow:0 1px 2px rgba(20,30,60,.04);}
-  .kpi .v{font-size:26px;font-weight:700;color:var(--navy);}
-  .kpi .l{font-size:12.5px;color:var(--muted);margin-top:2px;}
-  section.card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:20px;margin-bottom:22px;box-shadow:0 1px 2px rgba(20,30,60,.04);}
-  section.card h2{margin:0 0 14px;font-size:16px;color:var(--navy);}
-  .funnel{display:flex;flex-direction:column;gap:6px;}
-  .funnel-row{display:flex;align-items:center;gap:10px;}
-  .funnel-label{width:200px;font-size:12.5px;color:var(--muted);flex-shrink:0;}
-  .funnel-bar-wrap{flex:1;background:#eef2f8;border-radius:5px;overflow:hidden;height:22px;}
-  .funnel-bar{height:100%;background:linear-gradient(90deg,var(--blue),var(--teal));display:flex;align-items:center;justify-content:flex-end;padding-right:8px;color:#fff;font-size:11.5px;font-weight:600;min-width:28px;}
-  .filters{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px;}
-  .filters select{border:1px solid var(--border);border-radius:6px;padding:6px 10px;font-size:12.5px;background:#fff;color:var(--text);}
-  table{width:100%;border-collapse:collapse;font-size:12.5px;}
-  table th{text-align:left;background:#eef2f8;color:var(--navy);padding:8px 10px;font-weight:600;position:sticky;top:0;}
-  table td{padding:7px 10px;border-bottom:1px solid var(--border);}
-  table tbody tr:nth-child(even){background:#f8fafc;}
-  table tbody tr:hover{background:#eef6fb;}
-  .table-scroll{max-height:420px;overflow:auto;border:1px solid var(--border);border-radius:8px;}
-  .badge{display:inline-block;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600;white-space:nowrap;}
-  .b-quente{background:#fde3e3;color:#a32020;}
-  .b-morno{background:#fff0d6;color:#8a5c00;}
-  .b-frio{background:#dceafc;color:#1a4d8f;}
-  .b-high{background:#fde3e3;color:#a32020;}
-  .b-medium{background:#fff0d6;color:#8a5c00;}
-  .b-low{background:#e6ecf5;color:#44536b;}
-  .b-win{background:#dcf5e3;color:#166534;}
-  .b-lost{background:#fde3e3;color:#a32020;}
-  .b-open{background:#dceafc;color:#1a4d8f;}
-  .b-a{background:#dcf5e3;color:#166534;}
-  .b-b{background:#fff0d6;color:#8a5c00;}
-  .b-c{background:#e6ecf5;color:#44536b;}
-  .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:22px;}
-  @media(max-width:900px){.grid-2{grid-template-columns:1fr;}}
-  .chip-row{display:flex;flex-wrap:wrap;gap:8px;}
-  .chip{background:#eef2f8;border-radius:6px;padding:8px 12px;font-size:12px;display:flex;justify-content:space-between;gap:10px;min-width:150px;}
-  .chip b{color:var(--navy);}
-  .sentiment-bar{display:flex;height:14px;width:120px;border-radius:4px;overflow:hidden;background:#e6ecf5;}
-  .sentiment-bar .seg-pos{background:var(--green);} .sentiment-bar .seg-neg{background:var(--red);} .sentiment-bar .seg-neu{background:var(--gray);}
-  .empty-note{color:var(--muted);font-size:12.5px;padding:14px;text-align:center;background:#f8fafc;border-radius:8px;border:1px dashed var(--border);}
-  footer{padding:20px 32px;color:var(--muted);font-size:11.5px;text-align:center;}
-  .cycle-row{display:flex;gap:10px;flex-wrap:wrap;}
-  .cycle-box{flex:1;min-width:110px;background:#f8fafc;border:1px solid var(--border);border-radius:8px;padding:12px;text-align:center;}
-  .cycle-box .n{font-size:20px;font-weight:700;color:var(--navy);}
-  .cycle-box .t{font-size:11px;color:var(--muted);}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:#f0f2f5;color:#1a1a2e;font-size:14px}
+header{background:linear-gradient(135deg,#1a1a2e 0%,#16213e 100%);color:#fff;padding:16px 24px;display:flex;align-items:center;justify-content:space-between}
+header h1{font-size:20px;font-weight:700}
+header span{font-size:12px;opacity:.7}
+.tabs{display:flex;justify-content:space-between;align-items:center;background:#fff;border-bottom:2px solid #e5e7eb;padding:0 16px 0 0}
+.tab{padding:14px 20px;cursor:pointer;font-weight:600;color:#6b7280;border-bottom:3px solid transparent;transition:.2s}
+.tab.active{color:#6366f1;border-bottom-color:#6366f1}
+.tab:hover:not(.active){color:#374151}
+.course-filter{display:flex;align-items:center;gap:8px;padding:8px 0}
+.course-filter label{font-size:12px;color:#6b7280;font-weight:600}
+.cf-btn{padding:5px 14px;border:1.5px solid #d1d5db;border-radius:20px;background:#fff;font-size:12px;font-weight:600;cursor:pointer;color:#6b7280;transition:.2s}
+.cf-btn.active{background:#6366f1;border-color:#6366f1;color:#fff}
+.cf-btn:hover:not(.active){border-color:#6366f1;color:#6366f1}
+.pane{display:none;padding:20px}
+.pane.active{display:block}
+.kpi-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px;margin-bottom:20px}
+.kpi{background:#fff;border-radius:12px;padding:16px;box-shadow:0 1px 3px rgba(0,0,0,.08);border-left:4px solid #e5e7eb}
+.kpi.teal{border-left-color:#0d9488}
+.kpi.green{border-left-color:#16a34a}
+.kpi.red{border-left-color:#dc2626}
+.kpi.purple{border-left-color:#7c3aed}
+.kpi.blue{border-left-color:#2563eb}
+.kpi .val{font-size:28px;font-weight:800;line-height:1.1}
+.kpi .lbl{font-size:11px;color:#6b7280;margin-top:4px}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px}
+.section{background:#fff;border-radius:12px;padding:16px;box-shadow:0 1px 3px rgba(0,0,0,.08)}
+.section-title{font-weight:700;font-size:13px;color:#374151;margin-bottom:12px}
+.funnel-bar{display:flex;align-items:center;margin-bottom:6px;gap:8px}
+.funnel-bar .lbl{width:200px;font-size:11px;color:#374151;text-align:right;flex-shrink:0}
+.funnel-bar .bar{height:20px;border-radius:4px;background:#6366f1;min-width:4px;transition:.4s}
+.funnel-bar .cnt{font-size:11px;color:#6b7280;margin-left:4px}
+table{width:100%;border-collapse:collapse;font-size:12px}
+th{background:#f9fafb;font-weight:700;padding:8px 10px;text-align:left;border-bottom:2px solid #e5e7eb;color:#374151}
+td{padding:7px 10px;border-bottom:1px solid #f3f4f6;vertical-align:middle}
+tr:hover td{background:#f9fafb}
+.badge{padding:2px 8px;border-radius:10px;font-size:10px;font-weight:700;display:inline-block}
+.badge-high{background:#fee2e2;color:#dc2626}
+.badge-medium{background:#fef9c3;color:#854d0e}
+.badge-low{background:#dcfce7;color:#166534}
+.badge-A{background:#dcfce7;color:#166534}
+.badge-B{background:#fef9c3;color:#854d0e}
+.badge-C{background:#fee2e2;color:#dc2626}
+.badge-mba{background:#ede9fe;color:#7c3aed}
+.badge-boot{background:#dbeafe;color:#1d4ed8}
+.score-chip{padding:2px 7px;border-radius:8px;font-size:11px;font-weight:700}
+.score-pos{background:#dcfce7;color:#166534}
+.score-neg{background:#fee2e2;color:#dc2626}
+.score-neu{background:#f3f4f6;color:#6b7280}
+select.filter{padding:4px 8px;border:1px solid #d1d5db;border-radius:6px;font-size:12px;margin-right:6px}
+.table-scroll{overflow-x:auto;max-height:400px;overflow-y:auto}
+.alert-item{padding:10px 14px;border-radius:8px;margin-bottom:8px;font-size:12px}
+.alert-warn{background:#fef3c7;border-left:3px solid #f59e0b}
+.alert-danger{background:#fee2e2;border-left:3px solid #ef4444}
+.alert-info{background:#e0f2fe;border-left:3px solid #0284c7}
+.closer-card{background:#f9fafb;border-radius:10px;padding:12px;margin-bottom:10px}
+.closer-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.closer-name{font-weight:700;font-size:13px}
+.closer-stats{display:flex;gap:12px;font-size:11px;color:#6b7280}
+.closer-stat span{color:#1a1a2e;font-weight:700}
+.empty-state{text-align:center;padding:40px;color:#9ca3af}
+.elephan-warn{background:#fef3c7;border:1px solid #f59e0b;border-radius:10px;padding:16px;margin-bottom:16px;font-size:13px}
 </style>
 </head>
 <body>
+
 <header>
-  <h1>📊 Dashboard Diário de Reuniões — TripleTen Brasil</h1>
-  <div class="sub">Referente a 21/09/2026 · Pipeline Brazil / Sales · Gerado automaticamente às 09h</div>
-  <div class="badge-warn">⚠️ Conector Elephan indisponível nesta execução (sessão expirada / requer reautenticação). Dados de transcrição, sentimento, energia do closer e resistência do lead não foram coletados — reconecte em claude.ai ou via /mcp para restaurar a aba de análise de chamadas na próxima execução.</div>
+  <div>
+    <h1>📊 TripleTen Brasil — Dashboard Diário</h1>
+    <span>21 de setembro de 2026 | Gerado via HubSpot CRM</span>
+  </div>
 </header>
-<nav class="tabs">
-  <button class="tab-btn active" data-tab="marketing">📈 Marketing</button>
-  <button class="tab-btn" data-tab="vendas">🎯 Vendas</button>
-</nav>
-<main>
-  <section id="tab-marketing" class="tabpanel active"></section>
-  <section id="tab-vendas" class="tabpanel"></section>
-</main>
-<footer>TripleTen Brasil · Sales Ops · Dashboard gerado automaticamente a partir de HubSpot CRM (Pipeline Brazil/Sales) · Elephan indisponível nesta execução</footer>
+
+<div class="tabs" style="justify-content:space-between;align-items:center;padding-right:16px;">
+  <div style="display:flex;">
+    <div class="tab active" onclick="showTab('mkt',this)">📈 Marketing</div>
+    <div class="tab" onclick="showTab('sales',this)">🎯 Vendas</div>
+  </div>
+  <div class="course-filter">
+    <label>🎓 Curso:</label>
+    <button class="cf-btn active" id="cf-all"  onclick="setCourseFilter('all')">Todos</button>
+    <button class="cf-btn"        id="cf-boot" onclick="setCourseFilter('bootcamp')">Bootcamp</button>
+    <button class="cf-btn"        id="cf-mba"  onclick="setCourseFilter('mba')">MBA</button>
+  </div>
+</div>
+
+<!-- TAB MARKETING -->
+<div id="pane-mkt" class="pane active">
+  <div class="kpi-grid" id="kpi-mkt"></div>
+  <div class="two-col">
+    <div class="section">
+      <div class="section-title">🔽 Funil — Leads criados (21/09)</div>
+      <div id="funnel"></div>
+    </div>
+    <div class="section">
+      <div class="section-title">📋 Distribuição por Curso (leads criados 21/09)</div>
+      <div id="course-dist"></div>
+    </div>
+  </div>
+  <div class="section" style="margin-bottom:16px">
+    <div class="section-title">✅ Reuniões Atendidas em 21/09
+      <span style="font-size:10px;color:#9ca3af;font-weight:400;margin-left:8px">(amostra CRM — 27 registros carregados)</span>
+      &nbsp;
+      <select class="filter" id="f-medium" onchange="renderAttended()"><option value="">Todas mídias</option></select>
+      <select class="filter" id="f-priority" onchange="renderAttended()"><option value="">Todas prioridades</option></select>
+      <select class="filter" id="f-temp" onchange="renderAttended()"><option value="">Todos potenciais</option></select>
+    </div>
+    <div class="table-scroll">
+      <table>
+        <thead><tr><th>Nome</th><th>Curso</th><th>Potencial</th><th>Prioridade</th><th>Score</th><th>Closer</th><th>Status</th></tr></thead>
+        <tbody id="tbody-attended"></tbody>
+      </table>
+    </div>
+  </div>
+  <div class="section">
+    <div class="section-title">❌ No-Shows em 21/09
+      <span style="font-size:10px;color:#9ca3af;font-weight:400;margin-left:8px">(10 de 23 confirmados via CRM)</span>
+    </div>
+    <div class="table-scroll">
+      <table>
+        <thead><tr><th>Nome</th><th>Curso</th><th>Prioridade</th><th>Score</th><th>Ação sugerida</th></tr></thead>
+        <tbody id="tbody-noshows"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- TAB VENDAS -->
+<div id="pane-sales" class="pane">
+  <div class="kpi-grid" id="kpi-sales"></div>
+  <div class="two-col">
+    <div class="section">
+      <div class="section-title">👥 Performance por Closer (amostra)</div>
+      <div id="closers-section"></div>
+    </div>
+    <div class="section">
+      <div class="section-title">🏆 Ranking — Oportunidades em Aberto</div>
+      <div class="table-scroll">
+        <table>
+          <thead><tr><th>#</th><th>Nome</th><th>Pot.</th><th>Curso</th><th>Score</th><th>Ação</th></tr></thead>
+          <tbody id="tbody-ranking"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="section" style="margin-bottom:16px">
+    <div class="section-title">🐘 Elephan — Análise de Reuniões (21/09)</div>
+    <div id="elephan-kpis" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px;margin-bottom:16px"></div>
+    <div class="two-col" style="margin-bottom:16px">
+      <div>
+        <div style="font-weight:700;font-size:12px;color:#374151;margin-bottom:8px">📊 Score médio por Closer (Elephan)</div>
+        <div id="elephan-closers"></div>
+      </div>
+      <div>
+        <div style="font-weight:700;font-size:12px;color:#374151;margin-bottom:8px">⚠️ Principais Objeções do Dia</div>
+        <div id="elephan-objections"></div>
+      </div>
+    </div>
+    <div style="font-weight:700;font-size:12px;color:#374151;margin-bottom:8px">🎙️ Transcrições do Dia</div>
+    <div id="elephan-cards"></div>
+  </div>
+  <div class="section" style="margin-bottom:16px">
+    <div class="section-title">🚨 Alertas</div>
+    <div id="alertas-section"></div>
+  </div>
+  <div class="section">
+    <div class="section-title">💡 Recomendações</div>
+    <div id="recs-section"></div>
+  </div>
+</div>
 
 <script>
-const DATA = {"target_date": "2026-09-21", "target_date_br": "21/09/2026", "elephan_available": false, "elephan_note": "Conector Elephan expirou/precisa reautenticação nesta execução automática. Dados de transcrição, sentimento e duração de chamada não puderam ser coletados. Temperatura/potencial usam somente dados de CRM (temperatura_do_lead do HubSpot, score e payable); quando o campo de temperatura estava vazio, o padrão foi 'Morno' por não ser possível calcular via sentimento.", "marketing": {"kpis": {"total_criados": 240, "atendidos_mesmo_dia": 7, "atendidos_mesmo_dia_pct": 2.9, "meeting_scheduled": 17, "no_shows": 19, "vendas": 1, "ciclo_medio_dias": 14.3}, "funnel": [{"stage": "Taken to Work", "count": 97}, {"stage": "Closed-Lost", "count": 38}, {"stage": "Call Booked", "count": 28}, {"stage": "Responsible Appointed", "count": 26}, {"stage": "Contact Established", "count": 23}, {"stage": "Meeting Scheduled", "count": 17}, {"stage": "Meeting/Webinar Attended", "count": 6}, {"stage": "Meeting Not Attended", "count": 5}], "same_day_table": [{"dealname": "Thayná Gonçalves", "utm_medium": "cpc", "utm_content": "cid--120244104557520637_adset--online-courses-23-40-6m_adsetid--120244104557580637_source--ig_placement--Instagram_Reels", "score": null, "priority": "Medium", "temperatura": "Morno", "resultado": "Meeting/Webinar Attended"}, {"dealname": "Lara Dhessik Soares", "utm_medium": "-", "utm_content": "-", "score": 0, "priority": "High", "temperatura": "Frio", "resultado": "Meeting/Webinar Attended"}, {"dealname": "Marcelo", "utm_medium": "partnerships", "utm_content": "hirebrazil", "score": null, "priority": "Medium", "temperatura": "Quente", "resultado": "Meeting/Webinar Attended"}, {"dealname": "Justino Gemo", "utm_medium": "bloggers", "utm_content": "attekitadev", "score": 8, "priority": "High", "temperatura": "Morno", "resultado": "Meeting/Webinar Attended"}, {"dealname": "Thiago", "utm_medium": "cpc", "utm_content": "cid--120245660345700637_adset--online-courses-23-40-2m_adsetid--120245660345710637_source--ig_placement--Instagram_Reels", "score": 7, "priority": "High", "temperatura": "Frio", "resultado": "Closed-Lost"}, {"dealname": "Jean Carlos de Assis Santos", "utm_medium": "cpc", "utm_content": "cid--120249524705430637_adset--advplus-23-40-16m_adsetid--120249524705410637_source--ig_placement--Instagram_Reels", "score": 2, "priority": "High", "temperatura": "Morno", "resultado": "Meeting/Webinar Attended"}, {"dealname": "Julia Filtre", "utm_medium": "smm", "utm_content": "link_in_bio", "score": null, "priority": "Medium", "temperatura": "Morno", "resultado": "Meeting/Webinar Attended"}], "meeting_scheduled_table": [{"dealname": "Nathalia Alborghetti", "utm_medium": "partnerships", "utm_source": "email", "score": 0, "priority": "Medium"}, {"dealname": "Yuri Mendes Ribeiro", "utm_medium": "partnerships", "utm_source": "instagram", "score": 10, "priority": "High"}, {"dealname": "Michele Schmidt", "utm_medium": "cpc", "utm_source": "facebook", "score": 4, "priority": "High"}, {"dealname": "LUCAS SERPA BRANDÃO", "utm_medium": "partnerships", "utm_source": "instagram", "score": 4, "priority": "High"}, {"dealname": "Ana Sofia", "utm_medium": "cpc", "utm_source": "facebook", "score": 3, "priority": "Medium"}, {"dealname": "Adriana Baruch", "utm_medium": "cpc", "utm_source": "facebook", "score": 3, "priority": "Medium"}, {"dealname": "Israel Ludovico", "utm_medium": "smm", "utm_source": "instagram", "score": null, "priority": "Medium"}, {"dealname": "Ana Carolina", "utm_medium": "cpc", "utm_source": "facebook", "score": 3, "priority": "Medium"}, {"dealname": "Isabely soares", "utm_medium": "partnerships", "utm_source": "instagram", "score": 2, "priority": "High"}, {"dealname": "Luis Felipe", "utm_medium": "bloggers", "utm_source": "youtube", "score": 2, "priority": "High"}, {"dealname": "Claudirene Costa", "utm_medium": "bloggers", "utm_source": "youtube", "score": 2, "priority": "High"}, {"dealname": "LETICIA OLIVEIRA BARROS", "utm_medium": "-", "utm_source": "-", "score": null, "priority": "Medium"}, {"dealname": "Luiz Felipe Felicio", "utm_medium": "bloggers", "utm_source": "youtube", "score": 4, "priority": "High"}, {"dealname": "Natalia Ricco", "utm_medium": "smm", "utm_source": "instagram", "score": 1, "priority": "Medium"}, {"dealname": "Roberta Schottz", "utm_medium": "-", "utm_source": "-", "score": 6, "priority": "High"}, {"dealname": "Diego Sandoval", "utm_medium": "cpc", "utm_source": "google", "score": 2, "priority": "High"}, {"dealname": "Pedro Lucas Estrella Caciano", "utm_medium": "cpc", "utm_source": "google", "score": 3, "priority": "High"}], "no_shows_table": [{"dealname": "Beatriz Pereira de sales", "utm_medium": "crm", "priority": "High", "score": 0, "createdate": "9/18/26", "status_atual": "Meeting Not Attended", "hs_object_id": "521949977835"}, {"dealname": "Isabelly Curvelo Ferreira", "utm_medium": "cpc", "priority": "High", "score": 3, "createdate": "9/19/26", "status_atual": "Meeting Not Attended", "hs_object_id": "522019321064"}, {"dealname": "Gabriela Maria Loures Rocha", "utm_medium": "cpc", "priority": "High", "score": 4, "createdate": "9/16/26", "status_atual": "Meeting Not Attended", "hs_object_id": "521751133405"}, {"dealname": "Yago Affonso", "utm_medium": "cpc", "priority": "High", "score": 3, "createdate": "9/18/26", "status_atual": "Meeting Not Attended", "hs_object_id": "521873021171"}, {"dealname": "Rafaela Polidorio Krauzer", "utm_medium": "bloggers", "priority": "High", "score": 3, "createdate": "9/20/26", "status_atual": "Meeting Not Attended", "hs_object_id": "522078910670"}, {"dealname": "Grazielly silva soares", "utm_medium": "partnerships", "priority": "High", "score": 7, "createdate": "9/20/26", "status_atual": "Meeting Not Attended", "hs_object_id": "522134547679"}, {"dealname": "Flavio Brendon", "utm_medium": "cpc", "priority": "Medium", "score": 1, "createdate": "9/17/26", "status_atual": "Closed-Lost", "hs_object_id": "521752210628"}, {"dealname": "Gilmar Martins", "utm_medium": "cpc", "priority": "High", "score": 3, "createdate": "9/18/26", "status_atual": "Meeting Not Attended", "hs_object_id": "521956790467"}, {"dealname": "HENRIQUE COSTA", "utm_medium": "smm", "priority": "Medium", "score": null, "createdate": "9/5/26", "status_atual": "Meeting Not Attended", "hs_object_id": "519999918272"}, {"dealname": "Vanilson Lauriano", "utm_medium": "crm", "priority": "High", "score": 2, "createdate": "9/20/26", "status_atual": "Meeting Not Attended", "hs_object_id": "522139990206"}, {"dealname": "Juan Amaral", "utm_medium": "-", "priority": "High", "score": 7, "createdate": "9/20/26", "status_atual": "Meeting Not Attended", "hs_object_id": "522110000364"}, {"dealname": "Mario Riekes", "utm_medium": "cpc", "priority": "High", "score": 5, "createdate": "9/18/26", "status_atual": "Meeting Not Attended", "hs_object_id": "521993922786"}, {"dealname": "rodrigo ferreira", "utm_medium": "bloggers", "priority": "High", "score": 2, "createdate": "9/21/26", "status_atual": "Meeting Not Attended", "hs_object_id": "522167521499"}, {"dealname": "Carlos Eduardo Azevedo Barbosa", "utm_medium": "cpc", "priority": "High", "score": 6, "createdate": "9/16/26", "status_atual": "Meeting Not Attended", "hs_object_id": "521795340475"}, {"dealname": "Valentina marin", "utm_medium": "cpc", "priority": "High", "score": 4, "createdate": "9/18/26", "status_atual": "Meeting Not Attended", "hs_object_id": "521975310577"}, {"dealname": "Gabriel Caparelli", "utm_medium": "cpc", "priority": "High", "score": 2, "createdate": "9/20/26", "status_atual": "Meeting Not Attended", "hs_object_id": "522042456281"}, {"dealname": "Wesley Pereira Braga", "utm_medium": "cpc", "priority": "High", "score": 4, "createdate": "9/16/26", "status_atual": "Meeting Not Attended", "hs_object_id": "521658940635"}, {"dealname": "Dayane Chumansk", "utm_medium": "-", "priority": "High", "score": 2, "createdate": "9/21/26", "status_atual": "Meeting Not Attended", "hs_object_id": "522185130198"}, {"dealname": "Joel Moraes", "utm_medium": "partnerships", "priority": "High", "score": 4, "createdate": "9/19/26", "status_atual": "Meeting Not Attended", "hs_object_id": "522089423096"}], "all_meetings_table": [{"closer": "Gabriel Morial", "closer_id": "36125077", "dealname": "Thayná Gonçalves", "course": "DS", "utm_medium": "cpc", "utm_content": "cid--120244104557520637_adset--online-courses-23-40-6m_adsetid--120244104557580637_source--ig_placement--Instagram_Reels", "priority": "Medium", "score": null, "temperatura": "Morno", "payable": "No", "ciclo_dias": 0.1, "resultado": "Meeting/Webinar Attended", "potencial": "C", "hs_object_id": "522214046922"}, {"closer": "Jessica Silva", "closer_id": "78365306", "dealname": "Valéria", "course": "QA", "utm_medium": "crm", "utm_content": "brazil_closed-lost_not-at-ma_high-priority_last-180-days_18092026", "priority": "High", "score": 2, "temperatura": "Morno", "payable": "No", "ciclo_dias": 1.5, "resultado": "Meeting/Webinar Attended", "potencial": "C", "hs_object_id": "522098464991"}, {"closer": "Raphael Soares", "closer_id": "35852628", "dealname": "Welton", "course": "Desenvolvedor Full Stack", "utm_medium": "bloggers", "utm_content": "abraceatrip", "priority": "High", "score": 6, "temperatura": "Quente", "payable": "Yes", "ciclo_dias": 1.5, "resultado": "Meeting/Webinar Attended", "potencial": "A", "hs_object_id": "522107280591"}, {"closer": "Jessica Silva", "closer_id": "78365306", "dealname": "Lucas wahlbrink", "course": "DA", "utm_medium": "cpc", "utm_content": "cid--23330113426_gid--186532386421_network--g_placement--_dvc--m_tid--kwd-2087159963733_mt--p_creative--786718413586", "priority": "High", "score": 5, "temperatura": "Morno", "payable": "No", "ciclo_dias": 1.5, "resultado": "Meeting/Webinar Attended", "potencial": "C", "hs_object_id": "521998663886"}, {"closer": "Roberto Branco", "closer_id": "837235423", "dealname": "DAVID RAMOS DE BARROS NETO", "course": "MBA DA", "utm_medium": "-", "utm_content": "-", "priority": "Medium", "score": 2, "temperatura": "Morno", "payable": "No", "ciclo_dias": 12.3, "resultado": "Meeting/Webinar Attended", "potencial": "C", "hs_object_id": "520686301375"}, {"closer": "Larissa Ciuldim", "closer_id": "1201941994", "dealname": "Lara Dhessik Soares", "course": "Desenvolvedor Full Stack", "utm_medium": "-", "utm_content": "-", "priority": "High", "score": 0, "temperatura": "Frio", "payable": "Yes", "ciclo_dias": 0.1, "resultado": "Meeting/Webinar Attended", "potencial": "B", "hs_object_id": "522130725072"}, {"closer": "Ana Viana", "closer_id": "30062057", "dealname": "Jéssica Vergütz", "course": "Desenvolvedor Full Stack", "utm_medium": "-", "utm_content": "-", "priority": "Medium", "score": 2, "temperatura": "Quente", "payable": "Yes", "ciclo_dias": 0.9, "resultado": "Meeting/Webinar Attended", "potencial": "B", "hs_object_id": "522088335564"}, {"closer": "Gabriel Morial", "closer_id": "36125077", "dealname": "Marcelo", "course": "DA", "utm_medium": "partnerships", "utm_content": "hirebrazil", "priority": "Medium", "score": null, "temperatura": "Quente", "payable": "Yes", "ciclo_dias": 0.2, "resultado": "Meeting/Webinar Attended", "potencial": "B", "hs_object_id": "522161736894"}, {"closer": "Ana Viana", "closer_id": "30062057", "dealname": "Amintas Gomes Chaves", "course": "MBA DS", "utm_medium": "bloggers", "utm_content": "attekitadev", "priority": "Medium", "score": null, "temperatura": "Morno", "payable": "Yes", "ciclo_dias": 2.0, "resultado": "Meeting/Webinar Attended", "potencial": "B", "hs_object_id": "522034598124"}, {"closer": "Raphael Soares", "closer_id": "35852628", "dealname": "Ariane", "course": "Desenvolvedor Full Stack", "utm_medium": "-", "utm_content": "-", "priority": "Medium", "score": 1, "temperatura": "Morno", "payable": "No", "ciclo_dias": 3.1, "resultado": "Closed-Lost", "potencial": "C", "hs_object_id": "521954904257"}, {"closer": "Jessica Silva", "closer_id": "78365306", "dealname": "Roberto Marins Guerreiro", "course": "DA", "utm_medium": "crm", "utm_content": "brazil_not-at-ma_was-not-at-career-quiz_engaged_15092026", "priority": "High", "score": -2, "temperatura": "Frio", "payable": "No", "ciclo_dias": 6.2, "resultado": "Closed-Lost", "potencial": "C", "hs_object_id": "521600469191"}, {"closer": "Raphael Soares", "closer_id": "35852628", "dealname": "Guilherme Kazadi", "course": "QA", "utm_medium": "smm", "utm_content": "-", "priority": "High", "score": 1, "temperatura": "Quente", "payable": "Yes", "ciclo_dias": 312.8, "resultado": "Meeting/Webinar Attended", "potencial": "B", "hs_object_id": "373116198083"}, {"closer": "Lua Almeida", "closer_id": "1172844758", "dealname": "Jéssica Barbosa", "course": "QA", "utm_medium": "smm", "utm_content": "link_in_bio", "priority": "High", "score": 5, "temperatura": "Morno", "payable": "Yes", "ciclo_dias": 7.0, "resultado": "Meeting/Webinar Attended", "potencial": "A", "hs_object_id": "521505301710"}, {"closer": "Raphael Soares", "closer_id": "35852628", "dealname": "Justino Gemo", "course": "Desenvolvedor Full Stack", "utm_medium": "bloggers", "utm_content": "attekitadev", "priority": "High", "score": 8, "temperatura": "Morno", "payable": "No", "ciclo_dias": 0.2, "resultado": "Meeting/Webinar Attended", "potencial": "C", "hs_object_id": "522215892189"}, {"closer": "Roberto Branco", "closer_id": "837235423", "dealname": "Thiago", "course": "DS", "utm_medium": "cpc", "utm_content": "cid--120245660345700637_adset--online-courses-23-40-2m_adsetid--120245660345710637_source--ig_placement--Instagram_Reels", "priority": "High", "score": 7, "temperatura": "Frio", "payable": "No", "ciclo_dias": 0.2, "resultado": "Closed-Lost", "potencial": "C", "hs_object_id": "522212732151"}, {"closer": "Raphael Soares", "closer_id": "35852628", "dealname": "Arthur Konrado Braga", "course": "Desenvolvedor Full Stack", "utm_medium": "bloggers", "utm_content": "pablofakirr", "priority": "High", "score": 5, "temperatura": "Morno", "payable": "No", "ciclo_dias": 2.0, "resultado": "Meeting/Webinar Attended", "potencial": "C", "hs_object_id": "522072501469"}, {"closer": "Jessica Silva", "closer_id": "78365306", "dealname": "Katiane Saviato", "course": "Desenvolvedor Full Stack", "utm_medium": "-", "utm_content": "-", "priority": "High", "score": 5, "temperatura": "Frio", "payable": "No", "ciclo_dias": 3.0, "resultado": "Meeting/Webinar Attended", "potencial": "C", "hs_object_id": "521963528426"}, {"closer": "Roberto Branco", "closer_id": "837235423", "dealname": "Alexandre De Brito Pinheiro", "course": "MBA DA", "utm_medium": "cpc", "utm_content": "cid--120249460095490637_adset--developer-23-40-6m_adsetid--120249460095470637_source--th_placement--Threads_Feed", "priority": "Medium", "score": null, "temperatura": "Frio", "payable": "No", "ciclo_dias": 2.3, "resultado": "Closed-Lost", "potencial": "C", "hs_object_id": "522016754905"}, {"closer": "Bruno Marques", "closer_id": "30407649", "dealname": "Thais Carvalho", "course": "DA", "utm_medium": "crm", "utm_content": "brazil_closed-lost_not-at-ma_high-priority_last-180-days_18092026", "priority": "High", "score": 3, "temperatura": "Morno", "payable": "No", "ciclo_dias": 3.2, "resultado": "Meeting/Webinar Attended", "potencial": "C", "hs_object_id": "521945177276"}, {"closer": "Jessica Silva", "closer_id": "78365306", "dealname": "Pedro Paulo Pedrosa Netto", "course": "DA", "utm_medium": "-", "utm_content": "-", "priority": "High", "score": 3, "temperatura": "Morno", "payable": "No", "ciclo_dias": 0.8, "resultado": "Meeting/Webinar Attended", "potencial": "C", "hs_object_id": "522024648953"}, {"closer": "Jessica Silva", "closer_id": "78365306", "dealname": "Giovanna Passarini", "course": "DA", "utm_medium": "-", "utm_content": "-", "priority": "High", "score": 3, "temperatura": "Morno", "payable": "No", "ciclo_dias": 6.5, "resultado": "Meeting/Webinar Attended", "potencial": "C", "hs_object_id": "521587833035"}, {"closer": "Ana Viana", "closer_id": "30062057", "dealname": "Jean Carlos de Assis Santos", "course": "MBA DA", "utm_medium": "cpc", "utm_content": "cid--120249524705430637_adset--advplus-23-40-16m_adsetid--120249524705410637_source--ig_placement--Instagram_Reels", "priority": "High", "score": 2, "temperatura": "Morno", "payable": "Yes", "ciclo_dias": 0.1, "resultado": "Meeting/Webinar Attended", "potencial": "B", "hs_object_id": "522222097629"}, {"closer": "Raphael Soares", "closer_id": "35852628", "dealname": "Julia Filtre", "course": "DA", "utm_medium": "smm", "utm_content": "link_in_bio", "priority": "Medium", "score": null, "temperatura": "Morno", "payable": "No", "ciclo_dias": 0.1, "resultado": "Meeting/Webinar Attended", "potencial": "C", "hs_object_id": "522161987810"}, {"closer": "Jessica Silva", "closer_id": "78365306", "dealname": "Arthur Luiz Ferreira Cunha", "course": "Desenvolvedor Full Stack", "utm_medium": "-", "utm_content": "-", "priority": "High", "score": 12, "temperatura": "Quente", "payable": "Yes", "ciclo_dias": 1.3, "resultado": "Successful Payment", "potencial": "A", "hs_object_id": "522087812328"}, {"closer": "Raphael Soares", "closer_id": "35852628", "dealname": "Victor Santoro", "course": "Desenvolvedor Full Stack", "utm_medium": "smm", "utm_content": "link_in_bio", "priority": "High", "score": 4, "temperatura": "Morno", "payable": "No", "ciclo_dias": 1.2, "resultado": "Meeting/Webinar Attended", "potencial": "C", "hs_object_id": "522033094861"}, {"closer": "Gabriel Morial", "closer_id": "36125077", "dealname": "Julie Barroso", "course": "QA", "utm_medium": "bloggers", "utm_content": "abraceatrip", "priority": "High", "score": 8, "temperatura": "Morno", "payable": "No", "ciclo_dias": 1.9, "resultado": "Meeting/Webinar Attended", "potencial": "C", "hs_object_id": "522041223356"}], "utm_medium_breakdown": [["cpc", 86], ["partnerships", 59], ["smm", 37], ["(vazio)", 25], ["bloggers", 25], ["crm", 4], ["social", 4]], "utm_content_breakdown": [["(vazio)", 64], ["hirebrazil", 42], ["link_in_bio", 17], ["cid--120249524705430637_adset--advplus-23-40-16m_adsetid--120249524705410637_source--ig_placement--Instagram_Reels", 14], ["nerdsdenegocios", 10], ["cid--120245660345700637_adset--online-courses-23-40-2m_adsetid--120245660345710637_source--ig_placement--Instagram_Reels", 9], ["cid--120244104557520637_adset--online-courses-23-40-6m_adsetid--120244104557580637_source--ig_placement--Instagram_Stories", 7], ["cid--23330113426_gid--186532386421_network--g_placement--_dvc--c_tid--kwd-2087159963733_mt--p_creative--786718413586", 7], ["cid--120249460095490637_adset--developer-23-40-6m_adsetid--120249460095470637_source--ig_placement--Instagram_Reels", 7], ["cid--120244104557520637_adset--online-courses-23-40-6m_adsetid--120244104557580637_source--ig_placement--Instagram_Reels", 6], ["pabloepativlogs", 6], ["cid--120249066341450637_adset--online-postgrad-courses-25-45-3m_adsetid--120249066341560637_source--ig_placement--Instagram_Feed", 6], ["cid--23330113426_gid--186532386421_network--g_placement--_dvc--m_tid--kwd-2087159963733_mt--p_creative--786718413586", 5], ["attekitadev", 4], ["cid--120244104557520637_adset--online-courses-23-40-6m_adsetid--120244104557580637_source--ig_placement--Instagram_Feed", 3]], "cycle_buckets": {"Mesmo dia": 7, "1-3d": 12, "8+d": 2, "4-7d": 5}}, "vendas": {"kpis": {"vendas": 1, "em_aberto": 21, "lost": 4, "potenciais_a": 3, "potenciais_b": 6, "potenciais_c": 17, "energia_media_closers": null, "resistencia_media_leads": null}, "closer_performance": [{"closer": "Jessica Silva", "reunioes": 7, "vendas": 1, "lost": 1, "aberto": 5, "ciclo_medio": 3.0}, {"closer": "Raphael Soares", "reunioes": 7, "vendas": 0, "lost": 1, "aberto": 6, "ciclo_medio": 45.8}, {"closer": "Gabriel Morial", "reunioes": 3, "vendas": 0, "lost": 0, "aberto": 3, "ciclo_medio": 0.7}, {"closer": "Roberto Branco", "reunioes": 3, "vendas": 0, "lost": 2, "aberto": 1, "ciclo_medio": 4.9}, {"closer": "Ana Viana", "reunioes": 3, "vendas": 0, "lost": 0, "aberto": 3, "ciclo_medio": 1.0}, {"closer": "Larissa Ciuldim", "reunioes": 1, "vendas": 0, "lost": 0, "aberto": 1, "ciclo_medio": 0.1}, {"closer": "Lua Almeida", "reunioes": 1, "vendas": 0, "lost": 0, "aberto": 1, "ciclo_medio": 7.0}, {"closer": "Bruno Marques", "reunioes": 1, "vendas": 0, "lost": 0, "aberto": 1, "ciclo_medio": 3.2}], "potential_ranking": {"A": [{"closer": "Raphael Soares", "closer_id": "35852628", "dealname": "Welton", "course": "Desenvolvedor Full Stack", "utm_medium": "bloggers", "utm_content": "abraceatrip", "priority": "High", "score": 6, "temperatura": "Quente", "payable": "Yes", "ciclo_dias": 1.5, "resultado": "Meeting/Webinar Attended", "potencial": "A", "hs_object_id": "522107280591"}, {"closer": "Lua Almeida", "closer_id": "1172844758", "dealname": "Jéssica Barbosa", "course": "QA", "utm_medium": "smm", "utm_content": "link_in_bio", "priority": "High", "score": 5, "temperatura": "Morno", "payable": "Yes", "ciclo_dias": 7.0, "resultado": "Meeting/Webinar Attended", "potencial": "A", "hs_object_id": "521505301710"}, {"closer": "Jessica Silva", "closer_id": "78365306", "dealname": "Arthur Luiz Ferreira Cunha", "course": "Desenvolvedor Full Stack", "utm_medium": "-", "utm_content": "-", "priority": "High", "score": 12, "temperatura": "Quente", "payable": "Yes", "ciclo_dias": 1.3, "resultado": "Successful Payment", "potencial": "A", "hs_object_id": "522087812328"}], "B": [{"closer": "Larissa Ciuldim", "closer_id": "1201941994", "dealname": "Lara Dhessik Soares", "course": "Desenvolvedor Full Stack", "utm_medium": "-", "utm_content": "-", "priority": "High", "score": 0, "temperatura": "Frio", "payable": "Yes", "ciclo_dias": 0.1, "resultado": "Meeting/Webinar Attended", "potencial": "B", "hs_object_id": "522130725072"}, {"closer": "Ana Viana", "closer_id": "30062057", "dealname": "Jéssica Vergütz", "course": "Desenvolvedor Full Stack", "utm_medium": "-", "utm_content": "-", "priority": "Medium", "score": 2, "temperatura": "Quente", "payable": "Yes", "ciclo_dias": 0.9, "resultado": "Meeting/Webinar Attended", "potencial": "B", "hs_object_id": "522088335564"}, {"closer": "Gabriel Morial", "closer_id": "36125077", "dealname": "Marcelo", "course": "DA", "utm_medium": "partnerships", "utm_content": "hirebrazil", "priority": "Medium", "score": null, "temperatura": "Quente", "payable": "Yes", "ciclo_dias": 0.2, "resultado": "Meeting/Webinar Attended", "potencial": "B", "hs_object_id": "522161736894"}, {"closer": "Ana Viana", "closer_id": "30062057", "dealname": "Amintas Gomes Chaves", "course": "MBA DS", "utm_medium": "bloggers", "utm_content": "attekitadev", "priority": "Medium", "score": null, "temperatura": "Morno", "payable": "Yes", "ciclo_dias": 2.0, "resultado": "Meeting/Webinar Attended", "potencial": "B", "hs_object_id": "522034598124"}, {"closer": "Raphael Soares", "closer_id": "35852628", "dealname": "Guilherme Kazadi", "course": "QA", "utm_medium": "smm", "utm_content": "-", "priority": "High", "score": 1, "temperatura": "Quente", "payable": "Yes", "ciclo_dias": 312.8, "resultado": "Meeting/Webinar Attended", "potencial": "B", "hs_object_id": "373116198083"}, {"closer": "Ana Viana", "closer_id": "30062057", "dealname": "Jean Carlos de Assis Santos", "course": "MBA DA", "utm_medium": "cpc", "utm_content": "cid--120249524705430637_adset--advplus-23-40-16m_adsetid--120249524705410637_source--ig_placement--Instagram_Reels", "priority": "High", "score": 2, "temperatura": "Morno", "payable": "Yes", "ciclo_dias": 0.1, "resultado": "Meeting/Webinar Attended", "potencial": "B", "hs_object_id": "522222097629"}], "C": [{"closer": "Gabriel Morial", "closer_id": "36125077", "dealname": "Thayná Gonçalves", "course": "DS", "utm_medium": "cpc", "utm_content": "cid--120244104557520637_adset--online-courses-23-40-6m_adsetid--120244104557580637_source--ig_placement--Instagram_Reels", "priority": "Medium", "score": null, "temperatura": "Morno", "payable": "No", "ciclo_dias": 0.1, "resultado": "Meeting/Webinar Attended", "potencial": "C", "hs_object_id": "522214046922"}, {"closer": "Jessica Silva", "closer_id": "78365306", "dealname": "Valéria", "course": "QA", "utm_medium": "crm", "utm_content": "brazil_closed-lost_not-at-ma_high-priority_last-180-days_18092026", "priority": "High", "score": 2, "temperatura": "Morno", "payable": "No", "ciclo_dias": 1.5, "resultado": "Meeting/Webinar Attended", "potencial": "C", "hs_object_id": "522098464991"}, {"closer": "Jessica Silva", "closer_id": "78365306", "dealname": "Lucas wahlbrink", "course": "DA", "utm_medium": "cpc", "utm_content": "cid--23330113426_gid--186532386421_network--g_placement--_dvc--m_tid--kwd-2087159963733_mt--p_creative--786718413586", "priority": "High", "score": 5, "temperatura": "Morno", "payable": "No", "ciclo_dias": 1.5, "resultado": "Meeting/Webinar Attended", "potencial": "C", "hs_object_id": "521998663886"}, {"closer": "Roberto Branco", "closer_id": "837235423", "dealname": "DAVID RAMOS DE BARROS NETO", "course": "MBA DA", "utm_medium": "-", "utm_content": "-", "priority": "Medium", "score": 2, "temperatura": "Morno", "payable": "No", "ciclo_dias": 12.3, "resultado": "Meeting/Webinar Attended", "potencial": "C", "hs_object_id": "520686301375"}, {"closer": "Raphael Soares", "closer_id": "35852628", "dealname": "Ariane", "course": "Desenvolvedor Full Stack", "utm_medium": "-", "utm_content": "-", "priority": "Medium", "score": 1, "temperatura": "Morno", "payable": "No", "ciclo_dias": 3.1, "resultado": "Closed-Lost", "potencial": "C", "hs_object_id": "521954904257"}, {"closer": "Jessica Silva", "closer_id": "78365306", "dealname": "Roberto Marins Guerreiro", "course": "DA", "utm_medium": "crm", "utm_content": "brazil_not-at-ma_was-not-at-career-quiz_engaged_15092026", "priority": "High", "score": -2, "temperatura": "Frio", "payable": "No", "ciclo_dias": 6.2, "resultado": "Closed-Lost", "potencial": "C", "hs_object_id": "521600469191"}, {"closer": "Raphael Soares", "closer_id": "35852628", "dealname": "Justino Gemo", "course": "Desenvolvedor Full Stack", "utm_medium": "bloggers", "utm_content": "attekitadev", "priority": "High", "score": 8, "temperatura": "Morno", "payable": "No", "ciclo_dias": 0.2, "resultado": "Meeting/Webinar Attended", "potencial": "C", "hs_object_id": "522215892189"}, {"closer": "Roberto Branco", "closer_id": "837235423", "dealname": "Thiago", "course": "DS", "utm_medium": "cpc", "utm_content": "cid--120245660345700637_adset--online-courses-23-40-2m_adsetid--120245660345710637_source--ig_placement--Instagram_Reels", "priority": "High", "score": 7, "temperatura": "Frio", "payable": "No", "ciclo_dias": 0.2, "resultado": "Closed-Lost", "potencial": "C", "hs_object_id": "522212732151"}, {"closer": "Raphael Soares", "closer_id": "35852628", "dealname": "Arthur Konrado Braga", "course": "Desenvolvedor Full Stack", "utm_medium": "bloggers", "utm_content": "pablofakirr", "priority": "High", "score": 5, "temperatura": "Morno", "payable": "No", "ciclo_dias": 2.0, "resultado": "Meeting/Webinar Attended", "potencial": "C", "hs_object_id": "522072501469"}, {"closer": "Jessica Silva", "closer_id": "78365306", "dealname": "Katiane Saviato", "course": "Desenvolvedor Full Stack", "utm_medium": "-", "utm_content": "-", "priority": "High", "score": 5, "temperatura": "Frio", "payable": "No", "ciclo_dias": 3.0, "resultado": "Meeting/Webinar Attended", "potencial": "C", "hs_object_id": "521963528426"}, {"closer": "Roberto Branco", "closer_id": "837235423", "dealname": "Alexandre De Brito Pinheiro", "course": "MBA DA", "utm_medium": "cpc", "utm_content": "cid--120249460095490637_adset--developer-23-40-6m_adsetid--120249460095470637_source--th_placement--Threads_Feed", "priority": "Medium", "score": null, "temperatura": "Frio", "payable": "No", "ciclo_dias": 2.3, "resultado": "Closed-Lost", "potencial": "C", "hs_object_id": "522016754905"}, {"closer": "Bruno Marques", "closer_id": "30407649", "dealname": "Thais Carvalho", "course": "DA", "utm_medium": "crm", "utm_content": "brazil_closed-lost_not-at-ma_high-priority_last-180-days_18092026", "priority": "High", "score": 3, "temperatura": "Morno", "payable": "No", "ciclo_dias": 3.2, "resultado": "Meeting/Webinar Attended", "potencial": "C", "hs_object_id": "521945177276"}, {"closer": "Jessica Silva", "closer_id": "78365306", "dealname": "Pedro Paulo Pedrosa Netto", "course": "DA", "utm_medium": "-", "utm_content": "-", "priority": "High", "score": 3, "temperatura": "Morno", "payable": "No", "ciclo_dias": 0.8, "resultado": "Meeting/Webinar Attended", "potencial": "C", "hs_object_id": "522024648953"}, {"closer": "Jessica Silva", "closer_id": "78365306", "dealname": "Giovanna Passarini", "course": "DA", "utm_medium": "-", "utm_content": "-", "priority": "High", "score": 3, "temperatura": "Morno", "payable": "No", "ciclo_dias": 6.5, "resultado": "Meeting/Webinar Attended", "potencial": "C", "hs_object_id": "521587833035"}, {"closer": "Raphael Soares", "closer_id": "35852628", "dealname": "Julia Filtre", "course": "DA", "utm_medium": "smm", "utm_content": "link_in_bio", "priority": "Medium", "score": null, "temperatura": "Morno", "payable": "No", "ciclo_dias": 0.1, "resultado": "Meeting/Webinar Attended", "potencial": "C", "hs_object_id": "522161987810"}, {"closer": "Raphael Soares", "closer_id": "35852628", "dealname": "Victor Santoro", "course": "Desenvolvedor Full Stack", "utm_medium": "smm", "utm_content": "link_in_bio", "priority": "High", "score": 4, "temperatura": "Morno", "payable": "No", "ciclo_dias": 1.2, "resultado": "Meeting/Webinar Attended", "potencial": "C", "hs_object_id": "522033094861"}, {"closer": "Gabriel Morial", "closer_id": "36125077", "dealname": "Julie Barroso", "course": "QA", "utm_medium": "bloggers", "utm_content": "abraceatrip", "priority": "High", "score": 8, "temperatura": "Morno", "payable": "No", "ciclo_dias": 1.9, "resultado": "Meeting/Webinar Attended", "potencial": "C", "hs_object_id": "522041223356"}]}, "elephan_table": [], "alerts": {"leads_neg_30pct": [], "calls_90min_no_close": [], "no_shows_high_priority": [{"dealname": "Beatriz Pereira de sales", "utm_medium": "crm", "priority": "High", "score": 0, "createdate": "9/18/26", "status_atual": "Meeting Not Attended", "hs_object_id": "521949977835"}, {"dealname": "Isabelly Curvelo Ferreira", "utm_medium": "cpc", "priority": "High", "score": 3, "createdate": "9/19/26", "status_atual": "Meeting Not Attended", "hs_object_id": "522019321064"}, {"dealname": "Gabriela Maria Loures Rocha", "utm_medium": "cpc", "priority": "High", "score": 4, "createdate": "9/16/26", "status_atual": "Meeting Not Attended", "hs_object_id": "521751133405"}, {"dealname": "Yago Affonso", "utm_medium": "cpc", "priority": "High", "score": 3, "createdate": "9/18/26", "status_atual": "Meeting Not Attended", "hs_object_id": "521873021171"}, {"dealname": "Rafaela Polidorio Krauzer", "utm_medium": "bloggers", "priority": "High", "score": 3, "createdate": "9/20/26", "status_atual": "Meeting Not Attended", "hs_object_id": "522078910670"}, {"dealname": "Grazielly silva soares", "utm_medium": "partnerships", "priority": "High", "score": 7, "createdate": "9/20/26", "status_atual": "Meeting Not Attended", "hs_object_id": "522134547679"}, {"dealname": "Gilmar Martins", "utm_medium": "cpc", "priority": "High", "score": 3, "createdate": "9/18/26", "status_atual": "Meeting Not Attended", "hs_object_id": "521956790467"}, {"dealname": "Vanilson Lauriano", "utm_medium": "crm", "priority": "High", "score": 2, "createdate": "9/20/26", "status_atual": "Meeting Not Attended", "hs_object_id": "522139990206"}, {"dealname": "Juan Amaral", "utm_medium": "-", "priority": "High", "score": 7, "createdate": "9/20/26", "status_atual": "Meeting Not Attended", "hs_object_id": "522110000364"}, {"dealname": "Mario Riekes", "utm_medium": "cpc", "priority": "High", "score": 5, "createdate": "9/18/26", "status_atual": "Meeting Not Attended", "hs_object_id": "521993922786"}, {"dealname": "rodrigo ferreira", "utm_medium": "bloggers", "priority": "High", "score": 2, "createdate": "9/21/26", "status_atual": "Meeting Not Attended", "hs_object_id": "522167521499"}, {"dealname": "Carlos Eduardo Azevedo Barbosa", "utm_medium": "cpc", "priority": "High", "score": 6, "createdate": "9/16/26", "status_atual": "Meeting Not Attended", "hs_object_id": "521795340475"}, {"dealname": "Valentina marin", "utm_medium": "cpc", "priority": "High", "score": 4, "createdate": "9/18/26", "status_atual": "Meeting Not Attended", "hs_object_id": "521975310577"}, {"dealname": "Gabriel Caparelli", "utm_medium": "cpc", "priority": "High", "score": 2, "createdate": "9/20/26", "status_atual": "Meeting Not Attended", "hs_object_id": "522042456281"}, {"dealname": "Wesley Pereira Braga", "utm_medium": "cpc", "priority": "High", "score": 4, "createdate": "9/16/26", "status_atual": "Meeting Not Attended", "hs_object_id": "521658940635"}, {"dealname": "Dayane Chumansk", "utm_medium": "-", "priority": "High", "score": 2, "createdate": "9/21/26", "status_atual": "Meeting Not Attended", "hs_object_id": "522185130198"}, {"dealname": "Joel Moraes", "utm_medium": "partnerships", "priority": "High", "score": 4, "createdate": "9/19/26", "status_atual": "Meeting Not Attended", "hs_object_id": "522089423096"}]}, "training_recommendations": ["Reconectar o conector Elephan (reautenticação expirada) para restaurar análise de sentimento, energia do closer, resistência do lead e duração de chamadas nas próximas execuções.", "17 no-show(s) de prioridade Alta em 21/09 merecem retorno imediato via WhatsApp/telefone antes que o lead esfrie."]}};
-const STAGE_BADGE = (s)=>{
-  if(!s) return '<span class="badge b-open">N/D</span>';
-  if(s.includes('Payment')) return '<span class="badge b-win">Venda</span>';
-  if(s.includes('Lost')) return '<span class="badge b-lost">Perdido</span>';
-  if(s.includes('Not Attended')) return '<span class="badge b-lost">No-show</span>';
-  return '<span class="badge b-open">'+s+'</span>';
-};
-const TEMP_BADGE = (t)=>{
-  const cls = t==='Quente'?'b-quente':(t==='Frio'?'b-frio':'b-morno');
-  return '<span class="badge '+cls+'">'+(t||'N/D')+'</span>';
-};
-const PRIO_BADGE = (p)=>{
-  const cls = p==='High'?'b-high':(p==='Low'?'b-low':'b-medium');
-  return '<span class="badge '+cls+'">'+(p||'N/D')+'</span>';
-};
-const POT_BADGE = (p)=>{
-  const cls = p==='A'?'b-a':(p==='B'?'b-b':'b-c');
-  return '<span class="badge '+cls+'">'+p+'</span>';
-};
-function esc(s){ if(s===null||s===undefined) return '-'; return String(s).replace(/[&<>"]/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+const MBA_COURSES  = ['MBA DS','MBA DA','MBA AI'];
+const BOOT_COURSES = ['DS','DA','QA','WD'];
 
-function uniqueVals(arr, key){ return Array.from(new Set(arr.map(x=>x[key]).filter(v=>v!==undefined && v!==null && v!=='' ))).sort(); }
-
-function buildFilterableTable(containerId, rows, cols, filterKeys){
-  const container = document.getElementById(containerId);
-  const filterBar = document.createElement('div');
-  filterBar.className='filters';
-  const state = {};
-  filterKeys.forEach(fk=>{
-    const sel = document.createElement('select');
-    sel.innerHTML = '<option value="">'+fk.label+' (todos)</option>' + uniqueVals(rows, fk.key).map(v=>'<option value="'+esc(v)+'">'+esc(v)+'</option>').join('');
-    sel.addEventListener('change', ()=>{ state[fk.key]=sel.value; render(); });
-    filterBar.appendChild(sel);
-  });
-  container.appendChild(filterBar);
-  const scrollWrap = document.createElement('div');
-  scrollWrap.className='table-scroll';
-  const table = document.createElement('table');
-  scrollWrap.appendChild(table);
-  container.appendChild(scrollWrap);
-
-  function render(){
-    let filtered = rows;
-    Object.keys(state).forEach(k=>{ if(state[k]) filtered = filtered.filter(r=> String(r[k])===state[k]); });
-    let html = '<thead><tr>'+cols.map(c=>'<th>'+c.label+'</th>').join('')+'</tr></thead><tbody>';
-    if(filtered.length===0){
-      html += '<tr><td colspan="'+cols.length+'" style="text-align:center;color:#8896a6;padding:16px;">Nenhum registro</td></tr>';
-    } else {
-      filtered.forEach(r=>{
-        html += '<tr>'+cols.map(c=> '<td>'+(c.render? c.render(r) : esc(r[c.key]))+'</td>').join('')+'</tr>';
-      });
-    }
-    html += '</tbody>';
-    table.innerHTML = html;
-  }
-  render();
+const OWNER_MAP = {
+  '30578453':'Lucas Bonow','30407650':'Yanara Silva','30407649':'Yanara Silva',
+  '35667650':'Erick Paiva','35852628':'Raphael Soares Luna','36125077':'Gabriel Morial',
+  '78365306':'Jessica Silva','1201941990':'Thiago Albuquerque','1201941994':'Bruna Oliveira',
+  '837235423':'Fernanda Costa','30062057':'Eduardo Campos','31947044':'Marcos Vinicius',
+  '1172844758':'Ana Luiza','1555150810':'Felipe Dias'
+};
+function closerName(id){ return OWNER_MAP[id]||('Closer #'+id); }
+function prioBadge(p){ return `<span class="badge badge-${p}">${p.toUpperCase()}</span>`; }
+function tempBadge(t){ return `<span class="badge badge-${t}">${t}</span>`; }
+function courseBadge(c){
+  const t=MBA_COURSES.includes(c)?'mba':'boot';
+  return `<span class="badge badge-${t}">${c}</span>`;
+}
+function scoreChip(s){
+  const cls=s>0?'score-pos':s<0?'score-neg':'score-neu';
+  return `<span class="score-chip ${cls}">${s>=0?'+':''}${s}</span>`;
 }
 
-function renderMarketing(){
-  const el = document.getElementById('tab-marketing');
-  const k = DATA.marketing.kpis;
-  el.innerHTML = `
-    <div class="kpi-row">
-      <div class="kpi"><div class="v">${k.total_criados}</div><div class="l">Leads criados</div></div>
-      <div class="kpi"><div class="v">${k.atendidos_mesmo_dia} (${k.atendidos_mesmo_dia_pct}%)</div><div class="l">Atendidos mesmo dia</div></div>
-      <div class="kpi"><div class="v">${k.meeting_scheduled}</div><div class="l">Meeting Scheduled</div></div>
-      <div class="kpi"><div class="v">${k.no_shows}</div><div class="l">No-shows</div></div>
-      <div class="kpi"><div class="v">${k.vendas}</div><div class="l">Vendas (atendidos ontem)</div></div>
-      <div class="kpi"><div class="v">${k.ciclo_medio_dias}d</div><div class="l">Ciclo médio (criação → atendimento)</div></div>
-    </div>
+// KPIs reais por curso — fonte: HubSpot + dados informados (21/09/2026)
+const COURSE_KPIS = {
+  all:      {created:'222', attended:26, noshows:23, scheduled:83,  payments:1},
+  bootcamp: {created:'189', attended:18, noshows:21, scheduled:71,  payments:0},
+  mba:      {created:'33',  attended:8,  noshows:2,  scheduled:12,  payments:1}
+};
 
-    <section class="card">
-      <h2>Funil de leads criados (por estágio)</h2>
-      <div class="funnel" id="funnel-viz"></div>
-    </section>
+// Funil dos leads criados em 21/09
+const LEADS_FUNNEL = [
+  {stage:'TAKEN TO WORK',          cnt:97,  color:'#6366f1'},
+  {stage:'CLOSED-LOST',            cnt:38,  color:'#ef4444'},
+  {stage:'CALL BOOKED',            cnt:28,  color:'#0d9488'},
+  {stage:'RESPONSIBLE APPOINTED',  cnt:26,  color:'#0284c7'},
+  {stage:'CONTACT ESTABLISHED',    cnt:23,  color:'#7c3aed'},
+  {stage:'MEETING SCHEDULED',      cnt:17,  color:'#16a34a'},
+  {stage:'MEETING ATTENDED',       cnt:6,   color:'#15803d'},
+  {stage:'NO-SHOW',                cnt:5,   color:'#dc2626'}
+];
 
-    <div class="grid-2">
-      <section class="card">
-        <h2>Leads atendidos no mesmo dia (${DATA.marketing.same_day_table.length})</h2>
-        <div id="same-day-table"></div>
-      </section>
-      <section class="card">
-        <h2>Leads com Meeting Scheduled (${DATA.marketing.meeting_scheduled_table.length})</h2>
-        <div id="ms-table"></div>
-      </section>
-    </div>
+const LEADS_BY_COURSE = [
+  {label:'DS (Bootcamp)',cnt:200,pct:83},
+  {label:'MBA DS',      cnt:34, pct:14},
+  {label:'WD (Bootcamp)',cnt:2, pct:1},
+  {label:'DA (Bootcamp)',cnt:2, pct:1},
+  {label:'MBA DA',      cnt:1, pct:0},
+  {label:'MBA AI',      cnt:1, pct:0}
+];
 
-    <section class="card">
-      <h2>No-shows (${DATA.marketing.no_shows_table.length})</h2>
-      <div id="noshow-table"></div>
-    </section>
+const DATA = {
+  attended: [
+    {id:'522214046922',name:'Thayná Gonçalves',          course:'DS',    priority:'medium',score:3, temp:'B',owner:'36125077',medium:'cpc',     content:'integration',stage:'MEETING ATTENDED'},
+    {id:'522098464991',name:'Valéria',                   course:'QA',    priority:'high',  score:5, temp:'A',owner:'78365306',medium:'smm',     content:'integration',stage:'MEETING ATTENDED'},
+    {id:'516368382152',name:'Alessandro',                course:'MBA DS',priority:'high',  score:6, temp:'A',owner:'36125077',medium:'cpc',     content:'integration',stage:'MEETING ATTENDED'},
+    {id:'505053806824',name:'Alcione Cabral Pinheiro Junior',course:'MBA AI',priority:'high',score:5,temp:'A',owner:'1201941990',medium:'cpc',content:'integration',stage:'MEETING ATTENDED'},
+    {id:'521998663886',name:'Lucas wahlbrink',           course:'DA',    priority:'high',  score:5, temp:'A',owner:'78365306',medium:'smm',     content:'integration',stage:'MEETING ATTENDED'},
+    {id:'521363401933',name:'Marcos Roberto Alves',      course:'QA',    priority:'medium',score:3, temp:'B',owner:'36125077',medium:'bloggers',content:'integration',stage:'MEETING ATTENDED'},
+    {id:'520686301375',name:'DAVID RAMOS DE BARROS NETO',course:'MBA DA',priority:'medium',score:2,temp:'B', owner:'837235423',medium:'cpc',   content:'integration',stage:'MEETING ATTENDED'},
+    {id:'521488553208',name:'Clayton',                   course:'MBA AI',priority:'medium',score:3, temp:'B',owner:'837235423',medium:'cpc',   content:'integration',stage:'MEETING ATTENDED'},
+    {id:'521484603625',name:'Karina Cavalcante',         course:'DA',    priority:'high',  score:5, temp:'A',owner:'837235423',medium:'cpc',   content:'integration',stage:'MEETING ATTENDED'},
+    {id:'522107280591',name:'Welton',                    course:'WD',    priority:'high',  score:5, temp:'A',owner:'35852628',medium:'cpc',    content:'integration',stage:'MEETING ATTENDED'},
+    {id:'521461456110',name:'Victor Bartoli',            course:'QA',    priority:'high',  score:5, temp:'A',owner:'30407649',medium:'cpc',    content:'integration',stage:'MEETING ATTENDED'},
+    {id:'522130725072',name:'Lara Dhessik Soares',       course:'WD',    priority:'high',  score:5, temp:'A',owner:'1201941994',medium:'cpc', content:'integration',stage:'MEETING ATTENDED'},
+    {id:'521610062044',name:'Luiz Fernando Drewniak',    course:'WD',    priority:'high',  score:5, temp:'A',owner:'30578453',medium:'cpc',   content:'integration',stage:'MEETING ATTENDED'},
+    {id:'290680946882',name:'Amanda Coelho',             course:'DS',    priority:'medium',score:3, temp:'B',owner:'36125077',medium:'cpc',    content:'integration',stage:'MEETING ATTENDED'},
+    {id:'517703784662',name:'Isaac diwan',               course:'MBA AI',priority:'high',  score:6, temp:'A',owner:'1201941990',medium:'cpc',content:'integration',stage:'MEETING ATTENDED'},
+    {id:'517503176934',name:'Elisabet Melgaço',          course:'DS',    priority:'high',  score:5, temp:'A',owner:'1201941990',medium:'cpc',content:'integration',stage:'MEETING ATTENDED'},
+    {id:'513246181620',name:'Beatricce bruno',           course:'WD',    priority:'medium',score:3, temp:'B',owner:'1201941990',medium:'cpc',content:'integration',stage:'MEETING ATTENDED'},
+    {id:'519529883848',name:'Cassia Ribeiro',            course:'DA',    priority:'medium',score:3, temp:'B',owner:'36125077',medium:'crm',   content:'crm-database',stage:'MEETING ATTENDED'},
+    {id:'516735462611',name:'Tiago Ramalho',             course:'DS',    priority:'high',  score:6, temp:'A',owner:'1201941994',medium:'cpc',content:'integration',stage:'MEETING ATTENDED'},
+    {id:'519318267121',name:'Fábio de Toledo Pierri',    course:'MBA AI',priority:'high',  score:5, temp:'A',owner:'1201941990',medium:'cpc',content:'integration',stage:'MEETING ATTENDED'},
+    {id:'518818275576',name:'Matheus Carneiro',          course:'MBA AI',priority:'medium',score:3, temp:'B',owner:'1201941990',medium:'cpc',content:'integration',stage:'MEETING ATTENDED'},
+    {id:'520979618014',name:'Ingrid Dias',               course:'QA',    priority:'high',  score:5, temp:'A',owner:'35667650',medium:'cpc',   content:'integration',stage:'MEETING ATTENDED'},
+    {id:'518239061181',name:'Hércules Henrique',         course:'DA',    priority:'medium',score:3, temp:'B',owner:'1201941990',medium:'smm', content:'integration',stage:'MEETING ATTENDED'},
+    {id:'518185357539',name:'Felipe',                    course:'MBA DS',priority:'high',  score:6, temp:'A',owner:'1201941990',medium:'cpc',content:'integration',stage:'MEETING ATTENDED'},
+    {id:'517466969319',name:'EDSON VICTOR MAGALHÃES JR', course:'DA',    priority:'low',   score:1, temp:'C',owner:'30407649',medium:'cpc',   content:'integration',stage:'MEETING ATTENDED'},
+    {id:'521756426474',name:'Maria mel soares da silva', course:'DS',    priority:'medium',score:3, temp:'B',owner:'35667650',medium:'cpc',   content:'integration',stage:'MEETING ATTENDED'},
+    {id:'517310802128',name:'Renan Pupo',                course:'DS',    priority:'high',  score:5, temp:'A',owner:'1201941994',medium:'cpc',content:'integration',stage:'MEETING ATTENDED'}
+  ],
+  noshows: [
+    {name:'João Marcos lemes gomes',    course:'DS',    priority:'high',  score:4,medium:'cpc',     content:'integration',stage:'NO-SHOW'},
+    {name:'Júlia silva',                course:'DS',    priority:'high',  score:4,medium:'cpc',     content:'integration',stage:'NO-SHOW'},
+    {name:'Alexsandro de Almeida Ross', course:'DS',    priority:'high',  score:4,medium:'cpc',     content:'integration',stage:'NO-SHOW'},
+    {name:'Grazielly silva soares',     course:'DS',    priority:'high',  score:4,medium:'cpc',     content:'integration',stage:'NO-SHOW'},
+    {name:'Pedro Paulo Pedrosa Netto',  course:'DS',    priority:'medium',score:2,medium:'cpc',     content:'integration',stage:'NO-SHOW'},
+    {name:'Pablo César',                course:'DS',    priority:'medium',score:2,medium:'smm',     content:'link_in_bio',stage:'NO-SHOW'},
+    {name:'Gustavo Ribas',              course:'DS',    priority:'high',  score:5,medium:'cpc',     content:'integration',stage:'NO-SHOW'},
+    {name:'Romário teixeira santana',   course:'MBA DS',priority:'medium',score:2,medium:'bloggers',content:'thenews',    stage:'NO-SHOW'},
+    {name:'Vera Vasconcelos',           course:'DS',    priority:'high',  score:4,medium:'cpc',     content:'integration',stage:'NO-SHOW'},
+    {name:'Dayane Chumansk',            course:'DS',    priority:'high',  score:4,medium:'cpc',     content:'integration',stage:'NO-SHOW'}
+  ]
+};
 
-    <section class="card">
-      <h2>Todas as reuniões atendidas (${DATA.marketing.all_meetings_table.length})</h2>
-      <div id="all-meetings-table"></div>
-    </section>
+// ── FILTRO ────────────────────────────────────────────────────────────────────
+let courseFilter = 'all';
+function matchCourse(c){
+  if(courseFilter==='mba')      return MBA_COURSES.includes(c);
+  if(courseFilter==='bootcamp') return BOOT_COURSES.includes(c);
+  return true;
+}
+function filterLabel(){
+  if(courseFilter==='mba')      return ' — MBA';
+  if(courseFilter==='bootcamp') return ' — Bootcamp';
+  return '';
+}
+function setCourseFilter(f){
+  courseFilter=f;
+  ['all','boot','mba'].forEach(k=>document.getElementById('cf-'+k).classList.remove('active'));
+  document.getElementById('cf-'+f).classList.add('active');
+  renderAll();
+}
+function filteredAttended(){ return DATA.attended.filter(a=>matchCourse(a.course)); }
+function filteredNoshows(){  return DATA.noshows.filter(n=>matchCourse(n.course)); }
 
-    <div class="grid-2">
-      <section class="card">
-        <h2>Breakdown UTM Medium</h2>
-        <div class="chip-row" id="utm-medium-chips"></div>
-      </section>
-      <section class="card">
-        <h2>Top UTM Content / Criativos</h2>
-        <div class="chip-row" id="utm-content-chips"></div>
-      </section>
-    </div>
+// ── TAB ───────────────────────────────────────────────────────────────────────
+function showTab(t,el){
+  document.querySelectorAll('.pane').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));
+  document.getElementById('pane-'+t).classList.add('active');
+  el.classList.add('active');
+}
 
-    <section class="card">
-      <h2>Distribuição de ciclo (criação → atendimento)</h2>
-      <div class="cycle-row" id="cycle-boxes"></div>
-    </section>
-  `;
+// ── KPIs ──────────────────────────────────────────────────────────────────────
+function renderKPIs(){
+  const att  = filteredAttended();
+  const nos  = filteredNoshows();
+  const ck   = COURSE_KPIS[courseFilter]||COURSE_KPIS.all;
+  const vendas = att.filter(a=>a.stage.includes('PAYMENT'));
+  const aberto = att.filter(a=>!a.stage.includes('PAYMENT')&&!a.stage.includes('LOST'));
+  const showRate = (ck.attended+ck.noshows)>0 ? Math.round(ck.attended/(ck.attended+ck.noshows)*100):0;
 
-  // Funnel
-  const funnelEl = document.getElementById('funnel-viz');
-  const maxCount = Math.max(...DATA.marketing.funnel.map(f=>f.count), 1);
-  funnelEl.innerHTML = DATA.marketing.funnel.map(f=>{
-    const pct = Math.max(6, Math.round(f.count/maxCount*100));
-    return `<div class="funnel-row"><div class="funnel-label">${esc(f.stage)}</div><div class="funnel-bar-wrap"><div class="funnel-bar" style="width:${pct}%">${f.count}</div></div></div>`;
+  document.getElementById('kpi-mkt').innerHTML = `
+    <div class="kpi teal"><div class="val">${ck.created}</div><div class="lbl">Leads criados${filterLabel()}</div></div>
+    <div class="kpi green"><div class="val">${ck.attended}</div><div class="lbl">Reuniões atendidas</div></div>
+    <div class="kpi red"><div class="val">${ck.noshows}</div><div class="lbl">No-shows</div></div>
+    <div class="kpi"><div class="val">${ck.scheduled}</div><div class="lbl">Agendadas (pipeline)</div></div>
+    <div class="kpi green"><div class="val">${ck.payments}</div><div class="lbl">Pagamentos</div></div>
+    <div class="kpi blue"><div class="val">${showRate}%</div><div class="lbl">Taxa de show</div></div>`;
+
+  const potA = aberto.filter(a=>a.temp==='A').length;
+  const potB = aberto.filter(a=>a.temp==='B').length;
+  document.getElementById('kpi-sales').innerHTML = `
+    <div class="kpi green"><div class="val">${ck.payments}</div><div class="lbl">Pagamentos (pipeline)</div></div>
+    <div class="kpi red"><div class="val">${courseFilter==='all'?113:courseFilter==='bootcamp'?'~96':'~17'}</div><div class="lbl">Closed-Lost (pipeline)</div></div>
+    <div class="kpi purple"><div class="val">${aberto.length}</div><div class="lbl">Em aberto (amostra)</div></div>
+    <div class="kpi"><div class="val">${potA}</div><div class="lbl">Potencial A (amostra)</div></div>
+    <div class="kpi"><div class="val">${potB}</div><div class="lbl">Potencial B (amostra)</div></div>
+    <div class="kpi blue"><div class="val">${showRate}%</div><div class="lbl">Taxa de show</div></div>`;
+}
+
+// ── FUNNEL + DISTRIBUICAO ─────────────────────────────────────────────────────
+function renderCharts(){
+  const maxF = Math.max(...LEADS_FUNNEL.map(f=>f.cnt));
+  document.getElementById('funnel').innerHTML = (courseFilter!=='all')
+    ? '<div style="padding:20px;color:#9ca3af;font-size:12px">Funil disponível apenas em visão "Todos" — os leads criados em 21/09 não têm segmentação por curso no funil.</div>'
+    : LEADS_FUNNEL.map(f=>`
+        <div class="funnel-bar">
+          <div class="lbl">${f.stage}</div>
+          <div class="bar" style="width:${Math.round(f.cnt/maxF*180)}px;background:${f.color}"></div>
+          <div class="cnt">${f.cnt}</div>
+        </div>`).join('');
+
+  const maxC = Math.max(...LEADS_BY_COURSE.map(c=>c.cnt));
+  document.getElementById('course-dist').innerHTML = LEADS_BY_COURSE.map(c=>`
+    <div class="funnel-bar">
+      <div class="lbl">${c.label}</div>
+      <div class="bar" style="width:${Math.round(c.cnt/maxC*180)}px;background:${c.label.startsWith('MBA')?'#7c3aed':'#6366f1'}"></div>
+      <div class="cnt">${c.cnt} (${c.pct}%)</div>
+    </div>`).join('');
+}
+
+// ── POPULATE SELECT ────────────────────────────────────────────────────────────
+function populate(id,vals){
+  const sel=document.getElementById(id);
+  if(!sel)return;
+  const cur=sel.value,opts=[...new Set(vals.filter(Boolean))].sort();
+  sel.innerHTML='<option value="">Todos</option>'+opts.map(v=>`<option value="${v}">${v}</option>`).join('');
+  if(cur&&opts.includes(cur))sel.value=cur;
+}
+
+// ── ATTENDED TABLE ────────────────────────────────────────────────────────────
+function renderAttended(){
+  const att=filteredAttended();
+  populate('f-medium',  DATA.attended.map(a=>a.medium));
+  populate('f-priority',DATA.attended.map(a=>a.priority));
+  populate('f-temp',    DATA.attended.map(a=>a.temp));
+  const fm=document.getElementById('f-medium')?.value||'';
+  const fp=document.getElementById('f-priority')?.value||'';
+  const ft=document.getElementById('f-temp')?.value||'';
+  const fil=att.filter(a=>(!fm||a.medium===fm)&&(!fp||a.priority===fp)&&(!ft||a.temp===ft));
+  document.getElementById('tbody-attended').innerHTML=fil.length
+    ?fil.map(a=>`<tr>
+        <td><b>${a.name}</b></td>
+        <td>${courseBadge(a.course)}</td>
+        <td>${tempBadge(a.temp)}</td>
+        <td>${prioBadge(a.priority)}</td>
+        <td>${scoreChip(a.score)}</td>
+        <td>${closerName(a.owner)}</td>
+        <td><small>${a.stage==='MEETING ATTENDED'?'🟡 Em aberto':a.stage.includes('PAYMENT')?'✅ Venda':'❌ Lost'}</small></td>
+      </tr>`).join('')
+    :'<tr><td colspan="7" style="text-align:center;color:#9ca3af">Nenhum resultado</td></tr>';
+}
+
+// ── NOSHOWS TABLE ─────────────────────────────────────────────────────────────
+function renderNoshows(){
+  const nos=filteredNoshows();
+  const acao=(p,s)=>p==='high'&&s>=4?'📞 Contato urgente hoje':p==='medium'?'📧 Reagendamento WhatsApp':'📋 Verificar interesse';
+  document.getElementById('tbody-noshows').innerHTML=nos.length
+    ?nos.map(n=>`<tr>
+        <td><b>${n.name}</b></td>
+        <td>${courseBadge(n.course)}</td>
+        <td>${prioBadge(n.priority)}</td>
+        <td>${scoreChip(n.score)}</td>
+        <td><small>${acao(n.priority,n.score)}</small></td>
+      </tr>`).join('')
+    :'<tr><td colspan="5" style="text-align:center;color:#9ca3af">Nenhum no-show para este filtro</td></tr>';
+}
+
+// ── CLOSERS ───────────────────────────────────────────────────────────────────
+function renderClosers(){
+  const att=filteredAttended();
+  const map={};
+  att.forEach(a=>{
+    const n=closerName(a.owner);
+    if(!map[n])map[n]={r:0,v:0,l:0,ab:0};
+    map[n].r++;
+    if(a.stage.includes('PAYMENT'))map[n].v++;
+    else if(a.stage.includes('LOST'))map[n].l++;
+    else map[n].ab++;
+  });
+  const sorted=Object.entries(map).sort((a,b)=>b[1].r-a[1].r);
+  document.getElementById('closers-section').innerHTML=sorted.length
+    ?sorted.map(([name,s])=>`
+        <div class="closer-card">
+          <div class="closer-header"><span class="closer-name">${name}</span><span style="font-size:11px;color:#9ca3af">${s.r} reuniões (amostra)</span></div>
+          <div class="closer-stats">
+            <div>Vendas <span>${s.v}</span></div>
+            <div>Aberto <span>${s.ab}</span></div>
+            <div>Lost <span>${s.l}</span></div>
+          </div>
+        </div>`).join('')
+    :'<div class="empty-state">Sem dados</div>';
+}
+
+// ── RANKING ───────────────────────────────────────────────────────────────────
+function renderRanking(){
+  const att=filteredAttended();
+  const ab=att.filter(a=>!a.stage.includes('PAYMENT')&&!a.stage.includes('LOST'));
+  ab.sort((a,b)=>(a.temp<b.temp?-1:a.temp>b.temp?1:0)||(b.score-a.score));
+  const ac={A:'📞 Contato imediato',B:'📧 Proposta + follow-up 24h',C:'📋 Qualificar'};
+  document.getElementById('tbody-ranking').innerHTML=ab.length
+    ?ab.map((a,i)=>`<tr>
+        <td>${i<3?['🥇','🥈','🥉'][i]:i+1+'.'}</td>
+        <td><b>${a.name}</b></td>
+        <td>${tempBadge(a.temp)}</td>
+        <td>${courseBadge(a.course)}</td>
+        <td>${scoreChip(a.score)}</td>
+        <td><small>${ac[a.temp]||''}</small></td>
+      </tr>`).join('')
+    :'<tr><td colspan="6" style="text-align:center;color:#9ca3af">Nenhuma oportunidade em aberto</td></tr>';
+}
+
+// ── ALERTAS ───────────────────────────────────────────────────────────────────
+function renderAlertas(){
+  const nos=filteredNoshows();
+  const ck=COURSE_KPIS[courseFilter]||COURSE_KPIS.all;
+  const showRate=Math.round(ck.attended/(ck.attended+ck.noshows)*100);
+  const alerts=[];
+  const urgentes=nos.filter(n=>n.priority==='high'&&n.score>=4);
+  if(urgentes.length) alerts.push({t:'danger',m:`❌ ${urgentes.length} no-show(s) urgentes precisam de contato hoje: ${urgentes.map(n=>n.name).slice(0,4).join(', ')}${urgentes.length>4?'...':''}`});
+  if(showRate<60) alerts.push({t:'warn',m:`⚠️ Taxa de show em ${showRate}% — abaixo do ideal. Revisar processo de confirmação de reuniões.`});
+  if(ck.payments===0&&courseFilter==='bootcamp') alerts.push({t:'warn',m:'⚠️ Nenhum pagamento Bootcamp em 21/09. Foco em follow-up dos atendidos de hoje.'});
+  if(courseFilter==='mba'||courseFilter==='all') alerts.push({t:'info',m:'ℹ️ 1 pagamento MBA confirmado na pipeline (lead de dias anteriores). Pressionar pipeline MBA em aberto.'});
+  // Elephan conectado — sem alerta
+  document.getElementById('alertas-section').innerHTML=alerts
+    .map(a=>`<div class="alert-item alert-${a.t}">${a.m}</div>`).join('');
+}
+
+// ── RECOMENDAÇÕES ─────────────────────────────────────────────────────────────
+function renderRecs(){
+  const ck=COURSE_KPIS[courseFilter]||COURSE_KPIS.all;
+  const showRate=Math.round(ck.attended/(ck.attended+ck.noshows)*100);
+  const recs=[
+    {i:'📞',t:'Recuperação de No-Shows',b:`${ck.noshows} no-shows em 21/09. Contactar os de alta prioridade hoje com urgência, oferecer novo horário.`},
+    {i:'🎯',t:'Pipeline Agendada',b:`${ck.scheduled} reuniões agendadas no pipeline. Enviar confirmação para minimizar no-shows nos próximos dias.`},
+    {i:'📈',t:'Volume de Leads',b:`${ck.created} leads criados em 21/09 com ${showRate}% de taxa de show. Acompanhar conversão nos próximos 3–5 dias.`},
+    {i:'🐘',t:'Qualidade de Reunião',b:'Score médio Elephan: 7.9/10. Objeção mais frequente foi valor alto — prepare argumentação de ROI para os follow-ups desta semana.'},
+    {i:'🏆',t:'MBA: Pagamento Confirmado',b:'Identifique o closer responsável pelo fechamento MBA e replique a abordagem nos 8 leads MBA que atenderam hoje.'}
+  ];
+  document.getElementById('recs-section').innerHTML=recs
+    .map(r=>`<div class="alert-item alert-info"><strong>${r.i} ${r.t}:</strong> ${r.b}</div>`).join('');
+}
+
+// ── ELEPHAN DATA ──────────────────────────────────────────────────────────────
+const ELEPHAN = [
+  {id:'6ab1a2d0711345b79e5cb9be',title:'LB : C - Consultoria',seller:'Raphael Soares Luna',deal_id:'522161987810',duration:40.3,sentiment:'POSITIVE',pos_pct:53,neg_pct:2,avg_score:6.5,summary:'Rapport inicial acolhedor. Lead de Massachusetts interesse em análise de dados. Objeção: não gosta de tecnologia, está explorando.',objections:['Não gosta de tecnologia e gostaria de evitar essa área','Cursos do Google como alternativa mais barata']},
+  {id:'6ab19a417692997ae9367731',title:'Van: C | Consultoria de Carreira',seller:'Gabriel Morial',deal_id:'522139697383',duration:1.0,sentiment:'NEUTRAL',pos_pct:20,neg_pct:5,avg_score:null,summary:'Gravação muito curta — sem conteúdo suficiente para análise.',objections:[]},
+  {id:'6ab19b3e7692997ae936779f',title:'Reag LB: C - Consultoria',seller:'Raphael Soares Luna',deal_id:'522215892189',duration:40.3,sentiment:'POSITIVE',pos_pct:55,neg_pct:3,avg_score:8.2,summary:'Reagendamento bem conduzido. Rapport eficiente, abordagem calorosa. Lead Justino com potencial de fechamento.',objections:['Valor do curso considerado alto','Necessidade de análise financeira antes de decidir']},
+  {id:'6ab1a21c7692997ae9367bbd',title:'Apresentação Tripleten — Formação Cientista de Dados',seller:'Gabriel Morial',deal_id:'522214046922',duration:36.0,sentiment:'NEUTRAL',pos_pct:45,neg_pct:8,avg_score:8.2,summary:'Quebra-gelo eficiente. Apresentação clara da trilha DS. Cliente interessada mas com dúvidas financeiras.',objections:['Valor do investimento considerado alto']},
+  {id:'6ab18f6c7692997ae9367265',title:'Isa: - Consultoria de carreira',seller:'Raphael Soares Luna',deal_id:'302446138579',duration:36.5,sentiment:'POSITIVE',pos_pct:58,neg_pct:4,avg_score:7.4,summary:'Consultoria com Isabella. Interesse genuíno em transição de carreira para dados. Bom rapport.',objections:['Ainda em processo de mestrado antes de iniciar outro curso']},
+  {id:'6ab19f5d7692997ae9367987',title:'Tay:C/Ligação de vídeo com o consultor',seller:'Jessica Silva',deal_id:'521587833035',duration:46.6,sentiment:'POSITIVE',pos_pct:62,neg_pct:3,avg_score:9.0,summary:'Reunião de alta qualidade. Lead Tay com excelente engajamento. Score máximo em abertura. Fechamento com direcionamento claro.',objections:[]},
+  {id:'6ab195147692997ae9367538',title:'Isa;C- Ligação de vídeo com o consultor',seller:'Raphael Soares Luna',deal_id:'0',duration:16.2,sentiment:'POSITIVE',pos_pct:50,neg_pct:5,avg_score:6.8,summary:'Reunião mais curta. Isa com dúvidas sobre timing. Necessita de follow-up mais estruturado.',objections:['Dificuldade de dedicar tempo ao curso por conta da rotina']},
+  {id:'6ab1a1b17692997ae9367b89',title:'Isa:C - Consultoria de carreira',seller:'Gabriel Morial',deal_id:'522161736894',duration:57.7,sentiment:'NEUTRAL',pos_pct:42,neg_pct:10,avg_score:7.2,summary:'Consultoria longa e detalhada. Lead Isa explorou bem os cursos. Objeção financeira presente mas não bloqueante.',objections:['Valor alto frente à situação financeira atual','Necessidade de novo computador para estudar']},
+  {id:'6ab19e3a7692997ae936791a',title:'MBA:C-  Consultoria de carreira',seller:'Roberto Branco',deal_id:'522016754905',duration:77.2,sentiment:'POSITIVE',pos_pct:56,neg_pct:5,avg_score:7.1,summary:'Reunião longa MBA. Boa exploração das dores do lead. Conexão da solução com objetivos profissionais.',objections:['Lead considera investimento alto e questiona retorno']},
+  {id:'6ab19e527692997ae9367922',title:'Ligação de vídeo com o consultor',seller:'Raphael Soares Luna',deal_id:'0',duration:40.0,sentiment:'POSITIVE',pos_pct:60,neg_pct:2,avg_score:8.4,summary:'Boa condução. Rapport natural. Lead avançando no processo de decisão.',objections:[]},
+  {id:'6ab19cf07692997ae93678a8',title:'Ligação de vídeo com o consultor',seller:'Roberto Branco',deal_id:'522212732151',duration:33.1,sentiment:'POSITIVE',pos_pct:54,neg_pct:3,avg_score:7.8,summary:'Reunião equilibrada. Lead com interesse em MBA. Próximos passos definidos.',objections:['Dúvidas sobre como a TripleTen auxilia na transição de carreira']},
+  {id:'6ab19e997692997ae936794c',title:'Consultoria de carreira e transição',seller:'Jessica Silva',deal_id:'521600469191',duration:31.1,sentiment:'NEUTRAL',pos_pct:44,neg_pct:6,avg_score:8.0,summary:'Consultoria de transição bem estruturada. Lead reflexivo sobre mudança de área.',objections:['Preocupação com limite no cartão de crédito']},
+  {id:'6ab19a957692997ae93675c1',title:'BC: | Consultoria de Carreira',seller:'Raphael Soares Luna',deal_id:'521954904257',duration:35.1,sentiment:'NEUTRAL',pos_pct:41,neg_pct:7,avg_score:8.0,summary:'Consultoria Arianna. Boa identificação de dores. Necessita maior urgência no fechamento.',objections:['Não ver retorno imediato do investimento']},
+  {id:'6ab1a2ec7692997ae9367c0a',title:'Isa:C - Consultoria de carreira',seller:'Gabriel Morial',deal_id:'522041223356',duration:40.4,sentiment:'POSITIVE',pos_pct:57,neg_pct:3,avg_score:8.1,summary:'Rapport caloroso. Isabella da análise de dados. Boa conexão de objetivos com a solução.',objections:[]},
+  {id:'6ab1a3257692997ae9367c39',title:'Ligação de vídeo com o consultor',seller:'Raphael Soares Luna',deal_id:'522107280591',duration:40.3,sentiment:'POSITIVE',pos_pct:53,neg_pct:2,avg_score:8.0,summary:'Apresentação para Welton (WD). Engajamento positivo. Fechamento com plano de ação definido.',objections:[]},
+  {id:'6ab19e1b7692997ae9367903',title:'Apresentação do curso QA da TripleTen',seller:'Jessica Silva',deal_id:'522098464991',duration:59.0,sentiment:'NEUTRAL',pos_pct:43,neg_pct:7,avg_score:8.2,summary:'Apresentação QA detalhada para Valéria. Boa cobertura do mercado de QA. Objeções trabalhadas.',objections:['Dúvida sobre oportunidades de emprego na área de QA']},
+  {id:'6ab1a3767692997ae9367c72',title:'LB : C - Consultoria',seller:'Raphael Soares Luna',deal_id:'522072501469',duration:37.8,sentiment:'POSITIVE',pos_pct:51,neg_pct:4,avg_score:8.0,summary:'Consultoria Arthur. WD com perfil técnico. Boa identificação de fit com o curso.',objections:[]},
+  {id:'6ab19e6d7692997ae9367932',title:'Transição de carreira para área de dados',seller:'Gabriel Morial',deal_id:'',duration:31.3,sentiment:'NEUTRAL',pos_pct:46,neg_pct:5,avg_score:8.6,summary:'Alta pontuação em condução e progressão estratégica. Lead interessado em transição para dados.',objections:[]},
+  {id:'6ab19fe57692997ae93679c1',title:'Consultoria de carreira — Mudança',seller:'Jessica Silva',deal_id:'521998663886',duration:51.1,sentiment:'NEUTRAL',pos_pct:40,neg_pct:9,avg_score:7.7,summary:'Lead Lucas explorando mudança de área para DA. Consultor identificou dores relevantes.',objections:['Incerteza sobre tempo disponível para estudar']},
+  {id:'6ab19d4d7692997ae93678e3',title:'MBA:C - Consultoria de carreira',seller:'Roberto Branco',deal_id:'520686301375',duration:42.1,sentiment:'NEUTRAL',pos_pct:44,neg_pct:6,avg_score:7.6,summary:'Reunião MBA David Ramos. Bem conduzida, solução conectada aos objetivos profissionais.',objections:['Questiona timing de início do curso']},
+  {id:'6ab1a0b37692997ae9367a88',title:'Ligação de vídeo com o consultor',seller:'Gabriel Morial',deal_id:'522135129307',duration:34.0,sentiment:'NEUTRAL',pos_pct:47,neg_pct:4,avg_score:8.6,summary:'Alta pontuação. Ligação objetiva e bem direcionada. Lead avançando no funil.',objections:[]},
+  {id:'6ab19fc27692997ae93679a1',title:'Consultoria de transição de carreira',seller:'Bruno Marques',deal_id:'521945177276',duration:61.5,sentiment:'POSITIVE',pos_pct:58,neg_pct:3,avg_score:7.9,summary:'Reunião longa e bem conduzida. Giovana com mestrado em andamento. Interesse em carreira de dados.',objections:['Finalizando mestrado antes de iniciar outro processo']},
+  {id:'6ab19a2a7692997ae936756b',title:'TAY:C/Ligação de vídeo com o consultor',seller:'Raphael Soares Luna',deal_id:'522033094861',duration:32.6,sentiment:'POSITIVE',pos_pct:52,neg_pct:5,avg_score:7.3,summary:'Tay retomada. Rapport eficiente. Score médio em urgência — ponto de melhoria.',objections:['Preocupação com carga horária do curso vs trabalho atual']},
+  {id:'6ab1a1387692997ae9367b21',title:'Consultoria de carreira — TripleTen',seller:'Jessica Silva',deal_id:'522087812328',duration:48.9,sentiment:'NEUTRAL',pos_pct:41,neg_pct:8,avg_score:7.9,summary:'Lead com dúvidas sobre certificação e mercado. Consultor respondeu bem mas urgência baixa.',objections:['Dúvida sobre reconhecimento do certificado no mercado']},
+  {id:'6ab1a2887692997ae9367be2',title:'Consultoria de carreira Tripleten — Dados e TI',seller:'Gabriel Morial',deal_id:'',duration:39.8,sentiment:'NEUTRAL',pos_pct:44,neg_pct:6,avg_score:8.3,summary:'Boa condução. Lead de TI em transição para dados. Conexão bem feita entre experiência atual e DS.',objections:[]},
+  {id:'6ab1a4117692997ae9367ccc',title:'Tay:C/Ligação de vídeo com o consultor',seller:'Jessica Silva',deal_id:'522024648953',duration:71.9,sentiment:'POSITIVE',pos_pct:61,neg_pct:4,avg_score:8.5,summary:'Reunião longa e excelente. Lead Tay com alto engajamento. Jessica conduziu com maestria.',objections:[]}
+];
+
+// ── ELEPHAN RENDER ────────────────────────────────────────────────────────────
+function sentimentColor(s){
+  if(s==='POSITIVE') return '#16a34a';
+  if(s==='NEGATIVE') return '#dc2626';
+  if(s==='MIXED')    return '#d97706';
+  return '#6b7280';
+}
+function sentimentEmoji(s){
+  if(s==='POSITIVE') return '😊';
+  if(s==='NEGATIVE') return '😟';
+  if(s==='MIXED')    return '😐';
+  return '😶';
+}
+function filteredElephан(){
+  const all = ELEPHAN.filter(e=>e.duration>2);
+  if(courseFilter==='all') return all;
+  const attIds = new Set(filteredAttended().map(a=>String(a.id)));
+  return all.filter(e=>e.deal_id && e.deal_id!=='0' && attIds.has(String(e.deal_id)));
+}
+
+function renderElephан(){
+  const records = filteredElephан();
+  const pos = records.filter(e=>e.sentiment==='POSITIVE').length;
+  const neu = records.filter(e=>e.sentiment==='NEUTRAL').length;
+  const mix = records.filter(e=>e.sentiment==='MIXED').length;
+  const allScores = records.filter(e=>e.avg_score).map(e=>e.avg_score);
+  const globalAvg = allScores.length ? (allScores.reduce((a,b)=>a+b,0)/allScores.length).toFixed(1) : '—';
+
+  document.getElementById('elephan-kpis').innerHTML = `
+    <div class="kpi"><div class="val" style="color:#16a34a">${pos}</div><div class="lbl">😊 Sentimento Positivo</div></div>
+    <div class="kpi"><div class="val" style="color:#6b7280">${neu}</div><div class="lbl">😶 Sentimento Neutro</div></div>
+    <div class="kpi"><div class="val" style="color:#d97706">${mix}</div><div class="lbl">😐 Sentimento Misto</div></div>
+    <div class="kpi blue"><div class="val">${globalAvg}</div><div class="lbl">Score médio geral</div></div>
+    <div class="kpi teal"><div class="val">${records.length}</div><div class="lbl">Transcrições analisadas</div></div>`;
+
+  // Closer scores from Elephan
+  const cmap = {};
+  records.forEach(e=>{
+    if(!cmap[e.seller]) cmap[e.seller]={scores:[],n:0};
+    cmap[e.seller].n++;
+    if(e.avg_score) cmap[e.seller].scores.push(e.avg_score);
+  });
+  const csorted = Object.entries(cmap).sort((a,b)=>{
+    const avgA=a[1].scores.length?(a[1].scores.reduce((x,y)=>x+y,0)/a[1].scores.length):0;
+    const avgB=b[1].scores.length?(b[1].scores.reduce((x,y)=>x+y,0)/b[1].scores.length):0;
+    return avgB-avgA;
+  });
+  document.getElementById('elephan-closers').innerHTML = csorted.map(([name,d])=>{
+    const avg=d.scores.length?(d.scores.reduce((a,b)=>a+b,0)/d.scores.length).toFixed(1):'—';
+    const color=avg>=8.5?'#16a34a':avg>=7.5?'#d97706':'#dc2626';
+    return `<div style="display:flex;align-items:center;justify-content:space-between;padding:8px 10px;background:#f9fafb;border-radius:8px;margin-bottom:6px">
+      <span style="font-weight:600;font-size:12px">${name}</span>
+      <span style="font-weight:800;font-size:14px;color:${color}">${avg} <span style="font-size:10px;color:#6b7280;font-weight:400">(${d.n} reu.)</span></span>
+    </div>`;
   }).join('');
 
-  buildFilterableTable('same-day-table', DATA.marketing.same_day_table, [
-    {key:'dealname', label:'Lead'},
-    {key:'utm_medium', label:'UTM Medium'},
-    {key:'utm_content', label:'UTM Content'},
-    {key:'score', label:'Score'},
-    {key:'priority', label:'Priority', render:r=>PRIO_BADGE(r.priority)},
-    {key:'temperatura', label:'Temperatura', render:r=>TEMP_BADGE(r.temperatura)},
-    {key:'resultado', label:'Resultado', render:r=>STAGE_BADGE(r.resultado)},
-  ], [{key:'utm_medium', label:'UTM Medium'},{key:'priority', label:'Priority'},{key:'temperatura', label:'Temperatura'}]);
+  // Objections
+  const allObjs = records.flatMap(e=>e.objections);
+  const objCounts = {};
+  allObjs.forEach(o=>{
+    const key = o.slice(0,60);
+    objCounts[key]=(objCounts[key]||0)+1;
+  });
+  const sortedObjs = Object.entries(objCounts).sort((a,b)=>b[1]-a[1]);
+  document.getElementById('elephan-objections').innerHTML = sortedObjs.length
+    ? sortedObjs.map(([o,n])=>`
+        <div class="alert-item alert-warn" style="margin-bottom:6px;font-size:11px">
+          <strong>${n}x</strong> ${o}${o.length===60?'...':''}
+        </div>`).join('')
+    : '<div style="color:#9ca3af;font-size:12px">Nenhuma objeção registrada.</div>';
 
-  buildFilterableTable('ms-table', DATA.marketing.meeting_scheduled_table, [
-    {key:'dealname', label:'Lead'},
-    {key:'utm_medium', label:'UTM Medium'},
-    {key:'utm_source', label:'UTM Source'},
-    {key:'score', label:'Score'},
-    {key:'priority', label:'Priority', render:r=>PRIO_BADGE(r.priority)},
-  ], [{key:'utm_medium', label:'UTM Medium'},{key:'priority', label:'Priority'}]);
-
-  buildFilterableTable('noshow-table', DATA.marketing.no_shows_table, [
-    {key:'dealname', label:'Lead'},
-    {key:'utm_medium', label:'UTM'},
-    {key:'priority', label:'Priority', render:r=>PRIO_BADGE(r.priority)},
-    {key:'score', label:'Score'},
-    {key:'createdate', label:'Data criação'},
-    {key:'status_atual', label:'Status atual', render:r=>STAGE_BADGE(r.status_atual)},
-  ], [{key:'utm_medium', label:'UTM Medium'},{key:'priority', label:'Priority'}]);
-
-  buildFilterableTable('all-meetings-table', DATA.marketing.all_meetings_table, [
-    {key:'closer', label:'Closer'},
-    {key:'dealname', label:'Lead'},
-    {key:'course', label:'Curso'},
-    {key:'utm_medium', label:'UTM Medium'},
-    {key:'utm_content', label:'UTM Content'},
-    {key:'priority', label:'Priority', render:r=>PRIO_BADGE(r.priority)},
-    {key:'score', label:'Score'},
-    {key:'temperatura', label:'Temperatura', render:r=>TEMP_BADGE(r.temperatura)},
-    {key:'payable', label:'Payable'},
-    {key:'ciclo_dias', label:'Ciclo (d)'},
-    {key:'resultado', label:'Resultado', render:r=>STAGE_BADGE(r.resultado)},
-  ], [{key:'closer', label:'Closer'},{key:'utm_medium', label:'UTM Medium'},{key:'priority', label:'Priority'},{key:'temperatura', label:'Temperatura'}]);
-
-  document.getElementById('utm-medium-chips').innerHTML = DATA.marketing.utm_medium_breakdown.map(([k,v])=>`<div class="chip"><span>${esc(k)}</span><b>${v}</b></div>`).join('');
-  document.getElementById('utm-content-chips').innerHTML = DATA.marketing.utm_content_breakdown.map(([k,v])=>`<div class="chip"><span style="max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="${esc(k)}">${esc(k)}</span><b>${v}</b></div>`).join('');
-
-  const cb = DATA.marketing.cycle_buckets;
-  const order = ['Mesmo dia','1-3d','4-7d','8+d','N/D'];
-  document.getElementById('cycle-boxes').innerHTML = order.filter(o=>cb[o]!==undefined).map(o=>`<div class="cycle-box"><div class="n">${cb[o]}</div><div class="t">${o}</div></div>`).join('');
+  // Cards
+  document.getElementById('elephan-cards').innerHTML = records.map(e=>{
+    const scoreBar = e.avg_score
+      ? `<div style="display:flex;align-items:center;gap:6px;margin-top:6px">
+           <div style="font-size:10px;color:#6b7280">Score Elephan</div>
+           <div style="flex:1;height:6px;background:#e5e7eb;border-radius:3px;overflow:hidden">
+             <div style="width:${(e.avg_score/10)*100}%;height:100%;background:${e.avg_score>=8?'#16a34a':e.avg_score>=6?'#d97706':'#dc2626'};border-radius:3px"></div>
+           </div>
+           <div style="font-weight:700;font-size:12px">${e.avg_score}/10</div>
+         </div>` : '';
+    const objHtml = e.objections.length
+      ? `<div style="margin-top:6px">${e.objections.map(o=>`<span style="display:inline-block;background:#fef3c7;color:#92400e;font-size:10px;padding:2px 6px;border-radius:4px;margin-right:4px;margin-bottom:2px">⚠️ ${o.slice(0,80)}${o.length>80?'...':''}</span>`).join('')}</div>` : '';
+    return `<div style="background:#f9fafb;border-radius:10px;padding:12px;margin-bottom:8px;border-left:3px solid ${sentimentColor(e.sentiment)}">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:4px">
+        <div>
+          <span style="font-weight:700;font-size:12px">${e.title}</span>
+          <span style="font-size:11px;color:#6b7280;margin-left:8px">${e.seller}</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:6px;flex-shrink:0">
+          <span style="font-size:11px;color:${sentimentColor(e.sentiment)};font-weight:600">${sentimentEmoji(e.sentiment)} ${e.sentiment}</span>
+          <span style="font-size:10px;color:#9ca3af">${e.duration}min</span>
+        </div>
+      </div>
+      <div style="font-size:11px;color:#6b7280;line-height:1.5">${e.summary}</div>
+      ${scoreBar}${objHtml}
+    </div>`;
+  }).join('') || '<div class="empty-state">Sem transcrições para este filtro.</div>';
 }
 
-function renderVendas(){
-  const el = document.getElementById('tab-vendas');
-  const k = DATA.vendas.kpis;
-  el.innerHTML = `
-    <div class="kpi-row">
-      <div class="kpi"><div class="v">${k.vendas}</div><div class="l">Vendas</div></div>
-      <div class="kpi"><div class="v">${k.em_aberto}</div><div class="l">Em aberto</div></div>
-      <div class="kpi"><div class="v">${k.lost}</div><div class="l">Lost</div></div>
-      <div class="kpi"><div class="v">${k.potenciais_a}</div><div class="l">Potenciais A</div></div>
-      <div class="kpi"><div class="v">${k.energia_media_closers===null?'N/D':k.energia_media_closers+'%'}</div><div class="l">Energia média closers</div></div>
-      <div class="kpi"><div class="v">${k.resistencia_media_leads===null?'N/D':k.resistencia_media_leads+'%'}</div><div class="l">Resistência média leads</div></div>
-    </div>
-
-    <section class="card">
-      <h2>Performance por closer</h2>
-      <div id="closer-perf-table"></div>
-    </section>
-
-    <section class="card">
-      <h2>Ranking de potencial de fechamento (A/B/C)</h2>
-      <div id="potential-ranking"></div>
-    </section>
-
-    <section class="card">
-      <h2>Tabela Elephan — transcrições e sentimento</h2>
-      <div id="elephan-table"></div>
-    </section>
-
-    <section class="card">
-      <h2>Alertas críticos</h2>
-      <div id="alerts-box"></div>
-    </section>
-
-    <section class="card">
-      <h2>Recomendações de treinamento</h2>
-      <ul id="training-list" style="font-size:13px;line-height:1.6;color:var(--text);"></ul>
-    </section>
-  `;
-
-  buildFilterableTable('closer-perf-table', DATA.vendas.closer_performance, [
-    {key:'closer', label:'Closer'},
-    {key:'reunioes', label:'Reuniões'},
-    {key:'vendas', label:'Vendas'},
-    {key:'lost', label:'Lost'},
-    {key:'aberto', label:'Em aberto'},
-    {key:'ciclo_medio', label:'Ciclo médio (d)'},
-  ], []);
-
-  const rankEl = document.getElementById('potential-ranking');
-  const actionFor = (p)=> p==='A' ? 'Follow-up imediato — priorizar contato hoje' : (p==='B' ? 'Nutrir e agendar retorno em 48h' : 'Baixa prioridade — fluxo padrão de nutrição');
-  let rankHtml = '';
-  ['A','B','C'].forEach(p=>{
-    const list = DATA.vendas.potential_ranking[p];
-    rankHtml += `<h3 style="font-size:13.5px;color:var(--navy);margin:14px 0 6px;">${POT_BADGE(p)} Potencial ${p} (${list.length}) — ${actionFor(p)}</h3>`;
-    if(list.length===0){ rankHtml += '<div class="empty-note">Nenhum lead nesta categoria</div>'; }
-    else {
-      rankHtml += '<div class="table-scroll" style="max-height:200px;"><table><thead><tr><th>Lead</th><th>Closer</th><th>Score</th><th>Payable</th><th>Resultado</th></tr></thead><tbody>' +
-        list.map(r=>`<tr><td>${esc(r.dealname)}</td><td>${esc(r.closer)}</td><td>${esc(r.score)}</td><td>${esc(r.payable)}</td><td>${STAGE_BADGE(r.resultado)}</td></tr>`).join('') +
-        '</tbody></table></div>';
-    }
-  });
-  rankEl.innerHTML = rankHtml;
-
-  document.getElementById('elephan-table').innerHTML = DATA.elephan_available ?
-    '<div id="elephan-real-table"></div>' :
-    `<div class="empty-note">⚠️ Sem dados do Elephan nesta execução — o conector expirou e precisa de reautenticação (via claude.ai ou /mcp). Closer, duração, sentimento e resumo das transcrições de ${DATA.target_date_br} não puderam ser coletados automaticamente. Assim que a conexão for restabelecida, esta seção volta a ser preenchida na próxima execução.</div>`;
-
-  const alerts = DATA.vendas.alerts;
-  let alertsHtml = '';
-  if(alerts.no_shows_high_priority.length){
-    alertsHtml += `<h3 style="font-size:13px;color:var(--red);margin:4px 0 8px;">🔴 No-shows de prioridade Alta (${alerts.no_shows_high_priority.length})</h3>`;
-    alertsHtml += '<div class="table-scroll" style="max-height:240px;"><table><thead><tr><th>Lead</th><th>UTM</th><th>Score</th><th>Data criação</th><th>Status atual</th></tr></thead><tbody>' +
-      alerts.no_shows_high_priority.map(n=>`<tr><td>${esc(n.dealname)}</td><td>${esc(n.utm_medium)}</td><td>${esc(n.score)}</td><td>${esc(n.createdate)}</td><td>${STAGE_BADGE(n.status_atual)}</td></tr>`).join('') +
-      '</tbody></table></div>';
-  } else {
-    alertsHtml += '<div class="empty-note">Nenhum no-show de prioridade Alta identificado.</div>';
-  }
-  alertsHtml += `<div class="empty-note" style="margin-top:14px;">⚠️ Alertas de sentimento negativo (&gt;30%) e calls longas sem fechamento (&gt;90min) dependem do Elephan — indisponível nesta execução.</div>`;
-  document.getElementById('alerts-box').innerHTML = alertsHtml;
-
-  document.getElementById('training-list').innerHTML = DATA.vendas.training_recommendations.map(t=>`<li style="margin-bottom:6px;">${esc(t)}</li>`).join('');
+// ── MAIN ──────────────────────────────────────────────────────────────────────
+function renderAll(){
+  renderKPIs();renderCharts();renderAttended();renderNoshows();
+  renderClosers();renderRanking();renderElephан();renderAlertas();renderRecs();
 }
-
-document.querySelectorAll('.tab-btn').forEach(btn=>{
-  btn.addEventListener('click', ()=>{
-    document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
-    document.querySelectorAll('.tabpanel').forEach(p=>p.classList.remove('active'));
-    btn.classList.add('active');
-    document.getElementById('tab-'+btn.dataset.tab).classList.add('active');
-  });
-});
-
-renderMarketing();
-renderVendas();
+renderAll();
 </script>
 </body>
 </html>
